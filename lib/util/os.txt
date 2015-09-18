@@ -1,0 +1,57 @@
+# -*- coding: robot -*-
+*** Settings ***
+Documentation  This resource file contains common and global variables
+
+*** Variables ***
+
+| *Keywords* |
+
+# run a single ping, and keyword passes if the ping passes, fails if ping fails
+| Ping System Single | [Arguments] | ${host_ip} |
+| | ${return_code} | ${output} = | Run And Return Rc and Output | ping -c 1 ${host_ip}
+| | Log To Console | \t${output} |
+| | ${result} = | Convert To Integer | ${return_code}
+| | Should Be Equal As Integers | ${result} | 0
+
+# run a single ping, and keyword fails if the ping passes, passes if ping fails
+| Ping System Single Negative | [Arguments] | ${host_ip} |
+| | ${return_code} = | Run And Return Rc | ping -c 1 ${host_ip}
+| | ${result} = | Convert To Integer | ${return_code}
+| | Should Not Be Equal As Integers | ${result} | 0
+
+# run the single ping until success
+| Ping System Until Alive | [Arguments] | ${host_ip} | ${timeout}=1 minute | ${retry_interval}=15 seconds |
+| | Wait Until Keyword Succeeds | ${timeout} | ${retry_interval} | Ping System Single | ${host_ip}
+
+# run the single ping until failure
+| Ping System Until Dead | [Arguments] | ${host_ip} | ${timeout}=1 minute | ${retry_interval}=15 seconds |
+| | Wait Until Keyword Succeeds | ${timeout} | ${retry_interval} | Ping System Single Negative | ${host_ip}
+
+| SSH Ping | [Arguments] | ${connection_name} | ${passfail_criteria} | ${ping_ip} | ${ping_opts} | ${sudo}=no |
+| | ${old_conn_index}= | SSHLibrary.Switch Connection | ${connection_name}
+| | Run Keyword If | '${sudo}'=='no' | SSHLibrary.Write | ping ${ping_opts} ${ping_ip}
+| |	...			 | ELSE	| SSHLibrary.Write | sudo ping ${ping_opts} ${ping_ip}
+| | ${response}= | SSHLibrary.Read Until Prompt
+| | Should Contain | ${response} | ${passfail_criteria}
+| | SSHLibrary.Switch Connection | ${old_conn_index}
+
+# run the single ping until success
+| SSH Ping Until Alive | [Arguments] | ${connection_name} | ${timeout} | ${retry_interval} | ${ping_ip} | @{ping_opts}
+| | Wait Until Keyword Succeeds | ${timeout} | ${retry_interval} | SSH Ping | ${connection_name} | ${SPACE}0% packet loss | ${ping_ip} | @{ping_opts}
+
+# run the single ping until failure
+| SSH Ping Until Dead | [Arguments] | ${connection_name} | ${timeout} | ${retry_interval} | ${ping_ip} | @{ping_opts}
+| | Wait Until Keyword Succeeds | ${timeout} | ${retry_interval} | SSH Ping | ${connection_name} | 100% packet loss | ${ping_ip} | @{ping_opts}
+
+# Telnet ping until success
+| Telnet Ping System Until Alive | [Arguments] | ${telnet_lias} | ${host_ip} | ${loops}=5 |
+| | [Documentation] | Telnet session ping |
+| | ${org_index} | SSHLibrary.Switch Connection | ${telnet_lias} |
+| | :FOR | ${count} | IN RANGE | ${loops} |
+| | | Telnet.Write | exec ping ${host_ip} |
+| | | Sleep | 10 seconds |
+| | | ${read_info}= | Telnet.Read |
+| | | Log To Console | ${read_info}exec ping ${host_ip} |
+| | | ${Match Line} | Get Lines Matching Regexp | ${read_info} | [0-9] packets transmitted, [0-9] packets received, [0-9]+% packet loss |
+| | | Run Keyword If | '${Match Line}' == '5 packets transmitted, 5 packets received, 0% packet loss' | Return From Keyword | 1 |
+| | | Return From Keyword | 0 |

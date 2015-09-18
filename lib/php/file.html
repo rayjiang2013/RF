@@ -1,0 +1,39 @@
+<html>
+<body>
+<table align="center">
+<tr><td>
+<fieldset>
+<legend>Convert a testcase file from .txt to .xml</legend>
+<form action="upload_file.php" method="post" enctype="multipart/form-data">
+<label for="file">Filename:</label>
+<input type="file" name="file" id="file" />
+<br />
+Keyword:
+<input type = "text" name = "keyword" />
+<br />
+Status:
+<input type = "text" name = "status" />
+<br />
+<input type="submit"  value="Convert" />
+<br />
+</form>
+</td></tr>
+<tr><td>
+</td></tr>
+</table>
+<br />
+Procedure:
+<br />
+1: Click on "Choose File" Button to choose testcase file in .txt format.
+<br />
+2: Enter Keyword. If enter multiple Keywords separate each using ",". If do not enter anything in Keyword field, there is no keyword in default.
+<br />
+3: Enter Status. The default Status is 1 if enters nothing in Status field. The valid Status numbers are 1-7(1 =Draft, 2=Ready for review, 3=Review in progress, 4=Rework, 5=Obsolete, 6=Future, 7=Final)
+<br />
+4: Click on "Convert" button to generate "UTF-8" encoding xml format file.
+<br />
+5: Right click the mouse and select the "save as" to save file.
+<br />
+</body>
+</html>
+

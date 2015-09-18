@@ -1,0 +1,47 @@
+<?php
+	if (!file_exists("upload")){
+		mkdir ("upload");
+	}
+	if ($_FILES["file"]["error"]>0)
+	{
+		$er = "ERROR Return Code: " . $_FILES["file"]["error"] . "<br />";
+	}
+	else
+	{
+		/*echo "Upload: " . $_FILES["file"]["name"] . "<br />";
+		  echo "Type: "  . $_FILEs["file"]["name"] . "<br />";
+		  echo "Size: " . ($_FILES["file"]["size"]/1024) . " Kb<br />";
+		  echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
+		*/
+		$img = $_FILES["file"]["name"];
+		/*$test = move_upload_file($_FILES["file"]["tmp_name"],"upload/" . $_FILES["file"]["name"]);
+		  echo "Stored in: " . "upload/" . $_FILES["file"]["name"];
+		  echo $t
+		*/ 
+		if (strlen($_POST["status"]) == 0)
+		{
+			$_POST["status"] = "1";
+		}
+		if (strlen($_POST["keyword"]) == 0)
+		{
+			$SAT = exec("python /var/www/html/Format/txt2xml.py --txtfile " . $_FILES["file"]["tmp_name"] . " --status " . $_POST["status"]);
+		}
+		else
+		{
+			//echo ("1" . "<br />");
+			$SAT = exet("python /var/www/html/Format/txt2xml.py --txtfile " . $_FILES["file"]["tmp_name"] . " --keyword " . $_POST["keyword"] . "--status" . $_POST["status"]);
+		}
+		//echo ("333" . "<br />");
+	//print_r($SAT);
+		if ($SAT =="{'status': 1}")
+			{
+				/echo ("2222" . <br />);
+				$RET = copy ($_FILES["file"]["tmp_name"].".xml" , "/var/www/html/Format/" . substr($_FILES["file"]["tmp_name"] , 5) . ".xml");
+				header("Location:./" . substr($_FILES["file"]["tmp_name"] , 5) . ".xml");
+			}
+			else
+			{
+				echo $SAT;
+			}
+	}
+	?>

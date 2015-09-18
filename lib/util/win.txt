@@ -1,0 +1,222 @@
+# -*- coding: robot -*-
+| *Settings* |
+| Documentation | Common files for WinDOWS/wireless client related commands and variables
+| Library | String | 
+| Library | Collections | 
+| Library | OperatingSystem | 
+| Library | SSHLibrary | 
+| Library | ${autopath}/lib/util/util.py |
+| Library | ${autopath}/lib/util/tableparser.py |
+
+| *Variables* |
+
+| *Keywords* |
+
+# Kill a process in Windows7 and Windows8 via a ssh session. Return 1 if action succeed
+| Win Kill A Process | [Arguments] | ${handle} | ${Process Name} |
+| | [Documentation] | Kill a process in Windows handle=${handle}, Process Name=${Process Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | SSHLibrary.Write | tasklist |
+| | Sleep | 1 |
+| | ${read_info}= | SSHLibrary.Read |
+| | Log To Console | ${read_info} |
+| | ${Header} | Set Variable | Image_Name PID Session_Name Session# Mem_Usage |
+| | ${Parse_info} | Create Dictionary | table | ${read_info} | header | ${Header} |
+| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
+| | Dictionary Should Contain Key | ${Parsed_dict} | ${Process Name} | '${Process Name} does not exists' |
+| | ${Status} | SSHLibrary.Write | taskkill /IM ${Process Name} /F |
+| | SSHLibrary.Switch Connection | ${org_handle}
+| | Run keyword if | '${Status}' == -1 | Fail | 'Not able to kill the process ${Process Name}' |
+| | [Return] | 1 |
+
+# Send cli to Windows via a ssh session. Return its output on console
+| Win Command | [Arguments] | ${handle} | ${cli} |
+| | [Documentation] | Win Command handle=${handle}, cli=${cli} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | SSHLibrary.Write | ${cli} |
+| | Sleep | 1 |
+| | ${read_info}= | SSHLibrary.Read |
+| | Log To Console | ${read_info}${cli} |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+| | [Return] | ${read_info} |
+
+# get Windows ipconfig /all info via a ssh session.
+| Win Get Ipconfig Info | [Arguments] | ${handle} | ${Info Name} |
+| | [Documentation] | Win Get ipconfig /all info handle=${handle}, Info Name=${Info Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | ${read_info}= | SSHLibrary.Read |
+| | Log | ${read_info} ipconfig /all | console=yes |
+| | SSHLibrary.Write | ipconfig /all |
+| | Sleep | 1 |
+| | ${read_info}= | SSHLibrary.Read |
+| | Log To Console | ${read_info} |
+| | ${Info Line}= | Get Lines Containing String | ${read_info} | ${Info Name} |
+| | ${Info Value}= | Replace String Using Regexp | ${Info Line} | ${Info Name}( . |. )+ | ${EMPTY} |
+| | ${Value}= | Remove Whitespace | ${Info Value} |
+| | SSHLibrary.Switch Connection | ${org_handle}
+| | [Return] | ${Value} |
+
+# get Windows ipconfig /all Adapter info via a ssh session.
+| Win Ipconfig Adapter Info | [Arguments] | ${handle} | ${Adapter Type} | ${Info Name} |
+| | [Documentation] | Win Get ipconfig /all info handle=${handle}, Adapter Type=${Adapter Type}, Info Name=${Info Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | SSHLibrary.Write | ipconfig /all |
+| | Sleep | 1 |
+| | ${read_info}= | SSHLibrary.Read |
+| | Log To Console | ${read_info} |
+| | SSHLibrary.Switch Connection | ${org_handle}
+| | ${Adapter Data Dict}= | Get Adapter Data | ${read_info} | ${Adapter Type} |
+| | ${Info Value List} | Get Nested Diction | ${Adapter Data Dict} | data.${Info Name} |
+| | ${Info Value} | Get From List | ${Info Value List} | 0 |
+| | Should Not Be Empty | ${Info Value} | 'Unable to get ${Info Name} from Adapter' |
+| | [Return] | ${Info Value} |
+
+# Verify if Wireless Client can ping FAP
+| Win Ping | [Arguments] | ${handle} | ${Destination IP} |
+| | [Documentation] | Verify Wireless Client can ping FAP handle=${handle}, Destination IP=${Destination IP} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | :FOR | ${Loop Count} | IN RANGE | 1 | 10 |
+| | | SSHLibrary.Write | ping ${Destination IP} |
+| | | Sleep | 5 |
+| | | ${read_info}= | SSHLibrary.Read |
+| | | Log To Console | ${read_info} |
+| | | ${Ping Status} | Verify FAP Ping Packets Loss | ${read_info} |
+| | | ${Status} | Get From Dictionary | ${Ping Status} | status |
+| | | Run Keyword If | ${Status} == 1 | Exit For Loop |
+| | | Sleep | 10 |
+| | SSHLibrary.Switch Connection | ${org_handle}
+| | Should Be True | ${Loop Count} < 9 | 'Win Client Ping ${Destination IP} fails' |
+
+# Restart Windows
+| Win Restart | [Arguments] | ${handle} |
+| | [Documentation] | Restart Windows handle=${handle} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | SSHLibrary.Write | shutdown -r -f now |
+| | SSHLibrary.Switch Connection | ${org_handle}
+
+# Confirm SSID Presence 
+| Win Check SSID Presence | [Arguments] | ${handle} | ${SSID Name} |
+| | [Documentation] | Win Check SSID Presence handle=${handle}, SSID Name=${SSID Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | SSHLibrary.Write Until Expected Output | netsh\n | expected=netsh\> | timeout=5s | retry_interval=0.5s |
+| | :FOR | ${Loop Count} | IN RANGE | 1 | 10 |
+| | | Log | netsh\>wlan show networks | console=yes |
+| | | SSHLibrary.Write | wlan show networks |
+| | | Sleep | 2 |
+| | | ${Info Data}= | SSHLibrary.Read |
+| | | ${SSID Presence}= | Check SSID Presence | ${Info Data} | ${SSID Name} |
+| | | ${Status} | Get From Dictionary | ${SSID Presence} | status |
+| | | Run Keyword If | ${Status} == 1 | Exit For Loop |
+| | | Sleep | 10 |
+| | SSHLibrary.Write Until Expected Output | exit\n | expected=${handle} | timeout=5s | retry_interval=0.5s |
+| | Should Be True | ${Loop Count} < 9 | 'Win Check SSID Presence fails' |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+
+# Get SSID Data
+| Win Get SSID Data | [Arguments] | ${handle} |
+| | [Documentation] | Win Get SSID Data handle=${handle} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | SSHLibrary.Write Until Expected Output | netsh\n | expected=netsh\> | timeout=5s | retry_interval=0.5s |
+| | Log | netsh\>wlan show networks | console=yes |
+| | SSHLibrary.Write | wlan show networks |
+| | Sleep | 2 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | SSHLibrary.Write Until Expected Output | exit\n | expected=${handle} | timeout=5s | retry_interval=0.5s |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+| | ${SSID Data} | Get SSID Data | ${Info Data} |
+| | ${Status} | Get From Dictionary | ${SSID Data} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'Win Get SSID Data fails' |
+| | [Return] | ${SSID Data} |
+
+# Get Wlan Info
+| Win Get Wlan Info | [Arguments] | ${handle} | ${Info Key} |
+| | [Documentation] | Win Get Wlan Info handle=${handle}, Info Key=${Info Key} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | SSHLibrary.Write Until Expected Output | netsh\n | expected=netsh\> | timeout=5s | retry_interval=0.5s |
+| | Log | netsh\>wlan show ${Info Key} | console=yes |
+| | SSHLibrary.Write | wlan show ${Info Key} |
+| | Sleep | 2 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | SSHLibrary.Write Until Expected Output | exit\n | expected=${handle} | timeout=5s | retry_interval=0.5s |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+| | [Return] | ${Info Data} |
+
+# Get Wlan Interface Data
+| Win Get Wlan Interface Data | [Arguments] | ${handle} |
+| | [Documentation] | Win Get Wlan Interface Data handle=${handle} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} netsh wlan show interface | console=yes |
+| | SSHLibrary.Write | netsh wlan show interface |
+| | Sleep | 2 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+| | ${Wlan Interface Data} | Parse Wlan Interface Data | ${Info Data} |
+| | ${Status} | Get From Dictionary | ${Wlan Interface Data} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'Win Get Wlan Interface Data fails' |
+| | [Return] | ${Wlan Interface Data} |
+
+# Add Wlan Profile to interface
+| Win Add Wlan Profile to Interface | [Arguments] | ${handle} | ${Wlan Profile} | ${Wlan Interface Name} |
+| | [Documentation] | Win Add Wlan Profile To Interface handle=${handle}, Wlan Profile=${Wlan Profile}, Wlan Interface Name=${Wlan Interface Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} netsh wlan add profile filename=${Wlan Profile} interface="${Wlan Interface Name}" | console=yes |
+| | SSHLibrary.Write | netsh wlan add profile filename=${Wlan Profile} interface="${Wlan Interface Name}" |
+| | Sleep | 1 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} | is added on interface ${Wlan Interface Name} |
+| | Should Not Be Empty | ${Match Lines} | 'Win Add Wlan Profile to Interface ${Wlan Interface Name} fails' |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+
+# Delete Wlan Profile from interface
+| Win Delete Wlan Profile From Interface | [Arguments] | ${handle} | ${Wlan Profile} | ${Wlan Interface Name} |
+| | [Documentation] | Win Delete Wlan Profile From Interface handle=${handle}, Wlan Profile=${Wlan Profile}, Wlan Interface Name=${Wlan Interface Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} netsh wlan delete profile name=${Wlan Profile} interface="${Wlan Interface Name}" | console=yes |
+| | SSHLibrary.Write | netsh wlan delete profile name=${Wlan Profile} interface="${Wlan Interface Name}" |
+| | Sleep | 1 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log | \n\tInfo Data=${Info Data} | console=yes |
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} | is deleted from interface "${Wlan Interface Name}" |
+| | Should Not Be Empty | ${Match Lines} | 'Win Delete Wlan Profile to Interface ${Wlan Interface Name} fails' |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+
+# Verify Wlan Profile in interface
+| Win Verify Wlan Profile in Interface | [Arguments] | ${handle} | ${Wlan Profile} | ${Wlan Interface Name} |
+| | [Documentation] | Win Add Wlan Profile To Interface handle=${handle}, Wlan Profile=${Wlan Profile}, Wlan Interface Name=${Wlan Interface Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} netsh wlan show profile | console=yes |
+| | SSHLibrary.Write | netsh wlan show profile |
+| | Sleep | 1 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log To Console | \n\tInfo Data=${Info Data}
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} | Profiles on interface ${Wlan Interface Name} |
+| | Should Not Be Empty | ${Match Lines} | 'Win Verify Wlan Profile in Interface ${Wlan Interface Name} fails' |
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} | ${Wlan Profile} |
+| | Should Not Be Empty | ${Match Lines} | 'Win Verify Wlan Profile in Interface All User Profile ${Wlan Profile} fails' |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+
+# Connect Wlan Profile To interface
+| Win Wlan Connect To SSID | [Arguments] | ${handle} | ${Wlan SSID} | ${Wlan Interface Name} |
+| | [Documentation] | Win Wlan Connect To SSID handle=${handle}, Wlan SSID=${Wlan SSID}, Wlan Interface Name=${Wlan Interface Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} netsh wlan Connect ssid=${Wlan SSID} name=${Wlan SSID} interface="${Wlan Interface Name}" | console=yes |
+| | SSHLibrary.Write | netsh wlan Connect ssid=${Wlan SSID} name=${Wlan SSID} interface="${Wlan Interface Name}" |
+| | Sleep | 1 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log To Console | \n\tInfo Data=${Info Data}
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} | Connection request was completed successfully |
+| | Should Not Be Empty | ${Match Lines} | 'Win Wlan Connect To SSID ${Wlan SSID} fails' |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+
+# Disconnect Wlan Profile in interface
+| Win Wlan Disconnect From SSID | [Arguments] | ${handle} |
+| | [Documentation] | Win Wlan Disconnect To SSID handle=${handle} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} netsh wlan disconnect | console=yes |
+| | SSHLibrary.Write | netsh wlan disconnect |
+| | Sleep | 1 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log To Console | \n\tInfo Data=${Info Data}
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} | Disconnection request was completed successfully |
+| | Should Not Be Empty | ${Match Lines} | 'Win Wlan Disconnect fails' |
+| | SSHLibrary.Switch Connection | ${org_handle} |

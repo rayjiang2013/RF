@@ -1,0 +1,273 @@
+# -*- coding: robot -*-
+| *Settings* |
+| Documentation | Common files for FSW related commands and variables
+| Library | String | 
+| Library | Collections | 
+| Library | OperatingSystem | 
+
+| *Variables* |
+
+# fortiswitch web properties 
+
+| *Keywords* |
+
+# Exec Factoryreset
+| Wireless Exec Factoryreset | [Arguments] | ${telnet_lias} | ${User Name} | ${Password} |
+| | [Documentation] | Wireless Exec Factoryreset telnet_lias=${telnet_lias}, User Name=${User Name}, Password=${Password} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | Telnet.Write | exec factoryreset |
+| | ${read_info}= | Telnet.Read Until Regexp | Do you want to continue |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Write | y |
+| | Sleep | 2 second |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | Sleep | 3 minutes |
+| | ${read_info}= | Telnet.Read Until Regexp | login: |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Write | ${User Name}
+| | ${read_info}= | Telnet.Read Until Regexp | Password: |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Write | ${Password} |
+| | Sleep | 1 second |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
+
+# Check FAP Platform
+| Wireless Check FAP Platform | [Arguments] | ${telnet_lias} | ${WTP Profile Name} | ${FAP Platform} |
+| | [Documentation] | Wireless Check FAP Platform telnet_lias=${telnet_lias}, WTP Profile Name=${WTP Profile Name}, FAP Platform=${FAP Platform} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}config wireless-controller wtp-profile | console=yes |
+| | Telnet.Write | config wireless-controller wtp-profile |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}edit ${WTP Profile Name} | console=yes |
+| | Telnet.Write | edit ${WTP Profile Name} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}config platform | console=yes |
+| | Telnet.Write | config platform |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}get | console=yes |
+| | Telnet.Write | get |
+| | Sleep | 1 |
+| | ${get_info}= | Telnet.Read |
+| | Log | ${get_info}end | console=yes |
+| | Telnet.Write | end |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}end | console=yes |
+| | Telnet.Write | end |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
+| | ${Status} | Check Platform | ${get_info} | ${FAP Platform} |
+| | ${ret} | Get From Dictionary | ${Status} | status |
+| | Run Keyword If | ${ret} != 1 | Fail | 'Wireless Check FAP Platform fails" |
+
+# Configure FAP Platform
+| Wireless Set FAP Platform | [Arguments] | ${telnet_lias} | ${WTP Profile Name} | ${FAP Platform} |
+| | [Documentation] | Wireless Set FAP Platform telnet_lias=${telnet_lias}, WTP Profile Name=${WTP Profile Name}, FAP Platform=${FAP Platform} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}config wireless-controller wtp-profile | console=yes |
+| | Telnet.Write | config wireless-controller wtp-profile |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}edit ${WTP Profile Name} | console=yes |
+| | Telnet.Write | edit ${WTP Profile Name} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}config platform | console=yes |
+| | Telnet.Write | config platform |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}set type ${FAP Platform} | console=yes |
+| | Telnet.Write | set type ${FAP Platform} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}end | console=yes |
+| | Telnet.Write | end |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}end | console=yes |
+| | Telnet.Write | end |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
+
+# get WTP-ID
+| Wireless Get WTP ID | [Arguments] | ${telnet_lias} |
+| | [Documentation] | Wireless Get WTP ID telnet_lias=${telnet_lias} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}get wireless-controller wtp | console=yes |
+| | Telnet.Write | get wireless-controller wtp |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
+| | ${Status} | Get WTPID | ${read_info} |
+| | ${ret} | Get From Dictionary | ${Status} | status |
+| | Run Keyword If | ${ret} != 1 | Fail | 'Wireless Get WTP ID fails" |
+| | @{WTP ID List} | Get From Dictionary | ${Status} | wtp_id |
+| | ${WTP ID}= | Get From List | ${WTP ID List} | 0 |
+| | [Return] | ${WTP ID} |
+
+# Associate FAP with WTP Profile
+| Wireless Associate FAP | [Arguments] | ${telnet_lias} | ${WTP ID} | ${WTP Profile Name} |
+| | [Documentation] | Wireless Associate FAP telnet_lias=${telnet_lias}, WTP ID=${WTP ID}, WTP Profile Name=${WTP Profile Name} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}config wireless-controller wtp | console=yes |
+| | Telnet.Write | config wireless-controller wtp |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}edit ${WTP ID} | console=yes |
+| | Telnet.Write | edit ${WTP ID} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}set admin enable | console=yes |
+| | Telnet.Write | set admin enable |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}set wtp-profile ${WTP Profile Name} | console=yes |
+| | Telnet.Write | set wtp-profile ${WTP Profile Name} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}end | console=yes |
+| | Telnet.Write | end |
+| | Sleep | 1 |
+| | Telnet.Switch Connection | ${org_id} |
+
+# Check WTP Connection State, return parsed info of WTP Status
+| Wireless Check WTP Connection State | [Arguments] | ${telnet_lias} | ${FAP Hostname} |
+| | [Documentation] | Wireless Check WTP Connection State telnet_lias=${telnet_lias}, FAP Hostname=${FAP Hostname} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}get wireless-controller wtp-status | console=yes |
+| | :FOR | ${Loop Count} | IN RANGE | 1 | 10 |
+| | | Telnet.Write | get wireless-controller wtp-status |
+| | | Sleep | 2 |
+| | | ${read_info}= | Telnet.Read |
+| | | ${WTP Status} | Get WTP State | ${read_info} |
+| | | ${Status}= | Get From Dictionary | ${WTP Status} | status |
+| | | Run Keyword If | ${Status} != 1 | Fail | 'Wireless Check WTP Connection State fails' |
+| | | ${WTP Connection State} | Get Nested Diction | ${WTP Status} | WTP.${FAP Hostname}.connection-state |
+| | | Log To Console | \n\tWTP Connection State=${WTP Connection State} |
+| | | Run Keyword If | '${WTP Connection State}' == 'Connected' | Exit For Loop |
+| | | Log To Console | \n\tPlease wait 10 seconds.... |
+| | | Sleep | 10 seconds |
+| | Telnet.Switch Connection | ${org_id} |
+| | Should Be True | ${Loop Count} < 9 | 'Wireless Check WTP Connection State fail' |
+| | ${WTP FAP Data} | Get Nested Diction | ${WTP Status} | WTP.${FAP Hostname} |
+| | [Return] | ${WTP FAP Data} |
+
+# Get FAP IP
+| Wireless Get FAP IP | [Arguments] | ${telnet_lias} | ${FAP Hostname} |
+| | [Documentation] | Wireless Get FAP IP telnet_lias=${telnet_lias}, FAP Hostname=${FAP Hostname} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} get wireless-controller wtp-status | console=yes |
+| | Telnet.Write | get wireless-controller wtp-status |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Telnet.Switch Connection | ${org_id} |
+| | Log To Console | \n\tread_info=${read_info}
+| | ${WTP Status} | Get WTP State | ${read_info} |
+| | ${Status}= | Get From Dictionary | ${WTP Status} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'Wireless Get FAP IP fails' |
+| | ${FAP IP} | Get Nested Diction | ${WTP Status} | WTP.${FAP Hostname}.local-ipv4-addr |
+| | [Return] | ${FAP IP} |
+
+# Ping FAP IP
+| Wireless Ping FAP | [Arguments] | ${telnet_lias} | ${FAP IP} |
+| | [Documentation] | Wireless Ping FAP telnet_lias=${telnet_lias}, FAP IP=${FAP IP} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info}exec ping ${FAP IP} | console=yes |
+| | Telnet.Write | exec ping ${FAP IP} |
+| | Sleep | 5 |
+| | ${read_info}= | Telnet.Read |
+| | Telnet.Switch Connection | ${org_id} |
+| | Log To Console | \n\t${read_info} |
+| | ${Ping Status} | Verify Ping Packets Loss | ${read_info} |
+| | ${ret} | Get From Dictionary | ${Ping Status} | status |
+| | Run Keyword If | ${ret} != 1 | Fail | 'Wireless Ping FAP fails' |
+
+# Get FAP Radio Setup
+| Wireless Verify FAP Radio Setup | [Arguments] | ${telnet_lias} | ${FAP IP} | ${FAP Model} | ${FAP Username} |
+| | [Documentation] | Wireless Verify FAP Radio Setup telnet_lias=${telnet_lias}, FAP IP=${FAP IP}, FAP Model=${FAP Model}, FAP Username=${FAP Username} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} exec telnet ${FAP IP} | console=yes |
+| | Telnet.Write | exec telnet ${FAP IP} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | ${Login Lines} | Get Lines Containing String | ${read_info} | login: |
+| | Should Not Be Empty | ${Login Lines} | 'Unable Telnet to FAP at ${FAP IP}' |
+| | Log | ${read_info} ${FAP Username} | console=yes |
+| | Telnet.Write | ${FAP Username} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | ${Login Lines} | Get Lines Containing String | ${read_info} | ${FAP Model} |
+| | Should Not Be Empty | ${Login Lines} | 'Unable Login to FAP at ${FAP IP}' |
+| | Log | ${read_info} get radio info | console=yes |
+| | Telnet.Write | get radio info |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | ${FAP Radio Info} | Parse FAP Radio Info | ${read_info} |
+| | Log | \n\t${FAP Radio Info} | console=yes |
+| | ${Status} | Get From Dictionary | ${FAP Radio Info} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'Unable to Parse FAP Radio Info' |
+| | Log | ${read_info} exit | console=yes |
+| | Telnet.Write | exit |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | ${Login Lines} | Get Lines Containing String | ${read_info} | Connection closed by foreign host |
+| | Should Not Be Empty | ${Login Lines} | 'Unable Logout FAP at ${FAP IP}' |
+| | Telnet.Switch Connection | ${org_id} |
+| | ${FAP Radio Data} | Get From Dictionary | ${FAP Radio Info} | radio_info |
+| | [Return] | ${FAP Radio Data} |
+
+# Reboot FAP
+| Wireless Reboot FAP | [Arguments] | ${telnet_lias} | ${FAP IP} |
+| | [Documentation] | Wireless Verify FAP Radio Setup telnet_lias=${telnet_lias}, FAP IP=${FAP IP} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} exec telnet ${FAP IP} | console=yes |
+| | Telnet.Write | exec telnet ${FAP IP} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | ${Login Lines} | Get Lines Containing String | ${read_info} | login: |
+| | Should Not Be Empty | ${Login Lines} | 'Unable Telnet to FAP at ${FAP IP}' |
+| | Log | ${read_info} ${FAP Username} | console=yes |
+| | Telnet.Write | ${FAP Username} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | ${Login Lines} | Get Lines Containing String | ${read_info} | Password: |
+| | Should Not Be Empty | ${Login Lines} | 'Unable to get Password: Prompt at ${FAP IP}' |
+| | Telnet.Write | \n |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | ${Login Lines} | Get Lines Containing String | ${read_info} | ${FAP Model} |
+| | Should Not Be Empty | ${Login Lines} | 'Unable Login to FAP at ${FAP IP}' |
+| | Log | ${read_info} reboot | console=yes |
+| | Telnet.Write | reboot |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | ${Login Lines} | Get Lines Containing String | ${read_info} | Connection closed by foreign host |
+| | Should Not Be Empty | ${Login Lines} | 'Unable Reboot FAP at ${FAP IP}' |
+| | Telnet.Switch Connection | ${org_id} |

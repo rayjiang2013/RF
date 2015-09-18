@@ -1,0 +1,26 @@
+# -*- coding: robot -*-
+| *Settings* |
+| Documentation | Contains telnet specific keywords that are totally generic
+| Library | Telnet
+
+| *Variables* |
+
+| *Keywords* |
+| Telnet Login | [Arguments] | ${host_ip} | ${connection_name} | ${username} | ${password} | ${timeout}=10 seconds | ${prompt}=# | ${port}=23 | ${open}=open | ${send_ctrlc}=no
+| | [Documentation] | Telnet Login host_ip:${host_ip} connection_name:${connection_name} username:${username} password:${password} timeout:${timeout} prompt:${prompt} port:${port} open:${open} send_ctrlc:${send_ctrlc}
+| | Run Keyword If | '${open}' == 'open' | Telnet.Open Connection | ${host_ip} | alias=${connection_name} | timeout=${timeout} | prompt=${prompt} | port=${port} |
+| | ${ctrl_]} | Evaluate | chr(int(29))
+| | ${ctrl_c} | Evaluate | chr(int(3))
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Telnet.Write Bare | ${ctrl_]}${ctrl_c}
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Sleep | 1s |
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Telnet.Write Bare | ${ctrl_]}${ctrl_c}
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Sleep | 1s | 
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Telnet.Write Bare | ${ctrl_]}${ctrl_c}
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Sleep | 1s |
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Telnet.Write Bare | ${ctrl_]}${ctrl_c}
+| | Run Keyword If | '${send_ctrlc}' == 'yes' | Sleep | 4s |
+| | ${read_prompt} | Telnet.Login | ${username} | ${password} 
+| | [Return] | ${read_prompt} |
+
+| Telnet Close All Connections | [Arguments] |
+| | Telnet.Close All Connections

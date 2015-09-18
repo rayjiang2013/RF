@@ -1,0 +1,2 @@
+pybot --argumentfile wifi-wpa2psk_args /home/jimhe/automation/testcases
+pybot --argumentfile wifi-open_args /home/jimhe/automation/testcases

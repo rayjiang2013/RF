@@ -1,0 +1,6 @@
+# This is the argument file for sconfig.txt
+--variable autopath:/home/jimhe/automation
+--variable virtual_topo:singleSw6Trafgens.xml
+--variable testbed:template-tb 
+# Tag
+--include Routing

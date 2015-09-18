@@ -1,0 +1,4 @@
+# -*- coding: robot -*-
+| *Setting* |
+| Documentation | All test cases in this dir and below belong to robot framework automation module
+| ...           | Select which test suite to run using Tag defines in script file or indivatual cases

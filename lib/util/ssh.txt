@@ -1,0 +1,20 @@
+# -*- coding: robot -*-
+| *Settings* |
+| Documentation | Contains SSH specific keywords that are totally generic
+| Library | SSHLibrary
+
+| *Variables* |
+
+| *Keywords* |
+| SSH Login | [Arguments] | ${host_ip} | ${connection_name} | ${username} | ${password} | ${timeout}=20 | ${prompt}=$ | ${retries}=2 |
+| | SSHLibrary.Open Connection | ${host_ip} | alias=${connection_name} | timeout=${timeout} | prompt=${prompt}
+| | :FOR | ${INDEX}	| IN RANGE | 1 | ${retries} |
+| | | ${return_val} | ${read_prompt} | Run Keyword and Ignore Error | SSHLibrary.Login | ${username} | ${password} |
+| | | Log | \n\tSSH Login return_val=${return_val} | console=yes |
+| | | Log | \tSSH Login read_prompt=${read_prompt} | console=yes |
+| | | Return From Keyword If | '${return_val}'=='PASS' | ${read_prompt} |
+| | | Sleep | 10s |
+| | [Return] | ${read_prompt} |
+
+| SSH Close All Connections | [Arguments] |
+| | SSHLibrary.Close All Connections |
