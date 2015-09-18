@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="emulation_ldp_control" displayPriority="3" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+  <description supportType="ixNetworkSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="new" target="noTarget">Stop, start or restart the protocol.</description>
+  <chapter>LDP APIs</chapter>
+  <arguments>
+    <argument name="mode" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="true" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="true" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="true" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text>What is being done to the protocol.  Valid choices are:
+        restart - Restart the protocol.
+        start   - Start the protocol.
+        stop    - Stop the protocol.
+        restart_down - Restarts the down sessions.
+        abort   - Aborts the protocol.
+        resume_hello - Resumes hello message for the given LDP connected interface.
+        stop_hello - Stops hello message for the given LDP connected Interface.
+        resume_keepalive - Resumes Keepalive message for the given LDP connected interface.
+        stop_keepalive    - Stop Keepalive message for the given LDP connected interface.</text>
+          <choices>
+            <choice>
+              <choiceName>restart</choiceName>
+              <choiceText>Restart the LDP protocol/session.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>start</choiceName>
+              <choiceText>Start the LDP protocol/session.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>stop</choiceName>
+              <choiceText>Stop the LDP protocol/session.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>restart_down</choiceName>
+              <choiceText>Restart the down sessions.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>abort</choiceName>
+              <choiceText>Aborts the protcol.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>resume_hello</choiceName>
+              <choiceText>Resumes hello message for the given LDP connected interface.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>stop_hello</choiceName>
+              <choiceText>Stops hello message for the given LDP connected Interface.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>resume_keepalive</choiceName>
+              <choiceText>Resumes Keepalive message for the given LDP connected Interface.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>stop_keepalive</choiceName>
+              <choiceText>Stops Keepalive message for the given LDP connected Interface.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="restart start stop restart_down abort resume_hello stop_hello resume_keepalive stop_keepalive" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="port_handle" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text>The LDP session handle to act upon.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="advertise" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="flap_count" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="flap_down_time" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="flap_interval_time" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="flap_routes" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="withdraw" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>log</key>
+      <value>If status is failure, detailed information provided.</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <sampleInput>
+    <sampleInputElem supportType="ixNetworkCpfSupport" />
+  </sampleInput>
+  <sampleOutput>
+    <sampleOutputElem supportType="ixNetworkCpfSupport" />
+  </sampleOutput>
+  <notes>
+    <note supportType="ixNetworkCpfSupport">Coded versus functional specification. </note>
+  </notes>
+  <seeAlso>
+    <seeAlsoElem supportType="ixNetworkCpfSupport" />
+  </seeAlso>
+  <examples>
+    <example supportType="ixNetworkCpfSupport">See files starting with LDP_ in the Samples subdirectory.  Also see some of the L2VPN, L3VPN, MPLS, and MVPN sample files for further examples of the LDP usage.
+
+    See the LDP example in Appendix A, "Example APIs," for one specific example usage.</example>
+  </examples>
+</method>

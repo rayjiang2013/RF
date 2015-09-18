@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|TCL_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>BGP (IxNetwork_BGP4_neighbors_external_traffic.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/IxNetwork_BGP4_neighbors_external_traffic.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>IxNetwork_BGP4_neighbors_external_traffic</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552406"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552407"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552408"></a>
+          # This sample creates BGP peers and routes, and sends traffic over it #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552409"></a>
+          # using ixnetwork traffic_generator. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552410"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552411"></a>
+          # It uses two Ixia ports. BGP peers and routes are configured on both #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552412"></a>
+          # ports. Streams are generated using ixnetwork traffic_generator #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552413"></a>
+          # Traffic statistics are collected for each flow. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552414"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552415"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552416"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552417"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552418"></a>
+          # DUT config: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552419"></a>
+          # configure terminal #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552420"></a>
+          # ! </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552421"></a>
+          # interface TenGigabitEthernet5/3.2</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552422"></a>
+          # encapsulation dot1Q 2</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552423"></a>
+          # ip address 192.1.1.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552424"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552425"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552426"></a>
+          # interface TenGigabitEthernet5/3.3</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552427"></a>
+          # encapsulation dot1Q 3</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552428"></a>
+          # ip address 192.1.2.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552429"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552430"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552431"></a>
+          # interface TenGigabitEthernet5/3.4</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552432"></a>
+          # encapsulation dot1Q 4</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552433"></a>
+          # ip address 192.1.3.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552434"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552435"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552436"></a>
+          # interface TenGigabitEthernet5/3.5</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552437"></a>
+          # encapsulation dot1Q 5</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552438"></a>
+          # ip address 192.1.4.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552439"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552440"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552441"></a>
+          # interface TenGigabitEthernet5/3.6</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552442"></a>
+          # encapsulation dot1Q 6</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552443"></a>
+          # ip address 192.1.5.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552444"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552445"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552446"></a>
+          # interface TenGigabitEthernet5/3.7</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552447"></a>
+          # encapsulation dot1Q 7</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552448"></a>
+          # ip address 192.1.6.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552449"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552450"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552451"></a>
+          # interface TenGigabitEthernet5/3.8</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552452"></a>
+          # encapsulation dot1Q 8</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552453"></a>
+          # ip address 192.1.7.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552454"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552455"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552456"></a>
+          # interface TenGigabitEthernet5/3.9</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552457"></a>
+          # encapsulation dot1Q 9</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552458"></a>
+          # ip address 192.1.8.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552459"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552460"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552461"></a>
+          # interface TenGigabitEthernet5/3.10</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552462"></a>
+          # encapsulation dot1Q 10</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552463"></a>
+          # ip address 192.1.9.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552464"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552465"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552466"></a>
+          # interface TenGigabitEthernet5/3.11</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552467"></a>
+          # encapsulation dot1Q 11</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552468"></a>
+          # ip address 192.1.10.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552469"></a>
+          # no cdp enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552470"></a>
+          # interface TenGigabitEthernet 5/4.2002</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552471"></a>
+          # Encapsulation dot1q 2002</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552472"></a>
+          # ip address 193.1.1.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552473"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552474"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552475"></a>
+          # interface TenGigabitEthernet 5/4.2003</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552476"></a>
+          # Encapsulation dot1q 2003</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552477"></a>
+          # ip address 193.1.2.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552478"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552479"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552480"></a>
+          # interface TenGigabitEthernet 5/4.2004</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552481"></a>
+          # Encapsulation dot1q 2004</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552482"></a>
+          # ip address 193.1.3.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552483"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552484"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552485"></a>
+          # interface TenGigabitEthernet 5/4.2005</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552486"></a>
+          # Encapsulation dot1q 2005</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552487"></a>
+          # ip address 193.1.4.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552488"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552489"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552490"></a>
+          # interface TenGigabitEthernet 5/4.2006</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552491"></a>
+          # Encapsulation dot1q 2006</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552492"></a>
+          # ip address 193.1.5.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552493"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552494"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552495"></a>
+          # interface TenGigabitEthernet 5/4.2007</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552496"></a>
+          # Encapsulation dot1q 2007</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552497"></a>
+          # ip address 193.1.6.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552498"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552499"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552500"></a>
+          # interface TenGigabitEthernet 5/4.2008</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552501"></a>
+          # Encapsulation dot1q 2008</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552502"></a>
+          # ip address 193.1.7.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552503"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552504"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552505"></a>
+          # interface TenGigabitEthernet 5/4.2009</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552506"></a>
+          # Encapsulation dot1q 2009</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552507"></a>
+          # ip address 193.1.8.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552508"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552509"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552510"></a>
+          # interface TenGigabitEthernet 5/4.2010</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552511"></a>
+          # Encapsulation dot1q 2010</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552512"></a>
+          # ip address 193.1.9.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552513"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552514"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552515"></a>
+          # interface TenGigabitEthernet 5/4.2011</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552516"></a>
+          # Encapsulation dot1q 2011</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552517"></a>
+          # ip address 193.1.10.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552518"></a>
+          # no shut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552519"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552520"></a>
+          # Router bgp 65001</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552521"></a>
+          # Neighbor 192.1.1.2 remote-as 200</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552522"></a>
+          # Neighbor 192.1.2.2 remote-as 201</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552523"></a>
+          # Neighbor 192.1.3.2 remote-as 202</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552524"></a>
+          # Neighbor 192.1.4.2 remote-as 203</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552525"></a>
+          # Neighbor 192.1.5.2 remote-as 204</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552526"></a>
+          # Neighbor 192.1.6.2 remote-as 205</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552527"></a>
+          # Neighbor 192.1.7.2 remote-as 206</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552528"></a>
+          # Neighbor 192.1.8.2 remote-as 207</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552529"></a>
+          # Neighbor 192.1.9.2 remote-as 208</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552530"></a>
+          # Neighbor 192.1.10.2 remote-as 209</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552531"></a>
+          # Neighbor 193.1.1.2 remote-as 200</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552532"></a>
+          # Neighbor 193.1.2.2 remote-as 201</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552533"></a>
+          # Neighbor 193.1.3.2 remote-as 202</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552534"></a>
+          # Neighbor 193.1.4.2 remote-as 203</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552535"></a>
+          # Neighbor 193.1.5.2 remote-as 204</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552536"></a>
+          # Neighbor 193.1.6.2 remote-as 205</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552537"></a>
+          # Neighbor 193.1.7.2 remote-as 206</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552538"></a>
+          # Neighbor 193.1.8.2 remote-as 207</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552539"></a>
+          # Neighbor 193.1.9.2 remote-as 208</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552540"></a>
+          # Neighbor 193.1.10.2 remote-as 209</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552541"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552542"></a>
+          proc increment_ipv4_address_script {ip_addr ip_addr_step} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552543"></a>
+              set addr_words [split $ip_addr .]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552544"></a>
+              set step_words [split $ip_addr_step .]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552545"></a>
+              set index 3</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552546"></a>
+              set result [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552547"></a>
+              set carry 0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552548"></a>
+              while {$index &gt;= 0} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552549"></a>
+                  scan [lindex $addr_words $index] "%u" addr_word</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552550"></a>
+                  scan [lindex $step_words $index] "%u" step_word</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552551"></a>
+                  set value [expr $addr_word + $step_word + $carry]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552552"></a>
+                  set carry [expr $value / 0xFF]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552553"></a>
+                  set value [expr $value % 0xFF]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552554"></a>
+                  lappend result $value</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552555"></a>
+                  incr index -1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552556"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552557"></a>
+              set new_addr [format "%u" [lindex $result 3]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552558"></a>
+              for {set i 2} {$i &gt;= 0} {incr i -1} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552559"></a>
+                  append new_addr ".[format "%u" [lindex $result $i]]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552560"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552561"></a>
+              return $new_addr</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552562"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552563"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552564"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552565"></a>
+          set test_name bgp_config</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552566"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552567"></a>
+          set chassis_ip 10.200.120.55</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552568"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552569"></a>
+          ### points to where ixNetwork Tcl Server is running</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552570"></a>
+          set network_tcl_server_ip 10.200.22.29</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552571"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552572"></a>
+          ### points to where Ixia Tcl Server is running - only when using UNIX clients</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552573"></a>
+          set tcl_server_ip 10.200.22.63</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552574"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552575"></a>
+          set port_list [list 1/3 1/4]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552576"></a>
+          set num_of_bgp_neighbors 10</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552577"></a>
+          set num_of_prefix 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552578"></a>
+          set prefix_ce1 55.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552579"></a>
+          set prefix_ce2 70.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552580"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552581"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552582"></a>
+          #################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552583"></a>
+          # Connects to the IxNetwork Tcl Server, Tcl Server, and the chassis. </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552584"></a>
+          # Takes ownership of the ports. </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552585"></a>
+          # Notes: </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552586"></a>
+          # IxNetwork Tcl Server must be running on a client PC; </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552587"></a>
+          # Tcl Server must be running on a client PC;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552588"></a>
+          #################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552589"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552590"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552591"></a>
+                  -device $chassis_ip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552592"></a>
+                  -ixnetwork_tcl_server $network_tcl_server_ip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552593"></a>
+                  -tcl_server $tcl_server_ip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552594"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552595"></a>
+                  -break_locks 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552596"></a>
+                  -username ixiaApiUser \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552597"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552598"></a>
+          if {[keylget connect_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552599"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552600"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552601"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552602"></a>
+          set port_handle_list [::ixia::get_port_list_from_connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552603"></a>
+                  $connect_status $chassis_ip $port_list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552604"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552605"></a>
+          set port_0 [lindex $port_handle_list 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552606"></a>
+          set port_1 [lindex $port_handle_list 1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552607"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552608"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552609"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552610"></a>
+          # Configure layer 1 port settings (speed)</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552611"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552612"></a>
+          set interface_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552613"></a>
+                  -port_handle $port_handle_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552614"></a>
+                  -speed ether10000lan \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552615"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552616"></a>
+          if {[keylget interface_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552617"></a>
+              puts "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552618"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552619"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552620"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552621"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552622"></a>
+          # Configure multiple BGP Peers with count option</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552623"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552624"></a>
+          set bgp_config_status [::ixia::emulation_bgp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552625"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552626"></a>
+                  -mode reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552627"></a>
+                  -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552628"></a>
+                  -local_ip_addr 192.1.1.2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552629"></a>
+                  -remote_ip_addr 192.1.1.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552630"></a>
+                  -local_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552631"></a>
+                  -remote_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552632"></a>
+                  -vlan_id 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552633"></a>
+                  -vlan_id_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552634"></a>
+                  -count $num_of_bgp_neighbors \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552635"></a>
+                  -neighbor_type external \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552636"></a>
+                  -local_as 200 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552637"></a>
+                  -local_as_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552638"></a>
+                  -local_as_mode increment \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552639"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552640"></a>
+          if {[keylget bgp_config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552641"></a>
+              puts "FAIL - $test_name - $port_0 BGP neighbors configuration failed. -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552642"></a>
+                      [keylget bgp_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552643"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552644"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552645"></a>
+          set ce_bgp_neighbor_handle_list [keylget bgp_config_status handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552646"></a>
+           &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552647"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552648"></a>
+          foreach bgp_neighbor_handle $ce_bgp_neighbor_handle_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552649"></a>
+              ############################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552650"></a>
+              # Configure BGP routes on each BGP peer</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552651"></a>
+              ############################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552652"></a>
+              set bgp_route_config_status [::ixia::emulation_bgp_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552653"></a>
+                      -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552654"></a>
+                      -handle $bgp_neighbor_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552655"></a>
+                      -prefix $prefix_ce1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552656"></a>
+                      -prefix_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552657"></a>
+                      -netmask 255.255.255.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552658"></a>
+                      -num_routes $num_of_prefix \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552659"></a>
+                      -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552660"></a>
+                      -origin_route_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552661"></a>
+                      -origin igp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552662"></a>
+                      ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552663"></a>
+              if {[keylget bgp_route_config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552664"></a>
+                  puts "FAIL - $test_name - $port_0 BGP routes configuration failed. -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552665"></a>
+                          [keylget bgp_route_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552666"></a>
+                  return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552667"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552668"></a>
+              set prefix_ce1 [increment_ipv4_address_script $prefix_ce1 0.1.0.0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552669"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552670"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552671"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552672"></a>
+          # Configure multiple BGP Peers and BGP routes on the second Ixia port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552673"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552674"></a>
+          set bgp_config_status [::ixia::emulation_bgp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552675"></a>
+                  -port_handle $port_1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552676"></a>
+                  -mode reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552677"></a>
+                  -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552678"></a>
+                  -local_ip_addr 193.1.1.2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552679"></a>
+                  -remote_ip_addr 193.1.1.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552680"></a>
+                  -local_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552681"></a>
+                  -remote_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552682"></a>
+                  -vlan_id 2002 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552683"></a>
+                  -vlan_id_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552684"></a>
+                  -count $num_of_bgp_neighbors \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552685"></a>
+                  -neighbor_type external \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552686"></a>
+                  -local_as 200 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552687"></a>
+                  -local_as_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552688"></a>
+                  -local_as_mode increment \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552689"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552690"></a>
+          if {[keylget bgp_config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552691"></a>
+              puts "FAIL - $test_name - $port_1 BGP neighbors configuration failed. -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552692"></a>
+                      [keylget bgp_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552693"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552694"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552695"></a>
+          set pe_bgp_neighbor_handle_list [keylget bgp_config_status handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552696"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552697"></a>
+           &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552698"></a>
+          foreach bgp_neighbor_handle $pe_bgp_neighbor_handle_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552699"></a>
+              set bgp_route_config_status [::ixia::emulation_bgp_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552700"></a>
+                      -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552701"></a>
+                      -handle $bgp_neighbor_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552702"></a>
+                      -prefix $prefix_ce2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552703"></a>
+                      -prefix_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552704"></a>
+                      -netmask 255.255.255.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552705"></a>
+                      -num_routes $num_of_prefix \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552706"></a>
+                      -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552707"></a>
+                      -origin_route_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552708"></a>
+                      -origin igp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552709"></a>
+                      ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552710"></a>
+              if {[keylget bgp_config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552711"></a>
+                  puts "FAIL - $test_name - $port_1 BGP neighbors configuration failed. -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552712"></a>
+                          [keylget bgp_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552713"></a>
+                  return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552714"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552715"></a>
+              set prefix_ce2 [increment_ipv4_address_script $prefix_ce2 0.1.0.0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552716"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552717"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552718"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552719"></a>
+          # Start the BGP sessions</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552720"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552721"></a>
+          set bgp_control_status [::ixia::emulation_bgp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552722"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552723"></a>
+                  -mode start \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552724"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552725"></a>
+          if {[keylget bgp_config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552726"></a>
+              puts "FAIL - $test_name - $port_0 - Failed to start BGP CE emulation. -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552727"></a>
+                      [keylget bgp_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552728"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552729"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552730"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552731"></a>
+          set bgp_control_status [::ixia::emulation_bgp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552732"></a>
+                  -port_handle $port_1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552733"></a>
+                  -mode start \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552734"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552735"></a>
+          if {[keylget bgp_config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552736"></a>
+              puts "FAIL - $test_name - $port_1 - Failed to start BGP PE emulation. -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552737"></a>
+                      [keylget bgp_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552738"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552739"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552740"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552741"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552742"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552743"></a>
+          # Wait for the BGP sessions to establish on first port. </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552744"></a>
+          # Any BGP peer handle configured for the port can be provided to -handle </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552745"></a>
+          # parameter in order to retrive the BGP session' stats for the port.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552746"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552747"></a>
+          set bgp_sessions_established 0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552748"></a>
+          set retries 10</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552749"></a>
+          while {($bgp_sessions_established &lt; $num_of_bgp_neighbors) &amp;&amp; ($retries &gt;= 0)} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552750"></a>
+              # For IxTclNetwork, this command returns per port stats, </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552751"></a>
+              # evenif a neighbor handle is specified</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552752"></a>
+              set bgp_aggregate_status [ixia::emulation_bgp_info \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552753"></a>
+                      -handle [lindex $ce_bgp_neighbor_handle_list 0] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552754"></a>
+                      -mode stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552755"></a>
+                      ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552756"></a>
+              if {[keylget bgp_aggregate_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552757"></a>
+                  puts "FAIL - $test_name - [keylget bgp_aggregate_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552758"></a>
+                  return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552759"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552760"></a>
+              puts "Retrieving aggregate BGP stats, number of retries left: $retries ..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552761"></a>
+              update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552762"></a>
+              if {![catch {keylget bgp_aggregate_status sessions_established}]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552763"></a>
+                  set bgp_sessions_established \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552764"></a>
+                          [keylget bgp_aggregate_status sessions_established]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552765"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552766"></a>
+              incr retries -1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552767"></a>
+              if {$bgp_sessions_established &lt; $num_of_bgp_neighbors} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552768"></a>
+                  after 1000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552769"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552770"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552771"></a>
+          if {$bgp_sessions_established &lt; $num_of_bgp_neighbors} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552772"></a>
+              puts "FAIL - $test_name - Not all BGP sessions have been established."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552773"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552774"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552775"></a>
+          puts "There are $bgp_sessions_established BGP sessions established on $port_0 ..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552776"></a>
+          update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552777"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552778"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552779"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552780"></a>
+          # Wait for the BGP sessions to establish on second port.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552781"></a>
+          # Any BGP peer handle configured for the port can be provided to -handle </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552782"></a>
+          # parameter in order to retrive the BGP session' stats for the port.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552783"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552784"></a>
+          set bgp_sessions_established 0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552785"></a>
+          set retries 10</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552786"></a>
+          while {($bgp_sessions_established &lt; $num_of_bgp_neighbors) &amp;&amp; ($retries &gt;= 0)} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552787"></a>
+              # For IxTclNetwork, this command returns per port stats, </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552788"></a>
+              # evenif a neighbor handle is specified</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552789"></a>
+              set bgp_aggregate_status [ixia::emulation_bgp_info \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552790"></a>
+                      -handle [lindex $pe_bgp_neighbor_handle_list 0] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552791"></a>
+                      -mode stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552792"></a>
+                      ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552793"></a>
+              if {[keylget bgp_aggregate_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552794"></a>
+                  puts "FAIL - $test_name - [keylget bgp_aggregate_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552795"></a>
+                  return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552796"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552797"></a>
+              puts "Retrieving aggregate BGP stats, number of retries left: $retries ..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552798"></a>
+              update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552799"></a>
+              if {![catch {keylget bgp_aggregate_status sessions_established}]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552800"></a>
+                  set bgp_sessions_established \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552801"></a>
+                          [keylget bgp_aggregate_status sessions_established]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552802"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552803"></a>
+              incr retries -1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552804"></a>
+              if {$bgp_sessions_established &lt; $num_of_bgp_neighbors} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552805"></a>
+                  after 1000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552806"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552807"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552808"></a>
+          if {$bgp_sessions_established &lt; $num_of_bgp_neighbors} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552809"></a>
+              puts "FAIL - $test_name - Not all BGP sessions have been established."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552810"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552811"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552812"></a>
+          puts "There are $bgp_sessions_established BGP sessions established on $port_1 ..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552813"></a>
+          update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552814"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552815"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552816"></a>
+          # Use ixnetwork traffic generator to configure traffic from bgp routes on </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552817"></a>
+          # the first port to the bgp routes on the second port. </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552818"></a>
+          # The traffic flow is tracked by source/destination endpoint pair.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552819"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552820"></a>
+          set traffic_status [::ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552821"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552822"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552823"></a>
+                  -transmit_mode continuous \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552824"></a>
+                  -name "IPv4_TRAFFIC" \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552825"></a>
+                  -src_dest_mesh one_to_one \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552826"></a>
+                  -route_mesh one_to_one \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552827"></a>
+                  -circuit_type none \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552828"></a>
+                  -circuit_endpoint_type ipv4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552829"></a>
+                  -emulation_src_handle $ce_bgp_neighbor_handle_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552830"></a>
+                  -emulation_dst_handle $pe_bgp_neighbor_handle_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552831"></a>
+                  -track_by endpoint_pair \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552832"></a>
+                  -stream_packing one_stream_per_endpoint_pair \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552833"></a>
+                  -rate_percent 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552834"></a>
+                  -tx_delay 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552835"></a>
+                  -length_mode fixed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552836"></a>
+                  -frame_size 512 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552837"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552838"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552839"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552840"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552841"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552842"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552843"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552844"></a>
+          # Start the traffic </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552845"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552846"></a>
+          set traffic_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552847"></a>
+                  -action run \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552848"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552849"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552850"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552851"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552852"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552853"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552854"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552855"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552856"></a>
+          # Wait for 10 seconds for the traffic to flow!</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552857"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552858"></a>
+          after 10000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552859"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552860"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552861"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552862"></a>
+          # Stop the traffic </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552863"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552864"></a>
+          set traffic_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552865"></a>
+                  -action stop \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552866"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552867"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552868"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552869"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552870"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552871"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552872"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552873"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552874"></a>
+          # Wait for the traffic to stop - necessary for next step (stats retrieval)</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552875"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552876"></a>
+          after 15000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552877"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552878"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552879"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552880"></a>
+          # Gather and display aggregate statistics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552881"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552882"></a>
+          set aggregated_traffic_status [::ixia::traffic_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552883"></a>
+                  -mode aggregate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552884"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552885"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552886"></a>
+          if {[keylget aggregated_traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552887"></a>
+              puts "FAIL - $test_name - [keylget aggregated_traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552888"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552889"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552890"></a>
+          set aggregated_traffic_results [list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552891"></a>
+                  "Scheduled Frames Tx." aggregate.tx.scheduled_pkt_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552892"></a>
+                  "Scheduled Frames Tx. Rate" aggregate.tx.scheduled_pkt_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552893"></a>
+                  "Line Speed" aggregate.tx.line_speed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552894"></a>
+                  "Frames Tx." aggregate.tx.pkt_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552895"></a>
+                  "Total Frames Tx." aggregate.tx.total_pkts \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552896"></a>
+                  "Frames Tx. Rate" aggregate.tx.pkt_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552897"></a>
+                  "Frames Tx. Rate" aggregate.tx.total_pkt_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552898"></a>
+                  "Bytes Tx." aggregate.tx.pkt_byte_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552899"></a>
+                  "Bytes Tx. Rate" aggregate.tx.pkt_byte_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552900"></a>
+                  "Tx. Rate (bps)" aggregate.tx.pkt_bit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552901"></a>
+                  "Tx. Rate (Kbps)" aggregate.tx.pkt_kbit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552902"></a>
+                  "Tx. Rate (Mbps)" aggregate.tx.pkt_mbit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552903"></a>
+                  "Bytes Rx." aggregate.rx.pkt_byte_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552904"></a>
+                  "Bytes Rx. Rate" aggregate.rx.pkt_byte_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552905"></a>
+                  "Rx. Rate (bps)" aggregate.rx.pkt_bit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552906"></a>
+                  "Rx. Rate (Kbps)" aggregate.rx.pkt_kbit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552907"></a>
+                  "Rx. Rate (Mbps)" aggregate.rx.pkt_mbit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552908"></a>
+                  "Data Integrity Frames Rx." aggregate.rx.data_int_frames_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552909"></a>
+                  "Data Integrity Errors" aggregate.rx.data_int_errors_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552910"></a>
+                  "Valid Frames Rx." aggregate.rx.pkt_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552911"></a>
+                  "Valid Frames Rx. Rate" aggregate.rx.pkt_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552912"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552913"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552914"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552915"></a>
+          for {set i 0} {$i &lt; 2} {incr i} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552916"></a>
+              puts "Port [subst $[subst port_$i]]:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552917"></a>
+              puts "\tAggregated statistics:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552918"></a>
+              foreach {name key} $aggregated_traffic_results {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552919"></a>
+                  puts "\t\t[format %30s $name]: [keylget aggregated_traffic_status\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552920"></a>
+                      [subst $[subst port_$i]].$key]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552921"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552922"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552923"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552924"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552925"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552926"></a>
+          # Gather and display per flow statistics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552927"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552928"></a>
+          set flow_traffic_status [::ixia::traffic_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552929"></a>
+                  -mode flow \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552930"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552931"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552932"></a>
+          if {[keylget flow_traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552933"></a>
+              puts "FAIL - $test_name - [keylget flow_traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552934"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552935"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552936"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552937"></a>
+          set flow_tx_results [list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552938"></a>
+                  "Tx Port" port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552939"></a>
+                  "Tx Frames" total_pkts \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552940"></a>
+                  "Tx Frame Rate" total_pkt_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552941"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552942"></a>
+          set flow_rx_results [list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552943"></a>
+                  "Rx Port" port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552944"></a>
+                  "Rx Frames" total_pkts \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552945"></a>
+                  "Rx Loss Packets" loss_pkts \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552946"></a>
+                  "Rx Loss Percent" loss_percent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552947"></a>
+                  "Rx Frame Rate" total_pkt_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552948"></a>
+                  "Rx Bytes" total_pkts_bytes \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552949"></a>
+                  "Rx Rate (Bps)" total_pkt_byte_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552950"></a>
+                  "Rx Rate (bps)" total_pkt_bit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552951"></a>
+                  "Rx Rate (Kbps)" total_pkt_kbit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552952"></a>
+                  "Rx Rate (Mbps)" total_pkt_mbit_rate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552953"></a>
+                  "Avg Latency (ns)" avg_delay \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552954"></a>
+                  "Min Latency (ns)" min_delay \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552955"></a>
+                  "Max Latency (ns)" max_delay \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552956"></a>
+                  "First Timestamp" first_tstamp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552957"></a>
+                  "Last Timestamp" last_tstamp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552958"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552959"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552960"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552961"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552962"></a>
+          for {set i 1} {$i &lt;= $num_of_bgp_neighbors} {incr i} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552963"></a>
+              set flow_i [keylget flow_traffic_status flow.$i]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552964"></a>
+              puts "flow: $i PGID: [keylget flow_i pgid_value] Name: [keylget flow_i flow_name]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552965"></a>
+              foreach dir "tx rx" {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552966"></a>
+                  puts "\t $dir:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552967"></a>
+                  foreach {name key} [subst $[subst flow_${dir}_results]] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552968"></a>
+                      puts "\t\t$name: [keylget flow_traffic_status flow.$i.$dir.$key]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552969"></a>
+                  }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552970"></a>
+              }    </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552971"></a>
+              puts ""</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552972"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552973"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552974"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552975"></a>
+          # Clean up the session:</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552976"></a>
+          # Disconnects from IxNetwork Tcl server, Tcl server, and Chassis. </p>
+        <p class="CodeBlock"><a name="0_pgfId-3552977"></a>
+          # Clears the ownership from a list of ports.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552978"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552979"></a>
+          set cleanup_status [::ixia::cleanup_session -port_handle $port_handle_list -reset ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552980"></a>
+          if {[keylget cleanup_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552981"></a>
+              puts "FAIL - $test_name - [keylget cleanup_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552982"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3552983"></a>
+          }</p>
+    </body>
+</html>

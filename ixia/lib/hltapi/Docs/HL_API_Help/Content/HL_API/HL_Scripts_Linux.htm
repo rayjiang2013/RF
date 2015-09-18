@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="High Level API Basics" data-mc-ignored-words="Chapter2;APIs">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Running HL Scripts on Linux</title>
+        <link href="../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../HL_API_Help.htm#HL_API/HL_Scripts_Linux.htm">Open topic with navigation</a>
+        </p>
+        <h2 class="Preface-Heading1">Running HL&#160;Scripts on Linux</h2>
+        <p>This section describes how to run high-level scripts on Linux platforms.</p>
+        <p>The diagram presented below shows how a high-level script is run on a Linux machine.</p>
+        <p>
+            <img src="../HLTAPI/Images/HL_scripts_linux.png" />
+        </p>
+        <p>If the argument <span style="font-family: 'Courier New';">tcl_server</span> is missing, the following logic is implemented on a Linux machine, in order to connect to an IXIA TCL server.</p>
+        <p>
+            <img src="../HLTAPI/Images/hl_tcl_server_connect.png" />
+        </p>
+        <h2>Notes on Connect parameters that High-Level Scripts Use</h2>
+        <p>
+            <ul>
+                <li value="1"><b>ixnetwork_tcl_server</b> - This refers to the IxNetwork application started in Tcl Server mode. Example: <b>app_server_name:8009</b>. <b>8009</b> is the Tcl port that IxNetwork uses. If the port used is <b>8009</b>, it can be omitted as this is the default port.</li>
+            </ul>
+            <p>
+                <img src="../HLTAPI/Images/ixnetwork_tcl_server.PNG" />
+            </p>
+        </p>
+        <p>
+            <ul>
+                <li value="1"><b>device</b> - This refers to the IxOS chassis being used by the IxNetwork configuration and can be omitted when using offline ports or when doing a session resume, in which case the current chassis from IxNetwork will not be changed.</li>
+            </ul>
+            <p>
+                <img src="../HLTAPI/Images/Device.PNG" />
+            </p>
+            <p>
+                <ul>
+                    <li value="1"><b>tcl_server</b> - This refers to the IP of the IxOS Tcl Server application.</li>
+                </ul>
+                <p>
+                    <img src="../HLTAPI/Images/tcl_server.PNG" />
+                </p>
+            </p>
+        </p>
+    </body>
+</html>

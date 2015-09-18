@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|PYTHON_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>PTP ptp over mac config master slave (PTP_ptp_over_mac_config_master_slave.py)</title>
+        <link href="../../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/PTP_ptp_over_mac_config_master_slave.htm">Open topic with navigation</a>
+        </p>
+        <h3>PTP ptp Over MAC Config Master Slave (PTP_ptp_over_mac_config_master_slave.py)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">#                                                                              #</p>
+        <p class="CodeBlock"># Description:                                                                 #</p>
+        <p class="CodeBlock"># This script configures a scenario with 2 topologies:		                   #</p>
+        <p class="CodeBlock">#        - Topology 1 with PTP over MAC - Master							   #</p>
+        <p class="CodeBlock">#        - Topology 2 with PTP over MAC - Slave 							   #</p>
+        <p class="CodeBlock"># The script does:										                       #</p>
+        <p class="CodeBlock">#    	 - start/stop protocol												   #</p>
+        <p class="CodeBlock">#		 - collect and display PTP aggregate statistics						   #</p>
+        <p class="CodeBlock">#																			   #</p>
+        <p class="CodeBlock"># Module:                                                                      #</p>
+        <p class="CodeBlock">#    The sample was tested on a 10GE LSM XM3 module.                           #</p>
+        <p class="CodeBlock">#                                                                              #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">import sys, os</p>
+        <p class="CodeBlock">import time, re</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># Append paths to python APIs</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/hltapi/library/common/ixiangpf/python')</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/ixnetwork/api/python')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">from ixiatcl import IxiaTcl</p>
+        <p class="CodeBlock">from ixiahlt import IxiaHlt</p>
+        <p class="CodeBlock">from ixiangpf import IxiaNgpf</p>
+        <p class="CodeBlock">from ixiaerror import IxiaError</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ixiatcl = IxiaTcl()</p>
+        <p class="CodeBlock">ixiahlt = IxiaHlt(ixiatcl)</p>
+        <p class="CodeBlock">ixiangpf = IxiaNgpf(ixiahlt)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">try:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('', {})</p>
+        <p class="CodeBlock">except (NameError,):</p>
+        <p class="CodeBlock" style="margin-left: 25px;">def ixnHLT_errorHandler(cmd, retval):</p>
+        <p class="CodeBlock" style="margin-left: 50px;">global ixiatcl</p>
+        <p class="CodeBlock" style="margin-left: 50px;">err = ixiatcl.tcl_error_info()</p>
+        <p class="CodeBlock" style="margin-left: 50px;">log = retval['log']</p>
+        <p class="CodeBlock" style="margin-left: 50px;">additional_info = '&gt; command: %s\n&gt; tcl errorInfo: %s\n&gt; log: %s' % (cmd, err, log)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">raise IxiaError(IxiaError.COMMAND_FAIL, additional_info)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">def printDict(obj, nested_level=0, output=sys.stdout):</p>
+        <p class="CodeBlock" style="margin-left: 25px;">spacing = '   '</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if type(obj) == dict:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s' % ((nested_level) * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">for k, v in obj.items():</p>
+        <p class="CodeBlock" style="margin-left: 75px;">if hasattr(v, '__iter__'):</p>
+        <p class="CodeBlock" style="margin-left: 100px;">print &gt;&gt; output, '%s%s:' % ((nested_level + 1) * spacing, k)</p>
+        <p class="CodeBlock" style="margin-left: 100px;">printDict(v, nested_level + 1, output)</p>
+        <p class="CodeBlock" style="margin-left: 75px;">else:</p>
+        <p class="CodeBlock" style="margin-left: 100px;">print &gt;&gt; output, '%s%s: %s' % ((nested_level + 1) * spacing, k, v)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s' % (nested_level * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 25px;">elif type(obj) == list:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s[' % ((nested_level) * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">for v in obj:</p>
+        <p class="CodeBlock" style="margin-left: 75px;">if hasattr(v, '__iter__'):</p>
+        <p class="CodeBlock" style="margin-left: 100px;">printDict(v, nested_level + 1, output)</p>
+        <p class="CodeBlock" style="margin-left: 75px;">else:</p>
+        <p class="CodeBlock" style="margin-left: 100px;">print &gt;&gt; output, '%s%s' % ((nested_level + 1) * spacing, v)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s]' % ((nested_level) * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 25px;">else:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s%s' % (nested_level * spacing, obj)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">chassis_ip              = '10.205.15.184'</p>
+        <p class="CodeBlock">ixnetwork_tcl_server    = 'localhost'</p>
+        <p class="CodeBlock">port_list               = '9/1 9/9'</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								CONNECT AND PORT HANDLES</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nConnect to IxNetwork Tcl Server and get port handles...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">connect_status = ixiangpf.connect(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">reset                  = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device                 = chassis_ip,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_list              = port_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnetwork_tcl_server   = ixnetwork_tcl_server,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">tcl_server             = chassis_ip,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if connect_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('connect', connect_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">port_handle = connect_status['vport_list']</p>
+        <p class="CodeBlock">port_0 = port_handle.split(' ')[0]</p>
+        <p class="CodeBlock">port_1 = port_handle.split(' ')[1]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								PTP MASTER CONFIG</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE TOPOLOGY 1</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nConfigure PTP Master ...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_1_status =ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_name = 'PTP Master Topology',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle = port_0,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if topology_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', topology_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_1_handle = topology_1_status['topology_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE DEVICE GROUP 1</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_group_1_status = ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_handle          =    topology_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_name        =   'PTP MAster 1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_multiplier  =    '3',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_enabled     =    '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if device_group_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', device_group_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_1_handle	= device_group_1_status['device_group_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE ETHERNET STACK FOR PTP 1</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_1_status = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern              =  'counter',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start        =  '00.11.01.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step         =  '00.00.00.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction    =  'increment',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step            =  '00.00.01.00.00.00',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner           =  topology_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled         =  '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if multivalue_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', multivalue_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_1_handle = multivalue_1_status['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_1_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_name           =     'Ethernet 1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_handle         =     device_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mtu                     =     '1500',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">src_mac_addr            =     multivalue_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan                    =     '1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id                 =     '101',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_step            =     '1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_count           =     '1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_tpid               =     '0x8100',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority      =     '0',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority_step =     '0',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">use_vpn_parameters      =     '0',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">site_id                 =     '0',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ethernet_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('interface_config', ethernet_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_1_handle = ethernet_1_status['ethernet_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE PTP STACK</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ptp_over_mac_status = ixiangpf.ptp_over_mac_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">parent_handle						=		ethernet_1_handle ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">profile								= 		"ieee1588" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">role								= 		"master" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode                                =      "create" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">name                                =      "PTP Master" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_number                         =     	"6323" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">communication_mode                  = 		"multicast" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">domain                              = 		"123" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">priority1                           = 		"10" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">priority2                           = 		"100" ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ptp_over_mac_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_config', ptp_over_mac_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ptp_master = ptp_over_mac_status['ptp_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								PTP SLAVE CONFIG</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE TOPOLOGY 2</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nConfigure PTP Slave ...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_2_status = ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_name      = 'PTP Slave Topology',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle        = port_1</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if topology_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', topology_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_2_handle = topology_2_status['topology_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE DEVICE GROUP 2</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_group_2_status = ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_handle          =    topology_2_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_name        =    'PTP Slave 1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_multiplier  =    '3',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_enabled     =    '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if device_group_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', device_group_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_2_handle	= device_group_2_status ['device_group_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE ETHERNET STACK FOR VXLAN 2</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_2_status = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern              =  'counter',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start        =  '00.24.01.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step         =  '00.00.00.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction    =  'increment',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step            =  '00.00.01.00.00.00',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner           =  topology_2_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled         =  '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if multivalue_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', multivalue_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_2_handle = multivalue_2_status ['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_2_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_name           =     'Ethernet 2'               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_handle         =     device_2_handle           ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mtu                     =     '1500'                       ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">src_mac_addr            =     multivalue_2_handle       ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan                    =     '1'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id                 =     '101'                        ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_step            =     '1'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_count           =     '1'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_tpid               =     '0x8100'                    ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority      =     '0'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority_step =     '0'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">use_vpn_parameters      =     '0'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">site_id                 =     '0'                          ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ethernet_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('interface_config', ethernet_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_2_handle = ethernet_2_status ['ethernet_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE PTP STACK</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ptp_over_mac_status = ixiangpf.ptp_over_mac_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">parent_handle						=		ethernet_2_handle ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">profile								= 		"ieee1588" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">role								= 		"slave" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode                                =      "create" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">name                                =      "PTP Slave" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_number                         =     	"6323" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">communication_mode                  = 		"multicast" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">domain                              = 		"123" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">priority1                           = 		"10" ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">priority2                           = 		"100" ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ptp_over_mac_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_config', ptp_over_mac_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ptp_slave = ptp_over_mac_status['ptp_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								START PTP</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">start_master = ixiangpf.ptp_over_mac_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action		=		'start'	,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle		=		ptp_master	,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if start_master['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_control', start_master)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(5)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">start_slave = ixiangpf.ptp_over_mac_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action		=		'connect'	,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle		=		ptp_slave	,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if start_slave['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_control', start_slave)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(20)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								PTP STATS</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ptp_aggregate_stats = ixiangpf.ptp_over_mac_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode			=		'aggregate'		,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle		=		port_0	,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ptp_aggregate_stats['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_stats', ptp_aggregate_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nPTP aggregate stats port 1:\n')</p>
+        <p class="CodeBlock">printDict(ptp_aggregate_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ptp_aggregate_stats = ixiangpf.ptp_over_mac_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode			=		'aggregate'		,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle		=		port_1	,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ptp_aggregate_stats['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_stats', ptp_aggregate_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nPTP aggregate stats port 2:\n')</p>
+        <p class="CodeBlock">printDict(ptp_aggregate_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								STOP PTP</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">stop_slave = ixiangpf.ptp_over_mac_control (</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action		=		'stop'	,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle		=		ptp_slave	,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if stop_slave['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_control', stop_slave)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(5)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">stop_master = ixiangpf.ptp_over_mac_control (</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action		=		'disconnect'	,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle		=		ptp_master	,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if stop_master['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('ptp_over_mac_control', stop_master)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(5)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								CLEANUP SESSION</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">cleanup_status = ixiangpf.cleanup_session(reset='1')</p>
+        <p class="CodeBlock">if cleanup_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('cleanup_session', cleanup_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nIxNetwork session is closed...\n\n')</p>
+        <p class="CodeBlock">print('!!! TEST is PASSED !!!')</p>
+    </body>
+</html>

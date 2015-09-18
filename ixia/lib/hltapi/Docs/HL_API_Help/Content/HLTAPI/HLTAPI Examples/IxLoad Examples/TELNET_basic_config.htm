@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxLoad Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>TELNET (TELNET_basic_config.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxLoad Examples/TELNET_basic_config.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>TELNET (TELNET_basic_config.tcl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540416"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540417"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540418"></a>
+          # This sample creates a Telnet client and server basic configuration. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540419"></a>
+          # Telnet traffic is sent from clent side to server side. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540420"></a>
+          # At the end statistics are being retrieved. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540421"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540422"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540423"></a>
+          # The sample was tested on a LM1000STXS4-256 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540424"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540425"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540426"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540427"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540428"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540429"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540430"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540431"></a>
+          set chassisIP sylvester</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540432"></a>
+          set port_list [list 4/1 4/2]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540433"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540434"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540435"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540436"></a>
+          # Connect to the chassis, reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540437"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540438"></a>
+          set connect_status [ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540439"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540440"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540441"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540442"></a>
+                  -username ixiaApiUser ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540443"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540444"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540445"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540446"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540447"></a>
+          set port_handle1 [keylget connect_status \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540448"></a>
+                  port_handle.$chassisIP.[lindex $port_list 0]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540449"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540450"></a>
+          set port_handle2 [keylget connect_status \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540451"></a>
+                  port_handle.$chassisIP.[lindex $port_list 1]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540452"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540453"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540454"></a>
+          # Client network</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540455"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540456"></a>
+          set client_network [ixia::emulation_telnet_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540457"></a>
+                  -target client	 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540458"></a>
+                  -property telnet \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540459"></a>
+                  -mode add	 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540460"></a>
+                  -port_handle $port_handle1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540461"></a>
+                  -mac_mapping_mode macip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540462"></a>
+                  -source_port_from 1024 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540463"></a>
+                  -source_port_to 65535 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540464"></a>
+                  -dns_cache_timeout 35000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540465"></a>
+                  -grat_arp_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540466"></a>
+                  -congestion_notification_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540467"></a>
+                  -time_stamp_enable 1 	 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540468"></a>
+                  -keep_alive_time 9 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540469"></a>
+                  -keep_alive_probes 75 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540470"></a>
+                  -keep_alive_interval 9600 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540471"></a>
+                  -fin_timeout 60 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540472"></a>
+                  -receive_buffer_size 4096 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540473"></a>
+                  -transmit_buffer_size 4096 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540474"></a>
+                  -syn_ack_retries 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540475"></a>
+                  -syn_retries 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540476"></a>
+                  -retransmit_retries 15 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540477"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540478"></a>
+          if {[keylget client_network status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540479"></a>
+              return "FAIL - $test_name - [keylget client_network log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540480"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540481"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540482"></a>
+          set client_network_handle [keylget client_network handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540483"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540484"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540485"></a>
+          # Client network range</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540486"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540487"></a>
+          set client_network_range [ixia::emulation_telnet_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540488"></a>
+                  -handle $client_network_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540489"></a>
+                  -property network \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540490"></a>
+                  -mode add	 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540491"></a>
+                  -ip_address_start 20.0.1.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540492"></a>
+                  -network_mask 255.255.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540493"></a>
+                  -ip_count 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540494"></a>
+                  -ip_increment_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540495"></a>
+                  -gateway 0.0.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540496"></a>
+                  -mac_address_start 00.01.01.01.01.00 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540497"></a>
+                  -mac_increment_step 00.00.00.00.00.01 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540498"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540499"></a>
+          if {[keylget client_network_range status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540500"></a>
+              return "FAIL - $test_name - [keylget client_network_range log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540501"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540502"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540503"></a>
+          set client_network_range_handle [keylget client_network_range handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540504"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540505"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540506"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540507"></a>
+          # Client DNS</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540508"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540509"></a>
+          set client_dns [::ixia::emulation_telnet_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540510"></a>
+                  -handle $client_network_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540511"></a>
+                  -property dns \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540512"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540513"></a>
+                  -dns_server 20.0.2.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540514"></a>
+                  -dns_suffix .ixiacom.com ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540515"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540516"></a>
+          if {[keylget client_dns status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540517"></a>
+              return "FAIL - $test_name - [keylget client_dns log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540518"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540519"></a>
+          set client_dns_handle1 [keylget client_dns handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540520"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540521"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540522"></a>
+          # Client DNS</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540523"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540524"></a>
+          set client_dns [::ixia::emulation_telnet_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540525"></a>
+                  -handle $client_network_handle 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540526"></a>
+                  -property dns \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540527"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540528"></a>
+                  -dns_server 20.0.2.2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540529"></a>
+                  -dns_suffix .ixiacom.com ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540530"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540531"></a>
+          if {[keylget client_dns status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540532"></a>
+              return "FAIL - $test_name - [keylget client_dns log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540533"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540534"></a>
+          set client_dns_handle2 [keylget client_dns handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540535"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540536"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540537"></a>
+          # Server network</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540538"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540539"></a>
+          set server_network [ixia::emulation_telnet_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540540"></a>
+                  -target server	 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540541"></a>
+                  -property telnet	 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540542"></a>
+                  -mode add	 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540543"></a>
+                  -port_handle $port_handle2 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540544"></a>
+                  -mac_mapping_mode macip 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540545"></a>
+                  -source_port_from 1024 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540546"></a>
+                  -source_port_to 65535 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540547"></a>
+                  -dns_cache_timeout 35000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540548"></a>
+                  -grat_arp_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540549"></a>
+                  -congestion_notification_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540550"></a>
+                  -time_stamp_enable 1 	 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540551"></a>
+                  -keep_alive_time 9 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540552"></a>
+                  -keep_alive_probes 75 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540553"></a>
+                  -keep_alive_interval 9600 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540554"></a>
+                  -fin_timeout 60 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540555"></a>
+                  -receive_buffer_size 4096 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540556"></a>
+                  -transmit_buffer_size 4096 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540557"></a>
+                  -syn_ack_retries 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540558"></a>
+                  -syn_retries 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540559"></a>
+                  -retransmit_retries 15 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540560"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540561"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540562"></a>
+          if {[keylget server_network status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540563"></a>
+              return "FAIL - $test_name - [keylget server_network log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540564"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540565"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540566"></a>
+          set server_network_handle [keylget server_network handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540567"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540568"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540569"></a>
+          # Server network range</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540570"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540571"></a>
+          set server_network_range [ixia::emulation_telnet_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540572"></a>
+                  -handle $server_network_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540573"></a>
+                  -property network \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540574"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540575"></a>
+                  -ip_address_start 20.0.3.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540576"></a>
+                  -ip_count 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540577"></a>
+                  -network_mask 255.255.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540578"></a>
+                  -gateway 0.0.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540579"></a>
+                  -ip_increment_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540580"></a>
+                  -mac_address_start 00.03.03.03.03.00 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540581"></a>
+                  -mac_increment_step 00.00.00.00.00.01 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540582"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540583"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540584"></a>
+          if {[keylget server_network_range status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540585"></a>
+              return "FAIL - $test_name - [keylget server_network_range log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540586"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540587"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540588"></a>
+          set server_network_range_handle [keylget server_network_range handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540589"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540590"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540591"></a>
+          # Server traffic</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540592"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540593"></a>
+          set server_traffic [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540594"></a>
+                  -target server \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540595"></a>
+                  -property traffic \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540596"></a>
+                  -mode add ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540597"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540598"></a>
+          if {[keylget server_traffic status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540599"></a>
+              return "FAIL - $test_name - [keylget server_traffic log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540600"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540601"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540602"></a>
+          set server_traffic_handle [keylget server_traffic handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540603"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540604"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540605"></a>
+          # Server traffic agent</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540606"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540607"></a>
+          set server_agent [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540608"></a>
+                  -handle $server_traffic_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540609"></a>
+                  -property agent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540610"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540611"></a>
+                  -server_close_command exit \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540612"></a>
+                  -server_command_prompt \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540613"></a>
+                  -echo_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540614"></a>
+                  -linemode_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540615"></a>
+                  -goahead_enable 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540616"></a>
+                  -port 23 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540617"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540618"></a>
+          if {[keylget server_agent status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540619"></a>
+              return "FAIL - $test_name - [keylget server_agent log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540620"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540621"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540622"></a>
+          set server_agent_handle [keylget server_agent handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540623"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540624"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540625"></a>
+          # Server traffic-network mapping</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540626"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540627"></a>
+          set server_map [::ixia::emulation_telnet_control_config 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540628"></a>
+                  -target server \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540629"></a>
+                  -property map \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540630"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540631"></a>
+                  -server_telnet_handle $server_network_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540632"></a>
+                  -server_traffic_handle $server_traffic_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540633"></a>
+                  -server_offline_time 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540634"></a>
+                  -match_client_totaltime 1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540635"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540636"></a>
+          if {[keylget server_map status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540637"></a>
+              return "FAIL - $test_name - [keylget server_map log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540638"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540639"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540640"></a>
+          set server_map_handle [keylget server_map handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540641"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540642"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540643"></a>
+          # Client traffic</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540644"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540645"></a>
+          set client_traffic [::ixia::emulation_telnet_traffic_config 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540646"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540647"></a>
+                  -property traffic \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540648"></a>
+                  -mode add ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540649"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540650"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540651"></a>
+          if {[keylget client_traffic status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540652"></a>
+              return "FAIL - $test_name - [keylget client_traffic log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540653"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540654"></a>
+          set client_traffic_handle [keylget client_traffic handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540655"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540656"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540657"></a>
+          # Client agent</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540658"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540659"></a>
+          set client_agent [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540660"></a>
+                  -handle $client_traffic_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540661"></a>
+                  -property agent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540662"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540663"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540664"></a>
+                  -options_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540665"></a>
+                  -default_command_prompt \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540666"></a>
+                  -expect_timeout 10 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540667"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540668"></a>
+          if {[keylget client_agent status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540669"></a>
+              return "FAIL - $test_name - [keylget client_agent log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540670"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540671"></a>
+          set client_agent_handle [keylget client_agent handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540672"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540673"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540674"></a>
+          # Client commands</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540675"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540676"></a>
+          set command_1 [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540677"></a>
+                  -handle $client_agent_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540678"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540679"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540680"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540681"></a>
+                  -command open \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540682"></a>
+                  -expect login: \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540683"></a>
+                  -server_ip 20.0.3.1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540684"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540685"></a>
+          if {[keylget command_1 status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540686"></a>
+              return "FAIL - $test_name - [keylget command_1 log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540687"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540688"></a>
+          set command_handle1 [keylget command_1 handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540689"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540690"></a>
+          set command_2 [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540691"></a>
+                  -handle $client_agent_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540692"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540693"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540694"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540695"></a>
+                  -command login \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540696"></a>
+                  -send ixia \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540697"></a>
+                  -expect password: ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540698"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540699"></a>
+          if {[keylget command_2 status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540700"></a>
+              return "FAIL - $test_name - [keylget command_2 log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540701"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540702"></a>
+          set command_handle2 [keylget command_2 handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540703"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540704"></a>
+          set command_3 [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540705"></a>
+                  -handle $client_agent_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540706"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540707"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540708"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540709"></a>
+                  -command password \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540710"></a>
+                  -send ixia \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540711"></a>
+                  -expect ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540712"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540713"></a>
+          if {[keylget command_3 status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540714"></a>
+              return "FAIL - $test_name - [keylget command_3 log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540715"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540716"></a>
+          set command_handle3 [keylget command_3 handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540717"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540718"></a>
+          set command_4 [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540719"></a>
+                  -handle $client_agent_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540720"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540721"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540722"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540723"></a>
+                  -command think \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540724"></a>
+                  -max_interval 10000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540725"></a>
+                  -min_interval 10000 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540726"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540727"></a>
+          if {[keylget command_4 status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540728"></a>
+              return "FAIL - $test_name - [keylget command_4 log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540729"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540730"></a>
+          set command_handle4 [keylget command_4 handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540731"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540732"></a>
+          set command_5 [::ixia::emulation_telnet_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540733"></a>
+                  -handle $client_agent_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540734"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540735"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540736"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540737"></a>
+                  -command exit \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540738"></a>
+                  -send exit ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540739"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540740"></a>
+          if {[keylget command_5 status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540741"></a>
+              return "FAIL - $test_name - [keylget command_5 log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540742"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540743"></a>
+          set command_handle5 [keylget command_5 handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540744"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540745"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540746"></a>
+          # Client traffic-network mapping</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540747"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540748"></a>
+          set client_map [::ixia::emulation_telnet_control_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540749"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540750"></a>
+                  -property map \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540751"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540752"></a>
+                  -client_iterations 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540753"></a>
+                  -client_telnet_handle $client_network_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540754"></a>
+                  -client_traffic_handle $client_traffic_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540755"></a>
+                  -objective_type users \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540756"></a>
+                  -objective_value 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540757"></a>
+                  -ramp_up_type users_per_second \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540758"></a>
+                  -ramp_up_value 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540759"></a>
+                  -client_sustain_time 20 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540760"></a>
+                  -port_map_policy pairs \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540761"></a>
+                  -ramp_down_time 20 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540762"></a>
+                  -client_offline_time 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540763"></a>
+                  -client_total_time 140 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540764"></a>
+                  -client_standby_time 0 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540765"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540766"></a>
+          if {[keylget client_map status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540767"></a>
+              return "FAIL - $test_name - [keylget client_map log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540768"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540769"></a>
+          set client_map_handle [keylget client_map handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540770"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540771"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540772"></a>
+          # Client and server mapping</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540773"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540774"></a>
+          set results_dir [pwd]/results/[clock seconds]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540775"></a>
+          set control_status [::ixia::emulation_telnet_control 	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540776"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540777"></a>
+                  -map_handle [list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540778"></a>
+                  $client_map_handle $server_map_handle] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540779"></a>
+                  -force_ownership_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540780"></a>
+                  -release_config_afterrun_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540781"></a>
+                  -reset_ports_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540782"></a>
+                  -stats_required 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540783"></a>
+                  -results_dir_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540784"></a>
+                  -results_dir $results_dir ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540785"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540786"></a>
+          if {[keylget control_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540787"></a>
+              return "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540788"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540789"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540790"></a>
+          set test_handle [keylget control_status handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540791"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540792"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540793"></a>
+          # Client statistics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540794"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540795"></a>
+          set client_stats_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540796"></a>
+              telnet_active_conn</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540797"></a>
+              telnet_total_conn_requested</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540798"></a>
+              telnet_total_conn_succeeded</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540799"></a>
+              telnet_total_conn_failed</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540800"></a>
+              telnet_total_bytes_sent</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540801"></a>
+              telnet_total_bytes_received</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540802"></a>
+              telnet_total_bytes_sent_and_received</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540803"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540804"></a>
+          set stats_result [::ixia::emulation_telnet_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540805"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540806"></a>
+                  -aggregation_type sum \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540807"></a>
+                  -stat_name $client_stats_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540808"></a>
+                  -stat_type client ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540809"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540810"></a>
+          if {[keylget stats_result status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540811"></a>
+              return "FAIL - $test_name - [keylget stats_result log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540812"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540813"></a>
+          set client_stat_handle [keylget stats_result handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540814"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540815"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540816"></a>
+          # Server statitics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540817"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540818"></a>
+          set server_stats_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540819"></a>
+              telnet_active_conn</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540820"></a>
+              telnet_total_accepted_conn</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540821"></a>
+              telnet_total_bytes_sent</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540822"></a>
+              telnet_total_bytes_received</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540823"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540824"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540825"></a>
+          set stats_result [::ixia::emulation_telnet_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540826"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540827"></a>
+                  -aggregation_type sum \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540828"></a>
+                  -stat_name $server_stats_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540829"></a>
+                  -stat_type server ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540830"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540831"></a>
+          if {[keylget stats_result status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540832"></a>
+              return "FAIL - $test_name - [keylget stats_result log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540833"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540834"></a>
+          set server_stat_handle [keylget stats_result handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540835"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540836"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540837"></a>
+          # Start test</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540838"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540839"></a>
+          set control_status [::ixia::emulation_telnet_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540840"></a>
+                  -handle $test_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540841"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540842"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540843"></a>
+          if {[keylget control_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540844"></a>
+              return "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540845"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540846"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540847"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540848"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540849"></a>
+          # Get statistics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540850"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540851"></a>
+          set client_stats_result [::ixia::emulation_telnet_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540852"></a>
+                  -mode get \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540853"></a>
+                  -handle $client_stat_handle ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540854"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540855"></a>
+          if {[keylget client_stats_result status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540856"></a>
+              return "FAIL - $test_name - [keylget client_stats_result log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540857"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540858"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540859"></a>
+          set server_stats_result [::ixia::emulation_telnet_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540860"></a>
+                  -mode get \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540861"></a>
+                  -handle $server_stat_handle ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540862"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540863"></a>
+          if {[keylget server_stats_result status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540864"></a>
+              return "FAIL - $test_name - [keylget server_stats_result log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540865"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540866"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540867"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540868"></a>
+          # Print client statistics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540869"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540870"></a>
+          puts "CLIENT STATISTICS:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540871"></a>
+          foreach {stat_handle} [keylkeys client_stats_result] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540872"></a>
+              if {$stat_handle != "status"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540873"></a>
+                  set stat_handle_kl [keylget client_stats_result $stat_handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540874"></a>
+                  foreach {stat_type} [keylkeys stat_handle_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540875"></a>
+                      set stat_type_kl [keylget stat_handle_kl $stat_type]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540876"></a>
+                      foreach {stat_name} [keylkeys stat_type_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540877"></a>
+                          set stat_name_kl [keylget stat_type_kl $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540878"></a>
+                          puts -nonewline [format \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540879"></a>
+                                  "%10s %10s %40s" $stat_handle $stat_type $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540880"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3540881"></a>
+                          set timestamp [lindex [lsort -dictionary \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540882"></a>
+                                  [keylkeys stat_name_kl]] end]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540883"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3540884"></a>
+                          puts [format "%15s %15s" $timestamp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540885"></a>
+                                  [keylget stat_name_kl $timestamp]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540886"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3540887"></a>
+                      }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540888"></a>
+                  }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540889"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540890"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540891"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540892"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540893"></a>
+          # Print server statistics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540894"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540895"></a>
+          puts "SERVER STATISTICS:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540896"></a>
+          foreach {stat_handle} [keylkeys server_stats_result] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540897"></a>
+              if {$stat_handle != "status"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540898"></a>
+                  set stat_handle_kl [keylget server_stats_result $stat_handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540899"></a>
+                  foreach {stat_type} [keylkeys stat_handle_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540900"></a>
+                      set stat_type_kl [keylget stat_handle_kl $stat_type]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540901"></a>
+                      foreach {stat_name} [keylkeys stat_type_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540902"></a>
+                          set stat_name_kl [keylget stat_type_kl $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540903"></a>
+                          puts -nonewline [format \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540904"></a>
+                                  "%10s %10s %40s" $stat_handle $stat_type $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540905"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3540906"></a>
+                          set timestamp [lindex [lsort -dictionary \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540907"></a>
+                                  [keylkeys stat_name_kl]] end]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540908"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3540909"></a>
+                          puts [format "%15s %15s" $timestamp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540910"></a>
+                                  [keylget stat_name_kl $timestamp]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540911"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3540912"></a>
+                      }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540913"></a>
+                  }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540914"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540915"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540916"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540917"></a>
+          set cleanup_status [::ixia::cleanup_session ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540918"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540919"></a>
+          if {[keylget cleanup_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540920"></a>
+              return "FAIL - $test_name - [keylget cleanup_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540921"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540922"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3540923"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

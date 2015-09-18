@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method name="dcbxrange_stats" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" displayPriority="0">
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkSupport" contentType="new" target="noTarget">Retrieve statistics plane on an endpoint created by a ::&lt;namespace&gt;::dcbxrange_config command</description>
+  <chapter>DCBX/LLDP APIs</chapter>
+  <arguments>
+    <argument name="port_handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The port handle for which the dcbxrange stats need to be retrieved</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue>
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>log</key>
+      <value>Error message if command returns {status 0}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sessions_initiated</key>
+      <value>Sessions Initiated</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sessions_succeeded</key>
+      <value>Sessions Succeeded</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sessions_failed</key>
+      <value>Sessions Failed</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_mismatches_detected</key>
+      <value>DCBX Mismatches Detected</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_invalid_pdu</key>
+      <value>DCBX Invalid PDU</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_tx</key>
+      <value>LLDP Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_rx</key>
+      <value>LLDP Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_age_out_count</key>
+      <value>LLDP Age Out Count</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_error_rx</key>
+      <value>LLDP Error Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_unrecognized_tlv_rx</key>
+      <value>LLDP Unrecognized TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_neighbor_count</key>
+      <value>LLDP Neighbor Count</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_tx</key>
+      <value>DCBX Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_rx</key>
+      <value>DCBX Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_control_tlv_tx</key>
+      <value>DCBX Control TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_control_tlv_rx</key>
+      <value>DCBX Control TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_priority_groups_tlv_tx</key>
+      <value>DCBX Priority Groups TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_priority_groups_tlv_rx</key>
+      <value>DCBX Priority Groups TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_pfc_tlv_tx</key>
+      <value>DCBX PFC TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_pfc_tlv_rx</key>
+      <value>DCBX PFC TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_fcoe_tlv_tx</key>
+      <value>DCBX FCoE TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_fcoe_tlv_rx</key>
+      <value>DCBX FCoE TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_fcoe_logical_link_status_tlv_tx</key>
+      <value>DCBX FCoE Logical Link Status TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_fcoe_logical_link_status_tlv_rx</key>
+      <value>DCBX FCoE Logical Link Status TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_lan_logical_link_status_tlv_tx</key>
+      <value>DCBX LAN Logical Link Status TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_lan_logical_link_status_tlv_rx</key>
+      <value>DCBX LAN Logical Link Status TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_customized_tlv_tx</key>
+      <value>DCBX Customized TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_customized_tlv_rx</key>
+      <value>DCBX Customized TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.port_name</key>
+      <value>Port Name</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_duplicate_tlvs_received</key>
+      <value>DCBX Duplicate TLVs Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_duplicate_apps_received</key>
+      <value>DCBX Duplicate Apps Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_port_description_tlv_tx</key>
+      <value>LLDP Port Description TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_port_description_tlv_rx</key>
+      <value>LLDP Port Description TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_system_name_tlv_tx</key>
+      <value>LLDP System Name TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_system_name_tlv_rx</key>
+      <value>LLDP System Name TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_system_description_tlv_tx</key>
+      <value>LLDP System Description TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_system_description_tlv_rx</key>
+      <value>LLDP System Description TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_management_address_tlv_tx</key>
+      <value>LLDP Management Address TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_management_address_tlv_rx</key>
+      <value>LLDP Management Address TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_organizationally_specific_tlv_tx</key>
+      <value>LLDP Organizationally Specific TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.lldp_organizationally_specific_tlv_rx</key>
+      <value>LLDP Organizationally Specific TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_niv_tlv_tx</key>
+      <value>DCBX NIV TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_niv_tlv_rx</key>
+      <value>DCBX NIV TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_ets_configuration_tlv_tx</key>
+      <value>DCBX 802.1Qaz ETS Configuration TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_ets_configuration_tlv_rx</key>
+      <value>DCBX 802.1Qaz ETS Configuration TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_ets_recommendation_tlv_tx</key>
+      <value>DCBX 802.1Qaz ETS Recommendation TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_ets_recommendation_tlv_rx</key>
+      <value>DCBX 802.1Qaz ETS Recommendation TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_pfc_tlv_tx</key>
+      <value>DCBX 802.1Qaz PFC TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_pfc_tlv_rx</key>
+      <value>DCBX 802.1Qaz PFC TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_application_priority_tlv_tx</key>
+      <value>DCBX 802.1Qaz Application Priority TLV Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.dcbx_802_1qaz_application_priority_tlv_rx</key>
+      <value>DCBX 802.1Qaz Application Priority TLV Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+  </returnValues>
+  <examples>
+    <example>See files in the Samples subdirectory</example>
+  </examples>
+  <sampleInput />
+  <sampleOutput />
+  <notes />
+  <seeAlso>
+    <seeAlsoElem supportType="all">This command applies only to IxNetwork</seeAlsoElem>
+    <seeAlsoElem supportType="all">External documentation on Tclx keyed lists</seeAlsoElem>
+  </seeAlso>
+</method>

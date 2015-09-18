@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method name="esmc_stats" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" displayPriority="0">
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkSupport" contentType="new" target="noTarget">Retrieve statistics plane on an endpoint created by a ::&lt;namespace&gt;::esmc_config command</description>
+  <chapter>ESMC APIs</chapter>
+  <arguments>
+    <argument name="port_handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The port handle for which the esmc stats need to be retrieved</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue>
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>log</key>
+      <value>Error message if command returns {status 0}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.*</key>
+      <value>per-port aggregate stats for endpoints created via ::&lt;namespace&gt;::esmc_create</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+  </returnValues>
+  <examples>
+    <example>See files in the Samples subdirectory</example>
+  </examples>
+  <sampleInput />
+  <sampleOutput />
+  <notes />
+  <seeAlso>
+    <seeAlsoElem supportType="all">This command applies only to IxNetwork</seeAlsoElem>
+    <seeAlsoElem supportType="all">External documentation on Tclx keyed lists</seeAlsoElem>
+  </seeAlso>
+</method>

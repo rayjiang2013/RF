@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxOS Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>EFM (efm_mixed_traffic_capture.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxOS Examples/efm_mixed_traffic_capture.htm">Open topic with navigation</a>
+        </p>
+        <h1><a name="top"></a>efm_mixed_traffic_capture</h1>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547461"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547462"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547463"></a>
+          # This sample creates a BACK-TO-BACK setup. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547464"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547465"></a>
+          # It configures two IPv4 Ethernet interfaces and configures Ethernet OAM. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547466"></a>
+          # One Information OAMPDU is on the TX port. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547467"></a>
+          # One Event Notification OAM with 4 TLV (Error Frame, Error Frame Period, #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547468"></a>
+          # Error Frame Summary and Error Symbol Period) is added on the TX port. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547469"></a>
+          # Three non-EFM traffic streams are added. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547470"></a>
+          # The OAMPDU percent rates are modified. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547471"></a>
+          # Traffic and Ethernet OAM are started and statistics are gathered. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547472"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547473"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547474"></a>
+          # The sample was tested on a TXS4 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547475"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547476"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547477"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547478"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547479"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547480"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547481"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547482"></a>
+          set chassisIP sylvester</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547483"></a>
+          set port_list [list 2/3 2/4]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547484"></a>
+          set sess_count 20</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547485"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547486"></a>
+          proc printStats {keyedList} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547487"></a>
+              set statsList {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547488"></a>
+                  statistics.mac_remote "Remote MAC Address"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547489"></a>
+                  statistics.oam_mode "OAM Mode"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547490"></a>
+                  statistics.unidir_enabled "Unidirectional Support"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547491"></a>
+                  statistics.remote_loopback_enabled "Loopback Support"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547492"></a>
+                  statistics.link_events_enabled "Link Events Support"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547493"></a>
+                  statistics.variable_retrieval_enabled "Variable Retrieval Support"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547494"></a>
+                  statistics.oampdu_size "Max OAM PDU size"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547495"></a>
+                  statistics.oampdu_count.information_tx "EOAM Information PDUs Sent"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547496"></a>
+                  statistics.oampdu_count.information_rx "EOAM Information PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547497"></a>
+                  statistics.oampdu_count.event_notification_rx "EOAM Event Notification PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547498"></a>
+                  statistics.oampdu_count.loopback_control_rx "EOAM Loopback Control PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547499"></a>
+                  statistics.oampdu_count.organization_rx "EOAM Organization PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547500"></a>
+                  statistics.oampdu_count.variable_request_rx "EOAM Variable Request PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547501"></a>
+                  statistics.oampdu_count.variable_response_rx "EOAM Variable Response PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547502"></a>
+                  statistics.oampdu_count.unsupported_rx "EOAM Unsupported PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547503"></a>
+                  statistics.oampdu_count.total_rx "EOAM Total PDUs Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547504"></a>
+                  statistics.oui_value "OUI"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547505"></a>
+                  statistics.vsi_value "Vendor Specific Information"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547506"></a>
+                  statistics.alarms.errored_symbol_period_events "Error Symbol Period TLV Count"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547507"></a>
+                  statistics.alarms.errored_frame_events "Error Frame TLV Count"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547508"></a>
+                  statistics.alarms.errored_frame_period_events "Error Frame Period TLV Count"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547509"></a>
+                  statistics.alarms.errored_frame_seconds_summary_events "Error Frame Seconds Summary TLV Count"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547510"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547511"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3547512"></a>
+              puts "Statistics for Port Handle [keylget keyedList port_handle]:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547513"></a>
+              foreach {statKey statName} $statsList {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547514"></a>
+                  puts "\t[format {%-45s%-25s} $statName [keylget keyedList $statKey]]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547515"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547516"></a>
+              puts "\n\n"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547517"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547518"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547519"></a>
+          # Connect to the chassis, reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547520"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547521"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547522"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547523"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547524"></a>
+                  -username ixiaApiUser ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547525"></a>
+          if {[keylget connect_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547526"></a>
+              puts "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547527"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547528"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547529"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547530"></a>
+          set port_handle [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547531"></a>
+          foreach port $port_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547532"></a>
+              if {![catch {keylget connect_status port_handle.$chassisIP.$port} \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547533"></a>
+                          temp_port]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547534"></a>
+                  lappend port_handle $temp_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547535"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547536"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547537"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547538"></a>
+          set port_0 [lindex $port_handle 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547539"></a>
+          set port_1 [lindex $port_handle 1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547540"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547541"></a>
+          puts "Ixia port handles are $port_handle "</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547542"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547543"></a>
+          ########</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547544"></a>
+          # IpV4 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547545"></a>
+          ########</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547546"></a>
+          set ipV4_port_list "$port_0 $port_1"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547547"></a>
+          set ipV4_ixia_list "1.1.1.2 1.1.1.1"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547548"></a>
+          set ipV4_gateway_list "1.1.1.1 1.1.1.2"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547549"></a>
+          set ipV4_netmask_list "255.255.255.0 255.255.255.0"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547550"></a>
+          set ipV4_mac_list "0000.debb.0001 0000.debb.0002"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547551"></a>
+          set ipV4_version_list "4 4"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547552"></a>
+          set ipV4_autoneg_list "1 1"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547553"></a>
+          set ipV4_duplex_list "full full"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547554"></a>
+          set ipV4_speed_list "ether100 ether100"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547555"></a>
+          set ipV4_port_rx_mode "packet_group capture" </p>
+        <p class="CodeBlock"><a name="0_pgfId-3547556"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547557"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547558"></a>
+          # Configure interface in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547559"></a>
+          # IPv4 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547560"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547561"></a>
+          set interface_status [ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547562"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547563"></a>
+                  -intf_ip_addr $ipV4_ixia_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547564"></a>
+                  -gateway $ipV4_gateway_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547565"></a>
+                  -netmask $ipV4_netmask_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547566"></a>
+                  -autonegotiation $ipV4_autoneg_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547567"></a>
+                  -duplex $ipV4_duplex_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547568"></a>
+                  -src_mac_addr $ipV4_mac_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547569"></a>
+                  -speed $ipV4_speed_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547570"></a>
+                  -port_rx_mode $ipV4_port_rx_mode ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547571"></a>
+          if {[keylget interface_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547572"></a>
+              puts "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547573"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547574"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547575"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547576"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547577"></a>
+          ##################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547578"></a>
+          # Remove all streams, including Ethernet OAMPDUs #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547579"></a>
+          ##################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547580"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547581"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547582"></a>
+                  -mode reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547583"></a>
+                  -port_handle $port_0 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547584"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547585"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547586"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547587"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547588"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547589"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547590"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547591"></a>
+                  -mode reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547592"></a>
+                  -port_handle $port_1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547593"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547594"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547595"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547596"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547597"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547598"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547599"></a>
+          ###########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547600"></a>
+          # Configure first stream on the IpV4 port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547601"></a>
+          ###########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547602"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547603"></a>
+          puts "\nConfiguring Ethernet OAM and traffic streams"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547604"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547605"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547606"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547607"></a>
+                  -l3_protocol ipv4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547608"></a>
+                  -ip_src_addr [lindex $ipV4_ixia_list 0] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547609"></a>
+                  -ip_dst_addr [lindex $ipV4_ixia_list 1] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547610"></a>
+                  -l3_length 46 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547611"></a>
+                  -rate_percent 0.5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547612"></a>
+                  -mac_dst_mode discovery \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547613"></a>
+                  -mac_src [lindex $ipV4_mac_list 0] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547614"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547615"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547616"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547617"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547618"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547619"></a>
+          ##########################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547620"></a>
+          # Configure Ethernet OAM port, Information and Event Notification OAMPDU #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547621"></a>
+          ##########################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547622"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547623"></a>
+          set efm_status [::ixia::emulation_efm_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547624"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547625"></a>
+                  -link_events \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547626"></a>
+                  -variable_retrieval \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547627"></a>
+                  -error_frame_count 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547628"></a>
+                  -error_frame_period_count 6 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547629"></a>
+                  -error_frame_period_threshold 66 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547630"></a>
+                  -error_frame_period_window 660 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547631"></a>
+                  -error_frame_threshold 55 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547632"></a>
+                  -error_frame_window 550 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547633"></a>
+                  -error_frame_summary_count 7 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547634"></a>
+                  -error_frame_summary_threshold 77 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547635"></a>
+                  -error_frame_summary_window 770 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547636"></a>
+                  -error_symbol_period_count 8 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547637"></a>
+                  -error_symbol_period_threshold 88 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547638"></a>
+                  -error_symbol_period_window 880 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547639"></a>
+                  -mac_local [lindex $ipV4_mac_list 0]\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547640"></a>
+                  -size 1518 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547641"></a>
+              ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547642"></a>
+          if {[keylget efm_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547643"></a>
+              puts "FAIL - $test_name - [keylget efm_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547644"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547645"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547646"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547647"></a>
+          set information_stream_id [keylget efm_status information_oampdu_id]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547648"></a>
+          set event_notification_stream_id [keylget efm_status event_notification_oampdu_id]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547649"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547650"></a>
+          # Configure second stream on the IpV4 port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547651"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547652"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547653"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547654"></a>
+                  -l3_protocol ipv4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547655"></a>
+                  -ip_src_addr [lindex $ipV4_ixia_list 0] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547656"></a>
+                  -ip_dst_addr [lindex $ipV4_ixia_list 1] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547657"></a>
+                  -l3_length 54 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547658"></a>
+                  -rate_percent 0.5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547659"></a>
+                  -mac_dst_mode discovery \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547660"></a>
+                  -mac_src [lindex $ipV4_mac_list 0] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547661"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547662"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547663"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547664"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547665"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547666"></a>
+          # Configure third stream on the IpV4 port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547667"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547668"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547669"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547670"></a>
+                  -l3_protocol ipv4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547671"></a>
+                  -ip_src_addr [lindex $ipV4_ixia_list 0] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547672"></a>
+                  -ip_dst_addr [lindex $ipV4_ixia_list 1] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547673"></a>
+                  -l3_length 65 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547674"></a>
+                  -rate_percent 0.5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547675"></a>
+                  -mac_dst_mode discovery \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547676"></a>
+                  -mac_src [lindex $ipV4_mac_list 0] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547677"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547678"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547679"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547680"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547681"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547682"></a>
+          # Modify traffic rate for the Information OAMPDU to 10%</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547683"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547684"></a>
+                  -mode modify \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547685"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547686"></a>
+                  -stream_id $information_stream_id \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547687"></a>
+                  -rate_percent 0.1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547688"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547689"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547690"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547691"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547692"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547693"></a>
+          # Modify traffic rate for the Information OAMPDU to 10%</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547694"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547695"></a>
+                  -mode modify \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547696"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547697"></a>
+                  -stream_id $event_notification_stream_id \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547698"></a>
+                  -rate_percent 0.1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547699"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547700"></a>
+              puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547701"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547702"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547703"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547704"></a>
+          #################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547705"></a>
+          # Reset Ethernet OAM statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547706"></a>
+          #################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547707"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547708"></a>
+          puts "\nReseting Ethernet OAM statistics"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547709"></a>
+          set stat_status [::ixia::emulation_efm_stat \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547710"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547711"></a>
+                  -action reset ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547712"></a>
+          if {[keylget stat_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547713"></a>
+              puts "FAIL - $test_name - [keylget stat_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547714"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547715"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547716"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547717"></a>
+          set stat_status [::ixia::emulation_efm_stat \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547718"></a>
+                  -port_handle $port_1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547719"></a>
+                  -action reset ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547720"></a>
+          if {[keylget stat_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547721"></a>
+              puts "FAIL - $test_name - [keylget stat_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547722"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547723"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547724"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547725"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547726"></a>
+          # Start Ethernet OAM #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547727"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547728"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547729"></a>
+          puts "\nStarting Ethernet OAM"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547730"></a>
+          set control_status [::ixia::emulation_efm_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547731"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547732"></a>
+                  -action start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547733"></a>
+          if {[keylget control_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547734"></a>
+              puts "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547735"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547736"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547737"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547738"></a>
+          ####################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547739"></a>
+          # Configure triggers and filters #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547740"></a>
+          ####################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547741"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547742"></a>
+          set config_status [::ixia::packet_config_buffers \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547743"></a>
+          	-port_handle $port_1 	 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547744"></a>
+          	-capture_mode continuous \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547745"></a>
+          	]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547746"></a>
+          if {[keylget config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547747"></a>
+              return "FAIL - $test_name - [keylget config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547748"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547749"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547750"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547751"></a>
+          # Start capture on port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547752"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547753"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547754"></a>
+          puts "Starting capture.."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547755"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547756"></a>
+          set start_status [::ixia::packet_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547757"></a>
+                 -port_handle $port_1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547758"></a>
+          	   -action start		 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547759"></a>
+          	]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547760"></a>
+          if {[keylget start_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547761"></a>
+              puts "FAIL - $test_name - [keylget start_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547762"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547763"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547764"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547765"></a>
+          puts "Capturing...."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547766"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547767"></a>
+          #################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547768"></a>
+          # Start Traffic #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547769"></a>
+          #################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547770"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547771"></a>
+          puts "\nStarting Traffic"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547772"></a>
+          set traffic_start_status [ixia::traffic_control	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547773"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547774"></a>
+                  -action run ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547775"></a>
+          if {[keylget traffic_start_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547776"></a>
+              puts "FAIL - $test_name - [keylget traffic_start_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547777"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547778"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547779"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547780"></a>
+          ################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547781"></a>
+          # Stop Traffic #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547782"></a>
+          ################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547783"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547784"></a>
+          puts "\nStopping Traffic"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547785"></a>
+          set traffic_start_status [ixia::traffic_control	\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547786"></a>
+                  -port_handle $port_0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547787"></a>
+                  -action stop ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547788"></a>
+          if {[keylget traffic_start_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547789"></a>
+              puts "FAIL - $test_name - [keylget traffic_start_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547790"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547791"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547792"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547793"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547794"></a>
+          # Stop capture on port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547795"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547796"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547797"></a>
+          puts "Stopping capture..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547798"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547799"></a>
+          set stop_status [::ixia::packet_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547800"></a>
+                 -port_handle $port_1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547801"></a>
+          	   -action stop		 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547802"></a>
+          	]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547803"></a>
+          if {[keylget stop_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547804"></a>
+              return "FAIL - $test_name - [keylget stop_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547805"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547806"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547807"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547808"></a>
+          # Get and print Ethernet OAM statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547809"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547810"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547811"></a>
+          set stat_status2 [::ixia::emulation_efm_stat \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547812"></a>
+                  -port_handle $port_1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547813"></a>
+                  -action get ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547814"></a>
+          if {[keylget stat_status2 status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547815"></a>
+              puts "FAIL - $test_name - [keylget stat_status2 log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547816"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547817"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547818"></a>
+          printStats $stat_status2</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547819"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547820"></a>
+          if {[keylget stat_status2 statistics.oam_mode] != "Passive"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547821"></a>
+              puts "FAIL - $test_name - OAM Mode error.\nExpected: Passive\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547822"></a>
+                      \nActual:[keylget stat_status2 statistics.oam_mode]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547823"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547824"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547825"></a>
+          if {[keylget stat_status2 statistics.link_events_enabled] != "Supported"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547826"></a>
+              puts "FAIL - $test_name - Link Events error.\nExpected: Supported\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547827"></a>
+                      \nActual:[keylget stat_status2 statistics.link_events_enabled]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547828"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547829"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547830"></a>
+          if {[keylget stat_status2 statistics.variable_retrieval_enabled] != "Supported"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547831"></a>
+              puts "FAIL - $test_name - Variable Retrieval error.\nExpected: Supported\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547832"></a>
+                      \nActual:[keylget stat_status2 statistics.variable_retrieval_enabled]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547833"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547834"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547835"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547836"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547837"></a>
+          # Stop Ethernet OAM #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547838"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547839"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547840"></a>
+          puts "\nStopping Ethernet OAM"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547841"></a>
+          set control_status [::ixia::emulation_efm_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547842"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547843"></a>
+                  -action stop ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547844"></a>
+          if {[keylget control_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547845"></a>
+              puts "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547846"></a>
+              return</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547847"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547848"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3547849"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+        <p class="CodeBlock">          &#160;</p>
+    </body>
+</html>

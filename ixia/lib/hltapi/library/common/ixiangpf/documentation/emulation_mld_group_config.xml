@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="emulation_mld_group_config" displayPriority="2" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="true" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="true" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="true" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+  <description supportType="ixNetworkSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="new" target="noTarget">Configures multicast groups added to an MLD session.  This procedure
+    utilizes the common emulation_multicast_group_config and
+    emulation_multicast_source_config procedures.</description>
+  <chapter>MLD APIs</chapter>
+  <arguments>
+    <argument name="mode" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text>This option defines the action to be taken.</text>
+          <choices>
+            <choice>
+              <choiceName>create</choiceName>
+              <choiceText>When this mode is used, you must provide -session_handle. The
+                parameter -group_pool_handle is also mandatory.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>delete</choiceName>
+              <choiceText>Parameter -handle must be provided. In this case, -handle can represent
+                one or multiple Group Ranges.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>modify</choiceName>
+              <choiceText>Parameter -handle must be provided. When using this mode, -handle can represent
+                one or multiple Group Ranges.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>clear_all</choiceName>
+              <choiceText>When this mode is used, you must provide -session_handle.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>enable</choiceName>
+              <choiceText>When this mode is used, you must provide -handle.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>disable</choiceName>
+              <choiceText>When this mode is used, you must provide -handle.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="create delete modify clear_all enable disable" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="return_detailed_handles" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This argument determines if individual interface, session or router handles are returned by the current command.
+        This applies only to the command on which it is specified.
+        Setting this to 0 means that only NGPF-specific protocol stack handles will be returned. This will significantly
+        decrease the size of command results and speed up script execution.
+        The default is 0, meaning only protocol stack handles will be returned.</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="0" />
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="g_enable_packing" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="g_filter_mode" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Cofigure MLDv2 Include Filter Mode. This is valid only for IxTclNetwork API.
+        If this parameter is not provided, the filter_mode that was set at host level will be used instead.</text>
+          <choices>
+            <choice>
+              <choiceName>include</choiceName>
+              <choiceText>The specified source(s) is (are) of interest</choiceText>
+            </choice>
+            <choice>
+              <choiceName>exclude</choiceName>
+              <choiceText>The specified source(s) is (are) not of interest</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="include exclude" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="g_max_groups_per_pkts" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="g_max_sources_per_group" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="group_pool_handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Groups to be linked to the session in create mode. The group pool
+        must be added beforehand through procedure
+        emulation_multicast_group_config.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Group membership handle that associates group pools with an MLD
+        session. If modify mode, membership handle must be used to identify the multicast group pools.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="no_of_grp_ranges" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="true" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="true" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="true" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Number of MLD multicast groups in group pool.</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="1" />
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="no_of_src_ranges" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="true" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="true" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="true" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Number of MLD unicast sources in source pool.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="no_write" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="reset" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>If the -mode is create and this option exists, then any existing group ranges (for the specified -session_handle mld host) will
+        be deleted before creating new ones. This option is available
+        only for IxNetwork Tcl API.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="FLAG" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="session_handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>MLD Host handle on which to configure the MLD group ranges.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="source_pool_handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Associate source pool(s) with group(s). Specify one or more source pool
+        handle(s) for (S,G) entries. None for (*,G) entries. The source pool(s)
+        must be added beforehand through procedure
+        emulation_multicast_source_config.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="filter_mode" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="true" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="true" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="true" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Configure MLDv2 Include Filter Mode.</text>
+          <choices>
+            <choice>
+              <choiceName>include</choiceName>
+              <choiceText>The specified source(s) is (are) of interest</choiceText>
+            </choice>
+            <choice>
+              <choiceName>exclude</choiceName>
+              <choiceText>The specified source(s) is (are) not of interest</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="include exclude" />
+        <restriction type="DEFAULT" valueType="ANY" value="include" />
+        <restriction type="DEPENDENCY" valueType="ANY" argumentId="mode" argumentValue="create" />
+        <restriction type="DEPENDENCY" valueType="ANY" argumentId="mode" argumentValue="modify" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>mld_source_handle</key>
+      <value>A list containing the mld source protocol stack handles that were added by the command (if any).</value>
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>log</key>
+      <value>When status is failure, contains more info</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>handle</key>
+      <value>The group member handle Please note that this key will be omitted if the current session or command were run with -return_detailed_handles 0.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>mld_group_handle</key>
+      <value>The group pool handle</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>source_handle</key>
+      <value>Source pool handles list Please note that this key will be omitted if the current session or command were run with -return_detailed_handles 0.</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <sampleInput>
+    <sampleInputElem supportType="ixNetworkCpfSupport" />
+  </sampleInput>
+  <sampleOutput>
+    <sampleOutputElem supportType="ixNetworkCpfSupport">{status $::SUCCESS} {mld_groups {routeRange1 routeRange2}}</sampleOutputElem>
+  </sampleOutput>
+  <notes>
+    <note supportType="ixNetworkCpfSupport">
+    1) Not yet coded to functional specification.
+    2) MLD implementation using IxTclNetwork is NOT SUPPORTED in HLTAPI 3.20.
+   If the current session or command was run with -return_detailed_handles 0 the following keys will be omitted from the command response:  handle, source_handle</note>
+  </notes>
+  <seeAlso>
+    <seeAlsoElem supportType="ixNetworkCpfSupport" />
+  </seeAlso>
+  <examples>
+    <example supportType="ixNetworkCpfSupport">
+    See files starting with MLD_ in the Samples subdirectory.
+    See the MLD example in Appendix A, "Example APIs," for one specific example usage.
+  </example>
+  </examples>
+</method>

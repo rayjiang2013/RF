@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html xmlns:madcap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Chapter 26: Layer 4-7 FTP APIs">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" />
+        <link href="../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css" rel="stylesheet" data-mc-stylesheet-type="table" />
+        <link href="../../Resources/Stylesheets/Table_Style_Sheet.css" rel="stylesheet" data-mc-stylesheet-type="table" />
+        <!-- (c) Ixia Technologies, Inc. 2010. All rights reserved. -->
+        <link href="../../Resources/Stylesheets/Table_Style_Sheet.css" rel="stylesheet" />
+        <link href="../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css" rel="stylesheet" />
+        <link href="../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" /><title>L47_ftp_server</title>
+        <script language="javascript" type="text/javascript" charset="ISO-8859-1" src="tabber.js">  <![CDATA[ ]]></script>
+        <script language="javascript" type="text/javascript" charset="ISO-8859-1" src="sort.js">  <![CDATA[ ]]></script>
+        <script language="javascript" type="text/javascript" src="../../../Resources/Scripts/jquery.min.js">  <![CDATA[ ]]></script>
+        <script language="javascript" type="text/javascript" src="jquery-ui.min.js">  <![CDATA[ ]]></script>
+        <script language="javascript" type="text/javascript" charset="ISO-8859-1" src="input.js">  <![CDATA[ ]]></script>
+        <style>
+					table.info {width:100%;}
+					td {width:;}
+					.tabber{display:none;}
+				    .ui-tooltip {
+						/* tooltip content */
+						max-width: 1000px !important;
+					}
+					.ui-tooltip-content {
+						/* tooltip content */
+						max-width: 1000px !important;
+					}
+
+				</style>
+        <script src="../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../HL_API_Help.htm#HLTAPI/output_flare/L47_ftp_server.html">Open topic with navigation</a>
+        </p>
+        <div class="tabber">
+            <div class="tabbertab">
+                <h2>TCL</h2>
+                <h4>
+							NAME - ::<a id="tcl-arg1" title="tooltip" href="#">&lt;namespace&gt;</a>::
+							L47_ftp_server</h4><span class="Bold"><a href="#SYNOPSIS_TCL">Synopsis</a> |
+							<a href="#ARGS_TCL">Arguments</a> |
+							<a href="#RETURN_VALUES_TCL">Return values</a> |
+							<a href="#EXAMPLES_TCL">Examples</a> |
+							<a href="#SAMPLE_INPUT_TCL">Sample input</a> |
+							<a href="#SAMPLE_OUTPUT_TCL">Sample output</a> |
+							<a href="#NOTES_TCL">Notes</a></span>
+                <hr width="100%" size="0" align="center" />
+                <p>The following table lists the platforms that support the L47_ftp_server command.</p>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th width="40%" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										Command
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxOS/IxNetwork-FT
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxNetwork
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxNetwork-NGPF
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">
+											IxLoad
+										</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="left" valign="top" class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td rowspan="2" class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p>
+												::<a id="tcl-arg2" title="tooltip" href="#">&lt;namespace&gt;</a>::
+												L47_ftp_server</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top" class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>Yes</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <p>No</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>NAME - ::<a id="tcl-arg3" title="tooltip" href="#">&lt;namespace&gt;</a>::
+							L47_ftp_server<br /><br />
+							DESCRIPTION</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 35%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 65%;" />
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p><span class="Bold">IxLoad</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <p> The FTP Server Agent defines the operation of the FTP server.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4><a id="SYNOPSIS_TCL">SYNOPSIS</a> - ::<a id="tcl-arg4" title="tooltip" href="#">&lt;namespace&gt;</a>::L47_ftp_server</h4>
+                <p><span class="Italics">List arguments in the <a href="javascript:sortList('arguments-tcl', 0, 'a', 'a');">alphabetical order</a> or in the reverse alphabetical order.
+				</span>
+                </p>
+                <table style="table-layout: fixed;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css');" class="TableStyle-Matrix_Style" cellspacing="0">
+                    <col class="Column-Column1" style="width: 23%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 1%;" />
+                    <tbody>
+                        <tr class="Body-Body1">
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">Arguments</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxOS/IxNetwork-FT</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxNetwork</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxNetwork-NGPF</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxLoad</span>
+                                </p>
+                            </td>
+                            <td class="BodyA-Column1-Body1">
+                                <p />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="arguments-tcl" style="table-layout: fixed;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css');" class="TableStyle-Matrix_Style" cellspacing="0">
+                    <col class="Column-Column1" style="width: 23%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 1%;" />
+                    <tbody>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#esm_tcl">esm</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">NUMERIC ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#esm_enable_tcl">esm_enable</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES 0 1 ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#ftp_port_tcl">ftp_port</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">RANGE 1 - 65535 (</span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#handle_tcl">handle</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">ANY  </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#mode_tcl">mode</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES add remove modify enable disable </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#property_tcl">property</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES server agent real_file </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#tos_tcl">tos</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">RANGE 0 - 255 (</span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#tos_enable_tcl">tos_enable</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES 0 1 ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Code">[-<a class="Cisco_D" href="#rf_name_tcl">rf_name</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Code">ANY</span>
+                                </p>
+                            </td>
+                            <td class="BodyA-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="ARGS_TCL" name="ARGUMENTS_TCL"><h4>ARGUMENTS</h4></a>
+                <p class="Note">[M] indicates if the argument is mandatory on the supported platform.</p><a id="esm_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-1">-esm</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-1">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If esm_enable is true, this option specifies the TCP Maximum Segment Size in the MSS (RX) field. Otherwise, the TCP Maximum Segment Size as 1,460 bytes. Dependencies: -property server | agent; mode add | modify; esm_enable 1</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>1460)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="esm_enable_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-2">-esm_enable</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-2">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If true, the use of the esm option is enabled.Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="ftp_port_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-3">-ftp_port</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-3">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>The port number to which the FTP server will respond. To specify multiple listening ports, enter the port numbers, separated by commas (,). You can specify up to 50 listening ports. (Default = 21).Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>21)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="handle_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-4">-handle</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-4">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Handle of a ftp property.server_handle - When an agent is created -property agent; -mode add. - When a server is removed -property server; -mode removeagent_handle - When an agent is modified -property agent; -mode modify. - When an agent is enabled -property agent; -mode enable. - When an agent is disabled -property agent; -mode disable. - When an agent is removed -property agent; -mode remove. - When a real_file is added -property real_file; -mode addreal_file_handle - When a real_file is modified or removed: -property real_file; -mode modify | remove</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="mode_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-5">-mode</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-5">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad<span class="Italics"> [M] </span></p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Defines types of actions to be taken on the -property object.add - can be used with -property server | agent | real_fileremove - can be used with -property server | agent | real_fileenable - can be used with -property agent disable -can be used with -property agentmodify - can be used with -property server | agent | real_file</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="property_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-6">-property</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-6">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Defines the object that will be configured.server = a server object and an agent object attached to the server object are createdagent  = an agent object is created and it is associated with the server object specified by -handle "a server object". The server object can also be one created by another protocol.</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="tos_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-7">-tos</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-7">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If tos_enable is true, this option specifies the IP Precedence / TOS (Type of Service) bit setting and Assured Forwarding classes. (Default="Best Effort 0x0"). If you want to specify the standard choices that are in the GUI, you can use a string representation. To specify any of the other 255 TOS values, specify the decimal value.Dependencies: -property server | agent; mode add | modify; tos_enable 1Best Effort (0x0) - (Default) routine priorityClass 1 (0x20) - Priority service, Assured Forwarding class 1Class 2 (0x40) - Immediate service, Assured Forwarding class 2Class 3 (0x60) - Flash, Assured Forwarding class 3Class 4 (0x80) - Flash-override, Assured Forwarding class 4Express Forwarding (0xA0) - Critical-ecpControl (0xC0) - Internet-control</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="tos_enable_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-8">-tos_enable</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-8">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Enables the setting of the TOS (Type of Service) bits in the header of the FTP packets. Use the tos option to specify the TOS bit setting.0=(default) TOS bits not enabled.1=TOS bits enabled.Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="rf_name_tcl">  <![CDATA[ ]]></a>
+                <h4 id="tclargh-9">-rf_name</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="tclargt-9">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Any linux file name (e.g. /client_file1 or /dnd_files/new_file)Dependency: -property real_file</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><a id="RETURN_VALUES_TCL"><h4>RETURN VALUES</h4></a>
+                </p>
+                <table name="return_values" class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported Platform</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="table-layout: fixed;border-collapse: collapse;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 33%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 67%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>real_file_handle</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>when -property real_file; -mode add</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><a id="EXAMPLES_TCL"><h4>EXAMPLES</h4></a>
+                </p>
+                <p><a id="SAMPLE_INPUT_TCL"><h4>SAMPLE INPUT</h4></a>
+                </p>
+                <p><a id="SAMPLE_OUTPUT_TCL"><h4>SAMPLE OUTPUT</h4></a>
+                </p>
+                <p><a id="NOTES_TCL"><h4>NOTES</h4></a>
+                </p>
+            </div>
+            <div class="tabbertab">
+                <h2>PERL</h2>
+                <h4>
+							NAME - ::<a id="perl-arg1" title="tooltip" href="#">&lt;namespace&gt;</a>::
+							L47_ftp_server</h4><span class="Bold"><a href="#SYNOPSIS_PERL">Synopsis</a> |
+							<a href="#ARGS_PERL">Arguments</a> |
+							<a href="#RETURN_VALUES_PERL">Return values</a> |
+							<a href="#EXAMPLES_PERL">Examples</a> |
+							<a href="#SAMPLE_INPUT_PERL">Sample input</a> |
+							<a href="#SAMPLE_OUTPUT_PERL">Sample output</a> |
+							<a href="#NOTES_PERL">Notes</a></span>
+                <hr width="100%" size="0" align="center" />
+                <p>The following table lists the platforms that support the L47_ftp_server command.</p>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th width="40%" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										Command
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxOS/IxNetwork-FT
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxNetwork
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxNetwork-NGPF
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">
+											IxLoad
+										</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="left" valign="top" class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td rowspan="2" class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p>
+												::<a id="perl-arg2" title="tooltip" href="#">&lt;namespace&gt;</a>::
+												L47_ftp_server</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Perl API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Perl API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Perl API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Perl API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top" class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>Yes</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <p>No</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>NAME - <a id="perl-arg3" title="tooltip" href="#">&lt;namespace&gt;</a>::L47_ftp_server<br /><br />DESCRIPTION</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 35%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 65%;" />
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p><span class="Bold">IxLoad</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <p> The FTP Server Agent defines the operation of the FTP server.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4><a id="SYNOPSIS_PERL">SYNOPSIS</a> - ::<a id="perl-arg4" title="tooltip" href="#">&lt;namespace&gt;</a>::L47_ftp_server</h4>
+                <p><span class="Italics">List arguments in the <a href="javascript:sortList('arguments-perl', 0, 'a', 'a');">alphabetical order</a> or in the reverse alphabetical order.
+				</span>
+                </p>
+                <table style="table-layout: fixed;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css');" class="TableStyle-Matrix_Style" cellspacing="0">
+                    <col class="Column-Column1" style="width: 23%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 1%;" />
+                    <tbody>
+                        <tr class="Body-Body1">
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">Arguments</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxOS/IxNetwork-FT</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxNetwork</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxNetwork-NGPF</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxLoad</span>
+                                </p>
+                            </td>
+                            <td class="BodyA-Column1-Body1">
+                                <p />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="arguments-perl" style="table-layout: fixed;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css');" class="TableStyle-Matrix_Style" cellspacing="0">
+                    <col class="Column-Column1" style="width: 23%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 1%;" />
+                    <tbody>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#esm_perl">esm</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">NUMERIC ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#esm_enable_perl">esm_enable</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES 0 1 ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#ftp_port_perl">ftp_port</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">RANGE 1 - 65535 (</span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#handle_perl">handle</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">ANY  </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#mode_perl">mode</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES add remove modify enable disable </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#property_perl">property</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES server agent real_file </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#tos_perl">tos</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">RANGE 0 - 255 (</span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#tos_enable_perl">tos_enable</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES 0 1 ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#rf_name_perl">rf_name</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Code">ANY</span>
+                                </p>
+                            </td>
+                            <td class="BodyA-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="ARGS_PERL" name="ARGUMENTS_PERL"><h4>ARGUMENTS</h4></a>
+                <p class="Note">[M] indicates if the argument is mandatory on the supported platform.</p><a id="esm_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-1">esm</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-1">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If esm_enable is true, this option specifies the TCP Maximum Segment Size in the MSS (RX) field. Otherwise, the TCP Maximum Segment Size as 1,460 bytes. Dependencies: -property server | agent; mode add | modify; esm_enable 1</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>1460)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="esm_enable_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-2">esm_enable</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-2">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If true, the use of the esm option is enabled.Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="ftp_port_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-3">ftp_port</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-3">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>The port number to which the FTP server will respond. To specify multiple listening ports, enter the port numbers, separated by commas (,). You can specify up to 50 listening ports. (Default = 21).Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>21)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="handle_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-4">handle</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-4">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Handle of a ftp property.server_handle - When an agent is created -property agent; -mode add. - When a server is removed -property server; -mode removeagent_handle - When an agent is modified -property agent; -mode modify. - When an agent is enabled -property agent; -mode enable. - When an agent is disabled -property agent; -mode disable. - When an agent is removed -property agent; -mode remove. - When a real_file is added -property real_file; -mode addreal_file_handle - When a real_file is modified or removed: -property real_file; -mode modify | remove</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="mode_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-5">mode</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-5">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad<span class="Italics"> [M] </span></p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Defines types of actions to be taken on the -property object.add - can be used with -property server | agent | real_fileremove - can be used with -property server | agent | real_fileenable - can be used with -property agent disable -can be used with -property agentmodify - can be used with -property server | agent | real_file</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="property_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-6">property</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-6">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Defines the object that will be configured.server = a server object and an agent object attached to the server object are createdagent  = an agent object is created and it is associated with the server object specified by -handle "a server object". The server object can also be one created by another protocol.</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="tos_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-7">tos</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-7">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If tos_enable is true, this option specifies the IP Precedence / TOS (Type of Service) bit setting and Assured Forwarding classes. (Default="Best Effort 0x0"). If you want to specify the standard choices that are in the GUI, you can use a string representation. To specify any of the other 255 TOS values, specify the decimal value.Dependencies: -property server | agent; mode add | modify; tos_enable 1Best Effort (0x0) - (Default) routine priorityClass 1 (0x20) - Priority service, Assured Forwarding class 1Class 2 (0x40) - Immediate service, Assured Forwarding class 2Class 3 (0x60) - Flash, Assured Forwarding class 3Class 4 (0x80) - Flash-override, Assured Forwarding class 4Express Forwarding (0xA0) - Critical-ecpControl (0xC0) - Internet-control</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="tos_enable_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-8">tos_enable</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-8">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Enables the setting of the TOS (Type of Service) bits in the header of the FTP packets. Use the tos option to specify the TOS bit setting.0=(default) TOS bits not enabled.1=TOS bits enabled.Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="rf_name_perl">  <![CDATA[ ]]></a>
+                <h4 id="perlargh-9">rf_name</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="perlargt-9">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Any linux file name (e.g. /client_file1 or /dnd_files/new_file)Dependency: -property real_file</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><a id="RETURN_VALUES_PERL"><h4>RETURN VALUES</h4></a>
+                </p>
+                <table name="return_values" class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported Platform</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="table-layout: fixed;border-collapse: collapse;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 33%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 67%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>real_file_handle</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>when -property real_file; -mode add</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><a id="EXAMPLES_PERL"><h4>EXAMPLES</h4></a>
+                </p>
+                <p><a id="SAMPLE_INPUT_PERL"><h4>SAMPLE INPUT</h4></a>
+                </p>
+                <p><a id="SAMPLE_OUTPUT_PERL"><h4>SAMPLE OUTPUT</h4></a>
+                </p>
+                <p><a id="NOTES_PERL"><h4>NOTES</h4></a>
+                </p>
+            </div>
+            <div class="tabbertab">
+                <h2>PYTHON</h2>
+                <h4>
+							NAME - ::<a id="python-arg1" title="tooltip" href="#">&lt;namespace&gt;</a>::
+							L47_ftp_server</h4><span class="Bold"><a href="#SYNOPSIS_PYTHON">Synopsis</a> |
+							<a href="#ARGS_PYTHON">Arguments</a> |
+							<a href="#RETURN_VALUES_PYTHON">Return values</a> |
+							<a href="#EXAMPLES_PYTHON">Examples</a> |
+							<a href="#SAMPLE_INPUT_PYTHON">Sample input</a> |
+							<a href="#SAMPLE_OUTPUT_PYTHON">Sample output</a> |
+							<a href="#NOTES_PYTHON">Notes</a></span>
+                <hr width="100%" size="0" align="center" />
+                <p>The following table lists the platforms that support the L47_ftp_server command.</p>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th width="40%" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										Command
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxOS/IxNetwork-FT
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">
+										IxNetwork
+									</th>
+                            <th colspan="2" class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">
+										IxNetwork-NGPF
+									</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="left" valign="top" class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td rowspan="2" class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p>
+												::<a id="python-arg2" title="tooltip" href="#">&lt;namespace&gt;</a>::
+												L47_ftp_server</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Python API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Python API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                <p><span class="Bold">Python API</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                <p><span class="Bold">Scriptgen</span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top" class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>No</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <p>No</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>NAME - <a id="python-arg3" title="tooltip" href="#">&lt;namespace&gt;</a>::L47_ftp_server<br /><br />DESCRIPTION</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 35%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 65%;" />
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p><span class="Bold">IxLoad</span>
+                                </p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <p> The FTP Server Agent defines the operation of the FTP server.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4><a id="SYNOPSIS_PYTHON">SYNOPSIS</a> - ::<a id="python-arg4" title="tooltip" href="#">&lt;namespace&gt;</a>::L47_ftp_server</h4>
+                <p><span class="Italics">List arguments in the <a href="javascript:sortList('arguments-python', 0, 'a', 'a');">alphabetical order</a> or in the reverse alphabetical order.
+				</span>
+                </p>
+                <table style="table-layout: fixed;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css');" class="TableStyle-Matrix_Style" cellspacing="0">
+                    <col class="Column-Column1" style="width: 23%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 1%;" />
+                    <tbody>
+                        <tr class="Body-Body1">
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">Arguments</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxOS/IxNetwork-FT</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxNetwork</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxNetwork-NGPF</span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Bold">IxLoad</span>
+                                </p>
+                            </td>
+                            <td class="BodyA-Column1-Body1">
+                                <p />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="arguments-python" style="table-layout: fixed;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/No_Border_Table_Style_Sheet.css');" class="TableStyle-Matrix_Style" cellspacing="0">
+                    <col class="Column-Column1" style="width: 23%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 19%;" />
+                    <col class="Column-Column1" style="width: 1%;" />
+                    <tbody>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#esm_python">esm</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">NUMERIC ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#esm_enable_python">esm_enable</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES 0 1 ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#ftp_port_python">ftp_port</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">RANGE 1 - 65535 (</span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#handle_python">handle</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">ANY  </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#mode_python">mode</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES add remove modify enable disable </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#property_python">property</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES server agent real_file </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#tos_python">tos</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">RANGE 0 - 255 (</span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#tos_enable_python">tos_enable</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyE-Column1-Body1">
+                                <p><span class="Code">CHOICES 0 1 ( </span>
+                                </p>
+                            </td>
+                            <td class="BodyD-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="Body-Body1">
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Code">[<a class="Cisco_D" href="#rf_name_python">rf_name</a></span>
+                                </p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p>-</p>
+                            </td>
+                            <td class="BodyB-Column1-Body1">
+                                <p><span class="Code">ANY</span>
+                                </p>
+                            </td>
+                            <td class="BodyA-Column1-Body1">
+                                <p><span class="Code">] </span>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="ARGS_PYTHON" name="ARGUMENTS_PYTHON"><h4>ARGUMENTS</h4></a>
+                <p class="Note">[M] indicates if the argument is mandatory on the supported platform.</p><a id="esm_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-1">esm</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-1">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If esm_enable is true, this option specifies the TCP Maximum Segment Size in the MSS (RX) field. Otherwise, the TCP Maximum Segment Size as 1,460 bytes. Dependencies: -property server | agent; mode add | modify; esm_enable 1</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>1460)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="esm_enable_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-2">esm_enable</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-2">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If true, the use of the esm option is enabled.Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="ftp_port_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-3">ftp_port</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-3">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>The port number to which the FTP server will respond. To specify multiple listening ports, enter the port numbers, separated by commas (,). You can specify up to 50 listening ports. (Default = 21).Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>21)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="handle_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-4">handle</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-4">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Handle of a ftp property.server_handle - When an agent is created -property agent; -mode add. - When a server is removed -property server; -mode removeagent_handle - When an agent is modified -property agent; -mode modify. - When an agent is enabled -property agent; -mode enable. - When an agent is disabled -property agent; -mode disable. - When an agent is removed -property agent; -mode remove. - When a real_file is added -property real_file; -mode addreal_file_handle - When a real_file is modified or removed: -property real_file; -mode modify | remove</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="mode_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-5">mode</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-5">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad<span class="Italics"> [M] </span></p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Defines types of actions to be taken on the -property object.add - can be used with -property server | agent | real_fileremove - can be used with -property server | agent | real_fileenable - can be used with -property agent disable -can be used with -property agentmodify - can be used with -property server | agent | real_file</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="property_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-6">property</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-6">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Defines the object that will be configured.server = a server object and an agent object attached to the server object are createdagent  = an agent object is created and it is associated with the server object specified by -handle "a server object". The server object can also be one created by another protocol.</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="tos_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-7">tos</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-7">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>If tos_enable is true, this option specifies the IP Precedence / TOS (Type of Service) bit setting and Assured Forwarding classes. (Default="Best Effort 0x0"). If you want to specify the standard choices that are in the GUI, you can use a string representation. To specify any of the other 255 TOS values, specify the decimal value.Dependencies: -property server | agent; mode add | modify; tos_enable 1Best Effort (0x0) - (Default) routine priorityClass 1 (0x20) - Priority service, Assured Forwarding class 1Class 2 (0x40) - Immediate service, Assured Forwarding class 2Class 3 (0x60) - Flash, Assured Forwarding class 3Class 4 (0x80) - Flash-override, Assured Forwarding class 4Express Forwarding (0xA0) - Critical-ecpControl (0xC0) - Internet-control</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="tos_enable_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-8">tos_enable</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-8">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Enables the setting of the TOS (Type of Service) bits in the header of the FTP packets. Use the tos option to specify the TOS bit setting.0=(default) TOS bits not enabled.1=TOS bits enabled.Dependencies: -property server | agent; mode add | modify</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>0)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><a id="rf_name_python">  <![CDATA[ ]]></a>
+                <h4 id="pythonargh-9">rf_name</h4>
+                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" id="pythonargt-9">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 25%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 75%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported platforms</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">
+                                                <p>DESCRIPTION</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">
+                                                <p>Any linux file name (e.g. /client_file1 or /dnd_files/new_file)Dependency: -property real_file</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>DEFAULT</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">None</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><a id="RETURN_VALUES_PYTHON"><h4>RETURN VALUES</h4></a>
+                </p>
+                <table name="return_values" class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="border-collapse: collapse;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 20%;" />
+                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 80%;" />
+                    <thead>
+                        <tr class="TableStyle-Table_Style_Sheet-Head-Header1">
+                            <th class="TableStyle-Table_Style_Sheet-HeadE-Column1-Header1">Supported Platform</th>
+                            <th class="TableStyle-Table_Style_Sheet-HeadD-Column1-Header1">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                <p>IxLoad</p>
+                            </td>
+                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                <table class="TableStyle-Table_Style_Sheet" cellpadding="2" cellspacing="0" border="1" style="table-layout: fixed;border-collapse: collapse;width: 100%;margin-left: auto;margin-right: auto;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');">
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 33%;" />
+                                    <col class="TableStyle-Table_Style_Sheet-Column-Column1" style="width: 67%;" />
+                                    <tbody>
+                                        <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                                            <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">
+                                                <p>real_file_handle</p>
+                                            </td>
+                                            <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">
+                                                <p>when -property real_file; -mode add</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><a id="EXAMPLES_PYTHON"><h4>EXAMPLES</h4></a>
+                </p>
+                <p><a id="SAMPLE_INPUT_PYTHON"><h4>SAMPLE INPUT</h4></a>
+                </p>
+                <p><a id="SAMPLE_OUTPUT_PYTHON"><h4>SAMPLE OUTPUT</h4></a>
+                </p>
+                <p><a id="NOTES_PYTHON"><h4>NOTES</h4></a>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

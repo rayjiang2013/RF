@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="emulation_ldp_info" displayPriority="4" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+  <description supportType="ixNetworkSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="new" target="noTarget">Retrieves information about the LDP protocol.</description>
+  <chapter>LDP APIs</chapter>
+  <arguments>
+    <argument name="mode" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text>What action will be taken.  Valid options are:
+        stats
+        clear_stats
+        settings
+        neighbors
+        lsp_labels
+        stats_per_device_group
+        session</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="stats clear_stats settings neighbors lsp_labels stats_per_device_group session" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text>The LDP session handle to act upon.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>log</key>
+      <value>If status is failure, detailed information provided.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>port_name</key>
+      <value>Ixia only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>basic_sessions</key>
+      <value>Ixia only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>targeted_sessions_running</key>
+      <value>Ixia only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>targeted_sessions_configured</key>
+      <value>Ixia only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>routing_protocol</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>ip_address</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>elapsed_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>linked_hellos_tx</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>linked_hellos_rx</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>targeted_hellos_tx</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>targeted_hellos_rx</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>total_setup_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>min_setup_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>max_setup_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>num_lsps_setup</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>req_rx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>req_tx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>map_rx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>map_tx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>release_rx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>release_tx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>withdraw_rx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>withdraw_tx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>abort_rx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>abort_tx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>notif_rx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>notif_tx</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>max_peers</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>max_lsps</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>peer_count</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>intf_ip_addr      a.b.c.d</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>transport_address a.b.c.d</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>targeted_hello</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>label_adv</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>hello_hold_time</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>hello_interval</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>keepalive_interval</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>keepalive_holdtime</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>label_space</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>vpi</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>vci</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>atm_range_min_vci</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>atm_range_max_vci</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>atm_range_min_vpi</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>atm_range_max_vpi</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>vc_direction</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>atm_merge_capability</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>fr_merge_capability</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>path_vector_limit</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>max_pdu_length</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>loop_detection</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ip_address  a.b.c.d</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>hold_time</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>keepalive</key>
+      <value>No further support planned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>label_type</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>config_seq_no</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>max_lsps</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>max_peers</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>atm_label_range</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>fr_label_range</key>
+      <value>No further support planned; Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>session_state</key>
+      <value>Cisco only; disabled|nonexist|hello_adj|init|openrec|opensent|operational</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>num_incoming_ingress_lsps</key>
+      <value>Cisco only; number of opened LSPs</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>num_incoming_egress_lsps</key>
+      <value>Cisco only; number of opened LSPs</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>lsp_pool_handle.&lt;handle&gt;.</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>type</key>
+      <value>Cisco only; {ingress|egress}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>num_opened_lsps</key>
+      <value>Cisco only; &lt;number of opened LSPs&gt;</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>neighbors</key>
+      <value>Ixia only; list of neighbors of the selected LSR</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>source</key>
+      <value>list of values like: &lt;pool_handle&gt;, incoming_egress</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>fec_type</key>
+      <value>Ixia only; list of ipv4_prefix|host_addr...</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>prefix</key>
+      <value>Ixia only; list of FEC IP prefix (only for link or targeted sessions)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>prefix_length</key>
+      <value>Ixia only; list of FEC prefix length (only for link or targeted sessions)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>label</key>
+      <value>Ixia only; list of MPLS label (for IPv4 labels)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>type</key>
+      <value>Ixia only; list of values learned | assigned</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>group_id</key>
+      <value>Ixia only; list of Group IDs (only for martini labels)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>vc_id</key>
+      <value>Ixia only; list of VC IDs (only for martini labels)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>vc_type</key>
+      <value>Ixia only; list of VC types like: frameRelay, ATMAAL5, ATMXCell, etc.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>vci</key>
+      <value>Ixia only; list of VCI (only for ATM labels)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>vpi</key>
+      <value>Ixia only; list of VPI (only for ATM labels)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ixiaDefined" supportType="ixNetworkCpfSupport">
+      <key>state</key>
+      <value>Ixia only; list of state (only for ATM assigned labels)</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <sampleInput>
+    <sampleInputElem supportType="ixNetworkCpfSupport" />
+  </sampleInput>
+  <sampleOutput>
+    <sampleOutputElem supportType="ixNetworkCpfSupport" />
+  </sampleOutput>
+  <notes>
+    <note supportType="ixNetworkCpfSupport">Coded versus functional specification. </note>
+  </notes>
+  <seeAlso>
+    <seeAlsoElem supportType="ixNetworkCpfSupport" />
+  </seeAlso>
+  <examples>
+    <example supportType="ixNetworkCpfSupport">See files starting with LDP_ in the Samples subdirectory.  Also see some of the L2VPN, L3VPN, MPLS, and MVPN sample files for further examples of the LDP usage.
+
+    See the LDP example in Appendix A, "Example APIs," for one specific example usage.</example>
+  </examples>
+</method>

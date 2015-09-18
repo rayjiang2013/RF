@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork or IxRouter Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>OSPFv3 (OSPFv3_lsa_create_router.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork or IxRouter Examples/OSPFv3_lsa_create_router.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>OSPFv3 (OSPFv3_lsa_create_router.tcl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536568"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536569"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536570"></a>
+          # This sample calls: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536571"></a>
+          # ::ixia::connect to connect to the chassis, reset to factory defaults #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536572"></a>
+                          and take ownership. Configure interface in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536573"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536574"></a>
+          # ::ixia::interface_config to configure interface in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536575"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536576"></a>
+          # ::ixia::emulation_ospf_config to configure n OSPFv3 neighbors #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536577"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536578"></a>
+          # ::ixia::emulation_ospf_lsa_config to configure a Router LSA #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536579"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536580"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536581"></a>
+          # The sample was tested on a LM100TXS8 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536582"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536583"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536584"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536585"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536586"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536587"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536588"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536589"></a>
+          set chassisIP 127.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536590"></a>
+          set port_list [list 10/1 10/2]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536591"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536592"></a>
+          # Connect to the chassis,reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536593"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536594"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536595"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536596"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536597"></a>
+                  -username ixiaApiUser]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536598"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536599"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536600"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536601"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536602"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536603"></a>
+          set port_handle [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536604"></a>
+          foreach port $port_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536605"></a>
+              if {![catch {keylget connect_status port_handle.$chassisIP.$port} \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536606"></a>
+                      temp_port]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536607"></a>
+                  lappend port_handle $temp_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536608"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536609"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536610"></a>
+          set port_tx [lindex $port_handle 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536611"></a>
+          set port_rx [lindex $port_handle 1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536612"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536613"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536614"></a>
+          # Configure interface in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536615"></a>
+                                       #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536616"></a>
+          # IPv4 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536617"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536618"></a>
+          set interface_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536619"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536620"></a>
+                  -autonegotiation 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536621"></a>
+                  -duplex full \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536622"></a>
+                  -speed ether100]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536623"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536624"></a>
+          if {[keylget interface_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536625"></a>
+              return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536626"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536627"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536628"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536629"></a>
+                                                #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536630"></a>
+          # Configure n OSPFv3 neighbors #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536631"></a>
+                                                #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536632"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536633"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536634"></a>
+          set ospf_neighbor_status [ixia::emulation_ospf_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536635"></a>
+                  -port_handle $port_tx \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536636"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536637"></a>
+                  -session_type ospfv3 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536638"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536639"></a>
+                  -count 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536640"></a>
+                  -intf_ip_addr 30::1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536641"></a>
+                  -intf_ip_addr_step 0:0:0:1::0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536642"></a>
+                  -router_id 30.1.1.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536643"></a>
+                  -router_id_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536644"></a>
+                  -instance_id 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536645"></a>
+                  -instance_id_step 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536646"></a>
+                  -vlan 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536647"></a>
+                  -vlan_id 1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536648"></a>
+                  -vlan_id_mode increment \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536649"></a>
+                  -vlan_id_step 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536650"></a>
+                  -area_id 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536651"></a>
+                  -area_id_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536652"></a>
+                  -dead_interval 60 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536653"></a>
+                  -hello_interval 20 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536654"></a>
+                  -interface_cost 55 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536655"></a>
+                  -lsa_discard_mode 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536656"></a>
+                  -mtu 1500 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536657"></a>
+                  -network_type broadcast \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536658"></a>
+                  -demand_circuit 1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536659"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536660"></a>
+          if {[keylget ospf_neighbor_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536661"></a>
+              return "FAIL - $test_name - [keylget ospf_neighbor_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536662"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536663"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536664"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536665"></a>
+                                                #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536666"></a>
+          # Create Router LSA #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536667"></a>
+                                                #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536668"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536669"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536670"></a>
+          # Extract the OSPF router handle</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536671"></a>
+          set ospf_handle_list [keylget ospf_neighbor_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536672"></a>
+          foreach ospf_handle $ospf_handle_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536673"></a>
+              set ospf_lsa_status [ixia::emulation_ospf_lsa_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536674"></a>
+                      -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536675"></a>
+                      -handle $ospf_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536676"></a>
+                      -type router \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536677"></a>
+                      -adv_router_id 101.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536678"></a>
+                      -link_state_id 202.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536679"></a>
+                      -options 255 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536680"></a>
+                      -router_abr 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536681"></a>
+                      -router_asbr 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536682"></a>
+                      -router_virtual_link_endpt 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536683"></a>
+                      -router_link_mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536684"></a>
+                      -router_link_id 0.0.0.10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536685"></a>
+                      -router_link_data 33.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536686"></a>
+                      -router_link_type ptop \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536687"></a>
+                      -router_link_metric 100 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536689"></a>
+              if {[keylget ospf_lsa_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536690"></a>
+                  return "FAIL - $test_name - [keylget ospf_lsa_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536691"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536693"></a>
+              set lsa_handle [keylget ospf_lsa_status lsa_handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536694"></a>
+              set ospf_lsa_status [ixia::emulation_ospf_lsa_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536695"></a>
+                      -mode modify \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536696"></a>
+                      -handle $ospf_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536697"></a>
+                      -lsa_handle $lsa_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536698"></a>
+                      -adv_router_id 77.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536699"></a>
+                      -link_state_id 88.0.0.1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536701"></a>
+              if {[keylget ospf_lsa_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536702"></a>
+                  return "FAIL - $test_name - [keylget ospf_lsa_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536703"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536705"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536707"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

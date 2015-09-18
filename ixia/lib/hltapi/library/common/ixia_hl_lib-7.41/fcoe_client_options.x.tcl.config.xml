@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method name="fcoe_client_options_config" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" displayPriority="0">
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkSupport" contentType="new" target="noTarget">Performs fcoe_client_options configuration</description>
+  <chapter>FCOE APIs</chapter>
+  <arguments>
+    <argument name="mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The operation this command will execute</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>create</choiceName>
+              <choiceText>creates and configures a new object</choiceText>
+            </choice>
+            <choice>
+              <choiceName>add</choiceName>
+              <choiceText>adds a child object to the one specified by the -handle param</choiceText>
+            </choice>
+            <choice>
+              <choiceName>modify</choiceName>
+              <choiceText>modified attributes on the given object by the -handle param</choiceText>
+            </choice>
+            <choice>
+              <choiceName>delete</choiceName>
+              <choiceText>deletes the object given by the -handle param</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="create add modify delete" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="parent_handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The parent handle used for creating this object. Has the form: //vport</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>A handle returned via a ::&lt;namespace&gt;::fcoe_client_options_config command. This is used for mode modify</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="style" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="associates" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The &apos;Associates&apos; property applies only to &apos;client mode&apos;
+endpoints (e.g. DHCP/L2TP/PPP). It describes a list
+of server endpoints that will:
+
++ always be started before the client endpoint is started
++ always be stopped after the client endpoint is stopped.
+
+This allows orderly, synchronized start and stop sequences
+to occur between associated client and server endpoints.
+
+This feature should be used when you have two or more IXIA
+DHCP/PPP/L2TP endpoints (client and server) in a network
+configuration. It prevents extraneous session negotiation
+timeouts that may occur due to:
+
++ a server being started after a client was started
++ a server being stopped before a client was stopped.
+Is a subelement of type: Associate</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="max_packets_per_second" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The maximum number of requests transmitted in each second, for this port group.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="500" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="override_global_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Global rate settings are automatically distributed to all port groups.
+If one port group has this field enabled, the distributed rate settings will be overridden with the following values.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="setup_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The number of interfaces scheduled to be configured in each second, for this port group.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="100" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="teardown_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The number of interfaces scheduled to be deconfigured in each second, for this port group.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="100" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue>
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>log</key>
+      <value>Error message if command returns {status 0}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>handles</key>
+      <value>The returned handle(s) of the  config command.</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <examples>
+    <example>See files in the Samples subdirectory</example>
+  </examples>
+  <sampleInput />
+  <sampleOutput />
+  <notes />
+  <seeAlso>
+    <seeAlsoElem supportType="all">This command applies only to IxNetwork</seeAlsoElem>
+    <seeAlsoElem supportType="all">External documentation on Tclx keyed lists</seeAlsoElem>
+  </seeAlso>
+</method>

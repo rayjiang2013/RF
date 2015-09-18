@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="ptp_over_ip_stats" displayPriority="0" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="true" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="true" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="true" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+  <description supportType="ixNetworkSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="new" target="noTarget">Retrieve statistics plane on an endpoint created
+    by a ::ixiangpf::ptp_over_ip_config command</description>
+  <chapter>PTP APIs</chapter>
+  <arguments>
+    <argument name="handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>The PTP handle for which the PTP statistics are to be retrieved. Valid for -mode session.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="port_handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>The port handle for which the ptp_over_ip stats need to 
+         be retrieved</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="mode" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text>Specifies statistics retrieval mode as either aggregate for all
+        configured sessions or on a per session basis.</text>
+          <choices>
+            <choice>
+              <choiceName>aggregate</choiceName>
+              <choiceText>Retrieve statistics for all the sessions.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>session</choiceName>
+              <choiceText>Retrieve statistics for each individual session.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="aggregate session" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>log</key>
+      <value>When status is failure, contains more information</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.port_name</key>
+      <value>Port Name</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sessions_up</key>
+      <value>Sessions Up</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sessions_down</key>
+      <value>Sessions Down</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sessions_not_started</key>
+      <value>Sessions Not Started</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sessions_total</key>
+      <value>Sessions Total</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sessions_active</key>
+      <value>Sessions Active</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.announce_messages_sent</key>
+      <value>Announce Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.announce_messages_received</key>
+      <value>Announce Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sync_messages_sent</key>
+      <value>Sync Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sync_messages_received</key>
+      <value>Sync Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.followup_messages_sent</key>
+      <value>FollowUp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.followup_messages_received</key>
+      <value>FollowUp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.delayreq_messages_sent</key>
+      <value>DelayReq Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.delayreq_messages_received</key>
+      <value>DelayReq Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.delayresp_messages_sent</key>
+      <value>DelayResp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.delayresp_messages_received</key>
+      <value>DelayResp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayreq_messages_sent</key>
+      <value>PdelayReq Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayreq_messages_received</key>
+      <value>PdelayReq Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayresp_messages_sent</key>
+      <value>PdelayResp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayrest_messages_received</key>
+      <value>PdelayResp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayrespfollowup_messages_sent</key>
+      <value>PdelayRespFollowUp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayrespfollowup_messages_received</key>
+      <value>PdelayRespFollowUp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.signaling_messages_sent</key>
+      <value>Signaling Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.signaling_messages_received</key>
+      <value>Signaling Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.sync_messages_received_rate</key>
+      <value>Sync Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.followup_messages_received_rate</key>
+      <value>FollowUp Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.delayreq_messages_received_rate</key>
+      <value>DelayReq Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.delayresp_messages_received_rate</key>
+      <value>DelayResp Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayreq_messages_received_rate</key>
+      <value>PdelayReq Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayresp_messages_received_rate</key>
+      <value>PdelayResp Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.pdelayrespfollowup_messages_received_rate</key>
+      <value>PdelayRespFollowUp Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.gps_unit_present</key>
+      <value>GPS Unit Present</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;port_handle.&gt;].gen.gps_synchronized</key>
+      <value>GPS Synchronized</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.sessions_up</key>
+      <value>Sessions Up</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.sessions_down</key>
+      <value>Sessions Down</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.sessions_not_started</key>
+      <value>Sessions Not Started</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.sessions_total</key>
+      <value>Sessions Total</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.sessions_active</key>
+      <value>Sessions Active</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.announce_messages_sent</key>
+      <value>Announce Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.announce_messages_received</key>
+      <value>Announce Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.sync_messages_sent</key>
+      <value>Sync Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.sync_messages_received</key>
+      <value>Sync Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.followup_messages_sent</key>
+      <value>FollowUp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.followup_messages_received</key>
+      <value>FollowUp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.delayreq_messages_sent</key>
+      <value>DelayReq Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.delayreq_messages_received</key>
+      <value>DelayReq Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.delayresp_messages_sent</key>
+      <value>DelayResp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.delayresp_messages_received</key>
+      <value>DelayResp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.pdelayreq_messages_sent</key>
+      <value>PdelayReq Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.pdelayreq_messages_received</key>
+      <value>PdelayReq Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.pdelayresp_messages_sent</key>
+      <value>PdelayResp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.pdelayrest_messages_received</key>
+      <value>PdelayResp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.pdelayrespfollowup_messages_sent</key>
+      <value>PdelayRespFollowUp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.pdelayrespfollowup_messages_received</key>
+      <value>PdelayRespFollowUp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.signaling_messages_sent</key>
+      <value>Signaling Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>[&lt;handle.&gt;].gen.signaling_messages_received</key>
+      <value>Signaling Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.status</key>
+      <value>Status</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.configured_role</key>
+      <value>Configured Role</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ptp_state</key>
+      <value>PTP State</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.offset</key>
+      <value>Offset [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.offset_max</key>
+      <value>Max Offset [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.offset_min</key>
+      <value>Min Offset [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.offset_avg</key>
+      <value>Avg Offset [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.path_delay</key>
+      <value>Path Delay [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.path_delay_max</key>
+      <value>Max Path Delay [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.path_delay_min</key>
+      <value>Min Path Delay [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.path_delay_avg</key>
+      <value>Avg Path Delay [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.time_slope</key>
+      <value>Time Slope</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.port_identity</key>
+      <value>Port Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.master_port_identity</key>
+      <value>Master Port Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.grandmaster_port_identity</key>
+      <value>Grandmaster Port Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.port_clock_class</key>
+      <value>Local Clock Class</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.master_clock_class</key>
+      <value>Master Clock Class</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.port_clock_accuracy</key>
+      <value>Local Clock Accuracy</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.master_clock_accuracy</key>
+      <value>Master Clock Accuracy</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.current_utc_offset</key>
+      <value>Current UTC Offset</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.steps_removed</key>
+      <value>Steps Removed</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.leap59</key>
+      <value>Leap59</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.leap61</key>
+      <value>Leap61</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.frequency_traceable</key>
+      <value>Frequency Traceable</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.time_traceable</key>
+      <value>Time Traceable</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_sync</key>
+      <value>CF Sync [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_sync_max</key>
+      <value>CF Sync Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_sync_min</key>
+      <value>CF Sync Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_follow_up</key>
+      <value>CF FollowUp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_follow_up_max</key>
+      <value>CF FollowUp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_follow_up_min</key>
+      <value>CF FollowUp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_delay_req</key>
+      <value>CF DelayReq [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_delay_req_max</key>
+      <value>CF DelayReq Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_delay_req_min</key>
+      <value>CF DelayReq Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_req</key>
+      <value>CF PdelayReq [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_req_max</key>
+      <value>CF PdelayReq Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_req_min</key>
+      <value>CF PdelayReq Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_delay_resp</key>
+      <value>CF DelayResp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_delay_resp_max</key>
+      <value>CF DelayResp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_delay_resp_min</key>
+      <value>CF DelayResp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_resp</key>
+      <value>CF PdelayResp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_resp_max</key>
+      <value>CF PdelayResp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_resp_min</key>
+      <value>CF PdelayResp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_resp_follow_up</key>
+      <value>CF PdelayRespFollowUp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_resp_follow_up_max</key>
+      <value>CF PdelayRespFollowUp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.cf_pdelay_resp_follow_up_min</key>
+      <value>CF PdelayRespFollowUp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_identity_0</key>
+      <value>FM 0 Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_portNum_0</key>
+      <value>FM 0 Port Number</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_identity_1</key>
+      <value>FM 1 Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_port_num_1</key>
+      <value>FM 1 Port Number</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_identity_2</key>
+      <value>FM 2 Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_port_num_2</key>
+      <value>FM 2 Port Number</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_identity_3</key>
+      <value>FM 3 Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_port_num_3</key>
+      <value>FM 3 Port Number</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_identity_4</key>
+      <value>FM 4 Identity</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.fm_port_num_4</key>
+      <value>FM 4 Port Number</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.time_t1</key>
+      <value>Time t1 [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.time_t2</key>
+      <value>Time t2 [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.time_t3</key>
+      <value>Time t3 [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.time_t4</key>
+      <value>Time t4 [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.t1_utc</key>
+      <value>Time t1 UTC</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.t2_utc</key>
+      <value>Time t2 UTC</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.t3_utc</key>
+      <value>Time t3 UTC</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.t4_utc</key>
+      <value>Time t4 UTC</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_announce</key>
+      <value>IA Announce [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_announce_max</key>
+      <value>IA Announce Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_announce_min</key>
+      <value>IA Announce Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_sync</key>
+      <value>IA Sync [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_sync_max</key>
+      <value>IA Sync Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_sync_min</key>
+      <value>IA Sync Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_follow_up</key>
+      <value>IA FollowUp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_follow_up_max</key>
+      <value>IA FollowUp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_follow_up_min</key>
+      <value>IA FollowUp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_delay_req</key>
+      <value>IA DelayReq [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_delay_req_max</key>
+      <value>IA DelayReq Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_delay_req_min</key>
+      <value>IA DelayReq Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_delay_resp</key>
+      <value>IA DelayResp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_delay_resp_max</key>
+      <value>IA DelayResp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_delay_resp_min</key>
+      <value>IA DelayResp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_req</key>
+      <value>IA PdelayReq [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_req_max</key>
+      <value>IA PdelayReq Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_req_min</key>
+      <value>IA PdelayReq Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_resp</key>
+      <value>IA PdelayResp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_resp_max</key>
+      <value>IA PdelayResp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_resp_min</key>
+      <value>IA PdelayResp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_resp_follow_up</key>
+      <value>IA PdelayRespFollowUp [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_resp_follow_up_max</key>
+      <value>IA PdelayRespFollowUp Max [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ia_pdelay_resp_follow_up_min</key>
+      <value>IA PdelayRespFollowUp Min [ns]</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.announce_messages_sent</key>
+      <value>Announce Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.announce_messages_received</key>
+      <value>Announce Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.sync_messages_sent</key>
+      <value>Sync Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.sync_messages_received</key>
+      <value>Sync Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.followup_messages_sent</key>
+      <value>FollowUp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.followup_messages_received</key>
+      <value>FollowUp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.delayreq_messages_sent</key>
+      <value>DelayReq Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.delayreq_messages_received</key>
+      <value>DelayReq Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.delayresp_messages_sent</key>
+      <value>DelayResp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.delayresp_messages_received</key>
+      <value>DelayResp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.pdelayreq_messages_sent</key>
+      <value>PdelayReq Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.pdelayreq_messages_received</key>
+      <value>PdelayReq Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.pdelayresp_messages_sent</key>
+      <value>PdelayResp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.pdelayrest_messages_received</key>
+      <value>PdelayResp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.pdelayrespfollowup_messages_sent</key>
+      <value>PdelayRespFollowUp Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.pdelayrespfollowup_messages_received</key>
+      <value>PdelayRespFollowUp Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.signaling_messages_sent</key>
+      <value>Signaling Messages Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.signaling_messages_received</key>
+      <value>Signaling Messages Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.sync_messages_received_rate</key>
+      <value>Sync Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.followup_messages_received_rate</key>
+      <value>FollowUp Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.delayreq_messages_received_rate</key>
+      <value>DelayReq Messages Received Rate</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <sampleInput>
+    <sampleInputElem supportType="ixNetworkCpfSupport" />
+  </sampleInput>
+  <sampleOutput>
+    <sampleOutputElem supportType="ixNetworkCpfSupport" />
+  </sampleOutput>
+  <notes>
+    <note supportType="ixNetworkCpfSupport"> </note>
+  </notes>
+  <seeAlso>
+    <seeAlsoElem supportType="ixNetworkCpfSupport" />
+  </seeAlso>
+  <examples>
+    <example supportType="ixNetworkCpfSupport" />
+  </examples>
+</method>

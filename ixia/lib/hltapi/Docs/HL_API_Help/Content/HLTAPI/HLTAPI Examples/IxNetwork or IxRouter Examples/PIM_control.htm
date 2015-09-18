@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork or IxRouter Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>PIM (PIM_control.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork or IxRouter Examples/PIM_control.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>PIM (PIM_control.tcl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536712"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536713"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536714"></a>
+          # This sample creates four PIM routers on two ports, starts, stops and #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536715"></a>
+          # restarts the routers. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536716"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536717"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536718"></a>
+          # The sample was tested on a LM100TXS8 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536719"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536720"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536721"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536722"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536723"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536724"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536725"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536726"></a>
+          set chassisIP sylvester </p>
+        <p class="CodeBlock"><a name="0_pgfId-3536727"></a>
+          set port_list [list 2/3 2/4]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536728"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536729"></a>
+          # Connect to the chassis,reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536730"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536731"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536732"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536733"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536734"></a>
+                  -username ixiaApiUser ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536735"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536736"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536737"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536738"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536739"></a>
+          set port_handle [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536740"></a>
+          foreach port $port_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536741"></a>
+              if {![catch {keylget connect_status port_handle.$chassisIP.$port} \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536742"></a>
+                      temp_port]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536743"></a>
+                  lappend port_handle $temp_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536744"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536745"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536746"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536747"></a>
+          ##############################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536748"></a>
+          # Configure interface in the test      </p>
+        <p class="CodeBlock"><a name="0_pgfId-3536749"></a>
+          # IPv4                                 </p>
+        <p class="CodeBlock"><a name="0_pgfId-3536750"></a>
+          ##############################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536751"></a>
+          set interface_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536752"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536753"></a>
+                  -autonegotiation 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536754"></a>
+                  -duplex full \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536755"></a>
+                  -speed ether100 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536756"></a>
+          if {[keylget interface_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536757"></a>
+              return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536758"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536759"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536760"></a>
+          set port1_handle [lindex $port_handle 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536761"></a>
+          set port2_handle [lindex $port_handle 1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536762"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536763"></a>
+          ##############################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536764"></a>
+          # Configure a PIM neighbor </p>
+        <p class="CodeBlock"><a name="0_pgfId-3536765"></a>
+          ##############################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536766"></a>
+          set pim_config_status [::ixia::emulation_pim_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536767"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536768"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536769"></a>
+                  -port_handle $port1_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536770"></a>
+                  -count 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536771"></a>
+                  -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536772"></a>
+                  -intf_ip_addr 3.3.3.100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536773"></a>
+                  -intf_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536774"></a>
+                  -intf_ip_prefix_length 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536775"></a>
+                  -router_id 11.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536776"></a>
+                  -router_id_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536777"></a>
+                  -neighbor_intf_ip_addr 22.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536778"></a>
+                  -dr_priority 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536779"></a>
+                  -bidir_capable 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536780"></a>
+                  -hello_interval 30 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536781"></a>
+                  -hello_holdtime 40 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536782"></a>
+                  -join_prune_interval 50 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536783"></a>
+                  -join_prune_holdtime 60 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536784"></a>
+                  -prune_delay_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536785"></a>
+                  -prune_delay 600 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536786"></a>
+                  -override_interval 700 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536787"></a>
+                  -vlan 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536788"></a>
+                  -vlan_id 300 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536789"></a>
+                  -vlan_id_mode increment \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536790"></a>
+                  -vlan_id_step 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536791"></a>
+                  -vlan_user_priority 7 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536792"></a>
+                  -mac_address_init 0000.0000.0001 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536793"></a>
+                  -gateway_intf_ip_addr 3.3.3.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536794"></a>
+                  -gateway_intf_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536795"></a>
+                  -prune_delay_tbit 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536796"></a>
+                  -send_generation_id 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536797"></a>
+                  -generation_id_mode random \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536798"></a>
+                  -writeFlag nowrite ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536799"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536800"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536801"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536802"></a>
+          set port1_session_handle [lindex [keylget pim_config_status handle] 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536803"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536804"></a>
+          set pim_config_status [::ixia::emulation_multicast_source_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536805"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536806"></a>
+                  -num_sources 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536807"></a>
+                  -ip_addr_start 101.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536808"></a>
+                  -ip_addr_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536809"></a>
+                  -ip_prefix_len 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536810"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536811"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536812"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536813"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536814"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536815"></a>
+          set source_pool_handle [keylget pim_config_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536816"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536817"></a>
+          set pim_config_status [::ixia::emulation_multicast_group_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536818"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536819"></a>
+                  -num_groups 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536820"></a>
+                  -ip_addr_start 225.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536821"></a>
+                  -ip_addr_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536822"></a>
+                  -ip_prefix_len 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536823"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536824"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536825"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536826"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536827"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536828"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536829"></a>
+          set group_pool_handle [keylget pim_config_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536830"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536831"></a>
+          set pim_config_status [::ixia::emulation_pim_group_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536832"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536833"></a>
+                  -session_handle $port1_session_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536834"></a>
+                  -group_pool_handle $group_pool_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536835"></a>
+                  -source_pool_handle $source_pool_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536836"></a>
+                  -rp_ip_addr 44.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536837"></a>
+                  -group_pool_mode send \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536838"></a>
+                  -join_prune_aggregation_factor 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536839"></a>
+                  -wildcard_group 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536840"></a>
+                  -s_g_rpt_group 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536841"></a>
+                  -rate_control 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536842"></a>
+                  -interval 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536843"></a>
+                  -join_prune_per_interval 99 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536844"></a>
+                  -register_per_interval 101 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536845"></a>
+                  -register_stop_per_interval 102 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536846"></a>
+                  -flap_interval 999 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536847"></a>
+                  -spt_switchover 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536848"></a>
+                  -source_group_mapping one_to_one \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536849"></a>
+                  -switch_over_interval 200 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536850"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536851"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536852"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536853"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536854"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536855"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536856"></a>
+          set port1_group_member_handle [lindex [keylget pim_config_status handle] 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536857"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536858"></a>
+          set pim_config_status [::ixia::emulation_pim_group_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536859"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536860"></a>
+                  -session_handle $port1_session_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536861"></a>
+                  -group_pool_handle $group_pool_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536862"></a>
+                  -source_pool_handle $source_pool_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536863"></a>
+                  -rp_ip_addr 33.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536864"></a>
+                  -group_pool_mode register \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536865"></a>
+                  -register_tx_iteration_gap 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536866"></a>
+                  -register_udp_destination_port 44 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536867"></a>
+                  -register_udp_source_port 55 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536868"></a>
+                  -register_triggered_sg 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536869"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536870"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536871"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536872"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536873"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536874"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536875"></a>
+          set pim_config_status [::ixia::emulation_pim_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536876"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536877"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536878"></a>
+                  -port_handle $port2_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536879"></a>
+                  -pim_mode sm \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536880"></a>
+                  -type remote_rp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536881"></a>
+                  -count 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536882"></a>
+                  -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536883"></a>
+                  -intf_ip_addr 3.3.3.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536884"></a>
+                  -intf_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536885"></a>
+                  -intf_ip_prefix_length 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536886"></a>
+                  -router_id 12.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536887"></a>
+                  -router_id_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536888"></a>
+                  -neighbor_intf_ip_addr 22.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536889"></a>
+                  -dr_priority 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536890"></a>
+                  -bidir_capable 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536891"></a>
+                  -hello_interval 30 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536892"></a>
+                  -hello_holdtime 40 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536893"></a>
+                  -join_prune_interval 50 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536894"></a>
+                  -join_prune_holdtime 60 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536895"></a>
+                  -prune_delay_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536896"></a>
+                  -prune_delay 600 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536897"></a>
+                  -override_interval 700 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536898"></a>
+                  -vlan 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536899"></a>
+                  -vlan_id 300 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536900"></a>
+                  -vlan_id_mode increment \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536901"></a>
+                  -vlan_id_step 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536902"></a>
+                  -vlan_user_priority 7 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536903"></a>
+                  -mac_address_init 0000.0000.0003 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536904"></a>
+                  -gateway_intf_ip_addr 3.3.3.100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536905"></a>
+                  -gateway_intf_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536906"></a>
+                  -prune_delay_tbit 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536907"></a>
+                  -send_generation_id 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536908"></a>
+                  -generation_id_mode random \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536909"></a>
+                  -writeFlag nowrite ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536910"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536911"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536912"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536913"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536914"></a>
+          set port2_session_handle [lindex [keylget pim_config_status handle] 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536915"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536916"></a>
+          ###############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536917"></a>
+          # Start the first PIM router per port. The second PIM router</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536918"></a>
+          # is enabled by default.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536919"></a>
+          ###############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536920"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536921"></a>
+                  -mode start \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536922"></a>
+                  -handle $port1_session_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536923"></a>
+                  -flap_interval 300 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536924"></a>
+                  -flap 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536925"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536926"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536927"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536928"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536929"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536930"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536931"></a>
+                  -mode start \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536932"></a>
+                  -handle $port2_session_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536933"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536934"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536935"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536936"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536937"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536938"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536939"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536940"></a>
+          # Stop the first PIM router per port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536941"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536942"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536943"></a>
+                  -mode stop \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536944"></a>
+                  -handle $port1_session_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536945"></a>
+                  -flap_interval 200 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536946"></a>
+                  -flap 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536947"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536948"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536949"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536950"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536951"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536952"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536953"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536954"></a>
+                  -mode stop \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536955"></a>
+                  -handle $port2_session_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536956"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536957"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536958"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536959"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536962"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536963"></a>
+          # Stop PIM protocol on port_handle</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536964"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536965"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536966"></a>
+                  -mode stop \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536967"></a>
+                  -port_handle $port1_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536968"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536969"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536970"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536971"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536972"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536973"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536974"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536975"></a>
+                  -mode stop \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536976"></a>
+                  -port_handle $port2_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536977"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536978"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536979"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536980"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536981"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536982"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536983"></a>
+          # Restart PIM protocol on port_handle</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536984"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536985"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536986"></a>
+                  -mode restart \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536987"></a>
+                  -port_handle $port1_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536988"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536990"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536991"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536992"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536994"></a>
+          set pim_config_status [::ixia::emulation_pim_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536995"></a>
+                  -mode restart \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536996"></a>
+                  -port_handle $port2_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536997"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536998"></a>
+          if {[keylget pim_config_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3536999"></a>
+              return "FAIL - $test_name - [keylget pim_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3537000"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3537001"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

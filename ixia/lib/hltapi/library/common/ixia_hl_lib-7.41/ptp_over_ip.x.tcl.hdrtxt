@@ -1,0 +1,626 @@
+##Procedure Header
+# 
+# Name:
+#     ixia::ptp_over_ip_config
+# 
+# Description:
+#     Performs ptp_over_ip configuration.
+#     Manages a range of PTP clocks.
+#     
+# 
+# Synopsis:
+#     ixia::ptp_over_ip_config
+#          -mode CHOICES create add modify delete
+#          -parent_handle ANY
+#         [-handle ANY]
+#         [-style ANY]
+#         [-announce_current_utc_offset_valid CHOICES true false  DEFAULT false]
+#         [-announce_drop_rate RANGE 0 - 100 DEFAULT 0]
+#         [-announce_frequency_traceable CHOICES true false  DEFAULT false]
+#         [-announce_leap59 CHOICES true false  DEFAULT false]
+#         [-announce_leap61 CHOICES true false  DEFAULT false]
+#         [-announce_ptp_timescale CHOICES true false  DEFAULT false]
+#         [-announce_receipt_timeout RANGE 0 - 128 DEFAULT 3]
+#         [-announce_time_traceable CHOICES true false  DEFAULT false]
+#         [-client_count RANGE 1 - 500 DEFAULT 1]
+#         [-client_ip_address ANY  DEFAULT 10.10.0.1]
+#         [-client_ip_increment_by ANY  DEFAULT 0.0.0.1]
+#         [-client_mac_address ANY  DEFAULT aa:bb:cd:00:00:00]
+#         [-client_mac_increment_by ANY  DEFAULT 00:00:00:00:00:01]
+#         [-clock_accuracy CHOICES 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 DEFAULT 47]
+#         [-clock_class RANGE 0 - 255 DEFAULT 6]
+#         [-clock_increment ANY  DEFAULT 00:00:00:00:00:00:00:01]
+#         [-communication_mode CHOICES multicast unicast mixedMode g8265 DEFAULT multicast]
+#         [-delay_mechanism CHOICES E2E P2P 1WAY DEFAULT E2E]
+#         [-delay_resp_drop_rate RANGE 0 - 100 DEFAULT 0]
+#         [-delay_resp_receipt_timeout RANGE 1 - 1000 DEFAULT 100]
+#         [-delay_response_delay RANGE 0 - 1000000000 DEFAULT 0]
+#         [-delay_response_delay_insertion_rate RANGE 0 - 100 DEFAULT 0]
+#         [-domain RANGE 0 - 255 DEFAULT 0]
+#         [-drop_signal_req_announce CHOICES true false  DEFAULT false]
+#         [-drop_signal_req_delay_resp CHOICES true false  DEFAULT false]
+#         [-drop_signal_req_sync CHOICES true false  DEFAULT false]
+#         [-enabled CHOICES true false  DEFAULT true]
+#         [-first_clock ANY  DEFAULT 00:00:00:00:00:00:11:11]
+#         [-follow_up_bad_crc_rate RANGE 0 - 100 DEFAULT 0]
+#         [-follow_up_delay RANGE 0 - 1000000000 DEFAULT 0]
+#         [-follow_up_delay_insertion_rate RANGE 0 - 100 DEFAULT 0]
+#         [-follow_up_drop_rate RANGE 0 - 100 DEFAULT 0]
+#         [-grant_delay_resp_duration_interval RANGE 5 - 1200 DEFAULT 300]
+#         [-grant_sync_duration_interval RANGE 5 - 1200 DEFAULT 300]
+#         [-grant_unicast_duration_interval RANGE 5 - 1200 DEFAULT 300]
+#         [-ip_tos RANGE 0 - 255 DEFAULT 0]
+#         [-learn_port_id CHOICES true false  DEFAULT true]
+#         [-log_announce_interval CHOICES -9 -8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9 DEFAULT 0]
+#         [-log_delay_req_interval CHOICES -9 -8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9 DEFAULT 0]
+#         [-log_sync_interval CHOICES -9 -8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9 DEFAULT 0]
+#         [-master_count RANGE 1 - 500 DEFAULT 1]
+#         [-master_ip_address ANY  DEFAULT 10.10.0.1]
+#         [-master_ip_increment_by ANY  DEFAULT 0.0.0.1]
+#         [-master_ip_increment_inter_entity ANY  DEFAULT 0.0.0.0]
+#         [-master_mac_address ANY  DEFAULT aa:bb:cd:00:00:00]
+#         [-master_mac_increment_by ANY  DEFAULT 00:00:00:00:00:01]
+#         [-master_mac_increment_inter_entity ANY  DEFAULT 00:00:00:00:00:00]
+#         [-name ANY  DEFAULT {}]
+#         [-port_number RANGE 1 - 65535 DEFAULT 1]
+#         [-port_number_increment RANGE 0 - 65535 DEFAULT 0]
+#         [-priority1 RANGE 0 - 255 DEFAULT 128]
+#         [-priority2 RANGE 0 - 255 DEFAULT 128]
+#         [-renewal_invited CHOICES true false  DEFAULT true]
+#         [-request_attempts RANGE 1 - 100 DEFAULT 3]
+#         [-request_holddown RANGE 10 - 1000 DEFAULT 60]
+#         [-request_interval RANGE 1 - 100 DEFAULT 1]
+#         [-residence_time RANGE 0 - 1000000000 DEFAULT 0]
+#         [-rx_calibration RANGE 0 - 10000 DEFAULT 0]
+#         [-send_announce_multicast CHOICES true false  DEFAULT false]
+#         [-send_announce_tlv CHOICES true false  DEFAULT true]
+#         [-send_cancel_tlv CHOICES true false  DEFAULT true]
+#         [-signal_interval RANGE 3 - 1200 DEFAULT 64]
+#         [-signal_unicast_handling CHOICES individually allInOne doNotSend DEFAULT individually]
+#         [-step_mode CHOICES two-step single-step DEFAULT two-step]
+#         [-steps_removed RANGE 0 - 655535 DEFAULT 0]
+#         [-strict_grant CHOICES true false  DEFAULT false]
+#         [-sync_drop_rate RANGE 0 - 100 DEFAULT 0]
+#         [-sync_receipt_timeout RANGE 1 - 1000 DEFAULT 100]
+#         [-time_source CHOICES 0X10 0X20 0X30 0X40 0X50 0X60 0X90 0XA0 DEFAULT 0X20]
+#         [-timestamp_offset RANGE 0 - 10000000000 DEFAULT 0]
+#         [-timestamp_offset_variation RANGE 0 - 1000000000 DEFAULT 0]
+#         [-tx_calibration RANGE 0 - 10000 DEFAULT 0]
+#         [-use_alternate_master_flag CHOICES true false  DEFAULT false]
+#         [-use_clock_identity CHOICES true false  DEFAULT false]
+# 
+# Arguments:
+# -mode
+#     create - creates and configures a new object
+#     add - adds a child object to the one specified by the -handle param
+#     modify - modified attributes on the given object by the -handle param
+#     delete - deletes the object given by the -handle param
+#     
+# -parent_handle
+#     The parent handle used for creating this object. Has the form: /vport/protocolStack/ethernet/ipEndpoint/range/ipRange
+#     
+# -handle
+#     A handle returned via a ::<namespace>::ptp_over_ip_config command. This is used for mode modify.
+#     
+# -style
+#     The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add.
+#     
+# -announce_current_utc_offset_valid (PropertyBoolean)
+#     Set Announce currentUtcOffsetValid bit
+#     (DEFAULT = false)
+#     
+# -announce_drop_rate (PropertyInt)
+#     Percentage rate of the dropped Announce messages.
+#     (DEFAULT = 0)
+#     
+# -announce_frequency_traceable (PropertyBoolean)
+#     Set Announce frequency traceable bit
+#     (DEFAULT = false)
+#     
+# -announce_leap59 (PropertyBoolean)
+#     Set Announce leap59 bit
+#     (DEFAULT = false)
+#     
+# -announce_leap61 (PropertyBoolean)
+#     Set Announce leap61 bit
+#     (DEFAULT = false)
+#     
+# -announce_ptp_timescale (PropertyBoolean)
+#     Set Announce ptpTimescale bit
+#     (DEFAULT = false)
+#     
+# -announce_receipt_timeout (PropertyInt)
+#     the number of announceInterval that has to
+#     pass without receipt of an Announce message.
+#     (DEFAULT = 3)
+#     
+# -announce_time_traceable (PropertyBoolean)
+#     Set Announce time traceable bit
+#     (DEFAULT = false)
+#     
+# -client_count (PropertyInt)
+#     The total number of Unicast clients to be used for the range.
+#     (DEFAULT = 1)
+#     
+# -client_ip_address (PropertyString)
+#     Defines the base address to be used for enumerating all the addresses
+#     in the range.
+#     (DEFAULT = 10.10.0.1)
+#     
+# -client_ip_increment_by (PropertyString)
+#     Defines the increment to be used for enumerating all the addresses
+#     in the range.
+#     (DEFAULT = 0.0.0.1)
+#     
+# -client_mac_address (PropertyString)
+#     Defines the base address to be used for enumerating all the addresses
+#     in the range.
+#     This property is used in conjunction with 'clientMacIncrementBy' as an incrementor.
+#     (DEFAULT = aa:bb:cd:00:00:00)
+#     
+# -client_mac_increment_by (PropertyString)
+#     Defines the increment to be used for enumerating all the addresses
+#     in the range.
+#     (DEFAULT = 00:00:00:00:00:01)
+#     
+# -clock_accuracy (PropertyString)
+#     Clock accuracy.
+#     (DEFAULT = 47) Valid choices are:
+#     32 - {The time is accurate to within 25 ns}
+#     33 - {The time is accurate to within 100 ns}
+#     34 - {The time is accurate to within 250 ns}
+#     35 - {The time is accurate to within 1 us}
+#     36 - {The time is accurate to within 2.5 us}
+#     37 - {The time is accurate to within 10 us}
+#     38 - {The time is accurate to within 25 us}
+#     39 - {The time is accurate to within 100 us}
+#     40 - {The time is accurate to within 250 us}
+#     41 - {The time is accurate to within 1 ms}
+#     42 - {The time is accurate to within 2.5 ms}
+#     43 - {The time is accurate to within 10 ms}
+#     44 - {The time is accurate to within 25 ms}
+#     45 - {The time is accurate to within 100 ms}
+#     46 - {The time is accurate to within 250 ms}
+#     47 - {The time is accurate to within 1 s}
+#     48 - {The time is accurate to within 10 s}
+#     49 - {The time is accurate to greater than 10 s}
+#     
+#     
+# -clock_class (PropertyInt)
+#     Traceability of the time or frequency
+#     distributed by the grandmaster clock.
+#     (DEFAULT = 6)
+#     
+# -clock_increment (PropertyString)
+#     Defines the ClockIdentity increment to be used in this range.
+#     (DEFAULT = 00:00:00:00:00:00:00:01)
+#     
+# -communication_mode (PropertyString)
+#     Communication mode (unicast/multicast).
+#     (DEFAULT = multicast) Valid choices are:
+#     multicast - Multicast
+#     unicast - Unicast
+#     mixedMode - MixedMode
+#     g8265 - G8265.1
+#     
+#     
+# -delay_mechanism (PropertyString)
+#     Clock delay mechanism.
+#     (DEFAULT = E2E) Valid choices are:
+#     E2E - RequestResponse
+#     P2P - PeerDelay
+#     1WAY - OneWay
+#     
+#     
+# -delay_resp_drop_rate (PropertyInt)
+#     Percentage rate of the dropped Delay_Resp messages.
+#     (DEFAULT = 0)
+#     
+# -delay_resp_receipt_timeout (PropertyInt)
+#     DelayResponse Receipt Timeout in seconds.
+#     (DEFAULT = 100)
+#     
+# -delay_response_delay (PropertyInt)
+#     Additional delay introduced in the Delay_Resp message timestamp (nanoseconds).
+#     (DEFAULT = 0)
+#     
+# -delay_response_delay_insertion_rate (PropertyInt)
+#     Percentage rate of the Delay_Resp messages in which the delay is introduced.
+#     (DEFAULT = 0)
+#     
+# -domain (PropertyInt)
+#     PTP Domain
+#     (DEFAULT = 0)
+#     
+# -drop_signal_req_announce (PropertyBoolean)
+#     Select this check box to drop any Signal Request that contains Announce TLV.
+#     (DEFAULT = false)
+#     
+# -drop_signal_req_delay_resp (PropertyBoolean)
+#     Select this check box to drop any Signal Request that contains DelayResp TLV.
+#     (DEFAULT = false)
+#     
+# -drop_signal_req_sync (PropertyBoolean)
+#     Select this check box to drop any Signal Request that contains Sync TLV.
+#     (DEFAULT = false)
+#     
+# -enabled (PropertyBoolean)
+#     Disabled ranges won't be configured nor validated.
+#     (DEFAULT = true)
+#     
+# -first_clock (PropertyString)
+#     Defines the first ClockIdentity to be used in this range.
+#     (DEFAULT = 00:00:00:00:00:00:11:11)
+#     
+# -follow_up_bad_crc_rate (PropertyInt)
+#     Percentage rate of the bad crc Follow_Up messages.
+#     (DEFAULT = 0)
+#     
+# -follow_up_delay (PropertyInt)
+#     Additional delay introduced in the Follow_Up message timestamp (nanoseconds)
+#     (DEFAULT = 0)
+#     
+# -follow_up_delay_insertion_rate (PropertyInt)
+#     Percentage rate of the Follow_Up messages in which the delay is introduced
+#     (DEFAULT = 0)
+#     
+# -follow_up_drop_rate (PropertyInt)
+#     Percentage rate of the dropped Follow_Up messages.
+#     (DEFAULT = 0)
+#     
+# -grant_delay_resp_duration_interval (PropertyInt)
+#     Value of DurationField in REQUEST_UNICAST_TRANSMISSION_TLV for DelayResp messages.
+#     (DEFAULT = 300)
+#     
+# -grant_sync_duration_interval (PropertyInt)
+#     Value of DurationField in REQUEST_UNICAST_TRANSMISSION_TLV for Sync messages.
+#     (DEFAULT = 300)
+#     
+# -grant_unicast_duration_interval (PropertyInt)
+#     Value of DurationField in REQUEST_UNICAST_TRANSMISSION_TLV.
+#     (DEFAULT = 300)
+#     
+# -ip_tos (PropertyInt)
+#     IP TOS or DS.
+#     (DEFAULT = 0)
+#     
+# -learn_port_id (PropertyBoolean)
+#     Slave learns Master Port ID
+#     (DEFAULT = true)
+#     
+# -log_announce_interval (PropertyInt)
+#     The log mean time interval between successive Announce messages.
+#     (DEFAULT = 0) Valid choices are:
+# -9 - {-9 (512 per second)}
+# -8 - {-8 (256 per second)}
+# -7 - {-7 (128 per second)}
+# -6 - {-6 (64 per second)}
+# -5 - {-5 (32 per second)}
+# -4 - {-4 (16 per second)}
+# -3 - {-3 (8 per second)}
+# -2 - {-2 (4 per second)}
+# -1 - {-1 (2 per second)}
+#     0 - {0 (1 per second)}
+#     1 - {1 (1 per 2 seconds)}
+#     2 - {2 (1 per 4 seconds)}
+#     3 - {3 (1 per 8 seconds)}
+#     4 - {4 (1 per 16 seconds)}
+#     5 - {5 (1 per 32 seconds)}
+#     6 - {6 (1 per 64 seconds)}
+#     7 - {7 (1 per 128 seconds)}
+#     8 - {8 (1 per 256 seconds)}
+#     9 - {9 (1 per 512 seconds)}
+#     
+#     
+# -log_delay_req_interval (PropertyInt)
+#     The log mean time interval between successive Delay_Req messages.
+#     (DEFAULT = 0) Valid choices are:
+# -9 - {-9 (512 per second)}
+# -8 - {-8 (256 per second)}
+# -7 - {-7 (128 per second)}
+# -6 - {-6 (64 per second)}
+# -5 - {-5 (32 per second)}
+# -4 - {-4 (16 per second)}
+# -3 - {-3 (8 per second)}
+# -2 - {-2 (4 per second)}
+# -1 - {-1 (2 per second)}
+#     0 - {0 (1 per second)}
+#     1 - {1 (1 per 2 seconds)}
+#     2 - {2 (1 per 4 seconds)}
+#     3 - {3 (1 per 8 seconds)}
+#     4 - {4 (1 per 16 seconds)}
+#     5 - {5 (1 per 32 seconds)}
+#     6 - {6 (1 per 64 seconds)}
+#     7 - {7 (1 per 128 seconds)}
+#     8 - {8 (1 per 256 seconds)}
+#     9 - {9 (1 per 512 seconds)}
+#     
+#     
+# -log_sync_interval (PropertyInt)
+#     The log mean time interval between successive Sync messages.
+#     (DEFAULT = 0) Valid choices are:
+# -9 - {-9 (512 per second)}
+# -8 - {-8 (256 per second)}
+# -7 - {-7 (128 per second)}
+# -6 - {-6 (64 per second)}
+# -5 - {-5 (32 per second)}
+# -4 - {-4 (16 per second)}
+# -3 - {-3 (8 per second)}
+# -2 - {-2 (4 per second)}
+# -1 - {-1 (2 per second)}
+#     0 - {0 (1 per second)}
+#     1 - {1 (1 per 2 seconds)}
+#     2 - {2 (1 per 4 seconds)}
+#     3 - {3 (1 per 8 seconds)}
+#     4 - {4 (1 per 16 seconds)}
+#     5 - {5 (1 per 32 seconds)}
+#     6 - {6 (1 per 64 seconds)}
+#     7 - {7 (1 per 128 seconds)}
+#     8 - {8 (1 per 256 seconds)}
+#     9 - {9 (1 per 512 seconds)}
+#     
+#     
+# -master_count (PropertyInt)
+#     The total number of Unicast masters to be used for the range.
+#     (DEFAULT = 1)
+#     
+# -master_ip_address (PropertyString)
+#     Defines the base address to be used for enumerating all the addresses
+#     in the range.
+#     (DEFAULT = 10.10.0.1)
+#     
+# -master_ip_increment_by (PropertyString)
+#     Defines the increment to be used for enumerating all the addresses
+#     in the range.
+#     (DEFAULT = 0.0.0.1)
+#     
+# -master_ip_increment_inter_entity (PropertyString)
+#     Defines the increment to be used for the start address of Master
+#     (DEFAULT = 0.0.0.0)
+#     
+# -master_mac_address (PropertyString)
+#     Defines the base address to be used for enumerating all the addresses
+#     in the range.
+#     This property is used in conjunction with 'masterMacIncrementBy' as an incrementor.
+#     (DEFAULT = aa:bb:cd:00:00:00)
+#     
+# -master_mac_increment_by (PropertyString)
+#     Defines the increment to be used for enumerating all the addresses
+#     in the range.
+#     (DEFAULT = 00:00:00:00:00:01)
+#     
+# -master_mac_increment_inter_entity (PropertyString)
+#     Defines the increment to be used for the start address of Master
+#     (DEFAULT = 00:00:00:00:00:00)
+#     
+# -name (PropertyString)
+#     Name of range
+#     (DEFAULT = {})
+#     
+# -port_number (PropertyInt)
+#     Port number
+#     (DEFAULT = 1)
+#     
+# -port_number_increment (PropertyInt)
+#     Port number increment
+#     (DEFAULT = 0)
+#     
+# -priority1 (PropertyInt)
+#     PTP priority1.
+#     (DEFAULT = 128)
+#     
+# -priority2 (PropertyInt)
+#     PTP priority2.
+#     (DEFAULT = 128)
+#     
+# -renewal_invited (PropertyBoolean)
+#     Set the Renewal Invited flag in Grant Unicast Transmission TLV
+#     (DEFAULT = true)
+#     
+# -request_attempts (PropertyInt)
+#     How many succesive requests a client can request before entering into holddown.
+#     (DEFAULT = 3)
+#     
+# -request_holddown (PropertyInt)
+#     Time between succesive requests if denied/timeout for Signal Request.
+#     (DEFAULT = 60)
+#     
+# -request_interval (PropertyInt)
+#     Time between succesive requests if denied/timeout for Signal Request.
+#     (DEFAULT = 1)
+#     
+# -residence_time (PropertyInt)
+#     Master to slave residence time of the associated transparent clock
+#     (DEFAULT = 0)
+#     
+# -rx_calibration (PropertyInt)
+#     The amount of time (in ns) that the Receive side timestamp needs to be offset to allow for error.
+#     (DEFAULT = 0)
+#     
+# -send_announce_multicast (PropertyBoolean)
+#     Send multicast Announce messages.
+#     (DEFAULT = false)
+#     
+# -send_announce_tlv (PropertyBoolean)
+#     Send and respond to Announce TLV unicast requests in signal messages.
+#     (DEFAULT = true)
+#     
+# -send_cancel_tlv (PropertyBoolean)
+#     Send and respond to Cancel TLV unicast requests in signal messages.
+#     (DEFAULT = true)
+#     
+# -signal_interval (PropertyInt)
+#     Time between Signal Request messages, in seconds.
+#     (DEFAULT = 64)
+#     
+# -signal_unicast_handling (PropertyString)
+#     (DEFAULT = individually) Valid choices are:
+#     individually - {Send Individually}
+#     allInOne - {Send In One Message}
+#     doNotSend - {Do Not Send}
+#     
+#     
+# -step_mode (PropertyString)
+#     Clock step mode.
+#     (DEFAULT = two-step) Valid choices are:
+#     two-step - TwoStep
+#     single-step - SingleStep
+#     
+#     
+# -steps_removed (PropertyInt)
+#     The number of hops between the Grandmaster Clock and the emulated clock. Valid values: 0 to 65,535.
+#     (DEFAULT = 0)
+#     
+# -strict_grant (PropertyBoolean)
+#     If selected, server will not grant values that are above maximum offered values.
+#     (DEFAULT = false)
+#     
+# -sync_drop_rate (PropertyInt)
+#     Percentage rate of the dropped Sync messages.
+#     (DEFAULT = 0)
+#     
+# -sync_receipt_timeout (PropertyInt)
+#     Sync Receipt Timeout in seconds.
+#     (DEFAULT = 100)
+#     
+# -time_source (PropertyString)
+#     Time source for the PTP device.
+#     (DEFAULT = 0X20) Valid choices are:
+#     0X10 - AtomicClock
+#     0X20 - GPS
+#     0X30 - TerrestrialRadio
+#     0X40 - PTP
+#     0X50 - NTP
+#     0X60 - HandSet
+#     0X90 - Other
+#     0XA0 - InternalOscilator
+#     
+#     
+# -timestamp_offset (PropertyInt)
+#     Timestamp offset.
+#     (DEFAULT = 0)
+#     
+# -timestamp_offset_variation (PropertyInt)
+#     Timestamp offset variation.
+#     (DEFAULT = 0)
+#     
+# -tx_calibration (PropertyInt)
+#     The amount of time (in ns) that the Transmit side timestamp needs to be offset to allow for error.
+#     (DEFAULT = 0)
+#     
+# -use_alternate_master_flag (PropertyBoolean)
+#     Select this check box to set the Alternate Master flag in all Announce and Sync messages.
+#     (DEFAULT = false)
+#     
+# -use_clock_identity (PropertyBoolean)
+#     Use the ClockIdentity configured below.
+#     (DEFAULT = false)
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:handles    value:ptp_over_ip handles
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# See Also:
+#     External documentation on Tclx keyed lists
+
+##Procedure Header
+# 
+# Name:
+#     ixia::ptp_over_ip_control
+# 
+# Description:
+#     Perform control plane operations on an endpoint created
+#     by a ixia::ptp_over_ip_config command
+#     
+# 
+# Synopsis:
+#     ixia::ptp_over_ip_control
+#         -handle ANY
+#         -action CHOICES abort abort_async start/connect stop/disconnect
+#     
+# 
+# Arguments:
+#     -handle
+#         A handle returned via a ::<namespace>::ptp_over_ip_config 
+#         command. This is the object on which the action will take place.
+#     -action
+#         Action to be executed. Valid choices are:
+#         abort   - abort all sessions on the same port with the target 
+#                   endpoint designated by -handle. The control is 
+#                   returned when the operation is completed.
+#         abort_async   - abort all sessions on the same port with the target 
+#                   endpoint designated by -handle. The control is 
+#                   returned immediately. The operation is executed in the background.
+#         start/connect - start and/or negotiate session for the target endpoint
+#                   designated by -handle.
+#         stop/disconnect - stop and/or release session for the target endpoint
+#                   designated by -handle.
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# Notes:
+#     This command applies only to IxNetwork.
+#     
+
+##Procedure Header
+# 
+# Name:
+#     ixia::ptp_over_ip_stats
+# 
+# Description:
+#     Retrieve statistics plane on an endpoint created
+#     by a ixia::ptp_over_ip_config command
+#     
+# 
+# Synopsis:
+#     "ixia::ptp_over_ip_stats"
+#         -port_handle ANY
+#     
+# 
+# Arguments:
+#     -port_handle
+#         The port handle for which the ptp_over_ip stats need to 
+#         be retrieved
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:log        value:When status is failure, contains more information
+#     
+#     key:[<port_handle.>].gen.port_name value:Port Name
+#     key:[<port_handle.>].gen.sessions_initiated value:Sessions Initiated
+#     key:[<port_handle.>].gen.sessions_succeeded value:Sessions Succeeded
+#     key:[<port_handle.>].gen.sessions_failed value:Sessions Failed
+#     key:[<port_handle.>].gen.sessions_active value:Sessions Active
+#     key:[<port_handle.>].gen.initiated_sessions_rate value:Initiated Sessions Rate
+#     key:[<port_handle.>].gen.successful_sessions_rate value:Successful Sessions Rate
+#     key:[<port_handle.>].gen.failed_sessions_rate value:Failed Sessions Rate
+#     key:[<port_handle.>].gen.announce_messages_sent value:Announce Messages Sent
+#     key:[<port_handle.>].gen.announce_messages_received value:Announce Messages Received
+#     key:[<port_handle.>].gen.sync_messages_sent value:Sync Messages Sent
+#     key:[<port_handle.>].gen.sync_messages_received value:Sync Messages Received
+#     key:[<port_handle.>].gen.followup_messages_sent value:FollowUp Messages Sent
+#     key:[<port_handle.>].gen.followup_messages_received value:FollowUp Messages Received
+#     key:[<port_handle.>].gen.delayreq_messages_sent value:DelayReq Messages Sent
+#     key:[<port_handle.>].gen.delayreq_messages_received value:DelayReq Messages Received
+#     key:[<port_handle.>].gen.delayresp_messages_sent value:DelayResp Messages Sent
+#     key:[<port_handle.>].gen.delayresp_messages_received value:DelayResp Messages Received
+#     key:[<port_handle.>].gen.pdelayreq_messages_sent value:PdelayReq Messages Sent
+#     key:[<port_handle.>].gen.pdelayreq_messages_received value:PdelayReq Messages Received
+#     key:[<port_handle.>].gen.pdelayresp_messages_sent value:PdelayResp Messages Sent
+#     key:[<port_handle.>].gen.pdelayrest_messages_received value:PdelayResp Messages Received
+#     key:[<port_handle.>].gen.pdelayrespfollowup_messages_sent value:PdelayRespFollowUp Messages Sent
+#     key:[<port_handle.>].gen.pdelayrespfollowup_messages_received value:PdelayRespFollowUp Messages Received
+#     
+#     
+

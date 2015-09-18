@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork or IxRouter Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>BGP (BGP4_neighbor_BGP4_route_external.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork or IxRouter Examples/BGP4_neighbor_BGP4_route_external.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>
+       BGP (BGP4_neighbor_BGP4_route_external.tcl)</h3>
+        <p class="CodeBlock"><a name="0_pgfId-3532965"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532966"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532967"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532968"></a>
+          # This sample configures two internal BGP neighbors and on each neighbor it #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532969"></a>
+          # configures two IPv4 route ranges and two IPv6 route ranges. Then it #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532970"></a>
+          # starts the protocol. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532971"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532972"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532973"></a>
+          # The sample was tested on a LM100TXS8 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532974"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532975"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532976"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532977"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532978"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532979"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532980"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532981"></a>
+          set chassisIP 127.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532982"></a>
+          set port_list [list 10/1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532983"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532984"></a>
+          # Connect to the chassis,reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532985"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532986"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532987"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532988"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532989"></a>
+                  -username ixiaApiUser]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532990"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532991"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532992"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532993"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532994"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532995"></a>
+          set port_handle [::ixia::get_port_list_from_connect $connect_status $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532996"></a>
+                  $port_list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532997"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532998"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3532999"></a>
+          # Configure interface in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533000"></a>
+                                       #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533001"></a>
+          # IPv4 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533002"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533003"></a>
+          set interface_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533004"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533005"></a>
+                  -autonegotiation 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533006"></a>
+                  -duplex full \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533007"></a>
+                  -speed ether100]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533008"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533009"></a>
+          if {[keylget interface_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533010"></a>
+              return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533011"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533012"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533013"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533014"></a>
+                                                #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533015"></a>
+          # Configure 2 BGP neighbors on interface 1/10/1 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533016"></a>
+          # 1) Neighbor #1 - internal #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533017"></a>
+          # 2) Neighbor #2 - internal #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533018"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533019"></a>
+          set bgp_routers_status [ixia::emulation_bgp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533020"></a>
+                  -port_handle 	 $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533021"></a>
+                  -mode reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533022"></a>
+                  -local_ip_addr 10.1.1.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533023"></a>
+                  -remote_ip_addr 10.1.1.2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533024"></a>
+                  -count 	 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533025"></a>
+                  -mac_address_start 0000.0000.0001 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533026"></a>
+                  -netmask 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533027"></a>
+                  -neighbor_type internal \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533028"></a>
+                  -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533029"></a>
+                  -next_hop_enable \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533030"></a>
+                  -next_hop_ip 10.10.160.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533031"></a>
+                  -local_as 111 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533032"></a>
+                  -local_as_mode fixed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533033"></a>
+                  -tcp_window_size 6666 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533034"></a>
+                  -updates_per_iteration 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533035"></a>
+                  -retries 11 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533036"></a>
+                  -retry_time 22 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533037"></a>
+                  -active_connect_enable \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533038"></a>
+                  -staggered_start_enable \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533039"></a>
+                  -staggered_start_time 77 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533040"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533041"></a>
+          if {[keylget bgp_routers_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533042"></a>
+              return "FAIL - sample_ixia_hltapi_BGP4_neighbor_BGP4_route.tcl -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533043"></a>
+                      [keylget bgp_routers_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533044"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533045"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533046"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533047"></a>
+                                                        #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533048"></a>
+          # Configure 2 BGP IPv4 Route Range on each BGP router #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533049"></a>
+          # 1/10/1 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533050"></a>
+          #						 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533051"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533052"></a>
+          #Get the list of BGP router handle form the keye list returned</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533053"></a>
+          set bgp_router_handle_list [keylget bgp_routers_status handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533054"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533055"></a>
+          set bgp_route_ip_addr 22.1.1.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533056"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533057"></a>
+          set bgp_ipv4_route_handle_list ""</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533058"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533059"></a>
+          foreach bgp_router_handle $bgp_router_handle_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533060"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533061"></a>
+              set bgp_ipv4_route_handle [ixia::emulation_bgp_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533062"></a>
+                      -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533063"></a>
+                      -handle $bgp_router_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533064"></a>
+                      -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533065"></a>
+                      -prefix $bgp_route_ip_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533066"></a>
+                      -prefix_from 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533067"></a>
+                      -prefix_to 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533068"></a>
+                      -num_routes 1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533069"></a>
+                      -origin igp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533070"></a>
+                      -enable_partial_route_flap \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533071"></a>
+                      -partial_route_flap_from_route_index 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533072"></a>
+                      -partial_route_flap_to_route_index 50 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533073"></a>
+                      -enable_generate_unique_routes \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533074"></a>
+                      -enable_traditional_nlri 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533075"></a>
+                      -max_route_ranges 2 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533076"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533077"></a>
+              if {[keylget bgp_ipv4_route_handle status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533078"></a>
+                  return "FAIL - sample_ixia_hltapi_BGP4_neighbor_BGP4_route.tcl -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533079"></a>
+                          [keylget bgp_ipv4_route_handle log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533080"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533081"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533082"></a>
+              # Increment the IPv4 address for the BGP route range</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533083"></a>
+              set bgp_route_ip_addr [ixia::increment_ipv4_address $bgp_route_ip_addr]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533084"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533085"></a>
+              lappend bgp_ipv4_route_handle_list $bgp_ipv4_route_handle</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533086"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533087"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533088"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533089"></a>
+                                                        #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533090"></a>
+          # Configure 2 BGP IPv6 Route Range on each BGP router #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533091"></a>
+          # 1/10/1 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533092"></a>
+                                                        #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533093"></a>
+          #########################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533094"></a>
+          #Get the list of BGP router handle form the keye list returned</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533095"></a>
+          set bgp_router_handle_list [keylget bgp_routers_status handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533096"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533097"></a>
+          set bgp_route_ip_addr "0030:1::31"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533098"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533099"></a>
+          set bgp_ipv4_route_handle_list ""</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533100"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533101"></a>
+          foreach bgp_router_handle $bgp_router_handle_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533102"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533103"></a>
+              set bgp_ipv6_route_handle [ixia::emulation_bgp_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533104"></a>
+                      -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533105"></a>
+                      -handle $bgp_router_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533106"></a>
+                      -ip_version 6 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533107"></a>
+                      -prefix $bgp_route_ip_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533108"></a>
+                      -prefix_from 64 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533109"></a>
+                      -prefix_to 64 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533110"></a>
+                      -num_routes 1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533111"></a>
+                      -origin igp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533112"></a>
+                      -enable_partial_route_flap \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533113"></a>
+                      -partial_route_flap_from_route_index 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533114"></a>
+                      -partial_route_flap_to_route_index 50 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533115"></a>
+                      -enable_generate_unique_routes \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533116"></a>
+                      -enable_traditional_nlri 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533117"></a>
+                      -max_route_ranges 2 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533118"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533119"></a>
+              if {[keylget bgp_ipv6_route_handle status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533120"></a>
+                  return "FAIL - sample_ixia_hltapi_BGP4_neighbor_BGP4_route.tcl -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533121"></a>
+                          [keylget bgp_ipv6_route_handle log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533122"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533123"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533124"></a>
+              # Increment the IPv4 address for the BGP route range</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533125"></a>
+              set bgp_route_ip_addr [ixia::increment_ipv6_address $bgp_route_ip_addr 1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533126"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533127"></a>
+              lappend bgp_ipv6_route_handle_list $bgp_ipv6_route_handle</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533128"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533129"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533130"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533131"></a>
+          # START BGP on #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533132"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533133"></a>
+          set handle [lindex $bgp_router_handle_list 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533134"></a>
+          set bgp_emulation_status [ixia::emulation_bgp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533135"></a>
+                  -handle $handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533136"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533137"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533138"></a>
+          if {[keylget bgp_emulation_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533139"></a>
+              return "FAIL - sample_ixia_hltapi_BGP4_neighbor_BGP4_route.tcl -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533140"></a>
+                      [keylget bgp_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533141"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533143"></a>
+          return "SUCCESS - sample_ixia_hltapi_BGP4_neighbor_BGP4_route.tcl -\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533144"></a>
+                  [clock format [clock seconds]]"</p>
+    </body>
+</html>

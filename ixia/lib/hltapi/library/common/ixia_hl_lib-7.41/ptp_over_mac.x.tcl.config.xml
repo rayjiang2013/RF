@@ -1,0 +1,1732 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method name="ptp_over_mac_config" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" displayPriority="0">
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkSupport" contentType="new" target="noTarget">Performs ptp_over_mac configuration</description>
+  <chapter>PTP APIs</chapter>
+  <arguments>
+    <argument name="mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The operation this command will execute</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>create</choiceName>
+              <choiceText>creates and configures a new object</choiceText>
+            </choice>
+            <choice>
+              <choiceName>add</choiceName>
+              <choiceText>adds a child object to the one specified by the -handle param</choiceText>
+            </choice>
+            <choice>
+              <choiceName>modify</choiceName>
+              <choiceText>modified attributes on the given object by the -handle param</choiceText>
+            </choice>
+            <choice>
+              <choiceName>delete</choiceName>
+              <choiceText>deletes the object given by the -handle param</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="create add modify delete" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="parent_handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The parent handle used for creating this object. Has the form: /vport/protocolStack/ethernetEndpoint/range/macRange</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>A handle returned via a ::&lt;namespace&gt;::ptp_over_mac_config command. This is used for mode modify</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="style" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_current_utc_offset_valid" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Set Announce currentUtcOffsetValid bit</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_drop_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Percentage rate of the dropped Announce messages.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_frequency_traceable" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Set Announce frequency traceable bit</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_leap59" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Set Announce leap59 bit</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_leap61" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Set Announce leap61 bit</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_ptp_timescale" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Set Announce ptpTimescale bit</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_receipt_timeout" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>the number of announceInterval that has to
+pass without receipt of an Announce message.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="3" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="announce_time_traceable" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Set Announce time traceable bit</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="client_count" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The total number of Unicast clients to be used for the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="client_ip_address" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the base address to be used for enumerating all the addresses
+in the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="10.10.0.1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="client_ip_increment_by" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the increment to be used for enumerating all the addresses
+in the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="0.0.0.1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="client_mac_address" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the base address to be used for enumerating all the addresses
+in the range.
+This property is used in conjunction with &apos;clientMacIncrementBy&apos; as an incrementor.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="aa:bb:cd:00:00:00" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="client_mac_increment_by" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the increment to be used for enumerating all the addresses
+in the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="00:00:00:00:00:01" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="clock_accuracy" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Clock accuracy.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>32</choiceName>
+              <choiceText>The time is accurate to within 25 ns</choiceText>
+            </choice>
+            <choice>
+              <choiceName>33</choiceName>
+              <choiceText>The time is accurate to within 100 ns</choiceText>
+            </choice>
+            <choice>
+              <choiceName>34</choiceName>
+              <choiceText>The time is accurate to within 250 ns</choiceText>
+            </choice>
+            <choice>
+              <choiceName>35</choiceName>
+              <choiceText>The time is accurate to within 1 us</choiceText>
+            </choice>
+            <choice>
+              <choiceName>36</choiceName>
+              <choiceText>The time is accurate to within 2.5 us</choiceText>
+            </choice>
+            <choice>
+              <choiceName>37</choiceName>
+              <choiceText>The time is accurate to within 10 us</choiceText>
+            </choice>
+            <choice>
+              <choiceName>38</choiceName>
+              <choiceText>The time is accurate to within 25 us</choiceText>
+            </choice>
+            <choice>
+              <choiceName>39</choiceName>
+              <choiceText>The time is accurate to within 100 us</choiceText>
+            </choice>
+            <choice>
+              <choiceName>40</choiceName>
+              <choiceText>The time is accurate to within 250 us</choiceText>
+            </choice>
+            <choice>
+              <choiceName>41</choiceName>
+              <choiceText>The time is accurate to within 1 ms</choiceText>
+            </choice>
+            <choice>
+              <choiceName>42</choiceName>
+              <choiceText>The time is accurate to within 2.5 ms</choiceText>
+            </choice>
+            <choice>
+              <choiceName>43</choiceName>
+              <choiceText>The time is accurate to within 10 ms</choiceText>
+            </choice>
+            <choice>
+              <choiceName>44</choiceName>
+              <choiceText>The time is accurate to within 25 ms</choiceText>
+            </choice>
+            <choice>
+              <choiceName>45</choiceName>
+              <choiceText>The time is accurate to within 100 ms</choiceText>
+            </choice>
+            <choice>
+              <choiceName>46</choiceName>
+              <choiceText>The time is accurate to within 250 ms</choiceText>
+            </choice>
+            <choice>
+              <choiceName>47</choiceName>
+              <choiceText>The time is accurate to within 1 s</choiceText>
+            </choice>
+            <choice>
+              <choiceName>48</choiceName>
+              <choiceText>The time is accurate to within 10 s</choiceText>
+            </choice>
+            <choice>
+              <choiceName>49</choiceName>
+              <choiceText>The time is accurate to greater than 10 s</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49" />
+        <restriction type="DEFAULT" value="47" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="clock_class" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Traceability of the time or frequency
+distributed by the grandmaster clock.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="6" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="clock_increment" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the ClockIdentity increment to be used in this range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="00:00:00:00:00:00:00:01" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="communication_mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Communication mode (unicast/multicast).</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>multicast</choiceName>
+              <choiceText>Multicast</choiceText>
+            </choice>
+            <choice>
+              <choiceName>unicast</choiceName>
+              <choiceText>Unicast</choiceText>
+            </choice>
+            <choice>
+              <choiceName>mixedMode</choiceName>
+              <choiceText>MixedMode</choiceText>
+            </choice>
+            <choice>
+              <choiceName>g8265</choiceName>
+              <choiceText>G8265.1</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="multicast unicast mixedMode g8265" />
+        <restriction type="DEFAULT" value="multicast" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="delay_mechanism" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Clock delay mechanism.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>E2E</choiceName>
+              <choiceText>RequestResponse</choiceText>
+            </choice>
+            <choice>
+              <choiceName>P2P</choiceName>
+              <choiceText>PeerDelay</choiceText>
+            </choice>
+            <choice>
+              <choiceName>1WAY</choiceName>
+              <choiceText>OneWay</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="E2E P2P 1WAY" />
+        <restriction type="DEFAULT" value="E2E" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="delay_resp_drop_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Percentage rate of the dropped Delay_Resp messages.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="delay_resp_receipt_timeout" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>DelayResponse Receipt Timeout in seconds.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="100" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="delay_response_delay" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Additional delay introduced in the Delay_Resp message timestamp (nanoseconds).</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="delay_response_delay_insertion_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Percentage rate of the Delay_Resp messages in which the delay is introduced.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="domain" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>PTP Domain</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="drop_signal_req_announce" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Select this check box to drop any Signal Request that contains Announce TLV.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="drop_signal_req_delay_resp" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Select this check box to drop any Signal Request that contains DelayResp TLV.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="drop_signal_req_sync" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Select this check box to drop any Signal Request that contains Sync TLV.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="enabled" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Disabled ranges won&apos;t be configured nor validated.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="first_clock" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the first ClockIdentity to be used in this range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="00:00:00:00:00:00:11:11" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="follow_up_bad_crc_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Percentage rate of the bad crc Follow_Up messages.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="follow_up_delay" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Additional delay introduced in the Follow_Up message timestamp (nanoseconds)</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="follow_up_delay_insertion_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Percentage rate of the Follow_Up messages in which the delay is introduced</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="follow_up_drop_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Percentage rate of the dropped Follow_Up messages.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="grant_delay_resp_duration_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Value of DurationField in REQUEST_UNICAST_TRANSMISSION_TLV for DelayResp messages.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="300" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="grant_sync_duration_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Value of DurationField in REQUEST_UNICAST_TRANSMISSION_TLV for Sync messages.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="300" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="grant_unicast_duration_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Value of DurationField in REQUEST_UNICAST_TRANSMISSION_TLV.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="300" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="ip_tos" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>IP TOS or DS.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="learn_port_id" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Slave learns Master Port ID</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="log_announce_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The log mean time interval between successive Announce messages.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>-9</choiceName>
+              <choiceText>-9 (512 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-8</choiceName>
+              <choiceText>-8 (256 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-7</choiceName>
+              <choiceText>-7 (128 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-6</choiceName>
+              <choiceText>-6 (64 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-5</choiceName>
+              <choiceText>-5 (32 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-4</choiceName>
+              <choiceText>-4 (16 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-3</choiceName>
+              <choiceText>-3 (8 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-2</choiceName>
+              <choiceText>-2 (4 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-1</choiceName>
+              <choiceText>-1 (2 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0</choiceName>
+              <choiceText>0 (1 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>1</choiceName>
+              <choiceText>1 (1 per 2 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>2</choiceName>
+              <choiceText>2 (1 per 4 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>3</choiceName>
+              <choiceText>3 (1 per 8 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>4</choiceName>
+              <choiceText>4 (1 per 16 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>5</choiceName>
+              <choiceText>5 (1 per 32 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>6</choiceName>
+              <choiceText>6 (1 per 64 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>7</choiceName>
+              <choiceText>7 (1 per 128 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>8</choiceName>
+              <choiceText>8 (1 per 256 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>9</choiceName>
+              <choiceText>9 (1 per 512 seconds)</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="-9 -8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="log_delay_req_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The log mean time interval between successive Delay_Req messages.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>-9</choiceName>
+              <choiceText>-9 (512 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-8</choiceName>
+              <choiceText>-8 (256 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-7</choiceName>
+              <choiceText>-7 (128 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-6</choiceName>
+              <choiceText>-6 (64 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-5</choiceName>
+              <choiceText>-5 (32 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-4</choiceName>
+              <choiceText>-4 (16 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-3</choiceName>
+              <choiceText>-3 (8 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-2</choiceName>
+              <choiceText>-2 (4 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-1</choiceName>
+              <choiceText>-1 (2 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0</choiceName>
+              <choiceText>0 (1 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>1</choiceName>
+              <choiceText>1 (1 per 2 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>2</choiceName>
+              <choiceText>2 (1 per 4 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>3</choiceName>
+              <choiceText>3 (1 per 8 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>4</choiceName>
+              <choiceText>4 (1 per 16 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>5</choiceName>
+              <choiceText>5 (1 per 32 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>6</choiceName>
+              <choiceText>6 (1 per 64 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>7</choiceName>
+              <choiceText>7 (1 per 128 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>8</choiceName>
+              <choiceText>8 (1 per 256 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>9</choiceName>
+              <choiceText>9 (1 per 512 seconds)</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="-9 -8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="log_sync_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The log mean time interval between successive Sync messages.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>-9</choiceName>
+              <choiceText>-9 (512 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-8</choiceName>
+              <choiceText>-8 (256 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-7</choiceName>
+              <choiceText>-7 (128 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-6</choiceName>
+              <choiceText>-6 (64 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-5</choiceName>
+              <choiceText>-5 (32 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-4</choiceName>
+              <choiceText>-4 (16 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-3</choiceName>
+              <choiceText>-3 (8 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-2</choiceName>
+              <choiceText>-2 (4 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>-1</choiceName>
+              <choiceText>-1 (2 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0</choiceName>
+              <choiceText>0 (1 per second)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>1</choiceName>
+              <choiceText>1 (1 per 2 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>2</choiceName>
+              <choiceText>2 (1 per 4 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>3</choiceName>
+              <choiceText>3 (1 per 8 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>4</choiceName>
+              <choiceText>4 (1 per 16 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>5</choiceName>
+              <choiceText>5 (1 per 32 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>6</choiceName>
+              <choiceText>6 (1 per 64 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>7</choiceName>
+              <choiceText>7 (1 per 128 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>8</choiceName>
+              <choiceText>8 (1 per 256 seconds)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>9</choiceName>
+              <choiceText>9 (1 per 512 seconds)</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="-9 -8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="master_count" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The total number of Unicast masters to be used for the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="master_ip_address" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the base address to be used for enumerating all the addresses
+in the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="10.10.0.1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="master_ip_increment_by" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the increment to be used for enumerating all the addresses
+in the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="0.0.0.1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="master_ip_increment_inter_entity" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the increment to be used for the start address of Master</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="0.0.0.0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="master_mac_address" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the base address to be used for enumerating all the addresses
+in the range.
+This property is used in conjunction with &apos;masterMacIncrementBy&apos; as an incrementor.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="aa:bb:cd:00:00:00" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="master_mac_increment_by" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the increment to be used for enumerating all the addresses
+in the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="00:00:00:00:00:01" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="master_mac_increment_inter_entity" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Defines the increment to be used for the start address of Master</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="00:00:00:00:00:00" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="name" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Name of range</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="port_number" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Port number</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="port_number_increment" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Port number increment</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="priority1" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>PTP priority1.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="128" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="priority2" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>PTP priority2.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="128" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="renewal_invited" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Set the Renewal Invited flag in Grant Unicast Transmission TLV</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="request_attempts" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>How many succesive requests a client can request before entering into holddown.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="3" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="request_holddown" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Time between succesive requests if denied/timeout for Signal Request.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="60" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="request_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Time between succesive requests if denied/timeout for Signal Request.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="residence_time" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Master to slave residence time of the associated transparent clock</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="rx_calibration" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The amount of time (in ns) that the Receive side timestamp needs to be offset to allow for error.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="send_announce_multicast" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Send multicast Announce messages.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="send_announce_tlv" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Send and respond to Announce TLV unicast requests in signal messages.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="send_cancel_tlv" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Send and respond to Cancel TLV unicast requests in signal messages.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="signal_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Time between Signal Request messages, in seconds.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="64" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="signal_unicast_handling" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre />
+          </text>
+          <choices>
+            <choice>
+              <choiceName>individually</choiceName>
+              <choiceText>Send Individually</choiceText>
+            </choice>
+            <choice>
+              <choiceName>allInOne</choiceName>
+              <choiceText>Send In One Message</choiceText>
+            </choice>
+            <choice>
+              <choiceName>doNotSend</choiceName>
+              <choiceText>Do Not Send</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="individually allInOne doNotSend" />
+        <restriction type="DEFAULT" value="individually" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="step_mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Clock step mode.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>two-step</choiceName>
+              <choiceText>TwoStep</choiceText>
+            </choice>
+            <choice>
+              <choiceName>single-step</choiceName>
+              <choiceText>SingleStep</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="two-step single-step" />
+        <restriction type="DEFAULT" value="two-step" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="steps_removed" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The number of hops between the Grandmaster Clock and the emulated clock. Valid values: 0 to 65,535.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="strict_grant" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>If selected, server will not grant values that are above maximum offered values.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="sync_drop_rate" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Percentage rate of the dropped Sync messages.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="sync_receipt_timeout" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Sync Receipt Timeout in seconds.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="100" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="time_source" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Time source for the PTP device.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>0X10</choiceName>
+              <choiceText>AtomicClock</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0X20</choiceName>
+              <choiceText>GPS</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0X30</choiceName>
+              <choiceText>TerrestrialRadio</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0X40</choiceName>
+              <choiceText>PTP</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0X50</choiceName>
+              <choiceText>NTP</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0X60</choiceName>
+              <choiceText>HandSet</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0X90</choiceName>
+              <choiceText>Other</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0XA0</choiceName>
+              <choiceText>InternalOscilator</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0X10 0X20 0X30 0X40 0X50 0X60 0X90 0XA0" />
+        <restriction type="DEFAULT" value="0X20" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="timestamp_offset" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Timestamp offset.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="timestamp_offset_variation" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Timestamp offset variation.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="tx_calibration" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The amount of time (in ns) that the Transmit side timestamp needs to be offset to allow for error.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="use_alternate_master_flag" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Select this check box to set the Alternate Master flag in all Announce and Sync messages.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="use_clock_identity" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Use the ClockIdentity configured below.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue>
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>log</key>
+      <value>Error message if command returns {status 0}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>handles</key>
+      <value>The returned handle(s) of the  config command.</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <examples>
+    <example>See files in the Samples subdirectory</example>
+  </examples>
+  <sampleInput />
+  <sampleOutput />
+  <notes />
+  <seeAlso>
+    <seeAlsoElem supportType="all">This command applies only to IxNetwork</seeAlsoElem>
+    <seeAlsoElem supportType="all">External documentation on Tclx keyed lists</seeAlsoElem>
+  </seeAlso>
+</method>

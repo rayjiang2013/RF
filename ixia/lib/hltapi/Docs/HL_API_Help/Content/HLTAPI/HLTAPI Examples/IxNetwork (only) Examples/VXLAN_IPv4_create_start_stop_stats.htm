@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|PERL_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>PPPoE (PPPoE_traffic.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/VXLAN_IPv4_create_start_stop_stats.htm">Open topic with navigation</a>
+        </p>
+        <h3>Configuring Two VXLAN Stacks with IPv4 VMs (VXLAN_IPv4_create_start_stop_stats.pl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock"># Description: #</p>
+        <p class="CodeBlock"># The script configures 2 VXLAN stacks and the chained device groups #</p>
+        <p class="CodeBlock"># with IPv4 VMs. Start protocols and get/print stats. #</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock"># Module: #</p>
+        <p class="CodeBlock"># The sample was tested on a FlexAP10G16S module. #</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># Source all libraries in the beginning</p>
+        <p class="CodeBlock">use warnings;</p>
+        <p class="CodeBlock">use strict;</p>
+        <p class="CodeBlock">use bignum;</p>
+        <p class="CodeBlock">use Carp;</p>
+        <p class="CodeBlock">use Cwd 'abs_path';</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#use lib where the HLPAPI files are located</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">use lib "C:/Program Files (x86)/Ixia/hltapi/4.90.0.64/TclScripts/lib/hltapi/library/common/ixia_hl_lib-7.30";</p>
+        <p class="CodeBlock">use lib "C:/Program Files (x86)/Ixia/hltapi/4.90.0.64/TclScripts/lib/hltapi/library/common/ixiangpf/perl";</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">use ixiahlt {</p>
+        <p class="CodeBlock">IXIA_VERSION =&gt; 'HLTSET166',</p>
+        <p class="CodeBlock">TclAutoPath =&gt; ['C:/Program Files (x86)/Ixia/IxOS/6.70.0.30','C:/Program Files (x86)/Ixia/hltapi/4.90.0.64/TclScripts/lib/hltapi/library/common/ixia_hl_lib-7.30','C:/Program Files (x86)/Ixia/hltapi/4.90.0.64/TclScripts/lib', 'C:/Program Files (x86)/Ixia/IxNetwork/7.30.0.213-EB/TclScripts/lib/ixTcl1.0','C:/Program Files (x86)/Ixia/IxNetwork/7.30.0.213-EB/TclScripts/lib/IxTclNetwork'],</p>
+        <p class="CodeBlock">};</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">use ixiahlt;</p>
+        <p class="CodeBlock">use ixiaixn;</p>
+        <p class="CodeBlock">use ixiangpf;</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># Declare the Chassis IP address and the Ports that will be used</p>
+        <p class="CodeBlock">my $test_name              = "basic_VXLAN_config";</p>
+        <p class="CodeBlock">    my $chassis                = "10.205.15.184";</p>
+        <p class="CodeBlock">my $tcl_server             = "10.205.15.184";</p>
+        <p class="CodeBlock">my @port_list              = ("9/1", "9/9");</p>
+        <p class="CodeBlock">my $ixnetwork_tcl_server   = "localhost";</p>
+        <p class="CodeBlock">my $wait_time              = 5;</p>
+        <p class="CodeBlock">my $test_dir_path          = abs_path();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Function to catch the errors and print it on the screen #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">sub catch_error {</p>
+        <p class="CodeBlock">if (ixiangpf::status_item('status') != 1) {</p>
+        <p class="CodeBlock">print ("\n#################################################### \n");</p>
+        <p class="CodeBlock">print ("ERROR: \n$test_name : ". ixiangpf::status_item('log'));</p>
+        <p class="CodeBlock">print ("\n#################################################### \n");</p>
+        <p class="CodeBlock">return $FAILED</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">########################################</p>
+        <p class="CodeBlock"># Initialize values for HLPAPI scripts</p>
+        <p class="CodeBlock">########################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $_result_               = '';</p>
+        <p class="CodeBlock">my $status                 = '';</p>
+        <p class="CodeBlock">my $port_handle            = '';</p>
+        <p class="CodeBlock">my @status_keys            = ();</p>
+        <p class="CodeBlock">my %status_keys            = ();</p>
+        <p class="CodeBlock">my @portHandleList         = ();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $PASSED				   = '0';</p>
+        <p class="CodeBlock">my $FAILED				   = '1';</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">sub main {</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">########################################</p>
+        <p class="CodeBlock"># START - Connect to the chassis</p>
+        <p class="CodeBlock">########################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">$_result_ = ixiangpf::connect ({</p>
+        <p class="CodeBlock">reset                  =&gt; '1',</p>
+        <p class="CodeBlock">device                 =&gt; $chassis,</p>
+        <p class="CodeBlock">ixnetwork_tcl_server   =&gt; $ixnetwork_tcl_server,</p>
+        <p class="CodeBlock">tcl_server             =&gt; $tcl_server,</p>
+        <p class="CodeBlock">port_list              =&gt; \@port_list,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">$port_handle = ixiangpf::status_item('port_handle');</p>
+        <p class="CodeBlock">$status = ixiangpf::status_item('status');</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># Assign portHandleList with port handles values</p>
+        <p class="CodeBlock">foreach my $port (@port_list) {</p>
+        <p class="CodeBlock">$port_handle = ixiangpf::status_item("port_handle.$chassis.$port");</p>
+        <p class="CodeBlock">push(@portHandleList, $port_handle);</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $port_1 = $portHandleList[0];</p>
+        <p class="CodeBlock">my $port_2 = $portHandleList[1];</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print ("\nIxia port handles are @portHandleList ...\n");</p>
+        <p class="CodeBlock">print ("End connecting to chassis ...\n");</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#########################################</p>
+        <p class="CodeBlock"># Create a topology and a device group for VXLAN    #</p>
+        <p class="CodeBlock">#########################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $topology_status = ixiangpf::topology_config ({</p>
+        <p class="CodeBlock">topology_name           =&gt; 'VTEP Group 1',</p>
+        <p class="CodeBlock">port_handle				=&gt; $port_1,</p>
+        <p class="CodeBlock">device_group_multiplier	=&gt; 3,</p>
+        <p class="CodeBlock">device_group_name       =&gt; 'VXLAN DG 1',</p>
+        <p class="CodeBlock">device_group_enabled    =&gt; 1,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">my $dg_handle_1 = ixiangpf::status_item('device_group_handle');</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $mac_start		= "0000.0005.0001";</p>
+        <p class="CodeBlock">my $mac_step		= "0000.0000.1000";</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $command_status = ixiangpf::interface_config ({</p>
+        <p class="CodeBlock">protocol_handle		=&gt; $dg_handle_1,</p>
+        <p class="CodeBlock">src_mac_addr       	=&gt; $mac_start,</p>
+        <p class="CodeBlock">src_mac_addr_step		=&gt; $mac_step,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">my $ethernet_handle_1 = ixiangpf::status_item('ethernet_handle');</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#########################################</p>
+        <p class="CodeBlock"># VXLAN 1 Stack  							    #</p>
+        <p class="CodeBlock">#########################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_1_status = ixiangpf::emulation_vxlan_config ({</p>
+        <p class="CodeBlock">create_ig	 				=&gt;				'1'								,</p>
+        <p class="CodeBlock">enable_resolve_gateway		=&gt;				'1'								,</p>
+        <p class="CodeBlock">enable_static_info			=&gt;				'1'								,</p>
+        <p class="CodeBlock">gateway						=&gt;				'100.0.0.100'					,</p>
+        <p class="CodeBlock">gateway_step				=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">handle						=&gt;				$ethernet_handle_1				,</p>
+        <p class="CodeBlock">ig_enable_resolve_gateway	=&gt;				'1'								,</p>
+        <p class="CodeBlock">ig_gateway					=&gt;				'70.0.0.100'					,</p>
+        <p class="CodeBlock">ig_gateway_step				=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">ig_intf_ip_addr				=&gt;				'70.0.0.1'					,</p>
+        <p class="CodeBlock">ig_intf_ip_addr_step		=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">ig_intf_ip_prefix_length	=&gt;				'16'						,</p>
+        <p class="CodeBlock">ig_mac_address_init			=&gt;				'00:11:22:33:00:00'				,</p>
+        <p class="CodeBlock">ig_mac_address_step			=&gt;				'00:00:00:00:00:11'				,</p>
+        <p class="CodeBlock">ig_mac_mtu					=&gt;				'1453'						,</p>
+        <p class="CodeBlock">ig_manual_gateway_mac		=&gt;				'00:00:00:00:00:12',</p>
+        <p class="CodeBlock">ig_manual_gateway_mac_step	=&gt;				'00:00:00:00:00:01'				,</p>
+        <p class="CodeBlock">ig_vlan_id					=&gt;				'300,400'						,</p>
+        <p class="CodeBlock">ig_vlan_id_step				=&gt;				'1,1'							,</p>
+        <p class="CodeBlock">ig_vlan_user_priority		=&gt;				'1,2'							,</p>
+        <p class="CodeBlock">intf_ip_addr				=&gt;				'100.0.0.1'						,</p>
+        <p class="CodeBlock">intf_ip_addr_step			=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">intf_ip_prefix_length		=&gt;				'16'							,</p>
+        <p class="CodeBlock">ip_num_sessions				=&gt;				'3'								,</p>
+        <p class="CodeBlock">ipv4_multicast				=&gt;				'225.1.1.1'						,</p>
+        <p class="CodeBlock">mode						=&gt;				'create'						,</p>
+        <p class="CodeBlock">ip_to_vxlan_multiplier		=&gt;				'1'								,</p>
+        <p class="CodeBlock">remote_info_active			=&gt;				'1' 							,</p>
+        <p class="CodeBlock">remote_vm_static_ipv4		=&gt;				'100.0.0.101'					,</p>
+        <p class="CodeBlock">remote_vm_static_mac		=&gt;				'aa:bb:cc:00:00:01'				,</p>
+        <p class="CodeBlock">remote_vtep_ipv4			=&gt;				'70.0.0.100'					,</p>
+        <p class="CodeBlock">sessions_per_vxlan			=&gt;				'2'								,</p>
+        <p class="CodeBlock">static_info_count			=&gt;				'1'								,</p>
+        <p class="CodeBlock">vlan_id						=&gt;				'100,200'						,</p>
+        <p class="CodeBlock">vlan_id_step				=&gt;				'1,1'							,</p>
+        <p class="CodeBlock">vlan_user_priority			=&gt;				'2,6'							,</p>
+        <p class="CodeBlock">vni							=&gt;				'2233'							,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_1_handle = ixiangpf::status_item('vxlan_handle');</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Create a topology and a device group for VXLAN     #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $topology_status = ixiangpf::topology_config ({</p>
+        <p class="CodeBlock">topology_name           =&gt; 'VTEP Group 2',</p>
+        <p class="CodeBlock">port_handle				=&gt; $port_2,</p>
+        <p class="CodeBlock">device_group_multiplier	=&gt; 3,</p>
+        <p class="CodeBlock">device_group_name       =&gt; 'VXLAN DG 2',</p>
+        <p class="CodeBlock">device_group_enabled    =&gt; 1,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">my $dg_handle_1 = ixiangpf::status_item('device_group_handle');</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $mac_start		= "0000.0006.0001";</p>
+        <p class="CodeBlock">my $mac_step		= "0000.0000.1000";</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $command_status = ixiangpf::interface_config ({</p>
+        <p class="CodeBlock">protocol_handle		=&gt; $dg_handle_1,</p>
+        <p class="CodeBlock">src_mac_addr       	=&gt; $mac_start,</p>
+        <p class="CodeBlock">src_mac_addr_step		=&gt; $mac_step,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">my $ethernet_handle_2 = ixiangpf::status_item('ethernet_handle');</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># VXLAN 2 Stack		    							    #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_2_status = ixiangpf::emulation_vxlan_config ({</p>
+        <p class="CodeBlock">create_ig	 				=&gt;				'1'								,</p>
+        <p class="CodeBlock">enable_resolve_gateway		=&gt;				'1'								,</p>
+        <p class="CodeBlock">enable_static_info			=&gt;				'1'								,</p>
+        <p class="CodeBlock">gateway						=&gt;				'100.0.0.1'						,</p>
+        <p class="CodeBlock">gateway_step				=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">handle						=&gt;				$ethernet_handle_2				,</p>
+        <p class="CodeBlock">ig_enable_resolve_gateway	=&gt;				'1'								,</p>
+        <p class="CodeBlock">ig_gateway					=&gt;				'70.0.0.1'						,</p>
+        <p class="CodeBlock">ig_gateway_step				=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">ig_intf_ip_addr				=&gt;				'70.0.0.100'					,</p>
+        <p class="CodeBlock">ig_intf_ip_addr_step		=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">ig_intf_ip_prefix_length	=&gt;				'16'							,</p>
+        <p class="CodeBlock">ig_mac_address_init			=&gt;				'00:56:22:33:00:00'				,</p>
+        <p class="CodeBlock">ig_mac_address_step			=&gt;				'00:00:00:00:00:11'				,</p>
+        <p class="CodeBlock">ig_mac_mtu					=&gt;				'1453'							,</p>
+        <p class="CodeBlock">ig_manual_gateway_mac		=&gt;				'00:00:00:00:00:72'				,</p>
+        <p class="CodeBlock">ig_manual_gateway_mac_step	=&gt;				'00:00:00:00:00:01'				,</p>
+        <p class="CodeBlock">ig_vlan_id					=&gt;				'300,400'						,</p>
+        <p class="CodeBlock">ig_vlan_id_step				=&gt;				'1,1'							,</p>
+        <p class="CodeBlock">ig_vlan_user_priority		=&gt;				'1,2'							,</p>
+        <p class="CodeBlock">intf_ip_addr				=&gt;				'100.0.0.100'					,</p>
+        <p class="CodeBlock">intf_ip_addr_step			=&gt;				'0.0.0.1'						,</p>
+        <p class="CodeBlock">intf_ip_prefix_length		=&gt;				'16'							,</p>
+        <p class="CodeBlock">ip_num_sessions				=&gt;				'3'								,</p>
+        <p class="CodeBlock">ipv4_multicast				=&gt;				'225.1.1.1'						,</p>
+        <p class="CodeBlock">mode						=&gt;				'create'						,</p>
+        <p class="CodeBlock">ip_to_vxlan_multiplier		=&gt;				'1'								,</p>
+        <p class="CodeBlock">remote_info_active			=&gt;				'1' 							,</p>
+        <p class="CodeBlock">remote_vm_static_ipv4		=&gt;				'100.0.0.101'					,</p>
+        <p class="CodeBlock">remote_vm_static_mac		=&gt;				'aa:bb:cc:00:00:01'				,</p>
+        <p class="CodeBlock">remote_vtep_ipv4			=&gt;				'70.0.0.100'					,</p>
+        <p class="CodeBlock">sessions_per_vxlan			=&gt;				'2'								,</p>
+        <p class="CodeBlock">static_info_count			=&gt;				'1'								,</p>
+        <p class="CodeBlock">vlan_id						=&gt;				'100,200'						,</p>
+        <p class="CodeBlock">vlan_id_step				=&gt;				'1,1'							,</p>
+        <p class="CodeBlock">vlan_user_priority			=&gt;				'2,6'							,</p>
+        <p class="CodeBlock">vni							=&gt;				'2233'							,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_2_handle = ixiangpf::status_item('vxlan_handle');</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Start VXLAN#</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_start_1_status = ixiangpf::emulation_vxlan_control ({</p>
+        <p class="CodeBlock">action		=&gt;		'start'		,</p>
+        <p class="CodeBlock">handle		=&gt;		'/topology:1/deviceGroup:1/ethernet:1/ipv4:1/vxlan:1'	,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_start_2_status = ixiangpf::emulation_vxlan_control ({</p>
+        <p class="CodeBlock">action		=&gt;		'start'		,</p>
+        <p class="CodeBlock">handle		=&gt;		'/topology:2/deviceGroup:1/ethernet:1/ipv4:1/vxlan:1'	,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $test_control_status = ixiangpf::test_control ({</p>
+        <p class="CodeBlock">action		=&gt;		'start_all_protocols'	,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">sleep (10);</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># VXLAN	STATS#</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_1_stats = ixiangpf::emulation_vxlan_stats ({</p>
+        <p class="CodeBlock">mode			=&gt;		'aggregate_stats'		,</p>
+        <p class="CodeBlock">port_handle		=&gt;		$port_1	,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nThe aggregate statistics for VXLAN port 1 are:\n";</p>
+        <p class="CodeBlock">my $vxlan_1_aggregate_stats = ixiangpf::get_result_hash();</p>
+        <p class="CodeBlock">ixiangpf::PrintHash($vxlan_1_aggregate_stats);</p>
+        <p class="CodeBlock">print "\n";</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $vxlan_2_stats = ixiangpf::emulation_vxlan_stats ({</p>
+        <p class="CodeBlock">mode			=&gt;		'aggregate_stats'		,</p>
+        <p class="CodeBlock">port_handle		=&gt;		$port_2	,</p>
+        <p class="CodeBlock">});</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">@status_keys = ixiangpf::status_item_keys();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nThe aggregate statistics for VXLAN port 2 are:\n";</p>
+        <p class="CodeBlock">my $vxlan_2_aggregate_stats = ixiangpf::get_result_hash();</p>
+        <p class="CodeBlock">ixiangpf::PrintHash($vxlan_2_aggregate_stats);</p>
+        <p class="CodeBlock">print "\n";</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if ($vxlan_1_aggregate_stats-&gt;{$port_1}-&gt;{'aggregate'}-&gt;{'sessions_up'} ne '3') {</p>
+        <p class="CodeBlock">print ("FAILED - VXLAN not negociated!");</p>
+        <p class="CodeBlock">return $FAILED</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if ($vxlan_2_aggregate_stats-&gt;{$port_2}-&gt;{'aggregate'}-&gt;{'sessions_up'} ne '3') {</p>
+        <p class="CodeBlock">print ("FAILED - VXLAN not negociated!");</p>
+        <p class="CodeBlock">return $FAILED</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\n\nPerforming final session cleanup...\n";</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">$_result_ = ixiangpf::cleanup_session();</p>
+        <p class="CodeBlock">&amp;catch_error();</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nSession cleanup completed.\n";</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">return $PASSED</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">my $test_result = main(@ARGV);</p>
+        <p class="CodeBlock">print "\nTest execution complete.\nStatus: $test_result\n";</p>
+    </body>
+</html>

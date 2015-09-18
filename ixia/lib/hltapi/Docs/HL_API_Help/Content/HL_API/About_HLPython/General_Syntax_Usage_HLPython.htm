@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="High Level API Basics|About HLPython API|HLPython API Basics">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>General Syntax Usage HLPython</title>
+        <link href="../../Resources/Stylesheets/Table_Style_Sheet.css" rel="stylesheet" type="text/css" />
+        <script src="../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../HL_API_Help.htm#HL_API/About_HLPython/General_Syntax_Usage_HLPython.htm">Open topic with navigation</a>
+        </p>
+        <h1>General Syntax and Usage of HLPython</h1>
+        <p>This section describes the desired workflow when creating and running HLPython API scripts.</p>
+        <h2>General HLPython Syntax</h2>
+        <p>All HLPython commands follow the Python dictionary structure and has the following format:</p>
+        <p class="CodeBlock">&lt;namespace&gt;.&lt;command name&gt; (</p>
+        <p class="CodeBlock">parameter0 = ‘value0’,</p>
+        <p class="CodeBlock">parameter1 = ‘value1’,</p>
+        <p class="CodeBlock">…</p>
+        <p class="CodeBlock">parameterN = ‘valueN’ )</p>
+        <p>where <code>&lt;release&gt;</code> is the release designation.</p>
+        <h2>General Result Interpretation</h2>
+        <p>Each HLPython command returns a result in the form of a dictionary. In order to access the respective Python data structure, the user needs to save the command result as follows:</p>
+        <p><code>command_result =   &lt;namespace&gt;.&lt;command_name&gt; ( … )</code>
+        </p>
+        <p>When running the HLPython command, <code>command_result</code> will be initialized as a dictionary containing the <code>key–value</code> combinations returned by the API. Accessing and processing of different keys or values saved in the <code>command_result</code> dictionary happens in a similar manner as with other Python dictionary.</p>
+        <p>The following sample script provided with the HLTAPI installer explains its usage:</p>
+        <p><code>connect_result = ixiangpf.connect (</code>
+        </p>
+        <p class="CodeBlock">ixnetwork_tcl_server = ixnetwork_tcl_server,</p>
+        <p class="CodeBlock">tcl_server = tcl_server,</p>
+        <p class="CodeBlock">device = chassis_ip,</p>
+        <p class="CodeBlock">port_list = port_list,</p>
+        <p class="CodeBlock">break_locks = 1,</p>
+        <p class="CodeBlock">config_file = config_file,</p>
+        <p><code>)</code>
+        </p>
+        <p><code>if connect_result['status'] != '1':</code>
+        </p>
+        <p class="CodeBlock">print "FAIL:"</p>
+        <p class="CodeBlock">print connect_result['log']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p><code>print " Printing connection result"</code>
+        </p>
+        <p><code>pprint(connect_result)</code>
+        </p>
+        <p>&#160;</p>
+        <p><code>Print result:</code>
+        </p>
+        <p><code>{'connection': {'client_version': 7.3.2.1’,</code>
+        </p>
+        <p class="CodeBlock">'hostname': 'Machine1',</p>
+        <p class="CodeBlock">'port': '8009',</p>
+        <p class="CodeBlock">'server_version': ‘7.2.3.1’,</p>
+        <p class="CodeBlock">'username': 'IxNetwork/Machine1/Ixia',</p>
+        <p class="CodeBlock">'using_tcl_proxy': '0'},</p>
+        <p><code>'port_handle': {'10': {'10': {'11': {'12': {'2/1': '1/2/1','2/2': '1/2/2'}}}},</code>
+        </p>
+        <p class="CodeBlock">‘chassis-1': {'2/1': '1/2/1', '2/2': '1/2/2'}},</p>
+        <p><code>'status': '1',</code>
+        </p>
+        <p><code>'vport_list': '1/2/1 1/2/2',</code>
+        </p>
+        <p><code>'vport_protocols_handle': '::ixNet::OBJ-/vport:1/protocols ::ixNet::OBJ-/vport:2/protocols'}</code>
+        </p>
+        <p>The following command format shows on how to access the hostname:</p>
+        <p><code>connect_result[ ‘connection’][‘hostname’]  &gt;&gt;&gt;&gt; will return ‘Machine1’</code>
+        </p>
+        <p><code>or vport_protocols_handle:</code>
+        </p>
+        <p><code>connect_result['vport_protocols_handle']  &gt;&gt;&gt;&gt; will return '::ixNet::OBJ-/vport:1/protocols ::ixNet::OBJ-/vport:2/protocols'</code>
+        </p>
+        <h2>Guidelines for Creating HLPython Script</h2>
+        <p>This section explains the general structure of a HLPython script and lists some of the items that are required for the successful creation and running of the script.</p>
+        <h3>The Header</h3>
+        <p>The following header needs to be present to ensure the correct functioning of a newly created HLPython script:</p>
+        <p><code>import sys, os</code>
+        </p>
+        <p><code>import time, re</code>
+        </p>
+        <p>&#160;</p>
+        <p><code>sys.path.append('/path/to/hltapi/library/common/ixiangpf/python')</code>
+        </p>
+        <p><code>sys.path.append('/path/to/ixnetwork/api/python')</code>
+        </p>
+        <p>&#160;</p>
+        <p><code>from ixiatcl import IxiaTcl</code>
+        </p>
+        <p><code>from ixiahlt import IxiaHlt</code>
+        </p>
+        <p><code>from ixiangpf import IxiaNgpf</code>
+        </p>
+        <p><code>from ixiaerror import IxiaError</code>
+        </p>
+        <p>&#160;</p>
+        <p><code>ixiatcl = IxiaTcl()</code>
+        </p>
+        <p><code>ixiahlt = IxiaHlt(ixiatcl)</code>
+        </p>
+        <p><code>#if the user wishes to set HLTSET at instantiation : ixiahlt = IxiaHlt(ixiatcl, ixia_version='HLTSET166')</code>
+        </p>
+        <p><code>ixiangpf = IxiaNgpf(ixiahlt)</code>
+        </p>
+        <p class="Note">Ensure that the above mentioned imports and paths have the required dependencies satisfied otherwise the access to necessary libraries and modules may be misconfigured thereby causing failure of the script to run.</p>
+        <p>In addition to the dependencies there are three instantiations which are also required to successfully use the NGPF commands provided by the API. The <code> ixiangpf </code> object is subsequenly used with every HLPython command as mentioned in <a href="General_HLPython_Syntax.htm">General HLPython Syntax</a> or the sample scripts, present in the installer.</p>
+        <h3>Content</h3>
+        <p>After the factors mentioed above are included in the script, the user will be able to follow and carry out the general workflow similar to working with HLTAPI or HLPAPI.</p>
+        <p>The following steps show the general format of a HLPython script:</p>
+        <ol>
+            <li value="1">Load the HLPython libraries by using the above mentioned imports and instantiations</li>
+            <li value="2">Connect to the chassis and IxNetwork Tcl Server and reserve ports (load an <code>ixncfg</code>, if needed)</li>
+            <li value="3">Configure the routing and/or switching protocols</li>
+            <li value="4">Configure the traffic items</li>
+            <li value="5">Start the protocol (Collect Protocol Statistics)</li>
+            <li value="6">Start the traffic items </li>
+            <li value="7">Stop protocols and traffic</li>
+            <li value="8">Collect traffic and/or protocol statistics</li>
+            <li value="9">Clean up and release the ports</li>
+        </ol>
+        <p class="Note">This is only an example of a script format and this structure may vary to accommodate the requirements of the user.</p>
+        <h2>Running HLPython Scripts</h2>
+        <p>HLPython scripts run similarly to any other Python script.</p>
+        <p>
+            <ul>
+                <li value="1">On Windows Platform:</li>
+            </ul>
+        </p>
+        <p class="CodeBlock">&lt;python.exe provided by Ixia products&gt; &lt;script name&gt; </p>
+        <p>Refer to the section <a href="Python_Installation_Windows.htm">Installing HLPython API on Windows System </a>for information regarding the location of the Python version installed by our product.</p>
+        <p>
+            <ul>
+                <li value="1">On Linux Platform:</li>
+            </ul>
+        </p>
+        <p class="CodeBlock">ixiapython &lt;script name&gt; </p>
+        <p>Refer to the section <a href="Python_Installation_Unix_Linux.htm">Installing HLPython API on Linux Systems</a> for more information about the <code> ixiapython </code> symbolic lync</p>
+        <p class="Note">If the script is run in any other Python development environments, the configuration will be run in compliance with that specific setup.</p>
+        <hr width="100%" size="0" align="center">
+        </hr>
+    </body>
+</html>

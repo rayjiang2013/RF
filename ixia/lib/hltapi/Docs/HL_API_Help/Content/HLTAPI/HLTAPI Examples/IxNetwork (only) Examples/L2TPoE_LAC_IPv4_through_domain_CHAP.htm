@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|TCL_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>L2TPoE (L2TPoE_LAC_IPv4_through_domain_CHAP.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/L2TPoE_LAC_IPv4_through_domain_CHAP.htm">Open topic with navigation</a>
+        </p>
+        <h1><a name="top"></a>L2TPoE_LAC_IPv4_through_domain_CHAP</h1>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550979"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550980"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550981"></a>
+          # This sample 3 L2TP tunnels, each with 50 sessions, between the Ixia port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550982"></a>
+          # and the DUT. &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550983"></a>
+          # The topology is the following: &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550984"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550985"></a>
+                    &#160;&#160;L2TPoE &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550986"></a>
+          # LAC (DUT) ---------- LNS &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550987"></a>
+          #(Ixia Port) &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(Cisco 7200) &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550988"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550989"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550990"></a>
+          # The sample was tested on a TXS4 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550991"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550992"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550993"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550994"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550995"></a>
+          # DUT config: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550996"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550997"></a>
+          # conf t</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550998"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550999"></a>
+          # username user password 0 pass</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551000"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551001"></a>
+          # vpdn enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551002"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551003"></a>
+          # vpdn-group LNS</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551004"></a>
+          # accept-dialin</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551005"></a>
+          # protocol l2tp</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551006"></a>
+          # virtual-template 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551007"></a>
+          # local name dut</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551008"></a>
+          # l2tp tunnel password 0 ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551009"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551010"></a>
+          # bba-group pppoe LNS_GROUP</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551011"></a>
+          # virtual-template 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551012"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551013"></a>
+          # interface Loopback1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551014"></a>
+          # ip address 54.0.0.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551015"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551016"></a>
+          # interface FastEthernet5/0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551017"></a>
+          # ip address 12.70.0.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551018"></a>
+          # no shutdown</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551019"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551020"></a>
+          # interface Virtual-Template1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551021"></a>
+          # ip unnumbered Loopback1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551022"></a>
+          # peer default ip address pool LNS_POOL</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551023"></a>
+          # ppp authentication chap pap</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551024"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551025"></a>
+          # ip local pool LNS_POOL 54.0.0.2 54.0.0.254</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551026"></a>
+          # !</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551027"></a>
+          # end</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551028"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551029"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551030"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551031"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551032"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551033"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551034"></a>
+          set chassisIP sylvester</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551035"></a>
+          set port_list [list 2/3]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551036"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551037"></a>
+          set tunnel_count 3</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551038"></a>
+          set sessions_per_tunnel 50</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551039"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551040"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551041"></a>
+          # Connect to the chassis, reset to factory defaults and take ownership #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551042"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551043"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551044"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551045"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551046"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551047"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551048"></a>
+          if {[keylget connect_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551049"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551050"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551051"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551052"></a>
+          set port_handle [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551053"></a>
+          foreach port $port_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551054"></a>
+              if {![catch {keylget connect_status port_handle.$chassisIP.$port} \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551055"></a>
+                          temp_port]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551056"></a>
+                  lappend port_handle $temp_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551057"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551058"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551059"></a>
+          set access_port [lindex $port_handle 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551060"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551061"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551062"></a>
+          # Initialize the parameters for the access interface(s) in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551063"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551064"></a>
+          set port_handle_list [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551065"></a>
+          set speed_list [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551066"></a>
+          set duplex_list [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551067"></a>
+          set auto_list [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551068"></a>
+          set phy_mode_list [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551069"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551070"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551071"></a>
+          # Configure the parameters for the access interface(s) in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551072"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551073"></a>
+          for {set i 2} {$i &lt;= [expr $tunnel_count + 1]} {incr i} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551074"></a>
+              lappend port_handle_list $access_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551075"></a>
+              lappend speed_list ether100</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551076"></a>
+              lappend duplex_list half</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551077"></a>
+              lappend phy_mode_list copper</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551078"></a>
+              lappend auto_list 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551079"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551080"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551081"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551082"></a>
+          # Configure the parameters for the network interface(s) in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551083"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551084"></a>
+          lappend port_handle_list $network_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551085"></a>
+          lappend speed_list ether100</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551086"></a>
+          lappend duplex_list half</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551087"></a>
+          lappend phy_mode_list copper</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551088"></a>
+          lappend auto_list 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551089"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551090"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551091"></a>
+          # Configure the interfaces #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551092"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551093"></a>
+          set interface_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551094"></a>
+                  -port_handle $port_handle_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551095"></a>
+                  -mode config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551096"></a>
+                  -speed $speed_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551097"></a>
+                  -duplex $duplex_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551098"></a>
+                  -phy_mode $phy_mode_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551099"></a>
+                  -autonegotiation $auto_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551100"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551101"></a>
+          if {[keylget interface_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551102"></a>
+              return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551103"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551104"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551105"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551106"></a>
+          # Configure L2TP on the access port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551107"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551108"></a>
+          set l2tp_domain_group {{1 12.70.0.1 1 4} {{test 1 1 3 1 .org} {0}}}</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551109"></a>
+          set l2tp_status [::ixia::l2tp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551110"></a>
+                  -port_handle $access_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551111"></a>
+                  -mode lac \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551112"></a>
+                  -l2_encap ethernet_ii \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551113"></a>
+                  -num_tunnels $tunnel_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551114"></a>
+                  -sessions_per_tunnel $sessions_per_tunnel \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551115"></a>
+                  -l2tp_src_addr 12.70.0.2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551116"></a>
+                  -l2tp_dst_addr 12.70.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551117"></a>
+                  -l2tp_src_count $tunnel_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551118"></a>
+                  -l2tp_src_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551119"></a>
+                  -l2tp_dst_step 0.0.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551120"></a>
+                  -tun_distribution domain_group \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551121"></a>
+                  -domain_group_map $l2tp_domain_group \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551122"></a>
+                  -enable_term_req_timeout 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551123"></a>
+                  -attempt_rate 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551124"></a>
+                  -tun_auth \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551125"></a>
+                  -hostname dut \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551126"></a>
+                  -secret ixia \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551127"></a>
+                  -auth_mode chap \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551128"></a>
+                  -username user \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551129"></a>
+                  -password pass \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551130"></a>
+                  -echo_req 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551131"></a>
+                  -echo_rsp 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551132"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551133"></a>
+          if {[keylget l2tp_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551134"></a>
+              return "FAIL - $test_name - [keylget l2tp_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551135"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551136"></a>
+          set access_l2tp_handle [keylget l2tp_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551137"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551138"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551139"></a>
+          # Connect sessions #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551140"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551141"></a>
+          set control_status [::ixia::l2tp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551142"></a>
+                  -handle [list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551143"></a>
+                                      $access_l2tp_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551144"></a>
+                              ] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551145"></a>
+                  -action connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551146"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551147"></a>
+          if {[keylget control_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551148"></a>
+              return "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551149"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551150"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551151"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551152"></a>
+          # Get L2TP aggregate statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551153"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551154"></a>
+          after 10000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551155"></a>
+          set l2tp_status [::ixia::l2tp_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551156"></a>
+                  -port_handle [list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551157"></a>
+                                          $access_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551158"></a>
+                                  ] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551159"></a>
+                  -mode aggregate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551160"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551161"></a>
+          if {[keylget l2tp_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551162"></a>
+              return "FAIL - $test_name - [keylget l2tp_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551163"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551164"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551165"></a>
+          set port_list [keylkeys l2tp_status]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551166"></a>
+          foreach port $port_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551167"></a>
+              if {$port != "status"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551168"></a>
+                  puts "port: $port"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551169"></a>
+                  puts "\ttunnels up: [keylget l2tp_status $port.aggregate.tunnels_up]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551170"></a>
+                  puts "\tsessions up: [keylget l2tp_status $port.aggregate.sessions_up]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551171"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551172"></a>
+          }</p>
+    </body>
+</html>

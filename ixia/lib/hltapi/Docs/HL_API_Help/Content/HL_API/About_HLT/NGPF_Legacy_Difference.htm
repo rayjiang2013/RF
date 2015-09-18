@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="High Level API Basics">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Difference Between NGPF and Legacy Protocols</title>
+        <link href="../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../HL_API_Help.htm#HL_API/About_HLT/NGPF_Legacy_Difference.htm">Open topic with navigation</a>
+        </p>
+        <h1>
+Difference Between NGPF and Legacy Protocols</h1>
+        <p>This section describes the main differences between the legacy HL API and the new NGPF HL API commands. It also includes best practice guidelines that are highlighted throughout this page.</p>
+        <p class="Note">The examples shown in this section are written in TCL, but the information is applicable to all HL APIs (HLT, HLP and HLPy).</p>
+        <h2>Namespaces</h2>
+        <p>Namespace is one of the main differences between the two APIs.</p>
+        <p>The following example shows the usage of <code>ixia</code> namespace in the majority of legacy API scripts :</p>
+        <p class="CodeBlock">::ixia::connect</p>
+        <p class="CodeBlock">::ixia::interface_config</p>
+        <p class="CodeBlock">::ixia::emulation_&lt;protocol&gt;_config</p>
+        <p>and so on.</p>
+        <p>The namespace may vary from <code>ixia</code> to <code>ixiahlt</code> depending on the HL language used.</p>
+        <p>Refer to <b>Namespaces and Packaging</b> sections in the chapters <a href="HLTAPI_preface.htm">HLTAPI Basics</a> and <a href="../About_HLP/HLPAPI_preface.htm">HLPAPI Basics</a> for more information on the usage of namespaces for legacy APIs.</p>
+        <p>All NGPF&#160;protocols use the following <code>ixiangpf</code> namespace:</p>
+        <p class="CodeBlock">::ixiangpf::connect</p>
+        <p class="CodeBlock">::ixiangpf::interface_config</p>
+        <p class="CodeBlock">::ixiangpf::emulation_&lt;protocol&gt;_config</p>
+        <p>and so on.</p>
+        <h2>Workflow</h2>
+        <p>This section describes the details on the commands usage for legacy protocols.</p>
+        <h3>Legacy Protocols</h3>
+        <p>The following format shows a typical legacy script setup:</p>
+        <p>
+            <ol>
+                <li value="1">Connect to the chassis and IxNetwork Tcl Server and reserve ports (load an ixncfg, if needed)</li>
+                <li value="2">Configure interfaces using the interface_config procedure and/or</li>
+                <li value="3">Configure the routing and switching protocols using the <code>emulation_&lt;protocol&gt;_config</code> procedures</li>
+                <li value="4">Configure the traffic items</li>
+                <li value="5">Start the protocols</li>
+				(Collect Protocol Statistics)
+				<li value="6">Start the traffic items</li><li value="7">Stop protocols and traffic</li><li value="8">Collect traffic and/or protocol statistics</li><li value="9">Clean up and release the ports</li></ol>
+        </p>
+        <p>When configuring interfaces and protocols on the assigned ports, the legacy API needs the argument <code>port_handle</code> in the protocol procedures as mentioned above in step 2 and step 3.</p>
+        <p>This is shown in following sample format:</p>
+        <p><code>set interface_status [::ixia::interface_config 	\</code>
+        </p>
+        <p class="CodeBlock"><b>-port_handle       	$port_handle</b>        	\</p>
+        <p class="CodeBlock">-intf_mode          	ethernet           		\</p>
+        <p class="CodeBlock">-phy_mode           	copper             		\</p>
+        <p class="CodeBlock">-autonegotiation    	1                  		\</p>
+        <p class="CodeBlock">]</p>
+        <p><code>if {[keylget interface_status status] != $::SUCCESS} {</code>
+        </p>
+        <p class="CodeBlock">return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p><code>}</code>
+        </p>
+        <p>Or </p>
+        <p><code>set dhcp_portHandle_status [::ixia::emulation_dhcp_config 	\</code>
+        </p>
+        <p class="CodeBlock">-mode                        		create               			\</p>
+        <p class="CodeBlock"><b>-port_handle                 	$port_handle</b>         		\</p>
+        <p class="CodeBlock">-lease_time                  	311                  			\</p>
+        <p class="CodeBlock">-max_dhcp_msg_size           1000                			 \</p>
+        <p class="CodeBlock">-version                     		ixnetwork           			  \</p>
+        <p class="CodeBlock">-reset                                            				\</p>
+        <p class="CodeBlock">-no_write</p>
+        <p><code>]</code>
+        </p>
+        <p><code>if {[keylget dhcp_portHandle_status status] != $::SUCCESS} {</code>
+        </p>
+        <p class="CodeBlock">return "FAIL - $test_name - [keylget dhcp_portHandle_status log]"</p>
+        <p><code>}</code>
+        </p>
+        <p>This parameter is mandatory. Refer to the procedure documentation for information on mandatory parameters that describes the protocol configuration set up on the assigned ports.</p>
+        <h3>NGPF&#160;Protocols</h3>
+        <p>This section describes the details on the commands usage for legacy protocols.</p>
+        <p>The workflow associated with the NGPF HL API will look different.</p>
+        <p>The following items are included in a NGPF HL API script:</p>
+        <p>
+            <ol>
+                <li value="1">Connect to the chassis and IxNetwork Tcl Server and reserve ports (load an ixncfg, if needed)</li>
+                <li value="2">Create <b>topologies</b> on the assigned ports</li>
+                <li value="3">Create <b>device groups</b> in the topologies</li>
+                <li value="4">Add <b>protocol stacks</b> under each device group</li>
+                <li value="5">Create traffic items using the <b>NGPF endpoints</b> provided by the protocol stacks</li>
+                <li value="6">Start the protocols</li>
+                <li value="7">Retrieve protocol statistics</li>
+                <li value="8">Start the traffic items</li>
+                <li value="9">Stop the protocol stacks and traffic items</li>
+                <li value="10">Collect traffic and/or protocol statistics</li>
+                <li value="11">Clean up and release the ports</li>
+            </ol>
+        </p>
+        <p>Some of the new concepts mentioned in points 2, 3, and 4 have been incorporated in NGPF APIs and their associated behavior.      </p>
+        <p>The following sections describe the events created in NGPF GUI when some NGPF specific HL API commands are run.</p>
+        <h4>Creating a Topology</h4>
+        <p>The following sample format shows the creation of a topology:</p>
+        <p><code>set topology_status [::ixiangpf::topology_config	 	\</code>
+        </p>
+        <p class="CodeBlock">-port_handle     		$port_handle		\</p>
+        <p class="CodeBlock">-topology_name   	“Topology 1” 		\</p>
+        <p><code>]</code>
+        </p>
+        <p><code>if {[keylget topology_status status] != $::SUCCESS} {</code>
+        </p>
+        <p class="CodeBlock">puts "FAIL - $test_name - [keylget topology_status log]"</p>
+        <p class="CodeBlock">return 0</p>
+        <p><code>}</code>
+        </p>
+        <p>The following image shows the creation of a topology</p>
+        <p>
+            <img src="../../HLTAPI/Images/Creating_Topology.png" class="image" />
+        </p>
+        <h4>Creating a Device Group</h4>
+        <p>The following factors need to be taken into consideration while creating a device group:</p>
+        <p>
+            <ul>
+                <li value="1">In order to create a device group inside a topology, the handle of the previously created topology is needed:</li><code>set topology_handle [keylget topology_status topology_handle]</code>
+                <li value="2">The topology handle should have the following format:</li><code>/topology:1</code>
+            </ul>
+        </p>
+        <p><code>set deviceGroup_status [::ixiangpf::topology_config        \</code>
+        </p>
+        <p class="CodeBlock">-topology_handle                 $topology_handle    \</p>
+        <p class="CodeBlock">-device_group_multiplier     10			\</p>
+        <p class="CodeBlock">-device_group_name           "Device Group 1"      \</p>
+        <p class="CodeBlock">-device_group_enabled       1			\</p>
+        <p class="CodeBlock">]</p>
+        <p><code>if {[keylget topology_status status] != $::SUCCESS} {</code>
+        </p>
+        <p class="CodeBlock">puts "FAIL - $test_name - [keylget deviceGroup_status log]"</p>
+        <p class="CodeBlock">return 0</p>
+        <p><code>}</code>
+        </p>
+        <p>The following image shows the creation of a device group</p>
+        <p>
+            <img src="../../HLTAPI/Images/Creating_Device_Group.png" class="image" />
+        </p>
+        <p class="Note">A device group can be created by following similar steps as the topology by adding device group parameters in the same <code>topology_config</code> procedure.</p>
+        <h4>Creating Protocol Stacks</h4>
+        <p>The following factors need to be taken into consideration while creating a protocol stack:</p>
+        <p>
+            <ul>
+                <li value="1">In order to add a protocol stack to a specific device group, the user must provide the device group handle to the protocol configuration procedure</li>
+                <li value="2">The specific device group handle can be retrieved from the keyed list returned by the topology_config procedure as mentioned above:</li><code>set deviceGroup_handle [keylget deviceGroup_status device_group_handle]</code>
+                <li value="3">The device group handle must have the following format:</li><code>/topology:1/deviceGroup:1</code>
+            </ul>
+        </p>
+        <p>&#160;</p>
+        <p><code>set dhcp_status [::ixiangpf::emulation_dhcp_group_config  \</code>
+        </p>
+        <p class="CodeBlock">-handle  $deviceGroup_handle                           	     \</p>
+        <p class="CodeBlock">-mode	 create	                                             	    \</p>
+        <p class="CodeBlock">]</p>
+        <p><code>if {[keylget dhcp_status status] != $::SUCCESS} {</code>
+        </p>
+        <p class="CodeBlock">puts "FAIL - $test_name - [keylget dhcp_status log]"</p>
+        <p class="CodeBlock">return 0</p>
+        <p><code>}</code>
+        </p>
+        <p>The following image shows the creation of a protocol stack.</p>
+        <p>
+            <img src="../../HLTAPI/Images/Creating_Protocol_Stacks.png" class="image" />
+        </p>
+        <p><b>Observations:</b>
+        </p>
+        <p>
+            <ul>
+                <li value="1">A DHCPv4 client stack is added in the device group identified by <code>$deviceGroup_handle</code>.</li>
+                <li value="2">The <b>Ethernet stack is added by default</b> under the DHCPv4 item even if it is not configured manually. This behavior is consistent across any protocol that requires other stacks under it to function correctly.</li>
+                <li value="3">The following example shows as to how the user can add the Ethernet stack separately using the <code>interface_config</code> procedure:</li><code>set ethernet_status [::ixiangpf::interface_config 	\</code>
+                <p class="CodeBlock">-protocol_name                	{Ethernet 1}               	\</p>
+                <p class="CodeBlock">-protocol_handle              	$deviceGroup_handle    \</p>
+                <p class="CodeBlock">-mtu                          	          	1500       \</p>
+                <p class="CodeBlock">-src_mac_addr                 	00.11.01.00.00.01	\</p>
+                <p class="CodeBlock">-vlan                         	           	0                          		\</p>
+                <p class="CodeBlock">-vlan_id                      	1                          		\</p>
+                <p class="CodeBlock">-vlan_id_step                 	0                          		\</p>
+                <p class="CodeBlock">-vlan_id_count                	1                          		\</p>
+                <p class="CodeBlock">-vlan_tpid                    	0x8100                     	\</p>
+                <p class="CodeBlock">-vlan_user_priority           	0                          		\</p>
+                <p class="CodeBlock">-vlan_user_priority_step      0                          		\</p><code>]</code>
+                <li value="4">The DHCPv4 configuration procedure shown above returns a protocol handle that can be further used for modifications and/or starting the protocol:</li>
+                <p><code>dhcpv4client_handle: /topology:1/deviceGroup:1/ethernet:1/dhcpv4client:1</code> <![CDATA[ ]]></p>
+                <li value="5">The same procedure provides control over each of the 10 DHCPv4 devices (<code>device_group_multiplier = 10</code>), by returning a handle for each item as shown in the sample format:</li><code>handle: /topology:1/deviceGroup:1/ethernet:1/dhcpv4client:1/item:1</code>
+                <p class="CodeBlock">&#160;&#160;&#160;&#160;<code>/topology:1/deviceGroup:1/ethernet:1/dhcpv4client:1/item:2</code></p>
+                <p class="CodeBlock">&#160;&#160;&#160;&#160;<code>…</code></p>
+                <p class="CodeBlock">&#160;&#160;&#160;&#160;<code>/topology:1/deviceGroup:1/ethernet:1/dhcpv4client:1/item:10</code></p>
+            </ul>
+        </p>
+        <h4>Multi-Value Structures</h4>
+        <p>NGPF API models all protocols and configuration data using a new multi-value based property that represents thousands of sessions in a single range and row in the GUI and provides detailed view and full read/write access to individual protocol sessions.</p>
+        <p> The HL NGPF API enables these structures by using the <code>multivalue_config</code> procedure. Using this procedure, the user can configure multi-value structures in each protocol stack in which the IxNetwork GUI permits it.</p>
+        <p>The following samples show the regular workflow using this procedure:</p>
+        <p><code>set multivalue_1_status [::ixiangpf::multivalue_config 		\</code>
+        </p>
+        <p class="CodeBlock">-pattern                			counter                 	\</p>
+        <p class="CodeBlock">-counter_start          		2000:0:0:1:0:0:0:2      	\</p>
+        <p class="CodeBlock">-counter_step           		0:0:0:1:0:0:0:0         	\</p>
+        <p class="CodeBlock">-counter_direction      		increment               	\</p>
+        <p class="CodeBlock">-nest_step              			0:0:0:1:0:0:0:0        	 \</p>
+        <p class="CodeBlock">-nest_owner             		$topology_1_handle     	 \</p>
+        <p class="CodeBlock">-nest_enabled           		1                      		\</p>
+        <p><code>]</code>
+        </p>
+        <p><code>set <b>multivalue_1_handle</b> [keylget multivalue_1_status multivalue_handle]</code>
+        </p>
+        <p>&#160;</p>
+        <p><code>set multivalue_2_status [::ixiangpf::multivalue_config 	\</code>
+        </p>
+        <p class="CodeBlock">-pattern                			counter                 	\</p>
+        <p class="CodeBlock">-counter_start          		2000:0:0:1:0:0:0:1      	\</p>
+        <p class="CodeBlock">-counter_step          			 0:0:0:1:0:0:0:0         	\</p>
+        <p class="CodeBlock">-counter_direction      		increment               	\</p>
+        <p class="CodeBlock">-nest_step              			0:0:0:1:0:0:0:0        	\</p>
+        <p class="CodeBlock">-nest_owner             		$topology_1_handle    	 \</p>
+        <p class="CodeBlock">-nest_enabled           		1                     		 \</p>
+        <p><code>]</code>
+        </p>
+        <p><code>set <b>multivalue_2_handle</b> [keylget multivalue_2_status multivalue_handle]</code>
+        </p>
+        <p>&#160;</p>
+        <p><code>set ipv6_1_status [::ixiangpf::interface_config 		\</code>
+        </p>
+        <p class="CodeBlock">-protocol_name                     		{IPv6 1}                  	\</p>
+        <p class="CodeBlock">-protocol_handle                   		$ethernet_1_handle       \</p>
+        <p class="CodeBlock">-ipv6_multiplier                   		1                         		\</p>
+        <p class="CodeBlock">-ipv6_resolve_gateway              	1                         		\</p>
+        <p class="CodeBlock">-ipv6_manual_gateway_mac           00.00.00.00.00.01         	\</p>
+        <p class="CodeBlock">-ipv6_manual_gateway_mac_step	00.00.00.00.00.00	\</p>
+        <p class="CodeBlock">-ipv6_gateway                      		<b>$multivalue_2_handle</b>   \</p>
+        <p class="CodeBlock">-ipv6_intf_addr                    		<b>$multivalue_1_handle</b>   \</p>
+        <p class="CodeBlock">-ipv6_prefix_length               		 64                        	\</p>
+        <p><code>]</code>
+        </p>
+        <p>The two <code>multivalue_config</code> procedures shown above return one <code>multivalue_handle</code> each. This handle is then passed to the protocol configuration procedure which uses the <br />multi-value structure to configure patterns for its sessions.</p>
+        <p>The following figure shows the IxNetwork GUI after the above commands are run:</p>
+        <p>
+            <img src="../../HLTAPI/Images/Multi_Value_Structure.png" class="image" />
+        </p>
+        <p>The <b>Address</b> column contains the pattern set by passing the <code>$multivalue_1_handle</code> to the <code>interface_config</code> procedure. Similarly, <b>Gateway IP</b> is configured by setting the ipv6_gateway parameter to <code>$multivalue_1_handle</code>.</p>
+        <p>Refer to chapters of NGPF APIs for further information on the available parameters for <code>multivalue_config</code> procedure.</p>
+        <h2>Outlining Key Aspects of NGPF and Legacy Protocols</h2>
+        <p>The following key aspects should be taken into consideration when creating NGPF HL API scripts based on the differences in namespace and workflow as discussed earlier in this section.</p>
+        <p>
+            <ol>
+                <li value="1">Legacy and NGPF configurations <b>on the same physical port</b> are not permitted. The API provides the ability to either configure an NGPF scenario or a legacy scenario on a single port at one time.</li>
+                <li value="2">The NGPF API is based on a stacking behavior, while the legacy API considers more of a linear structure.</li>
+                <li value="3">As NGPF APIs are based on stacking behavior, so the protocol configuration procedures are required as mandatory parameters and handles retrieved from other protocols/NGPF structural configuration procedures. This implies that the port_handle parameter (usually used in legacy APIs) will not be used anymore and will be replaced with the <br /><code>protocol_handle/handle</code> parameter when configuring protocols in NGPF APIs. (For further information on which handle to use, refer to the documentation of the desired procedure).This particular handle is the handle of the device group in which the protocol stack must be created or the handle of the protocol stack that is below the one the user wants to add (Example: IPv4 stack over Ethernet Stack).</li>
+                <p>&#160;</p>Therefore, the stacking behavior is shown in the NGPF HL API by passing the handle of a protocol stack to the stack above and subsequently passing handles of other stacks to the stacks above them by using the <code>protocol_handle/handle parameter</code>.
+				<p>&#160;</p>Refer to the samples provided with the installer for more examples on the workflow operation.
+				<li value="4">The NGPF API provides more flexibility in configuring protocol sessions by using the <code>multivalue_config</code> procedure. </li><li value="5">The traffic items are created using NGPF endpoints and not legacy ones. This means that the <code>emulation_src_handle</code> and <code>emulation_dst_handle</code> parameters will contain NGPF endpoint handles.</li></ol>
+        </p>
+        <hr width="100%" size="0" align="center" />
+    </body>
+</html>

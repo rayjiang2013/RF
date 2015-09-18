@@ -1,0 +1,431 @@
+
+<HTML>
+<TITLE>
+        Ixia Software Release Notes
+    : 
+        HLT API 4.96 GA
+     : 
+        Build Number: 4.96.118.5 (March 12, 2015)
+    </TITLE>
+<BODY>
+
+<CENTER>
+<H1>
+        Ixia Software Release Notes
+    <BR>
+        HLT API 4.96 GA
+    <BR>
+        Build Number: 4.96.118.5 (March 12, 2015)
+    </H1>
+</CENTER>
+<UL>
+<LI>
+<A HREF="#About This Release">About This Release</A>
+</LI>
+<LI>
+<A HREF="#Ixia Software Compatibility">Ixia Software Compatibility</A>
+</LI>
+<LI>
+<A HREF="#Installation Notes">Installation Notes</A>
+</LI>
+<LI>
+<A HREF="#How to Report Problems">How to Report Problems</A>
+</LI>
+<LI>
+<A HREF="#Additional Documentation">Additional Documentation</A>
+</LI>
+<LI>
+<A HREF="#Resolved Defects List">Resolved Defects List</A>
+</LI>
+<LI>
+<A HREF="#Known Issues">Known Issues</A>
+</LI>
+</UL>
+<BR>
+<HR>
+   
+
+<H2>
+<A NAME="About This Release">About This Release</A>
+</H2>
+<PRE>
+HLTAPI 4.96 GA is a "General Availability" release. 
+
+It is a full-featured, fully-supported HLTAPI release, that may be used in 
+a production environment, when new features and/or hardware support are required.
+Please see the "What's New" section below for more information.     
+</PRE>
+<HR>
+      
+   
+
+
+
+
+
+<H2>
+<A NAME="Ixia Software Compatibility">Ixia Software Compatibility</A>
+</H2>
+<PRE>
+<table border="2" cellspacing="2" cellpadding="1" width="650">
+        <thead>
+            <tr>
+                <th>env(IXIA_VERSION)</th>
+                <th>HLT</th>
+                <th>IxOS</th>
+                <th>IxRouter</th>
+                <th>IxNetwork</th>
+               <th>IxLoad</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr>
+                <td>HLTSET175</td>
+                <td>4.96 GA</td>
+                <td>6.80 EA SP1</td>
+                <td>N/A</td>
+                <td>7.41 EA (P)</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>HLTSET176</td>
+                <td>4.96 GA</td>
+                <td>6.80 EA SP1</td>
+                <td>N/A</td>
+                <td>7.41 EA (N)</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>HLTSET177</td>
+                <td>4.96 GA</td>
+                <td>6.80 EA SP1</td>
+                <td>N/A</td>
+                <td>7.41 EA (NO)</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>HLTSET178</td>
+                <td>4.96 GA</td>
+                <td>6.80 EA SP1</td>
+                <td>N/A</td>
+                <td>7.41 EA (P2NO)</td>
+                <td>N/A</td>
+            </tr>                  
+        </tbody>
+    </table>
+
+
+Note: Based on the HLTSET, HLT loads different sets of APIs as described below:
+
+- *P-Loads:
+   o IxOS (tclHal API)
+   o IxTclProtocols
+  
+- *N-Loads: 
+   o IxOS (tclHal API) 
+   o IxTclNetwork 
+   
+- *NO-Loads: 
+   o IxTclNetwork (only; without IxTclHal) 
+   
+- *P2NO-Loads: 
+   o If -ixnetwork_tcl_server parameter is NOT provided in ::ixia::connect (same as *P) 
+        + IxOS (tclHal API) 
+        + IxTclProtocols 
+
+   o If -ixnetwork_tcl_server parameter is provided in ::ixia::connect (same as *NO) 
+        +IxTclNetwork (only; without IxTclHal)      
+
+The default setting for env(IXIA_VERSION) is the latest HLTSET___ value, if the 
+value is not set. If the value is set to an IxOS major.minor version, then the 
+largest HLTSET list that corresponds to that IxOS version is used.
+
+For additional product compatibility information please refer to the following 
+online utility. An Ixia website account is required before accessing.
+  
+<A HREF="http://www.ixiacom.com/support-overview/product-support/product-compatibility-matrix">http://www.ixiacom.com/support-overview/product-support/product-compatibility-matrix</A>
+
+<H3>IxNetwork API Notes</H3>
+HLT will be supporting both of the Tcl APIs that can be run via IxNetwork. To 
+determine which one you will use, the HLTSET values for IxNetwork have been 
+enhanced. You will now see either a P (IxTclProtocol, old API path) or a 
+N (IxTclNetwork, new API path) after the IxNetwork version in the HLTSET.
+
+
+<H3>Previous Release Notes</H3> 
+Please visit the <A HREF="http://www.ixiacom.com/support-overview/product-support/downloads-updates/versions/7726">HLT API support web page</A> for the Release Notes of previous HLTAPI versions.
+</PRE>
+<HR>
+   
+
+
+<H2>
+<A NAME="Installation Notes">Installation Notes</A>
+</H2>
+<PRE>
+   
+<H3>Installing on HLT API Windows</H3>
+HLT API now ships with a windows installation program. To install, simply execute 
+HLTAPI_4.96_GA.exe.
+
+<H3>Installing platform independent HLT API</H3>
+
+The package is in a ZIP file named: ixia_hlt_api_4.96_GA.tar.gz
+
+This compressed TAR file contains all the libraries and utilities to call the 
+Ixia package.
+
+Copy all directories and files from the zip or tar file into the /lib directory 
+of your platform (Unix/Linux/Windows). Verify that the installed environment has 
+a pointer to where the package files live.  You will also need the IxOS and IxNetwork 
+platform independent libraries (please refer to IxOS and IxNetwork docs for installation
+instructions)
+
+The library procs may be accessed via the command "package require Ixia".
+
+<H3>Native RedHat/Cent OS installers of HLT API</H3>
+
+In this release, native installers are available for Red Hat and Cent OS Linux.
+These installers include Tcl 8.5, Python 2.7 and Perl 5.18.1.
+
+For Perl, we include Active State Perl 5.18.1.1800 version patched for TclX package inclusion 
+(which is broken in the Active State Perl release).
+A symlink will be added to the /usr/bin folder called "ixiaperl". This symlink will
+refer to our latest installed version so you can run perl scripts using the "ixiaperl" command.
+Perl symlink of other Perl distributions will not be changed.
+
+Similar to Perl, we are adding a symlink for Python, called "ixiapython", which will point to latest
+Ixia Python installation.
+        
+
+<H3>Tcl/Tk Support for Client Applications</H3>
+Installation of Tcl Server is required to support execution of UNIX-based legacy 
+Tcl scripts.  
+
+For UNIX-based IxNetwork API (new) Tcl scripting, it utilizes an IxNetwork GUI 
+client started in Tcl Server mode as well as the Tcl Server.  Please refer to 
+the IxNetwork documentation for guidance on its usage.
+</PRE>
+<HR> 
+
+
+<H2>
+<A NAME="How to Report Problems">How to Report Problems</A>
+</H2>
+<PRE>
+<table width="90%" border="1">
+<!--
+<table style="table-layout:fixed" id="contactList" border="1">
+-->
+<tfoot>
+    <tr>
+    <td colspan="2"><font size="1.5">Contact List Change: 4150211; Date: 2013/09/24</font></td>
+    </tr>
+</tfoot>
+<tbody>
+    <tr>
+        <td>
+            <p><b> USA, Canada and Latin America Customer Support</b></p>
+        </td>
+        <td>
+            <table width="100%" border="1">
+            <tr>
+              <td width="10%" rowspan="1"><b>Hours:</b></td>
+              <td>6:00am PST to 6:00pm PST</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Email:</b></td>
+              <td><A HREF="mailto:support@ixiacom.com">support@ixiacom.com</A></td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Phone:</b></td>
+              <td>+1-818-595-2599</br></td>
+            </tr>
+            </table>
+        </td>
+    </tr>     
+    <tr>
+        <td>
+            <p><b> Europe, Middle East, and Africa Customer Support</b></p>
+        </td>
+        <td>
+            <table width="100%" border="1">
+            <tr>
+              <td  width="10%" rowspan="1"><b>Hours:</b></td>
+              <td>07:00 to 17:30 GMT</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Email:</b></td>
+              <td><A HREF="mailto:support-emea@ixiacom.com">support-emea@ixiacom.com</A></td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Phone:</b></td>
+              <td>+40-21-301-5699</td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><b> India Customer Support</b></p>
+        </td>
+        <td>
+            <table width="100%" border="1">
+            <tr>
+              <td  width="10%" rowspan="1"><b>Hours:</b></td>
+              <td>09:00 to 17:30 local time</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Email:</b></td>
+              <td><A HREF="mailto:support-india@ixiacom.com">support-india@ixiacom.com</A></td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Phone:</b></td>
+              <td>+91-80-4939-6410</td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><b>China Customer Support</b></p>
+        </td>
+        <td>
+            <table width="100%" border="1">
+            <tr>
+              <td  width="10%" rowspan="1"><b>Hours:</b></td>
+              <td>09:00 - 18:00 local time (Beijing time), Monday through Friday</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Email:</b></td>
+              <td><A HREF="mailto:support-china@ixiacom.com ">support-china@ixiacom.com </A></td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Phone:</b></td>
+              <td>400-898-0598 (Greater China region)</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Phone:</b></td>
+              <td>+86-10-5732-3932 (Hong Kong customers)</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Fax:</b></td>
+              <td>+86-10-8454-9198</td>
+            </tr>
+            </table>
+        </td>
+    </tr>    
+    <tr>
+        <td>
+            <p><b> Asia Pacific Customer Support</b></p>
+        </td>
+        <td>
+            <table width="100%" border="1">
+            <tr>
+              <td  width="10%" rowspan="1"><b>Hours:</b></td>
+              <td>09:00 to 17:30 local time (Singapore)</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Email:</b></td>
+              <td><A HREF="mailto:support-asiapac@ixiacom.com">support-asiapac@ixiacom.com</A></td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Phone</b>:</td>
+              <td>+91-80-4939-6410</td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><b>Japan Customer Support</b></p>
+        </td>
+        <td>
+            <table width="100%" border="1">
+            <tr>
+              <td  width="10%" rowspan="1"><b>Hours:</b></td>
+              <td>09:00 to 17:30 local time (Japan), Business days</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Email:</b></td>
+              <td><A HREF="mailto:support-japan@ixiacom.com">support-japan@ixiacom.com</A></td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Phone:</b></td>
+              <td>+81-3-5326-1980</td>
+            </tr>
+            <tr>
+              <td rowspan="1"><b>Fax:</b></td>
+              <td>+81-3-3348-7733</td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+</tbody>
+</table>
+</PRE>
+<HR>
+
+<H2>
+<A NAME="Additional Documentation">Additional Documentation</A>
+</H2>
+<PRE>
+Please refer to our website at <A HREF="http://www.ixiacom.com/support-services/product-support/user-guides">http://www.ixiacom.com/support-services/product-support/user-guides</A>. 
+
+You will be required to provide a login and password to enter this section of 
+the web site. If you do not have the username and password, please forward your 
+request to <A HREF="mailto:support@ixiacom.com">mailto:support@ixiacom.com</A>.
+</PRE>
+<HR>
+
+
+
+    
+        
+<H2>
+<A NAME="What's New in HLT API">What's New in HLT API</A>
+</H2>       
+
+
+
+<H2>4.96 GA Features</H2>
+
+
+
+
+
+
+
+ 
+    
+<HR>
+
+
+    
+        
+<H2>
+<A NAME="Resolved Defects List">Resolved Defects List</A>
+</H2>
+
+    
+<P>
+<HR>
+</P>
+
+
+
+<H2>
+<A NAME="Known Issues">Known Issues</A>
+</H2>
+<PRE>
+Please visit the <A HREF="http://www.ixiacom.com/support-overview/product-support/downloads-updates/versions/7726">HLT API support web page</A> for more information on known issues related to this release.
+An Ixia website account is required before accessing.
+</PRE>
+<HR>
+
+    
+
+
+
+</BODY>
+</HTML>

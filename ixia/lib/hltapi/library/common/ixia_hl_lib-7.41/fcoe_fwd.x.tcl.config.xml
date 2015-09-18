@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method name="fcoe_fwd_config" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" displayPriority="0">
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkSupport" contentType="new" target="noTarget">Performs fcoe_fwd configuration</description>
+  <chapter>FCOE APIs</chapter>
+  <arguments>
+    <argument name="mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The operation this command will execute</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>create</choiceName>
+              <choiceText>creates and configures a new object</choiceText>
+            </choice>
+            <choice>
+              <choiceName>add</choiceName>
+              <choiceText>adds a child object to the one specified by the -handle param</choiceText>
+            </choice>
+            <choice>
+              <choiceName>modify</choiceName>
+              <choiceText>modified attributes on the given object by the -handle param</choiceText>
+            </choice>
+            <choice>
+              <choiceName>delete</choiceName>
+              <choiceText>deletes the object given by the -handle param</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="create add modify delete" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="parent_handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The parent handle used for creating this object. Has the form: //vport</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>A handle returned via a ::&lt;namespace&gt;::fcoe_fwd_config command. This is used for mode modify</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="style" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="b2b_rx_size" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The buffer-to-buffer receive data field size in bytes.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="2112" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="enabled" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Disabled ranges won&apos;t be configured nor validated.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fabric_name" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The Fabric Name value assigned to this interface.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="B0:00:0E:FC:00:00:00:00" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fc_map" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The MAC Address Prefix associated to local FC fabric.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="0E.FC.00" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fdisc_reject_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>When the user enters N, IxNetwork FCF will send out one LS_RJT for every N-th FDISC request.
+If N = 0, no FDISC request will be rejected.
+If N = 1, every FDISC request will be rejected.
+If N = 10, then the first 9 FDISC requests will be accepted, and the 10th will be rejected.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_addressing_mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The MAC Addressing Mode supported by this interface.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>fabric-provided</choiceName>
+              <choiceText>FPMA</choiceText>
+            </choice>
+            <choice>
+              <choiceName>server-provided</choiceName>
+              <choiceText>SPMA</choiceText>
+            </choice>
+            <choice>
+              <choiceName>both</choiceName>
+              <choiceText>Both</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="fabric-provided server-provided both" />
+        <restriction type="DEFAULT" value="fabric-provided" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_advertisement_period" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The interval in milliseconds between periodic Discovery Advertisements.
+It is also used to monitor the interval between ENodes FIP Keep-Alive frames.
+A value of 0 milliseconds indicates that no Keep-Alive message is expected.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="8000" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_clear_vlink_on_expire" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>[no description available]</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_clear_vlink_port_ids" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>[no description available]</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_enabled" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Select this option to respond to general FIP requests.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_fka_dbit" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>When the D bit is set, the VF_Port will not verify periodic reception
+of ENode FIP Keep-Alive and VN_Port FIP Keep-Alive frames.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_priority" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The FIP Priority value sent with Discovery Advertisements.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="128" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_version" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The FIP version to use.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>0</choiceName>
+              <choiceText>Version 0</choiceText>
+            </choice>
+            <choice>
+              <choiceName>1</choiceName>
+              <choiceText>Version 1</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_vlan_discovery" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Select this option to respond to FIP VLAN Discovery requests.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="fip_vnport_keep_alive_period" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The interval in milliseconds between periodic VN_Port FIP Keep-Alive frames.
+A value of 0 milliseconds indicates that no Keep-Alive message is expected.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="90000" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="flogi_reject_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>When the user enters N, IxNetwork FCF will send out one LS_RJT for every N-th FLOGI request.
+If N = 0, no FLOGI request will be rejected.
+If N = 1, every FLOGI request will be rejected.
+If N = 10, then the first 9 FLOGI requests will be accepted, and the 10th will be rejected.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="logo_reject_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>When the user enters N, IxNetwork FCF will send out one LS_RJT for every N-th LOGO request.
+If N = 0, no LOGO request will be rejected.
+If N = 1, every LOGO request will be rejected.
+If N = 10, then the first 9 LOGO requests will be accepted, and the 10th will be rejected.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="mac_range_count" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The total number of interfaces to be created for the range.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="mac_range_enabled" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Disabled ranges won&apos;t be configured nor validated.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="mac_range_increment_by" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>When a range of multiple MACs is created with this plugin, this value
+is the incrementor used to create the addresses in the range.
+This property is used in conjunction with &apos;MAC Address&apos; as a base value.
+Incrementor used when the plugin creates a range of MACs.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="00:00:00:00:00:01" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="mac_range_mac" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>When a range of multiple MACs is created with this plugin, this value
+is the base value used to create the addresses in the range.
+This property is used in conjunction with &apos;Increment&apos; as an incrementor.
+Base value used when the plugin creates a MAC address.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="aa:bb:cc:00:00:00" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="mac_range_mtu" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Maximum Transmission Unit.
+The largest packet that a given network medium can carry.
+Ethernet, for example, has a fixed MTU of 1500 bytes without and 9500 bytes with Jumbo frame support.
+ATM has a fixed MTU of 48 bytes and PPP has a negotiated MTU that is usually between 500 and 2000 bytes.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1500" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="mac_range_name" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Name of range</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="name" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Name of range</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="name_server" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Select this option to respond to Name Service requests.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="name_server_commands" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Signifies the Name Server Commands that will be accepted by the forwarder.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="operating_mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Describes the operating mode for this interface.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>VF_PORT</choiceName>
+              <choiceText>VF_PORT</choiceText>
+            </choice>
+            <choice>
+              <choiceName>F_PORT</choiceName>
+              <choiceText>F_PORT</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="VF_PORT F_PORT" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="plogi_reject_interval" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>When the user enters N, IxNetwork FCF will send out one LS_RJT for every N-th PLOGI request.
+If N = 0, no PLOGI request will be rejected.
+If N = 1, every PLOGI request will be rejected.
+If N = 10, then the first 9 PLOGI requests will be accepted, and the 10th will be rejected.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="0" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="switch_name" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The Switch Name value assigned to this interface.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+        <restriction type="DEFAULT" value="A0:00:0E:FC:00:00:00:00" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_ids" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The VLAN ID list sent with VLAN Notifications (e.g. 10,20).
+Discovery Advertisements will be periodically sent for each VLAN ID specified in this list.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_enabled" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Disabled ranges won&apos;t be configured nor validated.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="true" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_first_id" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The first ID to be used for the first VLAN tag.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_id_incr_mode" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Method used to increment VLAN IDs.
+May take the following values: 0 (First VLAN first), 1 (Last VLAN first), 2 (All).</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>0</choiceName>
+              <choiceText>Outer First</choiceText>
+            </choice>
+            <choice>
+              <choiceName>1</choiceName>
+              <choiceText>Inner First</choiceText>
+            </choice>
+            <choice>
+              <choiceName>2</choiceName>
+              <choiceText>All</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1 2" />
+        <restriction type="DEFAULT" value="2" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_increment" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Amount of increment per increment step for first VLAN. E.g. increment step = 10 and increment = 2 means increment VLAN ID by 2 for every 10 IPs</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_increment_step" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Frequency of first VLAN ID increment. E.g., value of 10 means increment VLAN ID once for every 10 IP addresses.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_inner_enable" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Enable the inner VLAN.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>true</choiceName>
+              <choiceText>Value is true</choiceText>
+            </choice>
+            <choice>
+              <choiceName>false</choiceName>
+              <choiceText>Value is false</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="true false" />
+        <restriction type="DEFAULT" value="false" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_inner_first_id" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The first ID to be used for the inner VLAN tag.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_inner_increment" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Amount of increment per increment step for Inner VLAN. E.g. increment step = 10 and increment = 2 means increment VLAN ID by 2 for every 10 IPs</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_inner_increment_step" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Frequency of inner VLAN ID increment. E.g., value of 10 means increment VLAN ID once for every 10 IP addresses.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_inner_priority" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The 802.1Q priority to be used for the inner VLAN tag.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_inner_tpid" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The TPID value in the inner VLAN Tag.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>0x8100</choiceName>
+              <choiceText>0x8100</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x88a8</choiceName>
+              <choiceText>0x88a8</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x9100</choiceName>
+              <choiceText>0x9100</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x9200</choiceName>
+              <choiceText>0x9200</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x9300</choiceName>
+              <choiceText>0x9300</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0x8100 0x88a8 0x9100 0x9200 0x9300" />
+        <restriction type="DEFAULT" value="0x8100" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_inner_unique_count" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Number of unique inner VLAN IDs to use.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="4094" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_name" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Name of range</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_priority" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The 802.1Q priority to be used for the outer VLAN tag.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="1" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_tpid" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>The TPID value in the outer VLAN Tag.</pre>
+          </text>
+          <choices>
+            <choice>
+              <choiceName>0x8100</choiceName>
+              <choiceText>0x8100</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x88a8</choiceName>
+              <choiceText>0x88a8</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x9100</choiceName>
+              <choiceText>0x9100</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x9200</choiceName>
+              <choiceText>0x9200</choiceText>
+            </choice>
+            <choice>
+              <choiceName>0x9300</choiceName>
+              <choiceText>0x9300</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0x8100 0x88a8 0x9100 0x9200 0x9300" />
+        <restriction type="DEFAULT" value="0x8100" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_unique_count" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Number of unique first VLAN IDs to use.</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+        <restriction type="DEFAULT" value="4094" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+    <argument name="vlan_range_vlan_id_info" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text textType="htmlText">
+            <pre>Contains extra VLANs
+Is a subelement of type: VlanIdInfo</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue>
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>log</key>
+      <value>Error message if command returns {status 0}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>handles</key>
+      <value>The returned handle(s) of the  config command.</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <examples>
+    <example>See files in the Samples subdirectory</example>
+  </examples>
+  <sampleInput />
+  <sampleOutput />
+  <notes />
+  <seeAlso>
+    <seeAlsoElem supportType="all">This command applies only to IxNetwork</seeAlsoElem>
+    <seeAlsoElem supportType="all">External documentation on Tclx keyed lists</seeAlsoElem>
+  </seeAlso>
+</method>

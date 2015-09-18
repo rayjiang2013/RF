@@ -1,0 +1,390 @@
+##Procedure Header
+# 
+# Name:
+#     ixia::dcbxrange_config
+# 
+# Description:
+#     Performs dcbxrange configuration.
+#     
+# 
+# Synopsis:
+#     ixia::dcbxrange_config
+#          -mode CHOICES create add modify delete
+#          -parent_handle ANY
+#         [-handle ANY]
+#         [-style ANY]
+#         [-chassis_id ANY  DEFAULT 00:00:00:00:00:00]
+#         [-control_tlv_max_version RANGE 0 - 255 DEFAULT 255]
+#         [-dcbx_enable CHOICES true false  DEFAULT true]
+#         [-dcbx_subtype CHOICES 1 2 3 DEFAULT 2]
+#         [-dest_mac_address ANY  DEFAULT 01:80:C2:00:00:0E]
+#         [-enabled CHOICES true false  DEFAULT true]
+#         [-fast_init_enable CHOICES true false  DEFAULT true]
+#         [-hold_time RANGE 2 - 10 DEFAULT 4]
+#         [-mac_range_count RANGE 1 - 1000000000 DEFAULT 1]
+#         [-mac_range_enabled CHOICES true false  DEFAULT true]
+#         [-mac_range_increment_by ANY  DEFAULT 00:00:00:00:00:01]
+#         [-mac_range_mac ANY  DEFAULT aa:bb:cc:00:00:00]
+#         [-mac_range_mtu RANGE 500 - 9500 DEFAULT 1500]
+#         [-mac_range_name ANY  DEFAULT {}]
+#         [-name ANY  DEFAULT {}]
+#         [-oui ANY  DEFAULT 00.1B.21]
+#         [-port_id_interface_name ANY  DEFAULT {&lt;interface name&gt;}]
+#         [-port_id_mac_address ANY  DEFAULT 00:00:00:00:00:00]
+#         [-port_id_sub_type CHOICES 0 1 DEFAULT 0]
+#         [-tx_delay RANGE 1 - 8192 DEFAULT 2]
+#         [-tx_interval RANGE 5 - 32768 DEFAULT 30]
+#         [-vlan_range_enabled CHOICES true false  DEFAULT true]
+#         [-vlan_range_first_id RANGE 0 - 4094 DEFAULT 1]
+#         [-vlan_range_id_incr_mode CHOICES 0 1 2 DEFAULT 2]
+#         [-vlan_range_increment RANGE 0 - 4095 DEFAULT 1]
+#         [-vlan_range_increment_step RANGE 1 - 1000000000 DEFAULT 1]
+#         [-vlan_range_inner_enable CHOICES true false  DEFAULT false]
+#         [-vlan_range_inner_first_id RANGE 0 - 4094 DEFAULT 1]
+#         [-vlan_range_inner_increment RANGE 0 - 4095 DEFAULT 1]
+#         [-vlan_range_inner_increment_step RANGE 1 - 1000000000 DEFAULT 1]
+#         [-vlan_range_inner_priority RANGE 0 - 7 DEFAULT 1]
+#         [-vlan_range_inner_tpid CHOICES 0x8100 0x88a8 0x9100 0x9200 0x9300 DEFAULT 0x8100]
+#         [-vlan_range_inner_unique_count RANGE 1 - 4094 DEFAULT 4094]
+#         [-vlan_range_name ANY  DEFAULT {}]
+#         [-vlan_range_priority RANGE 0 - 7 DEFAULT 1]
+#         [-vlan_range_tpid CHOICES 0x8100 0x88a8 0x9100 0x9200 0x9300 DEFAULT 0x8100]
+#         [-vlan_range_unique_count RANGE 1 - 4094 DEFAULT 4094]
+#         [-vlan_range_vlan_id_info NODE ]
+# 
+# Arguments:
+# -mode
+#     create - creates and configures a new object
+#     add - adds a child object to the one specified by the -handle param
+#     modify - modified attributes on the given object by the -handle param
+#     delete - deletes the object given by the -handle param
+#     
+# -parent_handle
+#     The parent handle used for creating this object. Has the form: //vport
+#     
+# -handle
+#     A handle returned via a ::<namespace>::dcbxrange_config command. This is used for mode modify.
+#     
+# -style
+#     The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add.
+#     
+# -chassis_id (PropertyString)
+#     Represents the chassis identification for the device that transmitted the LLDP frame. The receiving LLDP agent combines the Chassis ID and Port ID to represent the entity connected to the port where the frame was received.
+#     Chassis identification for the
+#     device that transmitted the LLDP frame.
+#     (DEFAULT = 00:00:00:00:00:00)
+#     
+# -control_tlv_max_version (PropertyInt)
+#     Highest DCBX protocol version supported by the system.
+#     (DEFAULT = 255)
+#     
+# -dcbx_enable (PropertyBoolean)
+#     Enable DCBX TLVs.
+#     (DEFAULT = true)
+#     
+# -dcbx_subtype (PropertyInt)
+#     Organizationally defined subtype.
+#     (DEFAULT = 2) Valid choices are:
+#     1 - {Intel 1.0}
+#     2 - {IEEE 1.01}
+#     3 - 802.1Qaz
+#     
+#     
+# -dest_mac_address (PropertyString)
+#     The destination MAC address value.
+#     (DEFAULT = 01:80:C2:00:00:0E)
+#     
+# -enabled (PropertyBoolean)
+#     Disabled ranges won't be configured nor validated.
+#     (DEFAULT = true)
+#     
+# -fast_init_enable (PropertyBoolean)
+#     Enable fast initial retransmission.
+#     (DEFAULT = true)
+#     
+# -hold_time (PropertyInt)
+#     Multiplier to get actual TTL value used in an LLDPDU.
+#     (DEFAULT = 4)
+#     
+# -mac_range_count (PropertyInt)
+#     The total number of interfaces to be created for the range.
+#     (DEFAULT = 1)
+#     
+# -mac_range_enabled (PropertyBoolean)
+#     Disabled ranges won't be configured nor validated.
+#     (DEFAULT = true)
+#     
+# -mac_range_increment_by (PropertyString)
+#     When a range of multiple MACs is created with this plugin, this value
+#     is the incrementor used to create the addresses in the range.
+#     This property is used in conjunction with 'MAC Address' as a base value.
+#     Incrementor used when the plugin creates a range of MACs.
+#     (DEFAULT = 00:00:00:00:00:01)
+#     
+# -mac_range_mac (PropertyString)
+#     When a range of multiple MACs is created with this plugin, this value
+#     is the base value used to create the addresses in the range.
+#     This property is used in conjunction with 'Increment' as an incrementor.
+#     Base value used when the plugin creates a MAC address.
+#     (DEFAULT = aa:bb:cc:00:00:00)
+#     
+# -mac_range_mtu (PropertyInt)
+#     Maximum Transmission Unit.
+#     The largest packet that a given network medium can carry.
+#     Ethernet, for example, has a fixed MTU of 1500 bytes without and 9500 bytes with Jumbo frame support.
+#     ATM has a fixed MTU of 48 bytes and PPP has a negotiated MTU that is usually between 500 and 2000 bytes.
+#     (DEFAULT = 1500)
+#     
+# -mac_range_name (PropertyString)
+#     Name of range
+#     (DEFAULT = {})
+#     
+# -name (PropertyString)
+#     Name of range
+#     (DEFAULT = {})
+#     
+# -oui (PropertyString)
+#     The vendor identifier value.
+#     (DEFAULT = 00.1B.21)
+#     
+# -port_id_interface_name (PropertyString)
+#     Port identification for the device that sent the LLDP frame.
+#     Port identification for the device that sent the LLDP frame.
+#     (DEFAULT = {&lt;interface name&gt;})
+#     
+# -port_id_mac_address (PropertyString)
+#     (DEFAULT = 00:00:00:00:00:00)
+#     
+# -port_id_sub_type (PropertyInt)
+#     (DEFAULT = 0) Valid choices are:
+#     0 - {MAC Address}
+#     1 - {Interface Name}
+#     
+#     
+# -tx_delay (PropertyInt)
+#     Minimum delay between successive LLDP packets.
+#     (DEFAULT = 2)
+#     
+# -tx_interval (PropertyInt)
+#     This parameter indicates the interval at which LLDP frames are transmitted on behalf of this LLDP agent.
+#     (DEFAULT = 30)
+#     
+# -vlan_range_enabled (PropertyBoolean)
+#     Disabled ranges won't be configured nor validated.
+#     (DEFAULT = true)
+#     
+# -vlan_range_first_id (PropertyInt)
+#     The first ID to be used for the first VLAN tag.
+#     (DEFAULT = 1)
+#     
+# -vlan_range_id_incr_mode (PropertyInt)
+#     Method used to increment VLAN IDs.
+#     May take the following values: 0 (First VLAN first), 1 (Last VLAN first), 2 (All).
+#     (DEFAULT = 2) Valid choices are:
+#     0 - {Outer First}
+#     1 - {Inner First}
+#     2 - All
+#     
+#     
+# -vlan_range_increment (PropertyInt)
+#     Amount of increment per increment step for first VLAN. E.g. increment step = 10 and increment = 2 means increment VLAN ID by 2 for every 10 IPs
+#     (DEFAULT = 1)
+#     
+# -vlan_range_increment_step (PropertyInt)
+#     Frequency of first VLAN ID increment. E.g., value of 10 means increment VLAN ID once for every 10 IP addresses.
+#     (DEFAULT = 1)
+#     
+# -vlan_range_inner_enable (PropertyBoolean)
+#     Enable the inner VLAN.
+#     (DEFAULT = false)
+#     
+# -vlan_range_inner_first_id (PropertyInt)
+#     The first ID to be used for the inner VLAN tag.
+#     (DEFAULT = 1)
+#     
+# -vlan_range_inner_increment (PropertyInt)
+#     Amount of increment per increment step for Inner VLAN. E.g. increment step = 10 and increment = 2 means increment VLAN ID by 2 for every 10 IPs
+#     (DEFAULT = 1)
+#     
+# -vlan_range_inner_increment_step (PropertyInt)
+#     Frequency of inner VLAN ID increment. E.g., value of 10 means increment VLAN ID once for every 10 IP addresses.
+#     (DEFAULT = 1)
+#     
+# -vlan_range_inner_priority (PropertyInt)
+#     The 802.1Q priority to be used for the inner VLAN tag.
+#     (DEFAULT = 1)
+#     
+# -vlan_range_inner_tpid (PropertyString)
+#     The TPID value in the inner VLAN Tag.
+#     (DEFAULT = 0x8100) Valid choices are:
+#     0x8100 - 0x8100
+#     0x88a8 - 0x88a8
+#     0x9100 - 0x9100
+#     0x9200 - 0x9200
+#     0x9300 - 0x9300
+#     
+#     
+# -vlan_range_inner_unique_count (PropertyInt)
+#     Number of unique inner VLAN IDs to use.
+#     (DEFAULT = 4094)
+#     
+# -vlan_range_name (PropertyString)
+#     Name of range
+#     (DEFAULT = {})
+#     
+# -vlan_range_priority (PropertyInt)
+#     The 802.1Q priority to be used for the outer VLAN tag.
+#     (DEFAULT = 1)
+#     
+# -vlan_range_tpid (PropertyString)
+#     The TPID value in the outer VLAN Tag.
+#     (DEFAULT = 0x8100) Valid choices are:
+#     0x8100 - 0x8100
+#     0x88a8 - 0x88a8
+#     0x9100 - 0x9100
+#     0x9200 - 0x9200
+#     0x9300 - 0x9300
+#     
+#     
+# -vlan_range_unique_count (PropertyInt)
+#     Number of unique first VLAN IDs to use.
+#     (DEFAULT = 4094)
+#     
+# -vlan_range_vlan_id_info (VlanIdInfo sub element)
+#     Contains extra VLANs
+#     (DEFAULT = {})
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:handles    value:dcbxrange handles
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# See Also:
+#     External documentation on Tclx keyed lists
+
+##Procedure Header
+# 
+# Name:
+#     ixia::dcbxrange_control
+# 
+# Description:
+#     Perform control plane operations on an endpoint created
+#     by a ixia::dcbxrange_config command
+#     
+# 
+# Synopsis:
+#     ixia::dcbxrange_control
+#         -handle ANY
+#         -action CHOICES abort abort_async start/connect stop/disconnect
+#     
+# 
+# Arguments:
+#     -handle
+#         A handle returned via a ::<namespace>::dcbxrange_config 
+#         command. This is the object on which the action will take place.
+#     -action
+#         Action to be executed. Valid choices are:
+#         abort   - abort all sessions on the same port with the target 
+#                   endpoint designated by -handle. The control is 
+#                   returned when the operation is completed.
+#         abort_async   - abort all sessions on the same port with the target 
+#                   endpoint designated by -handle. The control is 
+#                   returned immediately. The operation is executed in the background.
+#         start/connect - start and/or negotiate session for the target endpoint
+#                   designated by -handle.
+#         stop/disconnect - stop and/or release session for the target endpoint
+#                   designated by -handle.
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# Notes:
+#     This command applies only to IxNetwork.
+#     
+
+##Procedure Header
+# 
+# Name:
+#     ixia::dcbxrange_stats
+# 
+# Description:
+#     Retrieve statistics plane on an endpoint created
+#     by a ixia::dcbxrange_config command
+#     
+# 
+# Synopsis:
+#     "ixia::dcbxrange_stats"
+#         -port_handle ANY
+#     
+# 
+# Arguments:
+#     -port_handle
+#         The port handle for which the dcbxrange stats need to 
+#         be retrieved
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:log        value:When status is failure, contains more information
+#     
+#     key:[<port_handle.>].gen.sessions_initiated value:Sessions Initiated
+#     key:[<port_handle.>].gen.sessions_succeeded value:Sessions Succeeded
+#     key:[<port_handle.>].gen.sessions_failed value:Sessions Failed
+#     key:[<port_handle.>].gen.dcbx_mismatches_detected value:DCBX Mismatches Detected
+#     key:[<port_handle.>].gen.dcbx_invalid_pdu value:DCBX Invalid PDU
+#     key:[<port_handle.>].gen.lldp_tx value:LLDP Tx
+#     key:[<port_handle.>].gen.lldp_rx value:LLDP Rx
+#     key:[<port_handle.>].gen.lldp_age_out_count value:LLDP Age Out Count
+#     key:[<port_handle.>].gen.lldp_error_rx value:LLDP Error Rx
+#     key:[<port_handle.>].gen.lldp_unrecognized_tlv_rx value:LLDP Unrecognized TLV Rx
+#     key:[<port_handle.>].gen.lldp_neighbor_count value:LLDP Neighbor Count
+#     key:[<port_handle.>].gen.dcbx_tx value:DCBX Tx
+#     key:[<port_handle.>].gen.dcbx_rx value:DCBX Rx
+#     key:[<port_handle.>].gen.dcbx_control_tlv_tx value:DCBX Control TLV Tx
+#     key:[<port_handle.>].gen.dcbx_control_tlv_rx value:DCBX Control TLV Rx
+#     key:[<port_handle.>].gen.dcbx_priority_groups_tlv_tx value:DCBX Priority Groups TLV Tx
+#     key:[<port_handle.>].gen.dcbx_priority_groups_tlv_rx value:DCBX Priority Groups TLV Rx
+#     key:[<port_handle.>].gen.dcbx_pfc_tlv_tx value:DCBX PFC TLV Tx
+#     key:[<port_handle.>].gen.dcbx_pfc_tlv_rx value:DCBX PFC TLV Rx
+#     key:[<port_handle.>].gen.dcbx_fcoe_tlv_tx value:DCBX FCoE TLV Tx
+#     key:[<port_handle.>].gen.dcbx_fcoe_tlv_rx value:DCBX FCoE TLV Rx
+#     key:[<port_handle.>].gen.dcbx_fcoe_logical_link_status_tlv_tx value:DCBX FCoE Logical Link Status TLV Tx
+#     key:[<port_handle.>].gen.dcbx_fcoe_logical_link_status_tlv_rx value:DCBX FCoE Logical Link Status TLV Rx
+#     key:[<port_handle.>].gen.dcbx_lan_logical_link_status_tlv_tx value:DCBX LAN Logical Link Status TLV Tx
+#     key:[<port_handle.>].gen.dcbx_lan_logical_link_status_tlv_rx value:DCBX LAN Logical Link Status TLV Rx
+#     key:[<port_handle.>].gen.dcbx_customized_tlv_tx value:DCBX Customized TLV Tx
+#     key:[<port_handle.>].gen.dcbx_customized_tlv_rx value:DCBX Customized TLV Rx
+#     key:[<port_handle.>].gen.port_name value:Port Name
+#     key:[<port_handle.>].gen.dcbx_duplicate_tlvs_received value:DCBX Duplicate TLVs Received
+#     key:[<port_handle.>].gen.dcbx_duplicate_apps_received value:DCBX Duplicate Apps Received
+#     key:[<port_handle.>].gen.lldp_port_description_tlv_tx value:LLDP Port Description TLV Tx
+#     key:[<port_handle.>].gen.lldp_port_description_tlv_rx value:LLDP Port Description TLV Rx
+#     key:[<port_handle.>].gen.lldp_system_name_tlv_tx value:LLDP System Name TLV Tx
+#     key:[<port_handle.>].gen.lldp_system_name_tlv_rx value:LLDP System Name TLV Rx
+#     key:[<port_handle.>].gen.lldp_system_description_tlv_tx value:LLDP System Description TLV Tx
+#     key:[<port_handle.>].gen.lldp_system_description_tlv_rx value:LLDP System Description TLV Rx
+#     key:[<port_handle.>].gen.lldp_management_address_tlv_tx value:LLDP Management Address TLV Tx
+#     key:[<port_handle.>].gen.lldp_management_address_tlv_rx value:LLDP Management Address TLV Rx
+#     key:[<port_handle.>].gen.lldp_organizationally_specific_tlv_tx value:LLDP Organizationally Specific TLV Tx
+#     key:[<port_handle.>].gen.lldp_organizationally_specific_tlv_rx value:LLDP Organizationally Specific TLV Rx
+#     key:[<port_handle.>].gen.dcbx_niv_tlv_tx value:DCBX NIV TLV Tx
+#     key:[<port_handle.>].gen.dcbx_niv_tlv_rx value:DCBX NIV TLV Rx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_ets_configuration_tlv_tx value:DCBX 802.1Qaz ETS Configuration TLV Tx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_ets_configuration_tlv_rx value:DCBX 802.1Qaz ETS Configuration TLV Rx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_ets_recommendation_tlv_tx value:DCBX 802.1Qaz ETS Recommendation TLV Tx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_ets_recommendation_tlv_rx value:DCBX 802.1Qaz ETS Recommendation TLV Rx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_pfc_tlv_tx value:DCBX 802.1Qaz PFC TLV Tx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_pfc_tlv_rx value:DCBX 802.1Qaz PFC TLV Rx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_application_priority_tlv_tx value:DCBX 802.1Qaz Application Priority TLV Tx
+#     key:[<port_handle.>].gen.dcbx_802_1qaz_application_priority_tlv_rx value:DCBX 802.1Qaz Application Priority TLV Rx
+#     
+#     
+

@@ -1,0 +1,10 @@
+#!/tmp/perl---------------------------------------------please-run-the-install-script---------------------------------------------/bin/perl
+
+eval 'exec /tmp/perl---------------------------------------------please-run-the-install-script---------------------------------------------/bin/perl  -S $0 ${1+"$@"}'
+    if 0; # not running under some shell
+
+require 5;
+BEGIN { $^W = 1 if $ENV{'PERLDOCDEBUG'} }
+use Pod::Perldoc;
+exit( Pod::Perldoc->run() );
+

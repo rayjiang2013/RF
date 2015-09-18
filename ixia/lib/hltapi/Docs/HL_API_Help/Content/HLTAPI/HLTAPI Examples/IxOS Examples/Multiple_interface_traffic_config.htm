@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxOS Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Interface (Multiple_interface_traffic_config.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxOS Examples/Multiple_interface_traffic_config.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>Interface (Multiple_interface_traffic_config.tcl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551316"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551317"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551318"></a>
+          # This sample shows the use of no_write option in ixia::interface_config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551319"></a>
+          # and ixia::traffic_config calls. This option allows user to save the #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551320"></a>
+          # configuration without writing it to the hardware. This option is #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551321"></a>
+          # useful when the commands are called multiple times in a loop because #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551322"></a>
+          # committing the configuration to hardware can take .5 seconds. Use of #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551323"></a>
+          # no_write option speeds up the configuration. The last call must NOT have #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551324"></a>
+          # the no_write option in order to write the configuration to hardware. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551325"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551326"></a>
+          # Note: most of the protocol emulation config calls (for example: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551327"></a>
+          # emulation_ospf_config, emulation_bgp_config, ...etc) has no_write option. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551328"></a>
+          # Whenever these commands are called in a loop, the no_write should be #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551329"></a>
+          # used. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551330"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551331"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551332"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551333"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551334"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551335"></a>
+          set chassisIP 10.200.126.35</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551336"></a>
+          set ipV4_port 6/3</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551337"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551338"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551339"></a>
+          #################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551340"></a>
+                                 START TEST #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551341"></a>
+          #################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551342"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551343"></a>
+          # Connect to the chassis,reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551344"></a>
+          set connect_status [ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551345"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551346"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551347"></a>
+                  -port_list $ipV4_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551348"></a>
+                  -username ixiaApiUser ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551349"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551350"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551351"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551352"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551353"></a>
+          set port_handle [keylget connect_status \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551354"></a>
+                  port_handle.$chassisIP.[lindex $ipV4_port 0]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551355"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551356"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551357"></a>
+          ##############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551358"></a>
+          # Configure Multiple Protocol Interfaces in a for loop. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551359"></a>
+          # no_write flag is used to speed up the configuration #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551360"></a>
+          ##############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551361"></a>
+          set ip_addr 198.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551362"></a>
+          set gateway_addr 198.0.0.100</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551363"></a>
+          set num_interfaces 100</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551364"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551365"></a>
+          for {set i 0} {$i &lt; $num_interfaces} {incr i} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551366"></a>
+              set interface_status [ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551367"></a>
+          			      -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551368"></a>
+          			      -intf_ip_addr $ip_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551369"></a>
+          			      -gateway $gateway_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551370"></a>
+          			      -netmask 255.255.255.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551371"></a>
+          			      -autonegotiation 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551372"></a>
+          			      -duplex full \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551373"></a>
+          			      -src_mac_addr [format "1000.0000.%04x" $i] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551374"></a>
+          			      -speed ether1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551375"></a>
+          			      -no_write]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551376"></a>
+              if {[keylget interface_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551377"></a>
+          	return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551378"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551379"></a>
+              set ip_addr [::ixia::increment_ipv4_address $ip_addr 3]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551380"></a>
+              set gateway_addr [::ixia::increment_ipv4_address $gateway_addr 3]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551381"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551382"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551383"></a>
+          ### Use IxTclHal API to write the configuraton to hardware</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551384"></a>
+          scan $port_handle "%d/%d/%d" chas card port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551385"></a>
+          set portList [list [list $chas $card $port]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551386"></a>
+          ixWritePortsToHardware portList</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551387"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551388"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551389"></a>
+          ###############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551390"></a>
+          # Configure multiple Streams. Use no_write flag to speed up #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551391"></a>
+          # the configuration. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551392"></a>
+          ###############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551393"></a>
+          set num_streams 100</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551394"></a>
+          set ip_addr 198.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551395"></a>
+          set dst_addr 200.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551396"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551397"></a>
+          for {set i 0} {$i &lt; $num_streams} {incr i} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551398"></a>
+              # Configure first stream on the IpV4 port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551399"></a>
+              set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551400"></a>
+          			    -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551401"></a>
+          			    -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551402"></a>
+          			    -l3_protocol ipv4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551403"></a>
+          			    -ip_src_addr $ip_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551404"></a>
+          			    -ip_dst_addr $dst_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551405"></a>
+          			    -l3_length 128 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551406"></a>
+          			    -rate_percent 50 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551407"></a>
+          			    -mac_dst_mode fixed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551408"></a>
+          			    -mac_dst 2000.0000.1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551409"></a>
+          			    -mac_src [format "1000.0000.%04x" $i]\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551410"></a>
+          			    -no_write]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551411"></a>
+              if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551412"></a>
+          	return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551413"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551414"></a>
+              set ip_addr [::ixia::increment_ipv4_address $ip_addr 3]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551415"></a>
+              set dst_addr [::ixia::increment_ipv4_address $dst_addr 3]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551416"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551417"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551418"></a>
+          #### The last ixia::traffic_config call does not have the no_write option.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551419"></a>
+          #### The configuration will be written to the hardware.</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551420"></a>
+          set traffic_status [ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551421"></a>
+          			-mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551422"></a>
+          			-port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551423"></a>
+          			-l3_protocol ipv4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551424"></a>
+          			-ip_src_addr $ip_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551425"></a>
+          			-ip_dst_addr $dst_addr \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551426"></a>
+          			-l3_length 128 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551427"></a>
+          			-rate_percent 50 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551428"></a>
+          			-mac_dst_mode fixed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551429"></a>
+          			-mac_dst 2000.0000.1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551430"></a>
+          			-mac_src [format "1000.0000.%04x" $i]\</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551431"></a>
+          			]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551432"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551433"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3551434"></a>
+          }</p>
+    </body>
+</html>
