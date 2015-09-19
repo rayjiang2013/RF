@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testbed name="template-tb">
+ <dev1 type="FGATE" hostname="FG60DP4615000263" model="FortiGate-60D-POE">
+  <console ip="10.160.11.2" line="2087"> </console>
+  <login username="admin" password=""> </login>
+  <mgmt ip="10.160.37.22" netmask="255.255.255.0" gateway="10.160.37.1" port="port24"> </mgmt>
+  <pdu model="RARITAN" ip="10.160.37.20" port="9"> </pdu>
+ </dev1>
+ <dev2 type="FAP" hostname="FC220C4N15000001" model="C220C">
+  <console ip="10.160.11.2" line="2082"> </console>
+  <login username="admin" password=""> </login>
+  <mgmt ip="10.160.37.22" netmask="255.255.255.0" gateway="10.160.37.1" port="port24"> </mgmt>
+ </dev2>
+ <dev3 type="WIN-PC" hostname="cyg_server@fortiqa-dell01" model="Dell-Inspiron15-7000">
+  <console ip="10.160.11.46" line="22"> </console>
+  <login username="cyg_server" password="fortinet"> </login>
+ </dev3>
+ <connections>
+  <link1 link="dev1:port2,dev2:port1" type="GigabitEthernet" mode="Copper"> </link1>
+ </connections>
+</testbed>
