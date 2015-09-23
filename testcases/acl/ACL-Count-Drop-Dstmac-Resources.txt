@@ -48,18 +48,18 @@
 
 # Allocate Suite Test Resources |
 | | Log To Console | \n\tSuite Setup |
-| | ${Test Topo Status}= | Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
-| | ${Dut Hostname} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.hostname |
-| | ${Dut Username} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.login.username |
-| | ${Dut Password} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.login.password |
-| | ${Dut Console Ip} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.console.ip |
-| | ${Dut Console Port} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.console.line |
-| | ${Ixia IxNetwork Srv} | Get Nested Diction | ${Test Topo Status} | test_topo.trafgen1.ixnetwork_server_ip |
-| | ${Ixia Chasis} | Get Nested Diction | ${Test Topo Status} | test_topo.trafgen1.chassis_ip |
-| | ${Ixia Tcl Srv} | Get Nested Diction | ${Test Topo Status} | test_topo.trafgen1.tcl_server_ip |
-| | ${link1_ports} | Get Nested Diction | ${Test Topo Status} | test_topo.connections.link1.link |
-| | ${link2_ports} | Get Nested Diction | ${Test Topo Status} | test_topo.connections.link2.link |
-| | ${link3_ports} | Get Nested Diction | ${Test Topo Status} | test_topo.connections.link3.link |
+| | ${Test Topo}= | Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | ${Dut Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev1.hostname |
+| | ${Dut Username} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.username |
+| | ${Dut Password} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.password |
+| | ${Dut Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.ip |
+| | ${Dut Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.line |
+| | ${Ixia IxNetwork Srv} | Get Nested Diction | ${Test Topo} | test_topo.trafgen1.ixnetwork_server_ip |
+| | ${Ixia Chasis} | Get Nested Diction | ${Test Topo} | test_topo.trafgen1.chassis_ip |
+| | ${Ixia Tcl Srv} | Get Nested Diction | ${Test Topo} | test_topo.trafgen1.tcl_server_ip |
+| | ${link1_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link1.link |
+| | ${link2_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link2.link |
+| | ${link3_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link3.link |
 | | ${link_ports} | Catenate | ${link1_ports} | ${link2_ports} | ${link3_ports} |
 | | ${dev_ports_dict} | Restruct Dev Ports | ${link_ports} |
 | | ${Dut ports} | Get From Dictionary | ${dev_ports_dict} | dev1 |
@@ -72,7 +72,7 @@
 | | Set Suite Variable | ${Dut Port1} | ${Dut Port1}
 | | Set Suite Variable | ${Dut Port2} | ${Dut Port2}
 | | Set Suite Variable | ${Dut Port3} | ${Dut Port3}
-| | ${Test Topo} | Get From Dictionary | ${Test Topo Status} | test_topo |
+| | ${Test Topo} | Get From Dictionary | ${Test Topo} | physical_topo |
 | | Set Suite Variable | ${Test Topo} | ${Test Topo} |
 
 # Telnet to DUT
