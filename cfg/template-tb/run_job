@@ -1,3 +1,1 @@
 pybot --argumentfile templete_args /home/jimhe/automation/testcases
-pybot --argumentfile acl_args /home/jimhe/automation/testcases
-pybot --argumentfile routing_args /home/jimhe/automation/testcases
