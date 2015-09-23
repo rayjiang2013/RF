@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testbed name="routing-tb">
+ <dev1 type="FSW" hostname="FS1D243Z14000242" model="1024D">
+  <console ip="10.160.36.5" line="2092"> </console>
+  <login username="admin" password=""> </login>
+  <mgmt ip="10.160.37.22" netmask="255.255.255.0" gateway="10.160.37.1" port="port24"> </mgmt>
+  <pdu model="RARITAN" ip="10.160.37.20" port="9"> </pdu>
+ </dev1>
+ <trafgen1 type="IXIA" model="IXIA" chassis_ip="10.160.12.5" tcl_server_ip="10.160.12.5" ixnetwork_server_ip="10.160.37.24:8030">
+ </trafgen1>
+ <connections>
+  <link1 link="dev1:port13,trafgen1:5/12" type="GigabitEthernet" mode="Copper"> </link1>
+  <link2 link="dev1:port14,trafgen1:5/13" type="GigabitEthernet" mode="Copper"> </link2>
+  <link3 link="dev1:port15,trafgen1:5/14" type="GigabitEthernet" mode="Copper"> </link3>
+  <link4 link="dev1:port16,trafgen1:5/9" type="GigabitEthernet" mode="Copper"> </link4>
+  <link5 link="dev1:port17,trafgen1:5/10" type="GigabitEthernet" mode="Copper"> </link5>
+  <link6 link="dev1:port18,trafgen1:5/11" type="GigabitEthernet" mode="Copper"> </link6>
+ </connections>
+</testbed>

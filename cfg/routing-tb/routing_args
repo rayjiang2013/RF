@@ -1,0 +1,6 @@
+# This is the argument file for sconfig.txt
+--variable autopath:/home/jimhe/git-repo/automation
+--variable virtual_topo:singleSw6Trafgens.xml
+--variable testbed:rounting-tb 
+# Tag
+--include Routing
