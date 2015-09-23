@@ -43,6 +43,8 @@ class tableParserLib(object):
             # search for header
             for line in self.table.split('\n'):
                 if re.search(header_criteria, line):
+                    line = re.sub(r'\(', '\\(', line, re.DOTALL)
+                    line = re.sub(r'\)', '\\)', line, re.DOTALL)
                     status_data = {
                         'status':1,
                         'data':line
@@ -65,7 +67,7 @@ class tableParserLib(object):
             if 'delimiter' in self.opts:
                 t = re.search(r'(.*)'+(real_header)+r'\s+(.*)'+self.opts['delimiter'], self.table, re.DOTALL)
             else:
-                t = re.search(r'(.*)'+(real_header)+r'\s+(.*)', self.table, re.DOTALL)
+                t = re.search(r'(.*)'+(real_header)+r'(.*)', self.table, re.DOTALL)
             tt = re.sub(r'(\\r)+', '', t.group(2), re.DOTALL)
             status_data = {
                 'status':1,
@@ -218,7 +220,7 @@ class tableParserLib(object):
 
 def tableParserInSequence(kwargs):
     """
-    tableParserInPosition API callable via Robot Framework
+    tableParserInSequence API callable via Robot Framework
     """
     func_name = tableParserInSequence.__name__
 
@@ -335,22 +337,16 @@ def tableParserInPosition(kwargs):
 
 if __name__ == "__main__":
     table = '''
-FS1D483Z14000170 # get switch acl counter
-
- ID     Packets Size          Bytes Count         description
-___________________________________________________________
-
- 0001   1537633               196816384
- 0002   1122334455            334455667788         jim
-
-FS1D483Z14000170 #
-
+   MBA-3s-MacBook-Air:~ mba-3$ /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan
+                            SSID BSSID             RSSI CHANNEL HT CC SECURITY (auth/unicast/group)
+                        win-open 00:09:0f:b5:cc:4f -47  36      Y  US NONE
+                 RTL8186-default 00:09:0f:b5:cc:49 -35  1       N  US NONE
+   MBA-3s-MacBook-Air:~ mba-3$
     '''
-    header = 'ID Packets_Size Bytes_Count description'
+    header = 'SSID BSSID RSSI CHANNEL HT CC SECURITY'
     table_info = {
         'table':table,
         'header':header,
-        'delimiter':'FS1D483Z14000170',
         'debug':1
     }
-    t = tableParserInSequence(table_info)
+    t = tableParserInPosition(table_info)
