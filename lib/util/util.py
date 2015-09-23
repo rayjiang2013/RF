@@ -361,6 +361,10 @@ def _allocate_test_topo(testbed, vtopo_dict):
         # all resources required by by vtopo_dict are found
         tmp_db = {}
 
+        # same as tmp_db. The deference is that tmp_db halds the physical resource  which uses during release
+        # vtmp_db holds the the physical resource with the virtual name which uses in script
+        vtmp_db = {}
+
         # keep all matching device names. name in vtopo_dict will be the key and name in
         # resource_db will be the value. used for match connections
         match_resources = {}
@@ -401,6 +405,7 @@ def _allocate_test_topo(testbed, vtopo_dict):
                            vtopo_dict[vkey]['model'] == available['available'][dkey]['model']:
                              match_resources[vkey] = dkey
                              tmp_db[dkey] = available_resource[dkey]
+                             vtmp_db[vkey] = available_resource[dkey]
                              # have to delete this allocated sku to void reuse
                              del available_resource[dkey]
                              find_sku = 1
@@ -416,6 +421,7 @@ def _allocate_test_topo(testbed, vtopo_dict):
                            vtopo_dict[vkey]['model'] == available['available'][dkey]['model']:
                              match_resources[vkey] = dkey
                              tmp_db[dkey] = available_trafgen_resource[dkey]
+                             vtmp_db[vkey] = available_trafgen_resource[dkey]
                              # should not delete the trafgen available_trafgen_resource since
                              # it is a shared resource
                              del available_trafgen_resource[dkey]
@@ -430,6 +436,7 @@ def _allocate_test_topo(testbed, vtopo_dict):
                 vconnections_len = len(vconnections)
                 dconnections = available_resource['connections']
                 tmp_db['connections'] = {}
+                vtmp_db['connections'] = {}
 
         if unmatch_resource != {}:
             nested_print('Unable to allocate following resources required by virtual test topo:')
@@ -450,6 +457,7 @@ def _allocate_test_topo(testbed, vtopo_dict):
                              match_resources[vsrc] == dsrc and match_resources[vdst] == ddst or \
                              match_resources[vsrc] == ddst and match_resources[vdst] == dsrc:
                              tmp_db['connections'][dkey] = dlink
+                             vtmp_db['connections'][vkey] = dlink
                              # have to delete this allocated link to void reuse
                              del dconnections[dkey]
                              find_connections += 1
@@ -481,7 +489,8 @@ def _allocate_test_topo(testbed, vtopo_dict):
            
         status_data = {
             'status':1,
-            'test_topo':tmp_db,
+            'physical_topo':tmp_db,
+            'test_topo':vtmp_db,
         }
     except Exception as msg:
         e = '%s, %s Exception: %s' % (func_name, testbed, msg)
@@ -798,10 +807,7 @@ def suite_test_init(testbed, tbinfo, vtopo=None):
                 test_topo = _allocate_test_topo(testbed, vtopo_dict)
                 if test_topo['status'] != 1:
                     raise Exception('%s, %s fail: %s' % (func_name, testbed, test_topo))
-                status_data = {
-                    'status':1,
-                    'test_topo':test_topo['test_topo']
-                }
+                status_data = test_topo
     except Exception as msg:
         e = '%s, %s Exception: %s' % (func_name, testbed, msg)
         status_data = {'status':0, 'msg':e}
@@ -1196,53 +1202,78 @@ def parse_wlan_interface_data(info):
     finally:
         return(status_data)
 
+def get_wifi_info(info, gateway):
+    '''
+    This python API parses apple ifconfig interface data, returns them in a dictionary
+    '''
+    func_name = get_wifi_info.__name__
+    try:
+        status_data = {'status':0}
+        t_info = re.sub(r'(\\r)+', '', info, re.DOTALL)
+        wifi_info = {}
+        for line in t_info.split('\n'):
+            if re.search(r'~', line, re.U):
+                continue
+            s = re.search(r':', line, re.U)
+            if s:
+                ss = re.search(r'(.*): (.*)', line, re.U)
+                if ss:
+                    ss1 = ss.group(1).strip()
+                    ss2 = ss.group(2).strip()
+                else:
+                    ss1 = line.strip()
+                    ss2 = ''
+                wifi_info[ss1] = ss2
+                continue
+        if 'Router' in wifi_info:
+            router_ip = wifi_info['Router']
+            if router_ip == gateway:
+                if wifi_info != {}:
+                    status_data = {
+                        'status':1,
+                        'wifi':wifi_info,
+                    }
+    except:
+        e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+        status_data = {'status':0, 'msg':e}
+    finally:
+        return(status_data)
+
+def get_wifi_interface_info(info):
+    '''
+    This python API parses apple networksetup -listallhardwareports interface data, returns them in a dictionary
+    '''
+    func_name = get_wifi_interface_info.__name__
+    try:
+        status_data = {'status':0}
+        t_info = re.sub(r'(\\r)+', '', info, re.DOTALL)
+        wifi_interface_info = {}
+        wifi_interface = 0
+        for line in t_info.split('\n'):
+            if len(line) < 5:
+                wifi_interface = 0
+                continue
+            if re.search(r'Hardware Port: Wi-Fi', line, re.U):
+                wifi_interface = 1
+                continue
+            s = re.search(r'(.*): (.*)', line, re.U)
+            if s and wifi_interface == 1:
+                s1 = s.group(1).strip()
+                s2 = s.group(2).strip()
+                wifi_interface_info[s1] = s2
+                continue
+            if wifi_interface_info != {}:
+                status_data = {
+                    'status':1,
+                    'wifi':wifi_interface_info,
+                }
+    except:
+        e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+        status_data = {'status':0, 'msg':e}
+    finally:
+        return(status_data)
+
 if __name__ == "__main__":
     info = '''
-    FC220C  #
-    FC220C  # get radio info
-        Radio 0       : AP
-        Radio type    : 11N_2.4G
-        PS optimize   : 0
-        11g prot mode : 0
-        HT20/40 coext : 1
-        Beacon intv   : 100
-        Tx power      : 1
-        HT param      : mcs=15 gi=disabled bw=20MHz
-        Ack timeout   : 0
-        AC MAX dista  : 0 ackt_2G=64 ackt_5G=25
-        AC chan       : num=0 age=264753
-        Channel       : num=0
-        Oper channel  : 1
-        AC md_cap     : 1   6   11
-        AC chan list  : 1   6   11
-        Chan list     : 1   6   11
-        HW_chan list  : 1   2   3   4   5   6   7   8   9   10  11
-        NOL list      :
-
-        Radio 1       : AP
-        Radio type    : 11AC
-        PS optimize   : 0
-        11g prot mode : 0
-        HT20/40 coext : 1
-        Beacon intv   : 100
-        Tx power      : 20
-        VHT param     : mcs=9 gi=disabled bw=80MHz
-        Ack timeout   : 25
-        AC MAX dista  : 0 ackt_2G=64 ackt_5G=25
-        AC chan       : num=0 age=264753
-        Channel       : num=0
-        Oper channel  : 36
-        AC md_cap     : 36  40  44  48
-        AC chan list  : 36  40  44  48
-        Chan list     : 36  40  44  48
-        HW_chan list  : 36  40  44  48  52  56  60  64  100 104 108 112 116
-                        132 136 140 149 153 157 161 165
-        NOL list      :
-
-    ==================================================
-
-    Total: 2
-    FC220C  #
     '''
-    Status = parse_FAP_radio_info(info)
-    nested_print(Status)
+    Status = suite_test_init('acl.tb', '/home/jimhe/git-repo/automation/cfg/acl-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/singleSw3Trafgens.xml')
