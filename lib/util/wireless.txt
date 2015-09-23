@@ -38,8 +38,7 @@
 | Wireless Check FAP Platform | [Arguments] | ${telnet_lias} | ${WTP Profile Name} | ${FAP Platform} |
 | | [Documentation] | Wireless Check FAP Platform telnet_lias=${telnet_lias}, WTP Profile Name=${WTP Profile Name}, FAP Platform=${FAP Platform} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info}config wireless-controller wtp-profile | console=yes |
+| | Log | ${telnet_lias} config wireless-controller wtp-profile | console=yes |
 | | Telnet.Write | config wireless-controller wtp-profile |
 | | Sleep | 1 |
 | | ${read_info}= | Telnet.Read |
@@ -73,8 +72,7 @@
 | Wireless Set FAP Platform | [Arguments] | ${telnet_lias} | ${WTP Profile Name} | ${FAP Platform} |
 | | [Documentation] | Wireless Set FAP Platform telnet_lias=${telnet_lias}, WTP Profile Name=${WTP Profile Name}, FAP Platform=${FAP Platform} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info}config wireless-controller wtp-profile | console=yes |
+| | Log | ${telnet_lias} config wireless-controller wtp-profile | console=yes |
 | | Telnet.Write | config wireless-controller wtp-profile |
 | | Sleep | 1 |
 | | ${read_info}= | Telnet.Read |
@@ -105,8 +103,7 @@
 | Wireless Get WTP ID | [Arguments] | ${telnet_lias} |
 | | [Documentation] | Wireless Get WTP ID telnet_lias=${telnet_lias} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info}get wireless-controller wtp | console=yes |
+| | Log | ${telnet_lias} get wireless-controller wtp | console=yes |
 | | Telnet.Write | get wireless-controller wtp |
 | | Sleep | 1 |
 | | ${read_info}= | Telnet.Read |
@@ -123,8 +120,7 @@
 | Wireless Associate FAP | [Arguments] | ${telnet_lias} | ${WTP ID} | ${WTP Profile Name} |
 | | [Documentation] | Wireless Associate FAP telnet_lias=${telnet_lias}, WTP ID=${WTP ID}, WTP Profile Name=${WTP Profile Name} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info}config wireless-controller wtp | console=yes |
+| | Log | ${telnet_lias} config wireless-controller wtp | console=yes |
 | | Telnet.Write | config wireless-controller wtp |
 | | Sleep | 1 |
 | | ${read_info}= | Telnet.Read |
@@ -149,8 +145,7 @@
 | Wireless Check WTP Connection State | [Arguments] | ${telnet_lias} | ${FAP Hostname} |
 | | [Documentation] | Wireless Check WTP Connection State telnet_lias=${telnet_lias}, FAP Hostname=${FAP Hostname} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info}get wireless-controller wtp-status | console=yes |
+| | Log | ${telnet_lias} get wireless-controller wtp-status | console=yes |
 | | :FOR | ${Loop Count} | IN RANGE | 1 | 10 |
 | | | Telnet.Write | get wireless-controller wtp-status |
 | | | Sleep | 2 |
@@ -172,10 +167,9 @@
 | Wireless Get FAP IP | [Arguments] | ${telnet_lias} | ${FAP Hostname} |
 | | [Documentation] | Wireless Get FAP IP telnet_lias=${telnet_lias}, FAP Hostname=${FAP Hostname} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info} get wireless-controller wtp-status | console=yes |
+| | Log | ${telnet_lias} get wireless-controller wtp-status | console=yes |
 | | Telnet.Write | get wireless-controller wtp-status |
-| | Sleep | 1 |
+| | Sleep | 3 |
 | | ${read_info}= | Telnet.Read |
 | | Telnet.Switch Connection | ${org_id} |
 | | Log To Console | \n\tread_info=${read_info}
@@ -189,8 +183,7 @@
 | Wireless Ping FAP | [Arguments] | ${telnet_lias} | ${FAP IP} |
 | | [Documentation] | Wireless Ping FAP telnet_lias=${telnet_lias}, FAP IP=${FAP IP} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info}exec ping ${FAP IP} | console=yes |
+| | Log | ${telnet_lias} exec ping ${FAP IP} | console=yes |
 | | Telnet.Write | exec ping ${FAP IP} |
 | | Sleep | 5 |
 | | ${read_info}= | Telnet.Read |
@@ -204,8 +197,7 @@
 | Wireless Verify FAP Radio Setup | [Arguments] | ${telnet_lias} | ${FAP IP} | ${FAP Model} | ${FAP Username} |
 | | [Documentation] | Wireless Verify FAP Radio Setup telnet_lias=${telnet_lias}, FAP IP=${FAP IP}, FAP Model=${FAP Model}, FAP Username=${FAP Username} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info} exec telnet ${FAP IP} | console=yes |
+| | Log | ${telnet_lias} exec telnet ${FAP IP} | console=yes |
 | | Telnet.Write | exec telnet ${FAP IP} |
 | | Sleep | 1 |
 | | ${read_info}= | Telnet.Read |
@@ -225,7 +217,6 @@
 | | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} | console=yes |
 | | ${FAP Radio Info} | Parse FAP Radio Info | ${read_info} |
-| | Log | \n\t${FAP Radio Info} | console=yes |
 | | ${Status} | Get From Dictionary | ${FAP Radio Info} | status |
 | | Run Keyword If | ${Status} != 1 | Fail | 'Unable to Parse FAP Radio Info' |
 | | Log | ${read_info} exit | console=yes |
@@ -240,10 +231,9 @@
 
 # Reboot FAP
 | Wireless Reboot FAP | [Arguments] | ${telnet_lias} | ${FAP IP} |
-| | [Documentation] | Wireless Verify FAP Radio Setup telnet_lias=${telnet_lias}, FAP IP=${FAP IP} |
+| | [Documentation] | Wireless Reboot FAP telnet_lias=${telnet_lias}, FAP IP=${FAP IP} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | ${read_info}= | Telnet.Read |
-| | Log | ${read_info} exec telnet ${FAP IP} | console=yes |
+| | Log | ${telnet_lias} exec telnet ${FAP IP} | console=yes |
 | | Telnet.Write | exec telnet ${FAP IP} |
 | | Sleep | 1 |
 | | ${read_info}= | Telnet.Read |
@@ -270,4 +260,15 @@
 | | Log | ${read_info} | console=yes |
 | | ${Login Lines} | Get Lines Containing String | ${read_info} | Connection closed by foreign host |
 | | Should Not Be Empty | ${Login Lines} | 'Unable Reboot FAP at ${FAP IP}' |
+| | Telnet.Switch Connection | ${org_id} |
+
+# DHCP Lease-clear all
+| Wireless DHCP Lease-Clear All | [Arguments] | ${telnet_lias} |
+| | [Documentation] | Wireless Wireless DHCP Lease-Clear All telnet_lias=${telnet_lias} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | Log | ${telnet_lias} exec dhcp lease-clear all | console=yes |
+| | Telnet.Write | exec dhcp lease-clear all |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
 | | Telnet.Switch Connection | ${org_id} |
