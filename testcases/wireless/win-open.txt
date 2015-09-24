@@ -1,8 +1,8 @@
 # -*- coding: robot -*-
 | *Setting* | *Value *|
 | Documentation | Configure Wireless devices via a telnet Console, then do some tests |
-| Default Tags | Wifi-Open |
-| Resource | wifi-open_resources.txt |
+| Default Tags | Win-Open |
+| Resource | win-open_resources.txt |
 | Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
 | Suite Teardown | Suite Teardown Keyword |
 | Test Timeout | 20 minutes |
