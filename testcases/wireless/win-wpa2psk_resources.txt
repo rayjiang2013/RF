@@ -53,26 +53,24 @@
 
 # Allocate Suite Test Resources |
 | | Log To Console | \n\tSuite Setup |
-| | ${Test Topo Status}= | Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
-| | ${Status}= | Get From Dictionary | ${Test Topo Status} | status |
-| | Run Keyword If | ${Status} != 1 | Fail | 'Allocate Suite Test Resources fail' |
-| | ${FGate Hostname} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.hostname |
-| | ${FGate Username} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.login.username |
-| | ${FGate Password} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.login.password |
-| | ${FGate Console Ip} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.console.ip |
-| | ${FGate Console Port} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.console.line |
-| | ${FAP Hostname} | Get Nested Diction | ${Test Topo Status} | test_topo.dev2.hostname |
-| | ${FAP Username} | Get Nested Diction | ${Test Topo Status} | test_topo.dev2.login.username |
-| | ${FAP Password} | Get Nested Diction | ${Test Topo Status} | test_topo.dev2.login.password |
-| | ${FAP Console Ip} | Get Nested Diction | ${Test Topo Status} | test_topo.dev2.console.ip |
-| | ${FAP Console Port} | Get Nested Diction | ${Test Topo Status} | test_topo.dev2.console.line |
-| | ${FAP Model} | Get Nested Diction | ${Test Topo Status} | test_topo.dev2.model |
-| | ${WIN-PC Hostname} | Get Nested Diction | ${Test Topo Status} | test_topo.dev3.hostname |
-| | ${WIN-PC Username} | Get Nested Diction | ${Test Topo Status} | test_topo.dev3.login.username |
-| | ${WIN-PC Password} | Get Nested Diction | ${Test Topo Status} | test_topo.dev3.login.password |
-| | ${WIN-PC Console Ip} | Get Nested Diction | ${Test Topo Status} | test_topo.dev3.console.ip |
-| | ${WIN-PC Console Port} | Get Nested Diction | ${Test Topo Status} | test_topo.dev3.console.line |
-| | ${link1_ports} | Get Nested Diction | ${Test Topo Status} | test_topo.connections.link1.link |
+| | ${Test Topo}= | Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | ${FGate Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev1.hostname |
+| | ${FGate Username} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.username |
+| | ${FGate Password} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.password |
+| | ${FGate Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.ip |
+| | ${FGate Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.line |
+| | ${FAP Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev2.hostname |
+| | ${FAP Username} | Get Nested Diction | ${Test Topo} | test_topo.dev2.login.username |
+| | ${FAP Password} | Get Nested Diction | ${Test Topo} | test_topo.dev2.login.password |
+| | ${FAP Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev2.console.ip |
+| | ${FAP Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev2.console.line |
+| | ${FAP Model} | Get Nested Diction | ${Test Topo} | test_topo.dev2.model |
+| | ${WIN-PC Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev3.hostname |
+| | ${WIN-PC Username} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.username |
+| | ${WIN-PC Password} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.password |
+| | ${WIN-PC Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.ip |
+| | ${WIN-PC Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.line |
+| | ${link1_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link1.link |
 | | ${dev_ports_dict} | Restruct Dev Ports | ${link1_ports} |
 | | ${FGate port} | Get From Dictionary | ${dev_ports_dict} | dev1 |
 | | ${FAP port} | Get From Dictionary | ${dev_ports_dict} | dev2 |
@@ -83,7 +81,7 @@
 | | Set Suite Variable | ${FGate Port} | ${FGate Port}
 | | Set Suite Variable | ${FAP Hostname} | ${FAP Hostname}
 | | Set Suite Variable | ${FAP Port} | ${FAP Port}
-| | ${Test Topo} | Get From Dictionary | ${Test Topo Status} | test_topo |
+| | ${Test Topo} | Get From Dictionary | ${Test Topo} | physical_topo |
 | | Set Suite Variable | ${Test Topo} | ${Test Topo} |
 | | Set Suite Variable | ${WIN-PC Hostname} | ${WIN-PC Hostname} |
 
