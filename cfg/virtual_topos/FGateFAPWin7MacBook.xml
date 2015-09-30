@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testtopo>
+ <dev1 type="FGATE" model="FortiGate-60D-POE" role="DUT"> </dev1>
+ <dev2 type="FAP" model="C220C" role="AP"> </dev2>
+ <dev3 type="WinPC" model="Dell-Inspiron15-7000" role="CLIENT"> </dev3>
+ <dev4 type="MacBook" model="MacBook Air" role="CLIENT"> </dev4>
+ <connections>
+  <link1 link="dev1,dev2" type="GigabitEthernet" mode="Copper"> </link1>
+ </connections>
+</testtopo>
