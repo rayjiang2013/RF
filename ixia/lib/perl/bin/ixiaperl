@@ -1,2 +1,0 @@
-#!/bin/sh
-PERL_DL_NONLAZY=1 /home/jimhe/ixia/lib/hltapi/../perl/bin/perl -I /home/jimhe/ixia/lib/hltapi/../perl/lib  $@

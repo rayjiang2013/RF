@@ -1,2 +1,0 @@
-#!/bin/sh
-LD_LIBRARY_PATH=/home/jimhe/ixia/lib/hltapi/../python2.7/lib:[DOLLAR]LD_LIBRARY_PATH /home/jimhe/ixia/lib/hltapi/../python2.7/bin/python2.7 $@

@@ -1,0 +1,1342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="connect" displayPriority="1" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="true" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="true" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="true" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+  <description supportType="ixNetworkSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="new" target="noTarget">This command connects to the Ixia Chassis, takes ownership of selected
+    ports, and optionally loads a configuration on the chassis or resets the
+    targeted ports to factory defaults.
+    &lt;p&gt; When using an HLTSET that loads a network only version (*NO or
+    *P2NO + ixnetwork_tcl_server present) it is possible to resume a
+    previously configured session. This feature is triggered if the -reset
+    parameter is missing and the following scenarios are possible: &lt;/p&gt;
+    &lt;p&gt; 1. Connect to IxNetwork Tcl Server (-ixnetwork_tcl_server) and pull the
+    existing configuration. The current configuration will be returned
+    as a keyed list (see the Return Values section). &lt;/p&gt;
+    &lt;p&gt; 2. Connect to IxNetwork Tcl Server (-ixnetwork_tcl_server), load an
+    ixncfg (-config_file) and pull the configuration into HLT. The current
+    configuration will be returned as a keyed list (see Return Values section). &lt;/p&gt;
+    &lt;p&gt; 3. Connect to IxNetwork Tcl Server (-ixnetwork_tcl_server), load an
+    ixncfg (-config_file), load an hlt configuration file (-config_file_hlt).
+    The configuration will not be returned because it is assumed that the
+    handles were initialized in a previous session. The hardware from IxNetwork
+    must be the same as the one from the 'config_file_hlt', otherwise the information
+    from the config file will not match the information from IxNetwork Tcl Server
+    and it will result in unpredictable errors. &lt;/p&gt;
+    &lt;p&gt; 4. Save the current configuration using -mode save. If -config_file parameter
+    is specified, the ixncfg file will be saved in the &lt;config_file&gt; file. If
+    config_file_hlt parameter is specified, the hlt configuration file will be
+    saved in the &lt;config_file_hlt&gt; file. At least one of these parameters must be
+    specified. &lt;/p&gt;
+    &lt;p&gt; If the -device and -port_list parameters are specified they will be mapped over the chassis
+    and ports detected on IxNetwork Tcl Server (available only if -config_file_hlt is not specified).
+    Otherwise, the hardware found on ixnetwork tcl server will be used for configuration.
+    Session resume is performed only on the first connect call from the script. Subsequent calls will
+    not load the configuration from the IxNetwork Tcl Server. &lt;/p&gt;
+    &lt;p&gt; When using Unix, loading an ixncfg (-config_file) works only if HLT commands are executed locally,
+    on the Unix client machine. &lt;/p&gt;</description>
+  <chapter>Session APIs</chapter>
+  <arguments>
+    <argument name="port_list" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>List of Ixia ports of which to take ownership.  If multiple devices are
+        specified, then this is a list of lists.  A single item is of the
+        form card number / port number.  So card 2, port 4 would look like 2/4.
+        This parameter depends on 'vport_list' and 'vport_count' parameters. More details
+        are available in the description for parameter 'device'.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="REGEXP" value="^({*(\[0-9\]+/\[0-9\]+\[\\\ \]*)*}*\[\\\ \]*)+$" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="aggregation_mode" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This parameter represents the aggregation mode that can be set on the card.</text>
+          <choices>
+            <choice>
+              <choiceName>normal</choiceName>
+              <choiceText>default (all the ports can be used, except the 40Gig ones)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>mixed</choiceName>
+              <choiceText>using this mode, you can set different aggregation modes on each aggregation group</choiceText>
+            </choice>
+            <choice>
+              <choiceName>not_supported</choiceName>
+              <choiceText>the card does not support aggregation</choiceText>
+            </choice>
+            <choice>
+              <choiceName>ten_gig_aggregation</choiceName>
+              <choiceText>10Gig aggregation mode</choiceText>
+            </choice>
+            <choice>
+              <choiceName>ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 1X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>three_by_ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 3X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>four_by_ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 4X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>eight_by_ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 8X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>four_by_twenty_five_gig_non_fan_out</choiceName>
+              <choiceText>25Gig aggregation mode for Multis cards (aka 4X25G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>forty_gig_aggregation</choiceName>
+              <choiceText>40Gig aggregation mode</choiceText>
+            </choice>
+            <choice>
+              <choiceName>forty_gig_fan_out</choiceName>
+              <choiceText>40Gig aggregation for Multis cards with FAN out (aka 3x40G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>forty_gig_normal_mode</choiceName>
+              <choiceText>40Gig aggregation for Multis cards with FAN out (aka 1x40G mode in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>hundred_gig_non_fan_out</choiceName>
+              <choiceText>100Gig aggregation mode for cards with no FAN out.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>single_mode_aggregation</choiceName>
+              <choiceText>Single Mode aggregation (supported both with IxNetwork and IxTclProtocol)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>dual_mode_aggregation</choiceName>
+              <choiceText>Dual Mode aggregation (supported both with IxNetwork and IxTclProtocol)</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="normal mixed not_supported single_mode_aggregation dual_mode_aggregation hundred_gig_non_fan_out forty_gig_aggregation forty_gig_fan_out forty_gig_normal_mode four_by_twenty_five_gig_non_fan_out ten_gig_aggregation ten_gig_fan_out three_by_ten_gig_fan_out four_by_ten_gig_fan_out eight_by_ten_gig_fan_out" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="aggregation_resource_mode" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This parameter represents the aggregation mode on each resource group on the card.</text>
+          <choices>
+            <choice>
+              <choiceName>normal</choiceName>
+              <choiceText>default (all the ports can be used, except the 40Gig ones)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>ten_gig_aggregation</choiceName>
+              <choiceText>10Gig aggregation mode</choiceText>
+            </choice>
+            <choice>
+              <choiceName>ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 1X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>three_by_ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 3X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>four_by_ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 4X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>eight_by_ten_gig_fan_out</choiceName>
+              <choiceText>10Gig aggregation mode for Multis cards (aka 8X10G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>four_by_twenty_five_gig_non_fan_out</choiceName>
+              <choiceText>25Gig aggregation mode for Multis cards (aka 4X25G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>forty_gig_aggregation</choiceName>
+              <choiceText>40Gig aggregation mode</choiceText>
+            </choice>
+            <choice>
+              <choiceName>forty_gig_fan_out</choiceName>
+              <choiceText>40Gig aggregation for Multis cards with FAN out (aka 3x40G in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>forty_gig_normal_mode</choiceName>
+              <choiceText>40Gig aggregation for Multis cards with FAN out (aka 1x40G mode in IxNetwork GUI).</choiceText>
+            </choice>
+            <choice>
+              <choiceName>hundred_gig_non_fan_out</choiceName>
+              <choiceText>100Gig aggregation mode for cards with no FAN out.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>single_mode_aggregation</choiceName>
+              <choiceText>Single Mode aggregation (supported both with IxNetwork and IxTclProtocol)</choiceText>
+            </choice>
+            <choice>
+              <choiceName>dual_mode_aggregation</choiceName>
+              <choiceText>Dual Mode aggregation (supported both with IxNetwork and IxTclProtocol)</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="normal dual_mode_aggregation single_mode_aggregation forty_gig_aggregation hundred_gig_non_fan_out forty_gig_fan_out forty_gig_normal_mode four_by_twenty_five_gig_non_fan_out  ten_gig_aggregation ten_gig_fan_out eight_by_ten_gig_fan_out three_by_ten_gig_fan_out four_by_ten_gig_fan_out" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="device" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>IP address or name of the chassis. May contain a list of devices. When
+        IxNetwork Tcl API is used this parameter can have one of the following 4
+        meanings:
+        1. When 'vport_list' and 'vport_count' parameters are missing, a new chassis
+        is added, virtual ports are created and connected to
+        the real ports specified with 'port_list' parameter.
+        2. When 'vport_count' is specified this parameter is ignored and 'vport_count'
+        virtual ports are created. They will not be connected.
+        3. When 'vport_list' exists and -mode is 'connect' a connection to the
+        'device' chassis will be established. The real ports specified
+        with 'port_list' will be connected to the virtual ports specified
+        with 'vport_list'. The length and structure of the parameters
+        'port_list' and 'vport_list' must be the same
+        (e.g. -port_list {{2/3 2/4} {1/2 1/3 1/4}} -vport_list {{0/0/1 0/0/2} {0/0/3 0/0/4 0/0/5}}).
+        4. When 'vport_list' exists and -mode is 'disconnect' this parameter will be
+        ignored and the virtual ports specified with 'vport_list' will be
+        disconnected from the real ports they are currently connected to.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="break_locks" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>&lt;p&gt; Valid choices are: &lt;/p&gt;
+        &lt;table&gt;
+        &lt;tr&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;Force option is not used.&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Force option is used when taking ownership.&lt;/td&gt;&lt;/tr&gt;
+        &lt;/table&gt;</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="1" />
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="close_server_on_disconnect" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>When connecting to an IxNetwork Proxy Server this flag will be used to
+        determine if the IxNetwork session will be closed (shutdown) after the user
+        disconnects or it will remain Idle to allow future session resume.
+        &lt;p&gt; This parameter is ignored when not connecting to a IxNetwork Proxy Server
+        using IxTclNetwork (new API). &lt;/p&gt;</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="1" />
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="config_file" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>and/or the hlt configuration to the file specified with -config_file_hlt.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="config_file_hlt" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Name of a file containing HLT configuration information. Valid only with an IxNetwork HLTSET
+        as part of the session resume capabilities.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="connect_timeout" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Timeout in seconds to wait before failing connection to chassis when using IxNetwork TCL API is used.
+        &lt;p&gt; From IxNetwork the connection to chassis is performed when
+        ::&lt;namespace&gt;::interface_config procedure is called. The timeout will not apply to
+        the chassis connection performed in ::&lt;namespace&gt;::connect procedure by IxTclHal. &lt;/p&gt;</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="10" />
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="enable_win_tcl_server" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Enables running entire HLT API commands on Tcl Server's
+        machine. Valid only on Windows platforms.</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="0" />
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="guard_rail" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This parameter will protect the application from exceeding the memory limits and
+        by limiting the maximum number of views and statistics provided to the user.</text>
+          <choices>
+            <choice>
+              <choiceName>statistics</choiceName>
+              <choiceText>limit the maximum number of views and statistics</choiceText>
+            </choice>
+            <choice>
+              <choiceName>none</choiceName>
+              <choiceText>no guard rail</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="statistics none" />
+        <restriction type="DEFAULT" valueType="ANY" value="none" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="protocol_stacking_mode" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This parameter enables the parallel/sequential start/stop of protocol layers when multiple protocols
+        are stacked together.</text>
+          <choices>
+            <choice>
+              <choiceName>parallel</choiceName>
+              <choiceText>The operation on one layer of a device is triggered as soon as the operation on the previous layer of this device is completed.
+                This behavior provides a more realistic emulation of real world scenarios and it is currently supported only for NGPF access protocols.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>sequential</choiceName>
+              <choiceText>The operation on one layer must complete on all devices before the same operation is triggered on the next layer.
+                This is the default behavior of NGPF protocols.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="parallel sequential" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="interactive" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This argument is used to specify whether the console in which the
+        script is run will work in the interactive mode or not.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="ixnetwork_tcl_server" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>IP address or name of the IxNetwork TCL server, followed optionally by
+        :&lt;port number&gt;.
+        &lt;p&gt; When using IxTclProtocol (old API), this parameter is ignored on both
+        Windows and Unix platforms. &lt;/p&gt;
+        &lt;p&gt; When using IxTclNetwork (new API), on Windows platform, if
+        both ixnetwork_tcl_server and tcl_server are not specified, the
+        default value for ixnetwork_tcl_server is 127.0.0.1:8009. &lt;/p&gt;
+        &lt;p&gt; Otherwise, if tcl_server option is present and in use, the default
+        value is equal to tcl_server:8009. &lt;/p&gt;
+        &lt;p&gt; When using IxTclNetwork (new API), on Unix platform, if
+        ixnetwork_tcl_server is not specified, the default value is equal to
+        tcl_server:8009. This means that, on Unix, if ixnetwork_tcl_server is
+        not specified, then tcl_server must be specified. &lt;/p&gt;</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="ixnetwork_license_servers" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>If set this will set the central license server from where you can request a license.
+        Any computer where Ixia Licensing Utility is installed can act as a License Server. Multiple servers can be provided as a list.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="ixnetwork_license_type" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Valid if ixnetwork_license_servers argument is used. This argument is used to specify which type of license is used.</text>
+          <choices>
+            <choice>
+              <choiceName>perpetual</choiceName>
+              <choiceText>In this mode licenses are checked out from the individual chassis. You cannot install perpetual licenses for a chassis on a different license server.
+                You can use any number of ports on the given chassis as the license is node locked (locked to a specific chassis) and unlimited.
+                Here the core license is checked when the chassis is connected. If there are no core licenses, the port fails to connect and an error is displayed.
+                Perpetual mode is available for &lt;b&gt;Hardware ports only.&lt;/b&gt;&lt;br/&gt;
+                Perpetual Mode is the legacy licensing mode.&lt;br/&gt;
+                Changing modes between Subscription and Perpetual can only be done when all the ports are released.&lt;br/&gt;
+                This is the default option if ixnetwork_license_servers is specified without ixnetwork_license_type.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>subscription_tier0</choiceName>
+              <choiceText>Interfaces only support.
+                For details on the limitations, please refer to IxNetwork User Guide.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>subscription_tier1</choiceName>
+              <choiceText>It is the most restrictive, with only a few protocols and sessions support available per protocol.
+                For details on the limitations, please refer to IxNetwork User Guide.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>subscription_tier2</choiceName>
+              <choiceText>It provides unlimited protocol and session support for Hardware ports and limited protocol and session support for VM ports.
+                For details on the limitations, please refer to IxNetwork User Guide.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>subscription_tier3</choiceName>
+              <choiceText>It provides unlimited protocol and session support and also the premium features.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>mixed</choiceName>
+              <choiceText>Mixed mode reffers to mixed HW/VM licensing model.
+                For details on the limitations, please refer to IxNetwork User Guide.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="perpetual subscription_tier0 subscription_tier1 subscription_tier2 subscription_tier3 mixed" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="logging" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This parameter enables logging HLTAPI commands.</text>
+          <choices>
+            <choice>
+              <choiceName>hltapi_calls</choiceName>
+              <choiceText />
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="hltapi_calls" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="log_path" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Sets the path for hltapi logs, when parameter -logging is used.</text>
+        </description>
+        <restriction type="DEPENDENCY" valueType="ANY" argumentId="logging" argumentValue="hltapi_calls" />
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="ixnetwork_tcl_proxy" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>The presence of this flag loads the IxTclNetworkConnector package and
+        enables connection to the IxNetwork TCL Proxy Server. This parameter is
+        valid only when using IxTclNetwork (new API).The address for
+        the TCL proxy will be the value specified by the ixnetwork_tcl_server
+        parameter.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="master_device" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>IP address or name of the master chassis, if -device is a slave chassis.
+        May contain a list of devices. In this case, the string "none" can be
+        added when the master chassis IP is not applicable.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="chain_sequence" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>SequenceID for chassis chain. Only valid for slave chassis when master_device parameter is used.
+        For more info please consult Ixia chassis chaining user guide from IxOS or IxNetwork products.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="chain_cables_length" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Cable length in ft used for the chassis chain. This can be a value of a list of values for each slave chassis.
+        Valid values are: '0' (not applicabale), '3' (3 ft) or '6' (6 ft). Only valid for slave chassis when master_device parameter is used. If not specified it will default to 3 for each slave chassis.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="chain_type" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This optional parameter specifices the chassis chain type used by IxNetwork.</text>
+          <choices>
+            <choice>
+              <choiceName>none</choiceName>
+              <choiceText>No chassis chain is used. The chain type present in IxNetwork will not be changed in this case.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>daisy</choiceName>
+              <choiceText>Daisy chain. This is the default option when master_device argument is present.
+                This refers to a set of Ixia chassis that have been cabled together through their Sync In/Sync Out ports.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>star</choiceName>
+              <choiceText>This refers to a set of Ixia chassis that have been cabled together using a star topology. In this mode all slave chassis will have a cable connected directly in the master chassis.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="none daisy star" />
+        <restriction type="DEFAULT" valueType="ANY" value="none" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="reset" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Resets the card to factory defaults.
+        &lt;p&gt; When IxTclNetwork is used, the presence of this flag will reset all
+        previous connections to chassis and ports. If this flag is missing and this
+        is the first connect call from the script, the configuration will be imported from
+        the IxNetwork Tcl Server and will be returned as keyed list (see Return Values section). &lt;/p&gt;</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="FLAG" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="session_resume_keys" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Using this parameter when loading an ixncfg file allows you to choose
+        whether to show the session resume keys or not. This parameter is valid only
+        when using IxTclNetwork. If global parameter ::&lt;namespace&gt;::session_resume_keys does not
+        exist, it will be overwritten by ::&lt;namespace&gt;::connect local parameter -session_resume_keys.
+        Valid choices are:</text>
+          <choices>
+            <choice>
+              <choiceName>0</choiceName>
+              <choiceText>do not show the session resume keys</choiceText>
+            </choice>
+            <choice>
+              <choiceName>1</choiceName>
+              <choiceText>show the session resume keys</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+        <restriction type="DEFAULT" valueType="ANY" value="1" />
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="session_resume_include_filter" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>May contains a list of value that specify an inclusion filter for the returned session resume
+        dictionary keys when -session_resume_keys is 1. The keys that have items in &lt;typepath&gt; are dependent on
+        the command that generated that kind of typepath. Generally the procedure that generated those objects has
+        the same name as the first part in the key.
+        &lt;p&gt; Eg. in emulation_bgp_route_config.bgp_sites.&lt;vport/protocols/bgp/neighborRange/l2Site&gt; objects of type
+        vport/protocols/bgp/neighborRange/l2Site are generated by the emulation_bgp_route_config command. &lt;/p&gt;
+        &lt;p&gt; Valid values are: &lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt; connect  &lt;/li&gt;
+        &lt;li&gt; connect.vport_list &lt;/li&gt;
+        &lt;li&gt; interface_config &lt;/li&gt;
+        &lt;li&gt; interface_config.interface_handle &lt;/li&gt;
+        &lt;li&gt; interface_config.routed_interface_handle &lt;/li&gt;
+        &lt;li&gt; interface_config.gre_interface_handle &lt;/li&gt;
+        &lt;li&gt; interface_config.atm_endpoints &lt;/li&gt;
+        &lt;li&gt; interface_config.fr_endpoints &lt;/li&gt;
+        &lt;li&gt; interface_config.ip_endpoints &lt;/li&gt;
+        &lt;li&gt; interface_config.lan_endpoints &lt;/li&gt;
+        &lt;li&gt; interface_config.ig_endpoints  &lt;/li&gt;
+        &lt;li&gt; emulation_bfd_config &lt;/li&gt;
+        &lt;li&gt; emulation_bfd_config.router_handles &lt;/li&gt;
+        &lt;li&gt; emulation_bfd_config.router_interface_handles &lt;/li&gt;
+        &lt;li&gt; emulation_bfd_config.router_interface_handles.&lt;vport/protocols/bfd/router &lt;/li&gt;
+        &lt;li&gt; emulation_bfd_config.interface_handles &lt;/li&gt;
+        &lt;li&gt; emulation_bfd_config.interface_handles.&lt;vport/protocols/bfd/router&gt; &lt;/li&gt;
+        &lt;li&gt; emulation_bfd_session_config.session_handles &lt;/li&gt;
+        &lt;li&gt; emulation_bgp_config &lt;/li&gt;
+        &lt;li&gt; emulation_bgp_config.handles &lt;/li&gt;
+        &lt;li&gt; emulation_bgp_route_config &lt;/li&gt;
+        &lt;li&gt; emulation_bgp_route_config.bgp_routes &lt;/li&gt;
+        &lt;li&gt; emulation_bgp_route_config.bgp_sites &lt;/li&gt;
+        &lt;li&gt; emulation_bgp_route_config.bgp_sites.&lt;vport/protocols/bgp/neighborRange/l2Site&gt; &lt;/li&gt;
+        &lt;li&gt; emulation_bgp_route_config.bgp_sites.&lt;vport/protocols/bgp/neighborRange/l3Site&gt; &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_config &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_config.interface_handles &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_custom_tlv_config &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_custom_tlv_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_links_config &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_links_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_md_meg_config &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_md_meg_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_mip_mep_config &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_mip_mep_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_vlan_config &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_vlan_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_vlan_config.mac_range_handles &lt;/li&gt;
+        &lt;li&gt; emulation_cfm_vlan_config.mac_range_handles.&lt;vport/protocols/cfm/bridge/vlans&gt; &lt;/li&gt;
+        &lt;li&gt; emulation_dhcp_config &lt;/li&gt;
+        &lt;li&gt; emulation_dhcp_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_dhcp_group_config &lt;/li&gt;
+        &lt;li&gt; emulation_dhcp_group_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_dhcp_server_config &lt;/li&gt;
+        &lt;li&gt; emulation_dhcp_server_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_dhcp_server_config.handle &lt;/li&gt;
+        &lt;li&gt; dhcp_client_extension_config &lt;/li&gt;
+        &lt;li&gt; dhcp_client_extension_config.handle &lt;/li&gt;
+        &lt;li&gt; dhcp_server_extension_config &lt;/li&gt;
+        &lt;li&gt; dhcp_server_extension_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_efm_config &lt;/li&gt;
+        &lt;li&gt; emulation_efm_config.information_oampdu_id &lt;/li&gt;
+        &lt;li&gt; emulation_efm_config.event_notification_oampdu_id &lt;/li&gt;
+        &lt;li&gt; emulation_efm_org_var_config &lt;/li&gt;
+        &lt;li&gt; emulation_efm_org_var_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_eigrp_config &lt;/li&gt;
+        &lt;li&gt; emulation_eigrp_config.router_handles &lt;/li&gt;
+        &lt;li&gt; emulation_eigrp_config.interface_handles &lt;/li&gt;
+        &lt;li&gt; emulation_eigrp_route_config &lt;/li&gt;
+        &lt;li&gt; emulation_eigrp_route_config.session_handles &lt;/li&gt;
+        &lt;li&gt; emulation_igmp_config &lt;/li&gt;
+        &lt;li&gt; emulation_igmp_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_igmp_group_config &lt;/li&gt;
+        &lt;li&gt; emulation_igmp_group_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_igmp_group_config.source_handle &lt;/li&gt;
+        &lt;li&gt; emulation_igmp_group_config.group_pool_handle &lt;/li&gt;
+        &lt;li&gt; emulation_igmp_group_config.source_pool_handle &lt;/li&gt;
+        &lt;li&gt; emulation_isis_config &lt;/li&gt;
+        &lt;li&gt; emulation_isis_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_isis_topology_route_config &lt;/li&gt;
+        &lt;li&gt; emulation_isis_topology_route_config.elem_handle &lt;/li&gt;
+        &lt;li&gt; emulation_isis_topology_route_config.stub &lt;/li&gt;
+        &lt;li&gt; emulation_isis_topology_route_config.external &lt;/li&gt;
+        &lt;li&gt; emulation_isis_topology_route_config.grid &lt;/li&gt;
+        &lt;li&gt; emulation_isis_topology_route_config.grid.connected_session.&lt;vport/protocols/isis/router&gt;.row &lt;/li&gt;
+        &lt;li&gt; emulation_isis_topology_route_config.grid.connected_session.&lt;vport/protocols/isis/router&gt;.col &lt;/li&gt;
+        &lt;li&gt; l2tp_config &lt;/li&gt;
+        &lt;li&gt; l2tp_config.handles &lt;/li&gt;
+        &lt;li&gt; emulation_lacp_link_config &lt;/li&gt;
+        &lt;li&gt; emulation_lacp_link_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_config &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_route_config &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_route_config.lsp_handle &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_route_config.lsp_intf &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_route_config.lsp_vc_range_handles &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_route_config.lsp_vc_ip_range_handles &lt;/li&gt;
+        &lt;li&gt; emulation_ldp_route_config.lsp_vc_mac_range_handles &lt;/li&gt;
+        &lt;li&gt; emulation_mld_config &lt;/li&gt;
+        &lt;li&gt; emulation_mld_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_mld_group_config &lt;/li&gt;
+        &lt;li&gt; emulation_mld_group_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_mld_group_config.group_pool_handle &lt;/li&gt;
+        &lt;li&gt; emulation_mld_group_config.source_pool_handles &lt;/li&gt;
+        &lt;li&gt; emulation_oam_config_msg &lt;/li&gt;
+        &lt;li&gt; emulation_oam_config_msg.handle &lt;/li&gt;
+        &lt;li&gt; emulation_oam_config_topology &lt;/li&gt;
+        &lt;li&gt; emulation_oam_config_topology.handle &lt;/li&gt;
+        &lt;li&gt; emulation_oam_config_topology.traffic_handles &lt;/li&gt;
+        &lt;li&gt; emulation_ospf_config &lt;/li&gt;
+        &lt;li&gt; emulation_ospf_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_ospf_topology_route_config &lt;/li&gt;
+        &lt;li&gt; emulation_ospf_topology_route_config.elem_handle &lt;/li&gt;
+        &lt;li&gt; emulation_pbb_config &lt;/li&gt;
+        &lt;li&gt; emulation_pbb_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_pbb_config.interface_handles &lt;/li&gt;
+        &lt;li&gt; emulation_pbb_trunk_config &lt;/li&gt;
+        &lt;li&gt; emulation_pbb_trunk_config.trunk_handle &lt;/li&gt;
+        &lt;li&gt; emulation_pbb_trunk_config.mr_handle &lt;/li&gt;
+        &lt;li&gt; emulation_pim_config &lt;/li&gt;
+        &lt;li&gt; emulation_pim_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_pim_config.interfaces &lt;/li&gt;
+        &lt;li&gt; emulation_pim_group_config &lt;/li&gt;
+        &lt;li&gt; emulation_pim_group_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_pim_group_config.group_pool_handle &lt;/li&gt;
+        &lt;li&gt; emulation_pim_group_config.source_pool_handles &lt;/li&gt;
+        &lt;li&gt; pppox_config &lt;/li&gt;
+        &lt;li&gt; pppox_config.handles &lt;/li&gt;
+        &lt;li&gt; emulation_rip_config &lt;/li&gt;
+        &lt;li&gt; emulation_rip_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_rip_route_config &lt;/li&gt;
+        &lt;li&gt; emulation_rip_route_config.route_handle &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_config &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_config.handles &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_config.router_interface_handle &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_tunnel_config &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_tunnel_config.tunnel_handle &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_tunnel_config.tunnel_leaves_handle &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_tunnel_config.tunnel_leaves_handle.&lt;vport/protocols/rsvp/neighborPair/destinationRange&gt; &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_tunnel_config.tunnel_leaves_handle.&lt;vport/protocols/rsvp/neighborPair/destinationRange&gt;/ingress &lt;/li&gt;
+        &lt;li&gt; emulation_rsvp_tunnel_config.routed_interfaces &lt;/li&gt;
+        &lt;li&gt; emulation_stp_msti_config &lt;/li&gt;
+        &lt;li&gt; emulation_stp_msti_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_stp_bridge_config &lt;/li&gt;
+        &lt;li&gt; emulation_stp_bridge_config.bridge_handle &lt;/li&gt;
+        &lt;li&gt; emulation_stp_bridge_config.bridge_interface_handles &lt;/li&gt;
+        &lt;li&gt; emulation_stp_bridge_config.bridge_interface_handles.&lt;vport/protocols/stp/bridge&gt; &lt;/li&gt;
+        &lt;li&gt; emulation_stp_bridge_config.interface_handles &lt;/li&gt;
+        &lt;li&gt; emulation_stp_bridge_config.interface_handles.&lt;vport/protocols/stp/bridge&gt; &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_config &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_control_range_config &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_control_range_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_test_range_config &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_test_range_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_server_range_config &lt;/li&gt;
+        &lt;li&gt; emulation_twamp_server_range_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_ancp_config &lt;/li&gt;
+        &lt;li&gt; emulation_ancp_config.handle &lt;/li&gt;
+        &lt;li&gt; emulation_ancp_subscriber_lines_config &lt;/li&gt;
+        &lt;li&gt; emulation_ancp_subscriber_lines_config.handle &lt;/li&gt;
+        &lt;li&gt; fc_client_config &lt;/li&gt;
+        &lt;li&gt; fc_client_config.handle &lt;/li&gt;
+        &lt;li&gt; fc_fport_config &lt;/li&gt;
+        &lt;li&gt; fc_fport_config.handle &lt;/li&gt;
+        &lt;li&gt; fc_fport_vnport_config &lt;/li&gt;
+        &lt;li&gt; fc_fport_vnport_config.handle &lt;/li&gt;
+        &lt;li&gt; traffic_config &lt;/li&gt;
+        &lt;li&gt; traffic_config.stream_id &lt;/li&gt;
+        &lt;li&gt; traffic_config.traffic_item &lt;/li&gt;
+        &lt;li&gt; emulation_multicast_group_config &lt;/li&gt;
+        &lt;li&gt; emulation_multicast_source_config &lt;/li&gt;
+        &lt;/ul&gt;</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="{}" />
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="sync" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>If enabled, the ixClearTimeStamps routine is called for the
+        reserved port list.</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="1" />
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="tcl_proxy_username" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Username for logging in IxNetwork Tcl Proxy server.
+        &lt;p&gt; This parameter is ignored when IxNetwork Tcl Proxy server is not used for connecting
+        to IxNetwork. In this case, the username will be configured
+        automatically at ::&lt;namespace&gt;::interface_config and will have the value
+        'IxNetwork/$(COMPUTERNAME)/$(USERNAME)'. &lt;/p&gt;
+        &lt;p&gt; However, when connecting to an IxNetwork Tcl Proxy Server this parameter is used
+        to determine the username of the IxNetwork instance to which the Proxy Server
+        will connect to. &lt;/p&gt;</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="tcl_server" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>IP address or name of the ixTclServer.
+        When using IxTclProtocol (old API), this parameter is ignored on
+        Windows platforms. On Unix platforms, the default value is the
+        first item in option "device" list.
+        &lt;p&gt; When using IxTclNetwork (new API) on Windows platform, if
+        both tcl_server and ixnetwork_tcl_server
+        are not specified, the default value is 127.0.0.1. If
+        ixnetwork_tcl_server is present, the default value is equal to
+        ixnetwork_tcl_server and if this fails it will fallback to the value
+        of the first item in option "device" list.
+        When using IxTclNetwork (new API) on Unix platform, if
+        tcl_server is not specified, the default value is equal to
+        ixnetwork_tcl_server. This means that, on Unix, if tcl_server is
+        not specified, then ixnetwork_tcl_server must be specified. &lt;/p&gt;</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="username" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Username for logging on to the chassis.
+        &lt;p&gt; This parameter is ignored when using IxTclNetwork (new API). In this case,
+        the username will be configured automatically at ::&lt;namespace&gt;::interface_config
+        and will have the value 'IxNetwork/$(COMPUTERNAME)/$(USERNAME)'. &lt;/p&gt;</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="\" />
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="mode" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This parameter depends on 'vport_list' and 'vport_count' parameters. More details
+        are available in the description for parameter 'device'.
+        This parameter is valid only when IxNetwork Tcl API is used.</text>
+          <choices>
+            <choice>
+              <choiceName>connect</choiceName>
+              <choiceText>(DEFAULT) connect virtual ports specified with 'vport_list' parameter to                the real ports specified with 'port_list' parameter.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>disconnect</choiceName>
+              <choiceText>disconnect virtual ports specified with 'vport_list' parameter from the real ports they are currently connected to.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>reconnect_ports</choiceName>
+              <choiceText>This mode will force reloading the port configuration on all used chassis ports by releasing all ports curently assigned and then connect them back with the same vport assignment.&lt;br/&gt;
+                This mode accepts no other arguments (any other argument in this mode will be ignored).&lt;br/&gt;
+                Valid only for IxTclNetwork. This mode is required when connecting to an IxNetwork configuration that uses PCPU traffic configuration for HL compatibility.
+                &lt;br/&gt;
+                &lt;b&gt;NOTE: &lt;i&gt;When this reload happens all the port configurations that are not present in IxNetwork will be lost (eg.: IxTclHal low level commands, HL commands using P HLTSET, HL commands using IxTclHal implementation).
+                &lt;/i&gt;&lt;/b&gt;</choiceText>
+            </choice>
+            <choice>
+              <choiceName>save</choiceName>
+              <choiceText>save the current ixnetwork configuration (ixncfg) to the file specified with at least one of the parameters file_name or file_ixncfg.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="connect disconnect reconnect_ports save" />
+        <restriction type="DEFAULT" valueType="ANY" value="connect" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="vport_count" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>More details are available in the description for parameter 'device'.
+        This parameter is valid only when IxNetwork Tcl API is used and it configures
+        the number of virtual ports to be created. When this parameter is specified
+        the parameters 'device' , 'port_list', 'vport_list', 'mode' are ignored. The
+        virtual port handles created are returned with 'vport_handle' key.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="RANGE" min="1" max="600" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="vport_list" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>More details are available in the description for parameter 'device'.
+        This parameter is valid only when IxNetwork Tcl API is used. When parameter
+        'mode' is 'disconnect', the virtual ports specified will be disconnected from
+        the real ports they are connected to. Parameters 'device' and 'port_list' are
+        ignored. When parameter 'mode' is 'connect' parameters 'device' and 'port_list'
+        are mandatory. The virtual ports specified with 'vport_list' will be connected
+        to the real ports specified with 'port_list' and 'device'.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="REGEXP" value="^\[0-9\]+/\[0-9\]+/\[0-9\" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="execution_timeout" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This is the timeout for each individual HLT command. Applies to all HLT commands.
+        The setting is in seconds.
+        Setting this setting to 60 it will mean that each command (ex: interface_config) must complete in under 60 seconds.
+        If the command will last more than 60 seconds the command will be terminated by force.
+        This flag can be used to guard against dead locks occurring in IxNetwork.
+        Default is 0, meaning no execution timeout.</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="0" />
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="return_detailed_handles" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This argument determines if individual interface, session or router handles are returned by ixiangpf commands.
+        This applies to all HLT commands from the current session.
+        Setting this to 0 means that only NGPF-specific protocol stack handles will be returned. This will significantly
+        decrease the size of command results and speed up script execution. Individual item handles can still be retrieved
+        using the protocol_info command with -mode handles.
+        The default is 1, meaning all possible handles will be returned.</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="1" />
+        <restriction type="VALUETYPE" valueType="CHOICES" value="0 1" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="timeout" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="nobios" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="forceload" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>log</key>
+      <value>On status of failure, gives detailed information.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>port_handle.$device.$port</key>
+      <value>Port in the form of c/l/p.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>vport_list</key>
+      <value>List of virtual port handles.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.connect</key>
+      <value>keyed list with the following keys "vport_list"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_bfd_config</key>
+      <value>keyed list with the following keys "router_handles router_interface_handles.__parent interface_handles.__parent"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_bfd_session_config</key>
+      <value>keyed list with the following keys "session_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_bgp_config</key>
+      <value>keyed list with the following keys "handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_bgp_route_config</key>
+      <value>keyed list with the following keys "bgp_routes bgp_sites.__parent bgp_sites.__parent"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_cfm_config</key>
+      <value>keyed list with the following keys "handle interface_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_cfm_custom_tlv_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_cfm_links_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_cfm_md_meg_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_cfm_mip_mep_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_cfm_vlan_config</key>
+      <value>keyed list with the following keys "handle mac_range_handles.__parent"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_dhcp_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_dhcp_group_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_dhcp_server_config</key>
+      <value>keyed list with the following keys "handle handle.dhcp_handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_efm_config</key>
+      <value>keyed list with the following keys "information_oampdu_id event_notification_oampdu_id"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_efm_org_var_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_eigrp_config</key>
+      <value>keyed list with the following keys "router_handles interface_handles __parent.connected_interface_handles __parent.gre_interface_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_eigrp_route_config</key>
+      <value>keyed list with the following keys "session_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_igmp_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_igmp_group_config</key>
+      <value>keyed list with the following keys "handle source_handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_isis_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_isis_topology_route_config</key>
+      <value>keyed list with the following keys "elem_handle version route_range stub.num_networks external.num_networks grid.connected_session__parent.row grid.connected_session__parent.col grid.connected_session.__parent.row grid.connected_session.__parent.col"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_lacp_link_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_ldp_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_ldp_route_config</key>
+      <value>keyed list with the following keys "lsp_handle lsp_intf lsp_vc_range_handles lsp_vc_ip_range_handles lsp_vc_mac_range_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_mld_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_mld_group_config</key>
+      <value>keyed list with the following keys "handle group_pool_handle source_pool_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_oam_config_msg</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_oam_config_topology</key>
+      <value>keyed list with the following keys "handle traffic_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_ospf_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_ospf_topology_route_config</key>
+      <value>keyed list with the following keys "elem_handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_pbb_config</key>
+      <value>keyed list with the following keys "handle interface_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_pbb_trunk_config</key>
+      <value>keyed list with the following keys "trunk_handle mr_handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_pim_config</key>
+      <value>keyed list with the following keys "handle interfaces"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_pim_group_config</key>
+      <value>keyed list with the following keys "handle group_pool_handle source_pool_handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_rip_config</key>
+      <value>keyed list with the following keys "handle handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_rip_route_config</key>
+      <value>keyed list with the following keys "route_handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_rsvp_config</key>
+      <value>keyed list with the following keys "handles router_interface_handle.__parent"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_rsvp_tunnel_config</key>
+      <value>keyed list with the following keys "tunnel_handle tunnel_leaves_handle.__parent/ingress routed_interfaces.__parent/ingress tunnel_leaves_handle.__parent"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_stp_bridge_config</key>
+      <value>keyed list with the following keys "bridge_handle bridge_interface_handles.__parent interface_handles.__parent"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_stp_msti_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.interface_config</key>
+      <value>keyed list with the following keys "interface_handle routed_interface_handle gre_interface_handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.l2tp_config</key>
+      <value>keyed list with the following keys "handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.pppox_config</key>
+      <value>keyed list with the following keys "handles"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_twamp_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_twamp_control_range_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_twamp_test_range_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_twamp_server_range_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_ancp_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.emulation_ancp_subscriber_lines_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.fc_client_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.fc_fport_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$port_handle.fc_fport_vnport_config</key>
+      <value>keyed list with the following keys "handle"</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>traffic_config</key>
+      <value>a list having as elements the names of the existing traffic items (the name of the traffic item is normally returned when traffic_config creates a new traffic item by the stream_id key)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>$stream_id.traffic_config</key>
+      <value>keyed list with all the keys that the traffic_config procedure would return when configuring the $stream_id traffic item</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>vport_protocols_handle</key>
+      <value>keyed list containing the vport protocols handle</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>connection.client_version</key>
+      <value>The IxNetwork version found on client</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>connection.chassis.$device.hostname</key>
+      <value>The hostname of the chassis</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>connection.chassis.$device.ip</key>
+      <value>The ip address of the chassis</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>connection.chassis.$device.chassis_protocols_version</key>
+      <value>The IxNetwork Protocols version found on the chassis</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>connection.chassis.$device.chassis_type</key>
+      <value>The type of the chassis</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>connection.chassis.$device.chassis_version</key>
+      <value>The IxOS version found on the chassis</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <sampleInput>
+    <sampleInputElem supportType="ixNetworkCpfSupport" />
+  </sampleInput>
+  <sampleOutput>
+    <sampleOutputElem supportType="ixNetworkCpfSupport" />
+  </sampleOutput>
+  <notes>
+    <note supportType="ixNetworkCpfSupport">
+    1. Coded versus functional specification.
+    2. Once a vport_handle or port_handle is returned, the handle will not change if the
+    virtual port is disconnected and connected to another real port.
+    Example1: '::&lt;namespace&gt;::connect -device X -port_list 1/1'. This call returns the port handle 0/1/1
+    and virtual port handle 0/1/1.
+    '::&lt;namespace&gt;::connect -device Y -port_list 2/1 -vport_list 0/1/1 -mode connect'. This call returns
+    the port_handle 0/1/1 and virtual port handle 0/1/1.
+    Conclusion: even if the device and real port has changed, the port handle hasn't changed.
+    Example2: '::&lt;namespace&gt;::connect -vport_count 1'. This call does not return a port handle but it returns
+    the virtual port handle '0/0/1'.
+    '::&lt;namespace&gt;::connect -device X -port_list 4/2 -vport_list 0/0/1'. This call returns port handle 0/0/1
+    and virtual port handle 0/0/1.
+    3. Session resume will be done only for the first ::&lt;namespace&gt;::connect call from the script. Subsequent
+    calls will not perform session resume, even if -reset flag is not specified
+    4. Available only for *NO HLTSET
+    5. Only when HLT commands are executed locally (not sent to tclServer)
+    6. The following protocols cannot be restored when the configuration is autodetected by
+    HLT (not loaded from an config_file_hlt file)
+    6.1 OAM - configurations done with emulation_oam_* procedures
+    6.2 Multicast sources and group handles will not be available anymore. They need to be recreated
+    6.3 Autogenerated protocols cannot be restored: DCBX, FcOE, FCF, ESMC (ESync)
+    7. Port handles that were "shuffled" are not supported (e.g. port 0/2/1 is disconnected and reconnected to
+    0/2/2; or vport 0/0/1 is created, then connected to 0/3/1). Port handle for ports that are connected
+    will be $ch/$ca/$po. Port handles for unconnected ports will be 0/0/$vport_item (e.g. the third
+    virtual port that is not connected will have handle 0/0/2)
+   </note>
+  </notes>
+  <seeAlso>
+    <seeAlsoElem supportType="ixNetworkCpfSupport" />
+  </seeAlso>
+  <examples>
+    <example supportType="ixNetworkCpfSupport" />
+  </examples>
+</method>
