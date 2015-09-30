@@ -1,0 +1,10 @@
+# This is the argument file for sconfig.txt
+--variable autopath:/home/jimhe/git-repo/automation
+--variable virtual_topo:FGateFAPMacBook.xml
+--variable testbed:wireless-tb 
+--variable SSID Name:auto-wpa2psk
+--variable Security Type:wpa2-only-personal
+--variable Encrypt Type:AES
+--variable macOsSecurityType:WPA2
+# Tag
+--include macOs-Wpa2psk
