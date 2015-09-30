@@ -56,20 +56,41 @@
 | | SSHLibrary.Switch Connection | ${org_handle}
 | | [Return] | ${Value} |
 
-# get Windows ipconfig /all Adapter info via a ssh session.
+# Get Windows ipconfig /all Adapter info via a ssh session.
 | Win Ipconfig Adapter Info | [Arguments] | ${handle} | ${Adapter Type} | ${Info Name} |
 | | [Documentation] | Win Get ipconfig /all info handle=${handle}, Adapter Type=${Adapter Type}, Info Name=${Info Name} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
 | | SSHLibrary.Write | ipconfig /all |
-| | Sleep | 1 |
+| | Sleep | 2 |
 | | ${read_info}= | SSHLibrary.Read |
-| | Log To Console | ${read_info} |
 | | SSHLibrary.Switch Connection | ${org_handle}
+| | Log | ${read_info} | console=yes |
 | | ${Adapter Data Dict}= | Get Adapter Data | ${read_info} | ${Adapter Type} |
 | | ${Info Value List} | Get Nested Diction | ${Adapter Data Dict} | data.${Info Name} |
 | | ${Info Value} | Get From List | ${Info Value List} | 0 |
-| | Should Not Be Empty | ${Info Value} | 'Unable to get ${Info Name} from Adapter' |
+| | Should Not Be Empty | ${Info Value} | 'Win Ipconfig Adapter Info ${Adapter Type} ${Info Name} fails' |
 | | [Return] | ${Info Value} |
+
+# Get Resolved IPv4 Address
+| Win Get Resolved IPv4 Address | [Arguments] | ${handle} | ${Default Gateway} | ${SSID Name} | ${Wlan Profile} | ${Wlan Interface Name} |
+| | [Documentation] | Win Get Get Resolved IPv4 Address handle=${handle}, SSID Name=${SSID Name}, Wlan Profile=${Wlan Profile}, Wlan Interface Name=${Wlan Interface Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | :FOR | ${Loop Count} | IN RANGE | 1 | 5 |
+| | | SSHLibrary.Write | ipconfig /all |
+| | | Sleep | 5 |
+| | | ${read_info}= | SSHLibrary.Read |
+| | | ${Resolved IPv4 Address}= | Get Resolved IPv4 Address | ${read_info} | ${Default Gateway} |
+| | | ${Status} | Get From Dictionary | ${Resolved IPv4 Address} | status |
+| | | Run Keyword If | ${Status} == 1 | Exit For Loop |
+#| | | Win Delete Wlan Profile From Interface | ${handle} | ${SSID Name} | ${Wlan Interface Name} |
+#| | | Sleep | 2 |
+#| | | Win Add Wlan Profile to Interface | ${handle} | ${Wlan Profile} | ${Wlan Interface Name} |
+| | | Log | \n\tResolving IPv4 Address, wait 10 seconds.... | console=yes |
+| | | Sleep | 10 |
+| | SSHLibrary.Switch Connection | ${org_handle}
+| | Should Be True | ${Loop Count} <= 5 | 'Unable resolving IPv4 Address' |
+| | ${IPv4 Address} | Get From Dictionary | ${Resolved IPv4 Address} | ipv4 |
+| | [Return] | ${IPv4 Address} |
 
 # Verify if Wireless Client can ping FAP
 | Win Ping | [Arguments] | ${handle} | ${Destination IP} |
@@ -104,10 +125,12 @@
 | | | SSHLibrary.Write | wlan show networks |
 | | | Sleep | 2 |
 | | | ${Info Data}= | SSHLibrary.Read |
+| | | Log | \n\t${Info Data} | console=yes |
 | | | ${SSID Presence}= | Check SSID Presence | ${Info Data} | ${SSID Name} |
 | | | ${Status} | Get From Dictionary | ${SSID Presence} | status |
 | | | Run Keyword If | ${Status} == 1 | Exit For Loop |
-| | | Sleep | 10 |
+| | | Log | \n\tWin Check SSID Presence, Wait 15 seconds.... | console=yes |
+| | | Sleep | 15 |
 | | SSHLibrary.Write Until Expected Output | exit\n | expected=${handle} | timeout=5s | retry_interval=0.5s |
 | | Should Be True | ${Loop Count} < 9 | 'Win Check SSID Presence fails' |
 | | SSHLibrary.Switch Connection | ${org_handle} |

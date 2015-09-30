@@ -797,6 +797,7 @@ def suite_test_init(testbed, tbinfo, vtopo=None):
             status_data = {
                 'status':1,
                 'test_topo':status['test_topo'],
+                'physical_topo':status['test_topo'],
             }
         else:
             # parse virtaul topo data
@@ -815,7 +816,7 @@ def suite_test_init(testbed, tbinfo, vtopo=None):
         e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
         status_data = {'status':0, 'msg':e}
     finally:
-        nested_print(status_data)
+        nested_print(status_data['test_topo'])
         return(status_data)
 
 def get_adapter_data(info, adapter_type):
@@ -1273,7 +1274,95 @@ def get_wifi_interface_info(info):
     finally:
         return(status_data)
 
+def get_resolved_ipv4_address(info, gateway):
+    '''
+    This python API parses win ipconfig /all and Wireless LAN adapter Wireless Network Connection: info, returns IPv4 Address in a dictionary
+    '''
+    func_name = get_resolved_ipv4_address.__name__
+    try:
+        status_data = {'status':0}
+        t_info = re.sub(r'(\\r)+', '', info, re.DOTALL)
+        wireless_interface_info = {}
+        wireless_interface = 0
+        for line in t_info.split('\n'):
+            if len(line) < 5:
+                if wireless_interface == 1:
+                    wireless_interface = 2
+                else:
+                    wireless_interface = 0
+                continue
+            if re.search(r'Wireless LAN adapter Wireless Network Connection:', line, re.U):
+                nested_print(line)
+                wireless_interface = 1
+                continue
+            if wireless_interface == 2:
+                nested_print(line)
+                s = re.search(r'(.*): (.*)', line, re.U)
+                if s:
+                    s1 =  re.sub(r'(\.\s)+', '', s.group(1), re.DOTALL)
+                    s1 =  s1.strip()
+                    s2 = s.group(2).strip()
+                    wireless_interface_info[s1] = s2
+                    continue
+                if wireless_interface_info != {}:
+                    if 'Default Gateway' in wireless_interface_info:
+                        if wireless_interface_info['Default Gateway'] == gateway:
+                            status_data = {
+                                'status':1,
+                                'ipv4':wireless_interface_info['Default Gateway'],
+                            }
+    except:
+        e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+        status_data = {'status':0, 'msg':e}
+    finally:
+        return(status_data)
+
+def parse_wireless_network_attributes(info):
+    '''
+    This python API parses airport -I data, returns them in a dictionary
+    '''
+    func_name = parse_wireless_network_attributes.__name__
+    try:
+        status_data = {'status':0}
+        t_info = re.sub(r'(\\r)+', '', info, re.DOTALL)
+        attributes_info = {}
+        for line in t_info.split('\n'):
+            if len(line) < 5:
+                continue
+            s = re.search(r'(.*): (.*)', line, re.U)
+            if s:
+                s1 = s.group(1).strip()
+                s2 = s.group(2).strip()
+                attributes_info[s1] = s2
+                continue
+        if attributes_info != {}:
+            status_data = {
+                'status':1,
+                'data':attributes_info,
+            }
+    except:
+        e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+        status_data = {'status':0, 'msg':e}
+    finally:
+        return(status_data)
+
 if __name__ == "__main__":
     info = '''
+     agrCtlRSSI: -53
+     agrExtRSSI: 0
+    agrCtlNoise: -90
+    agrExtNoise: 0
+          state: running
+        op mode: station
+     lastTxRate: 780
+        maxRate: 867
+lastAssocStatus: 0
+    802.11 auth: open
+      link auth: wpa2-psk
+          BSSID: 0:9:f:b5:cc:4f
+           SSID: auto-wpa2psk
+            MCS: 9
+        channel: 36,80
     '''
-    Status = suite_test_init('acl.tb', '/home/jimhe/git-repo/automation/cfg/acl-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/singleSw3Trafgens.xml')
+    Status = parse_wireless_network_attributes(info)
+    nested_print(Status)

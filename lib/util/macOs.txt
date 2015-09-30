@@ -32,11 +32,24 @@
 | | [Return] | ${Wifi Data} |
 
 # Get SSID Data
+| macOs Check SSID Presence | [Arguments] | ${handle} | ${Wireless Hardware Port} | ${SSID Name} |
+| | [Documentation] | macOs Check SSID Presence handle=${handle}, Wireless Hardware Port=${Wireless Hardware Port}, SSID Name=${SSID Name} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | \n\t${handle} networksetup -listpreferredwirelessnetworks ${Wireless Hardware Port} | console=yes |
+| | SSHLibrary.Write | networksetup -listpreferredwirelessnetworks ${Wireless Hardware Port} |
+| | Sleep | 2 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log To Console | \n\t${Info Data}
+| | SSHLibrary.Switch Connection | ${org_handle} |
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} | ${SSID Name} |
+| | Should Not Be Empty | ${Match Lines} | 'Unable find ${SSID Name} on Hardware Port ${Wireless Hardware Port}' |
+
+# Get SSID Data
 | macOs Get SSID Data | [Arguments] | ${handle} | ${SSID Name} |
 | | [Documentation] | macOs Get SSID Data handle=${handle}, SSID Name=${SSID Name} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
-| | Log | \n\t${handle} /System/Library/PrivateFrameworks/macOs80211.framework/Versions/A/Resources/airport scan | console=yes |
-| | SSHLibrary.Write | /System/Library/PrivateFrameworks/macOs80211.framework/Versions/A/Resources/airport scan |
+| | Log | \n\t${handle} /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan | console=yes |
+| | SSHLibrary.Write | /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan |
 | | Sleep | 5 |
 | | ${Info Data}= | SSHLibrary.Read |
 | | Log To Console | \n\t${Info Data}
@@ -134,3 +147,41 @@
 | | Run Keyword If | ${Status} != 1 | 'macOs Get Wifi Network Interface Name ${handle} fails'' |
 | | ${Wifi Network Interface Data}= | Get From Dictionary | ${Wifi Network Interface Info} | wifi |
 | | [Return] | ${Wifi Network Interface Data} |
+
+# Configure Wireless Network
+| macOs Configure Wireless Network | [Arguments] | ${handle} | ${Hardwareport} | ${Network} | ${Securitytype} | ${index}=0 | ${Password}=OPEN |
+| | [Documentation] | macOs Configure Wireless Network handle=${handle}, Hardwareport=${Hardwareport}, Network=${Network}, Securitytype=${Securitytype}, index=${index}, Password=$Password} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} networksetup -addpreferredwirelessnetworkatindex ${Hardwareport} ${Network} ${index}=0 ${Securitytype}  ${Password} |
+| | SSHLibrary.Write | networksetup -addpreferredwirelessnetworkatindex ${Hardwareport} ${Network} ${index}=0 ${Securitytype} ${Password} |
+| | Sleep | 2 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log To Console | \n\t${Info Data} |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+
+# Remove Wireless Network
+| macOs Remove Wireless Network | [Arguments] | ${handle} | ${Hardwareport} | ${Network} |
+| | [Documentation] | macOs Configure Wireless Network handle=${handle}, Hardwareport=${Hardwareport}, Network=${Network} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} networksetup -removepreferredwirelessnetwork ${Hardwareport} ${Network} |
+| | SSHLibrary.Write | networksetup -addpreferredwirelessnetworkatindex ${Hardwareport} ${Network} |
+| | Sleep | 2 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log To Console | \n\t${Info Data} |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+
+# Get Wireless Network attributes
+| macOs Get Wireless Network Attributes | [Arguments] | ${handle} |
+| | [Documentation] | macOs Get Wireless Network Attributes handle=${handle} |
+| | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
+| | Log | ${handle} airport -I |
+| | SSHLibrary.Write | airport -I |
+| | Sleep | 2 |
+| | ${Info Data}= | SSHLibrary.Read |
+| | Log To Console | \n\t${Info Data} |
+| | SSHLibrary.Switch Connection | ${org_handle} |
+| | ${Wireless Network Attributes} | Parse Wireless Network Attributes | ${Info Data} |
+| | ${Status} | Get From Dictionary | ${Wireless Network Attributes} | status |
+| | Run Keyword If | ${Status} != 1 | 'macOs Get Wireless Network Attributes ${handle} fails'' |
+| | ${Wireless Network Attributes Data}= | Get From Dictionary | ${Wireless Network Attributes} | data |
+| | [Return] | ${Wireless Network Attributes Data} |
