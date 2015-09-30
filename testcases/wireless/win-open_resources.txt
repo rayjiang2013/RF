@@ -26,11 +26,10 @@
 | Suite Teardown Keyword | [Arguments] |
 | | [Documentation] | Suite Teardown Keyword |
 | | Log To Console | \n\tSuite Teardown |
-| | Win Wlan Disconnect From SSID | ${WIN-PC Hostname} |
-| | Win Delete Wlan Profile From Interface | ${WIN-PC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
+#| | Win Wlan Disconnect From SSID | ${WinPC Hostname} |
+#| | Win Delete Wlan Profile From Interface | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
 #| | Wireless Reboot FAP | ${FGate Hostname} | ${FAP IP} |
-| | Configure FortiSwitch | ${Unset Configure Dict} |
-| | Wireless DHCP Lease-Clear All | ${FGate Hostname} |
+#| | Configure FortiSwitch | ${Unset Configure Dict} |
 | | Release Test Topo | ${testbed} | ${Test Topo} |
 | | SSH Close All Connections |
 | | Telnet Close All Connections |
@@ -65,11 +64,11 @@
 | | ${FAP Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev2.console.ip |
 | | ${FAP Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev2.console.line |
 | | ${FAP Model} | Get Nested Diction | ${Test Topo} | test_topo.dev2.model |
-| | ${WIN-PC Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev3.hostname |
-| | ${WIN-PC Username} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.username |
-| | ${WIN-PC Password} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.password |
-| | ${WIN-PC Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.ip |
-| | ${WIN-PC Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.line |
+| | ${WinPC Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev3.hostname |
+| | ${WinPC Username} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.username |
+| | ${WinPC Password} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.password |
+| | ${WinPC Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.ip |
+| | ${WinPC Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.line |
 | | ${link1_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link1.link |
 | | ${dev_ports_dict} | Restruct Dev Ports | ${link1_ports} |
 | | ${FGate port} | Get From Dictionary | ${dev_ports_dict} | dev1 |
@@ -83,7 +82,7 @@
 | | Set Suite Variable | ${FAP Port} | ${FAP Port}
 | | ${Test Topo} | Get From Dictionary | ${Test Topo} | physical_topo |
 | | Set Suite Variable | ${Test Topo} | ${Test Topo} |
-| | Set Suite Variable | ${WIN-PC Hostname} | ${WIN-PC Hostname} |
+| | Set Suite Variable | ${WinPC Hostname} | ${WinPC Hostname} |
 
 # Telnet to FGate
 | | ${Prompt}= | Telnet Login | ${FGate Console Ip} | ${FGate Hostname} | ${FGate Username} | ${FGate Password} | 10 | ${FGate Hostname} | ${FGate Console Port} | open=open | send_ctrlc=yes |
@@ -91,10 +90,10 @@
 | | Should Not Be Empty | ${ret} | "Telnet Login to ${FGate Console Ip} failed" |
 | | ${Status} | Wireless Exec Factoryreset | ${FGate Hostname} | ${FGate Username} | ${FGate Password} |
 
-# Telnet to WIN-PC
-| | ${Prompt}= | SSH Login | ${WIN-PC Console Ip} | ${WIN-PC Hostname} | ${WIN-PC Username} | ${WIN-PC Password} |
-| | ${ret}= | Get Lines Containing String | ${Prompt} | ${WIN-PC Hostname} |
-| | Should Not Be Empty | ${ret} | "SSH Login to ${WIN-PC Console Ip} failed" |
+# Telnet to WinPC
+| | ${Prompt}= | SSH Login | ${WinPC Console Ip} | ${WinPC Hostname} | ${WinPC Username} | ${WinPC Password} |
+| | ${ret}= | Get Lines Containing String | ${Prompt} | ${WinPC Hostname} |
+| | Should Not Be Empty | ${ret} | "SSH Login to ${WinPC Console Ip} failed" |
 
 # Configure DUT
 | | @{Init Configure Data}= | Set Variable |
@@ -104,7 +103,7 @@
 | | ... |         set ssid ${SSID Name}
 | | ... |         set schedule "always"
 | | ... |         set broadcast-ssid enable
-| | ... |         set security ${Security Type}
+| | ... |         set security open
 | | ... |         set local-bridging enable
 | | ... |         set max-clients 10
 | | ... | end
@@ -138,12 +137,18 @@
 | | ... |         set allowaccess https http telnet ping capwap
 | | ... | end
 | | ... | config system dhcp server
+| | ... |     delete 1
+| | ... |     delete 2
+| | ... |     delete 3
+| | ... | end
+| | ... | config system dhcp server
 | | ... |     edit 1
 | | ... |         set interface internal
+| | ... |         set lease-time 300
 | | ... |         config ip-range
 | | ... |             edit 2
-| | ... |                 set end-ip 192.168.1.100
-| | ... |                 set start-ip 192.168.1.109
+| | ... |                 set start-ip 192.168.1.100
+| | ... |                 set end-ip 192.168.1.250
 | | ... |         end
 | | ... |         set netmask 255.255.255.0
 | | ... |         set default-gateway ${FGate Gateway}
@@ -179,7 +184,7 @@
 
 # Check FAP Platform settings
 | | Wireless Check FAP Platform | ${FGate Hostname} | ${WTP Profile Name} | ${FAP Model} |
-| | ${WTP ID} | Wireless Get WTP ID | ${FGate Hostname} |
+| | ${WTP ID} | Wireless Get WTP ID | ${FGate Hostname} | ${FAP Hostname} |
 | | Log | \n\tWTP ID=${WTP ID} | console=yes |
 | | Should Be Equal | ${FAP Hostname} | ${WTP ID} | 'WTP ID is invalid" |
 
@@ -200,17 +205,17 @@
 | | Wireless Ping FAP | ${FGate Hostname} | ${FAP IP} |
 
 # Check FAP SSID shows in Station wireless network list
-| | Win Check SSID Presence | ${WIN-PC Hostname} | ${SSID Name} |
+| | Win Check SSID Presence | ${WinPC Hostname} | ${SSID Name} |
 
 # Get SSID attributes
-| | ${SSID Data} | Win Get SSID Data | ${WIN-PC Hostname} |
+| | ${SSID Data} | Win Get SSID Data | ${WinPC Hostname} |
 | | Nested Print | ${SSID Data} |
 | | ${SSID Encryption} | Get Nested Diction | ${SSID Data} | data.${SSID Name}.Encryption |
 | | ${SSID Network type} | Get Nested Diction | ${SSID Data} | data.${SSID Name}.Network type |
 | | ${SSID Authentication} | Get Nested Diction | ${SSID Data} | data.${SSID Name}.Authentication |
 
 # Get Wlan Interface Name
-| | ${Wlan Interfaces} | Win Get Wlan Interface Data | ${WIN-PC Hostname} |
+| | ${Wlan Interfaces} | Win Get Wlan Interface Data | ${WinPC Hostname} |
 | | Nested Print | ${Wlan Interfaces} |
 | | ${Wlan Interface Name} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.Name |
 | | Set Suite Variable | ${Wlan Interface Name} |
@@ -219,32 +224,30 @@
 | | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.State |
 
 # Add profile to wireless interface
-| | Win Add Wlan Profile to Interface | ${WIN-PC Hostname} | ${Wlan Profile} | ${Wlan Interface Name} |
+| | Win Add Wlan Profile to Interface | ${WinPC Hostname} | ${Wlan Profile} | ${Wlan Interface Name} |
 
 # verify profile being added correctly
-| | Win Verify Wlan Profile in Interface | ${WIN-PC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
+| | Win Verify Wlan Profile in Interface | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
 
 # Connect to SSID/Profile
-| | Win Wlan Connect To SSID | ${WIN-PC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
+| | Win Wlan Connect To SSID | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
 | | Sleep | 10 |
 
 # Verify wireless interface states
-| | ${Wlan Interfaces} | Win Get Wlan Interface Data | ${WIN-PC Hostname} |
+| | ${Wlan Interfaces} | Win Get Wlan Interface Data | ${WinPC Hostname} |
 | | Nested Print | ${Wlan Interfaces} |
 | | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.State |
 | | Run Keyword If | '${Wlan Interface State}' != 'connected' | Fail | 'Verify wireless interface states: Interface State fails' |
 
 # Verify Client receives a correct IP address from FAP
-| | ${Default Gateway} | Win Ipconfig Adapter Info | ${WIN-PC Hostname} | ${Wlan Interface Name}: | Default Gateway |
-| | Log To Console | \n\tDefault Gateway=${Default Gateway} |
-| | Run Keyword If | '${Default Gateway}' != '${FGate Gateway}' | Fail | 'Verify Client receives a correct IP address from FAP fails' |
-| | ${IPv4 Address} | Win Ipconfig Adapter Info | ${WIN-PC Hostname} | ${Wlan Interface Name}: | IPv4 Address |
+| | ${IPv4 Address} |  Win Get Resolved IPv4 Address | ${WinPC Hostname} | ${FGate Gateway} | ${SSID Name} | ${Wlan Profile} | ${Wlan Interface Name} |
+| | Log | \n\t${IPv4 Address} |
 
 # Verify Window station can ping FAP
-| | Win Ping | ${WIN-PC Hostname} | ${FAP IP} |
+| | Win Ping | ${WinPC Hostname} | ${FAP IP} |
 
 # Verify Window station can ping FGate Gateway
-| | Win Ping | ${WIN-PC Hostname} | ${FGate Gateway} |
+| | Win Ping | ${WinPC Hostname} | ${FGate Gateway} |
 
 | Show Test Related Variables | [Documentation] | Show all variables using in this test, autopath and dut_id are passed via command line |
 | | Log To Console | \tautopath=${autopath} |
@@ -264,8 +267,8 @@
 | | Log To Console | \tFAP Console Port=${FAP Console Port} |
 | | Log To Console | \tFAP port=${FAP port}
 | | Log To Console | \tFAP Model=${FAP Model}
-| | Log To Console | \tWIN-PC Hostname=${WIN-PC Hostname} |
-| | Log To Console | \tWIN-PC Username=${WIN-PC Username} |
-| | Log To Console | \tWIN-PC Password=${WIN-PC Password} |
-| | Log To Console | \tWIN-PC Console Ip=${WIN-PC Console Ip} |
-| | Log To Console | \tWIN-PC Console Port=${WIN-PC Console Port} |
+| | Log To Console | \tWinPC Hostname=${WinPC Hostname} |
+| | Log To Console | \tWinPC Username=${WinPC Username} |
+| | Log To Console | \tWinPC Password=${WinPC Password} |
+| | Log To Console | \tWinPC Console Ip=${WinPC Console Ip} |
+| | Log To Console | \tWinPC Console Port=${WinPC Console Port} |
