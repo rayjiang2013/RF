@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method name="ptp_over_mac_stats" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" displayPriority="0">
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkSupport" contentType="new" target="noTarget">Retrieve statistics plane on an endpoint created by a ::&lt;namespace&gt;::ptp_over_mac_config command</description>
+  <chapter>PTP APIs</chapter>
+  <arguments>
+    <argument name="port_handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The port handle for which the ptp_over_mac stats need to be retrieved</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue>
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>log</key>
+      <value>Error message if command returns {status 0}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.port_name</key>
+      <value>Port Name</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sessions_initiated</key>
+      <value>Sessions Initiated</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sessions_succeeded</key>
+      <value>Sessions Succeeded</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sessions_failed</key>
+      <value>Sessions Failed</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sessions_active</key>
+      <value>Sessions Active</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.initiated_sessions_rate</key>
+      <value>Initiated Sessions Rate</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.successful_sessions_rate</key>
+      <value>Successful Sessions Rate</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.failed_sessions_rate</key>
+      <value>Failed Sessions Rate</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.announce_messages_sent</key>
+      <value>Announce Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.announce_messages_received</key>
+      <value>Announce Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sync_messages_sent</key>
+      <value>Sync Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sync_messages_received</key>
+      <value>Sync Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.followup_messages_sent</key>
+      <value>FollowUp Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.followup_messages_received</key>
+      <value>FollowUp Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.delayreq_messages_sent</key>
+      <value>DelayReq Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.delayreq_messages_received</key>
+      <value>DelayReq Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.delayresp_messages_sent</key>
+      <value>DelayResp Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.delayresp_messages_received</key>
+      <value>DelayResp Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.pdelayreq_messages_sent</key>
+      <value>PdelayReq Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.pdelayreq_messages_received</key>
+      <value>PdelayReq Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.pdelayresp_messages_sent</key>
+      <value>PdelayResp Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.pdelayrest_messages_received</key>
+      <value>PdelayResp Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.pdelayrespfollowup_messages_sent</key>
+      <value>PdelayRespFollowUp Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.pdelayrespfollowup_messages_received</key>
+      <value>PdelayRespFollowUp Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.signaling_messages_sent</key>
+      <value>Signaling Messages Sent</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.signaling_messages_received</key>
+      <value>Signaling Messages Received</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.sync_messages_received_rate</key>
+      <value>Sync Messages Received Rate</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.followup_messages_received_rate</key>
+      <value>FollowUp Messages Received Rate</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.delayreq_messages_received_rate</key>
+      <value>DelayReq Messages Received Rate</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.delayresp_messages_received_rate</key>
+      <value>DelayResp Messages Received Rate</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.gps_unit_present</key>
+      <value>GPS Unit Present</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.gps_synchronized</key>
+      <value>GPS Synchronized</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+  </returnValues>
+  <examples>
+    <example>See files in the Samples subdirectory</example>
+  </examples>
+  <sampleInput />
+  <sampleOutput />
+  <notes />
+  <seeAlso>
+    <seeAlsoElem supportType="all">This command applies only to IxNetwork</seeAlsoElem>
+    <seeAlsoElem supportType="all">External documentation on Tclx keyed lists</seeAlsoElem>
+  </seeAlso>
+</method>

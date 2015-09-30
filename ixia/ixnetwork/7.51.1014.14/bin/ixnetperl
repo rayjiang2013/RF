@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+
+EXTRACT_PATH=/opt
+IXN_libs=$EXTRACT_PATH/ixia/ixnetwork/7.51.1014.14
+
+for FOLDER in `find $IXN_libs -type f -name IxNetwork.pm | rev | cut -d/ -f2- | rev`
+do
+    PERL5LIB="$PERL5LIB:$FOLDER"
+done
+
+export PERL5LIB
+ixiaperl5.18  ${@+"$@"}
+

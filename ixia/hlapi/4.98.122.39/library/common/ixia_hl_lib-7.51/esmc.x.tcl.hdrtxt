@@ -1,0 +1,172 @@
+##Procedure Header
+# 
+# Name:
+#     ixia::esmc_config
+# 
+# Description:
+#     Performs esmc configuration.
+#     
+# 
+# Synopsis:
+#     ixia::esmc_config
+#          -mode CHOICES create add modify delete
+#          -parent_handle ANY
+#         [-handle ANY]
+#         [-style ANY]
+#         [-enabled CHOICES true false  DEFAULT true]
+#         [-flag_mode CHOICES Auto AlwaysOn AlwaysOff DEFAULT Auto]
+#         [-name ANY  DEFAULT {}]
+#         [-ql CHOICES QL-STU QL-PRS QL-PRC QL-INV3 QL-SSU-A/TNC QL-INV5 QL-INV6 QL-ST2 QL-SSU-B QL-INV9 QL-EEC2/ST3 QL-EEC1/SEC QL-SMC QL-ST3E QL-PROV QL-DNU/DUS QL-RANDOM DEFAULT QL-PRS]
+#         [-rate RANGE 0 - 100 DEFAULT 1]
+#         [-wait_id CHOICES true false  DEFAULT false]
+# 
+# Arguments:
+# -mode
+#     create - creates and configures a new object
+#     add - adds a child object to the one specified by the -handle param
+#     modify - modified attributes on the given object by the -handle param
+#     delete - this mode cannot be used.
+#              In order to delete ESMC ranges the ethernetrange_config command must be used
+#              with -mode delete on the parent handle of the ESMC range that has typepath:
+#              //vport/protocolStack/ethernetEndpoint/range/macRange
+#     
+# -parent_handle
+#     The parent handle used for creating this object. Has the form: /vport/protocolStack/ethernetEndpoint/range/macRange
+#     
+# -handle
+#     A handle returned via a ::<namespace>::esmc_config command. This is used for mode modify.
+#     
+# -style
+#     The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add.
+#     
+# -enabled (PropertyBoolean)
+#     Disabled ranges won't be configured nor validated.
+#     (DEFAULT = true)
+#     
+# -flag_mode (PropertyString)
+#     The operation of the SSM header Event flag.
+#     (DEFAULT = Auto) Valid choices are:
+#     Auto - Auto
+#     AlwaysOn - {Always On}
+#     AlwaysOff - {Always Off}
+#     
+#     
+# -name (PropertyString)
+#     Name of range
+#     (DEFAULT = {})
+#     
+# -ql (PropertyString)
+#     The SSM clock quality level(QL) code.
+#     (DEFAULT = QL-PRS) Valid choices are:
+#     QL-STU - QL-STU/UNK
+#     QL-PRS - QL-PRS
+#     QL-PRC - QL-PRC
+#     QL-INV3 - QL-INV3
+#     QL-SSU-A/TNC - QL-SSU-A/TNC
+#     QL-INV5 - QL-INV5
+#     QL-INV6 - QL-INV6
+#     QL-ST2 - QL-ST2
+#     QL-SSU-B - QL-SSU-B
+#     QL-INV9 - QL-INV9
+#     QL-EEC2/ST3 - QL-EEC2/ST3
+#     QL-EEC1/SEC - QL-EEC1/SEC
+#     QL-SMC - QL-SMC
+#     QL-ST3E - QL-ST3E
+#     QL-PROV - QL-PROV
+#     QL-DNU/DUS - QL-DNU/DUS
+#     QL-RANDOM - QL-RANDOM
+#     
+#     
+# -rate (PropertyInt)
+#     SSM message transmit rate.
+#     (DEFAULT = 1)
+#     
+# -wait_id (PropertyBoolean)
+#     This value is true if supplicant
+#     is waiting for RequestId from DUT part.
+#     (DEFAULT = false)
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:handles    value:esmc handles
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# See Also:
+#     External documentation on Tclx keyed lists
+
+##Procedure Header
+# 
+# Name:
+#     ixia::esmc_control
+# 
+# Description:
+#     Perform control plane operations on an endpoint created
+#     by a ixia::esmc_config command
+#     
+# 
+# Synopsis:
+#     ixia::esmc_control
+#         -handle ANY
+#         -action CHOICES abort abort_async start/connect stop/disconnect
+#     
+# 
+# Arguments:
+#     -handle
+#         A handle returned via a ::<namespace>::esmc_config 
+#         command. This is the object on which the action will take place.
+#     -action
+#         Action to be executed. Valid choices are:
+#         abort   - abort all sessions on the same port with the target 
+#                   endpoint designated by -handle. The control is 
+#                   returned when the operation is completed.
+#         abort_async   - abort all sessions on the same port with the target 
+#                   endpoint designated by -handle. The control is 
+#                   returned immediately. The operation is executed in the background.
+#         start/connect - start and/or negotiate session for the target endpoint
+#                   designated by -handle.
+#         stop/disconnect - stop and/or release session for the target endpoint
+#                   designated by -handle.
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# Notes:
+#     This command applies only to IxNetwork.
+#     
+
+##Procedure Header
+# 
+# Name:
+#     ixia::esmc_stats
+# 
+# Description:
+#     Retrieve statistics plane on an endpoint created
+#     by a ixia::esmc_config command
+#     
+# 
+# Synopsis:
+#     "ixia::esmc_stats"
+#         -port_handle ANY
+#     
+# 
+# Arguments:
+#     -port_handle
+#         The port handle for which the esmc stats need to 
+#         be retrieved
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:log        value:When status is failure, contains more information
+#     
+#     key:[<port_handle.>].* value:per-port aggregate stats for endpoints created via <namespace>::esmc_create
+#     
+

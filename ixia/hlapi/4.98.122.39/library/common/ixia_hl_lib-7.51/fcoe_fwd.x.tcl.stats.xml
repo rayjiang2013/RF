@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method name="fcoe_fwd_stats" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" displayPriority="0">
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkSupport" contentType="new" target="noTarget">Retrieve statistics plane on an endpoint created by a ::&lt;namespace&gt;::fcoe_fwd_config command</description>
+  <chapter>FCOE APIs</chapter>
+  <arguments>
+    <argument name="port_handle" definedBy="ixiaDefined" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixNetworkTclApiSupport="true" ixNetworkTclScriptgenSupport="true" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixNetworkPerlApiSupport="true" ixNetworkPerlScriptgenSupport="true" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false">
+      <ixNetworkSupport contentType="new" target="noTarget" mandatory="true">
+        <description>
+          <text textType="htmlText">
+            <pre>The port handle for which the fcoe_fwd stats need to be retrieved</pre>
+          </text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkSupport>
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" />
+      <ixLoadSupport contentType="noContent" target="noTarget" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue>
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>log</key>
+      <value>Error message if command returns {status 0}</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.port_name</key>
+      <value>Port Name</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.vnports_registered</key>
+      <value>VN_Ports Registered</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.ns_requests_rx</key>
+      <value>NS Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.ns_acceptstx</key>
+      <value>NS Accepts Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.ns_rejects_tx</key>
+      <value>NS Rejects Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.scr_requests_x</key>
+      <value>SCR Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.scr_accepts_tx</key>
+      <value>SCR Accepts Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.scr_rejects_tx</key>
+      <value>SCR Rejects Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.flogi_requests_rx</key>
+      <value>FLOGI Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.flogi_ls_acc_tx</key>
+      <value>FLOGI LS_ACC Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.flogi_ls_rjt_tx</key>
+      <value>FLOGI LS_RJT Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.fdisc_requests_rx</key>
+      <value>FDISC Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.fdisc_ls_acc_tx</key>
+      <value>FDISC LS_ACC Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.fdisc_ls_rjt_tx</key>
+      <value>FDISC LS_RJT Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.flogo_requests_rx</key>
+      <value>FLOGO Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.flogo_ls_acc_tx</key>
+      <value>FLOGO LS_ACC Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.flogo_ls_rjt_tx</key>
+      <value>FLOGO LS_RJT Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogi_requests_rx</key>
+      <value>PLOGI Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogi_ls_acc_tx</key>
+      <value>PLOGI LS_ACC Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogi_ls_rjt_tx</key>
+      <value>PLOGI LS_RJT Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogo_requests_rx</key>
+      <value>PLOGO Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogo_ls_acc_tx</key>
+      <value>PLOGO LS_ACC Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogo_ls_rjt_tx</key>
+      <value>PLOGO LS_RJT Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogi_requests_tx</key>
+      <value>PLOGI Requests Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogi_ls_acc_rx</key>
+      <value>PLOGI LS_ACC Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogi_ls_rjt_rx</key>
+      <value>PLOGI LS_RJT Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogo_requests_tx</key>
+      <value>PLOGO Requests Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogo_ls_acc_rx</key>
+      <value>PLOGO LS_ACC Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.plogo_ls_rjt_rx</key>
+      <value>PLOGO LS_RJT Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.disc_solicits_rx</key>
+      <value>Discovery Solicitations Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.disc_adverts_tx</key>
+      <value>Discovery Advertisements Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.vlan_requests_rx</key>
+      <value>VLAN Requests Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.vlan_notifications_tx</key>
+      <value>VLAN Notifications Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.unsol_disc_adverts_tx</key>
+      <value>Unsolicited Discovery Advertisements Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.enode_keep_alives_rx</key>
+      <value>ENode Keep-Alives Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.enode_keep_alives_miss</key>
+      <value>ENode Keep-Alives Miss</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.unexp_enode_keep_alives_rx</key>
+      <value>Unexpected ENode Keep-Alives Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.vnport_keep_alives_rx</key>
+      <value>VN_Port Keep-Alives Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.vnport_keepalives_miss</key>
+      <value>VN_Port Keep-Alives Miss</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.unexp_vnport_keep_alives_rx</key>
+      <value>Unexpected VN_Port Keep-Alives Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.clear_vlink_vnports</key>
+      <value>Clear Virtual Links VN_Ports</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.clear_vlink_tx</key>
+      <value>Clear Virtual Links Tx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+    <returnValue>
+      <key>&lt;port_handle&gt;.gen.clear_vlink_rx</key>
+      <value>Clear Virtual Links Rx</value>
+      <tag value="Aggregate Stats" />
+    </returnValue>
+  </returnValues>
+  <examples>
+    <example>See files in the Samples subdirectory</example>
+  </examples>
+  <sampleInput />
+  <sampleOutput />
+  <notes />
+  <seeAlso>
+    <seeAlsoElem supportType="all">This command applies only to IxNetwork</seeAlsoElem>
+    <seeAlsoElem supportType="all">External documentation on Tclx keyed lists</seeAlsoElem>
+  </seeAlso>
+</method>
