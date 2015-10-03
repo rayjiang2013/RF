@@ -1,0 +1,9 @@
+# This is the argument file for sconfig.txt
+--variable autopath:/home/jimhe/git-repo/automation
+--variable virtual_topo:FGateFAPWin7.xml
+--variable testbed:wireless-tb 
+--variable SSID Name:auto-open
+--variable Wlan Profile:/cygwin64/home/cyg_server/auto-open
+--variable Security Type:open
+# Tag
+--include Win-Open
