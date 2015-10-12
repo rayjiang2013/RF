@@ -742,19 +742,21 @@ def ixia_apply():
 
     return(traffic_control_status)
 
-def ixia_start_traffic(max_wait_timer=120):
+def ixia_start_traffic(**kwargs):
     '''
     This command apply & Start the traffic
     Arguments:
      -max_wait_timer:
        NUMERIC
+     -handle:
+       ANY
     '''
 
-    kwargs={}
-    kwargs['action']='run'
-
-    if max_wait_timer != 0:
-        kwargs['max_wait_timer']=max_wait_timer
+    tkwargs = {
+        'action':'run',
+    }
+    for key, value in kwargs.iteritems():
+        tkwargs[key]=value
 
     #################################################
     ##  Create Create Traffic                       #
@@ -971,6 +973,21 @@ def PacketDiff(traffic1, traffic2, perc):
     except:
         e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
         status_data = {'status':0, 'result':e}
+    finally:
+        return(status_data)
+
+def ixia_get_resolved_mac(handle):
+    '''
+    This API returns resolved Gateway Mac
+    '''
+    func_name = ixia_get_resolved_mac.__name__
+    try:
+        status_data = {'status':0}
+        resolved_mac_list = ixiangpf.ixnet.getAttribute(handle, 'resolvedGatewayMac')
+        status_data = {'status':1, 'resolvedGatewayMac':resolved_mac_list}
+    except:
+        e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+        status_data = {'status':0, 'resolvedGatewayMac':e}
     finally:
         return(status_data)
 
