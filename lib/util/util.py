@@ -1274,7 +1274,7 @@ def get_wifi_interface_info(info):
     finally:
         return(status_data)
 
-def get_resolved_ipv4_address(info, gateway):
+def get_resolved_ipv4_address(info, interface_name, gateway):
     '''
     This python API parses win ipconfig /all and Wireless LAN adapter Wireless Network Connection: info, returns IPv4 Address in a dictionary
     '''
@@ -1291,7 +1291,7 @@ def get_resolved_ipv4_address(info, gateway):
                 else:
                     wireless_interface = 0
                 continue
-            if re.search(r'Wireless LAN adapter Wireless Network Connection:', line, re.U):
+            if re.search(r'Wireless LAN adapter %s:' % interface_name, line, re.U):
                 nested_print(line)
                 wireless_interface = 1
                 continue
@@ -1346,23 +1346,41 @@ def parse_wireless_network_attributes(info):
     finally:
         return(status_data)
 
+def get_svi_mac(info):
+    '''
+    This python API parses and return svi mac address
+    '''
+    func_name = get_svi_mac.__name__
+    try:
+        status_data = {'status':0}
+        t_info = re.sub(r'(\\r)+', '', info, re.DOTALL)
+        svi_mac = 0
+        for line in t_info.split('\n'):
+            nested_print(line)
+            s = re.search(r'HWaddr (([0-9A-F][0-9A-F]:){5}[0-9A-F][0-9A-F])', line, re.U)
+            if s:
+                svi_mac = s.group(1)
+                break
+        if svi_mac != 0:
+            status_data = {
+                'status':1,
+                'svi_mac':svi_mac,
+            }
+    except:
+        e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+        status_data = {'status':0, 'msg':e}
+    finally:
+        return(status_data)
+
 if __name__ == "__main__":
     info = '''
-     agrCtlRSSI: -53
-     agrExtRSSI: 0
-    agrCtlNoise: -90
-    agrExtNoise: 0
-          state: running
-        op mode: station
-     lastTxRate: 780
-        maxRate: 867
-lastAssocStatus: 0
-    802.11 auth: open
-      link auth: wpa2-psk
-          BSSID: 0:9:f:b5:cc:4f
-           SSID: auto-wpa2psk
-            MCS: 9
-        channel: 36,80
+vlan100 Link encap:Ethernet  HWaddr 08:5B:0E:A5:ED:21
+ inet addr:100.1.1.1  Bcast:100.1.1.255  Mask:255.255.255.0
+ UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+ RX packets:61 errors:0 dropped:0 overruns:0 frame:0
+ TX packets:394 errors:0 dropped:0 overruns:0 carrier:0
+ collisions:0 txqueuelen:0 
+ RX bytes:3050 (2.10 KB)  TX bytes:28730 (28.1 KB)
     '''
-    Status = parse_wireless_network_attributes(info)
+    Status = get_svi_mac(info)
     nested_print(Status)
