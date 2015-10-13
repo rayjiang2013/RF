@@ -173,7 +173,9 @@
 | | | Log | \n\t${Info Data} | console=yes |
 | | | ${Wlan Interface Data} | Parse Wlan Interface Data | ${Info Data} |
 | | | ${Status} | Get From Dictionary | ${Wlan Interface Data} | status |
-| | | Run Keyword If | ${Status} == 1 | Exit For Loop |
+| | | Run Keyword If | ${Status} != 1 | Fail | 'Parse Wlan Interface Data fails' |
+| | | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interface Data} | wlan_interfaces.intf1.State |
+| | | Run Keyword If | '${Wlan Interface State}' == 'connected' | Exit For Loop |
 | | | Log | \n\tWait 15 seconds for Wlan Interface Data ready.... | console=yes |
 | | | Sleep | 15 |
 | | SSHLibrary.Switch Connection | ${org_handle} |
