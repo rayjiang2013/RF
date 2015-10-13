@@ -1,0 +1,10 @@
+# This is the argument file for sconfig.txt
+--variable autopath:/home/jimhe/git-repo/automation
+--variable virtual_topo:FGateFAPWin8.xml
+--variable testbed:wireless-tb 
+--variable SSID Name:auto-win8-wpa2psk
+--variable Security Type:wpa2-only-personal
+--variable Encrypt Type:AES
+--variable Wlan Profile:/cygwin64/home/cyg_server/auto-win8-wpa2psk
+# Tag
+--include Win8-Wpa2psk
