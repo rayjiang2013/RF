@@ -26,10 +26,10 @@
 | Suite Teardown Keyword | [Arguments] |
 | | [Documentation] | Suite Teardown Keyword |
 | | Log To Console | \n\tSuite Teardown |
-#| | Win Wlan Disconnect From SSID | ${WinPC Hostname} |
-#| | Win Delete Wlan Profile From Interface | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
+| | Win Wlan Disconnect From SSID | ${WinPC Hostname} |
+| | Win Delete Wlan Profile From Interface | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
 #| | Wireless Reboot FAP | ${FGate Hostname} | ${FAP IP} |
-#| | Configure FortiSwitch | ${Unset Configure Dict} |
+| | Configure FortiSwitch | ${Unset Configure Dict} |
 | | Release Test Topo | ${testbed} | ${Test Topo} |
 | | SSH Close All Connections |
 | | Telnet Close All Connections |
@@ -103,7 +103,7 @@
 | | ... |         set ssid ${SSID Name}
 | | ... |         set schedule "always"
 | | ... |         set broadcast-ssid enable
-| | ... |         set security open
+| | ... |         set security ${Security Type}
 | | ... |         set local-bridging enable
 | | ... |         set max-clients 10
 | | ... | end
@@ -153,8 +153,6 @@
 | | ... |         set netmask 255.255.255.0
 | | ... |         set default-gateway ${FGate Gateway}
 | | ... |         set dns-service default
-| | ... |         set vci-match enable
-| | ... |         set vci-string "FortiAP"
 | | ... | end
 | | @{Unset Configure Data}= | Set Variable |
 | | ... | config system dhcp server
