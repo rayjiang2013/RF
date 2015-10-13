@@ -11,7 +11,7 @@
   <login username="admin" password=""> </login>
   <mgmt ip="192.168.1.100" netmask="255.255.255.0" gateway="192.168.1.99" port="port24"> </mgmt>
  </dev2>
- <dev3 type="WinPC" hostname="cyg_server@fortiqa-dell01" model="Dell-Inspiron15-7000">
+ <dev3 type="Win7PC" hostname="cyg_server@fortiqa-dell01" model="Dell-Inspiron15-7000">
   <console ip="10.160.11.46" line="22"> </console>
   <login username="cyg_server" password="fortinet"> </login>
  </dev3>
@@ -19,6 +19,14 @@
   <console ip="10.160.11.47" line="22"> </console>
   <login username="mba-3" password="fortinet"> </login>
  </dev4>
+ <dev5 type="Win8PC" hostname="cyg_server@TESTPC-3" model="Dell-Inspiron15-7000">
+  <console ip="10.160.11.48" line="22"> </console>
+  <login username="cyg_server" password="fortinet"> </login>
+ </dev5>
+ <dev6 type="Win10Surf" hostname="cyg_server@DESKTOP-ACEH5GD" model="Window Surface 3">
+  <console ip="10.160.11.108" line="22"> </console>
+  <login username="cyg_server" password="fortinet"> </login>
+ </dev6>
  <connections>
   <link1 link="dev1:port2,dev2:port1" type="GigabitEthernet" mode="Copper"> </link1>
  </connections>
