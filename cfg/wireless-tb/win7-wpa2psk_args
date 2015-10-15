@@ -2,9 +2,9 @@
 --variable autopath:/home/jimhe/git-repo/automation
 --variable virtual_topo:FGateFAPWin7.xml
 --variable testbed:wireless-tb 
---variable SSID Name:auto-wpa2psk
+--variable SSID Name:auto-win7-wpa2psk
 --variable Security Type:wpa2-only-personal
 --variable Encrypt Type:AES
---variable Wlan Profile:/cygwin64/home/cyg_server/auto-wpa2psk
+--variable Wlan Profile:/cygwin64/home/cyg_server/auto-win7-wpa2psk
 # Tag
---include Win-Wpa2psk
+--include Win7-Wpa2psk

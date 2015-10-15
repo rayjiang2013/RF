@@ -79,12 +79,9 @@
 | | | SSHLibrary.Write | ipconfig /all |
 | | | Sleep | 5 |
 | | | ${read_info}= | SSHLibrary.Read |
-| | | ${Resolved IPv4 Address}= | Get Resolved IPv4 Address | ${read_info} | ${Default Gateway} |
+| | | ${Resolved IPv4 Address}= | Get Resolved IPv4 Address | ${read_info} | ${Wlan Interface Name} | ${Default Gateway} |
 | | | ${Status} | Get From Dictionary | ${Resolved IPv4 Address} | status |
 | | | Run Keyword If | ${Status} == 1 | Exit For Loop |
-#| | | Win Delete Wlan Profile From Interface | ${handle} | ${SSID Name} | ${Wlan Interface Name} |
-#| | | Sleep | 2 |
-#| | | Win Add Wlan Profile to Interface | ${handle} | ${Wlan Profile} | ${Wlan Interface Name} |
 | | | Log | \n\tResolving IPv4 Address, wait 10 seconds.... | console=yes |
 | | | Sleep | 10 |
 | | SSHLibrary.Switch Connection | ${org_handle}
@@ -168,14 +165,21 @@
 | Win Get Wlan Interface Data | [Arguments] | ${handle} |
 | | [Documentation] | Win Get Wlan Interface Data handle=${handle} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
-| | Log | ${handle} netsh wlan show interface | console=yes |
-| | SSHLibrary.Write | netsh wlan show interface |
-| | Sleep | 2 |
-| | ${Info Data}= | SSHLibrary.Read |
+| | :FOR | ${Loop Count} | IN RANGE | 1 | 5 |
+| | | Log | ${handle} netsh wlan show interface | console=yes |
+| | | SSHLibrary.Write | netsh wlan show interface |
+| | | Sleep | 2 |
+| | | ${Info Data}= | SSHLibrary.Read |
+| | | Log | \n\t${Info Data} | console=yes |
+| | | ${Wlan Interface Data} | Parse Wlan Interface Data | ${Info Data} |
+| | | ${Status} | Get From Dictionary | ${Wlan Interface Data} | status |
+| | | Run Keyword If | ${Status} != 1 | Fail | 'Parse Wlan Interface Data fails' |
+| | | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interface Data} | wlan_interfaces.intf1.State |
+| | | Run Keyword If | '${Wlan Interface State}' == 'connected' | Exit For Loop |
+| | | Log | \n\tWait 15 seconds for Wlan Interface Data ready.... | console=yes |
+| | | Sleep | 15 |
 | | SSHLibrary.Switch Connection | ${org_handle} |
-| | ${Wlan Interface Data} | Parse Wlan Interface Data | ${Info Data} |
-| | ${Status} | Get From Dictionary | ${Wlan Interface Data} | status |
-| | Run Keyword If | ${Status} != 1 | Fail | 'Win Get Wlan Interface Data fails' |
+| | Should Be True | ${Loop Count} < 5 | 'Win Get Wlan Interface Data fails' |
 | | [Return] | ${Wlan Interface Data} |
 
 # Add Wlan Profile to interface
@@ -205,7 +209,7 @@
 
 # Verify Wlan Profile in interface
 | Win Verify Wlan Profile in Interface | [Arguments] | ${handle} | ${Wlan Profile} | ${Wlan Interface Name} |
-| | [Documentation] | Win Add Wlan Profile To Interface handle=${handle}, Wlan Profile=${Wlan Profile}, Wlan Interface Name=${Wlan Interface Name} |
+| | [Documentation] | Win Verify Wlan Profile To Interface handle=${handle}, Wlan Profile=${Wlan Profile}, Wlan Interface Name=${Wlan Interface Name} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
 | | Log | ${handle} netsh wlan show profile | console=yes |
 | | SSHLibrary.Write | netsh wlan show profile |

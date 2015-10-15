@@ -754,6 +754,7 @@ def ixia_start_traffic(**kwargs):
 
     tkwargs = {
         'action':'run',
+        'max_wait_timer':120,
     }
     for key, value in kwargs.iteritems():
         tkwargs[key]=value
@@ -761,12 +762,12 @@ def ixia_start_traffic(**kwargs):
     #################################################
     ##  Create Create Traffic                       #
     #################################################
-    traffic_control_status = ixiangpf.traffic_control(**kwargs)
+    traffic_control_status = ixiangpf.traffic_control(**tkwargs)
 
     if traffic_control_status['status'] != '1':
         ErrorHandler('traffic_control -action run', traffic_control_status)
 
-    if max_wait_timer != 0:
+    if tkwargs['max_wait_timer'] != 0:
         if traffic_control_status['stopped'] == '1':
             ixia_print("traffic is not started yet... Give poll for the traffic status for another 60 seconds\n")
             count = 30
@@ -861,11 +862,19 @@ def ixia_traffic_stats(port):
         rx_count = traffic_stats[port]['aggregate']['rx']['pkt_count']
         if rx_count == 'N/A':
             rx_count = 0
+        tx_total_count = traffic_stats[port]['aggregate']['tx']['total_pkts']
+        if tx_total_count == 'N/A':
+            tx_total_count = 0
+        rx_total_count = traffic_stats[port]['aggregate']['rx']['total_pkts']
+        if rx_total_count == 'N/A':
+            rx_total_count = 0
 
     traffic_stats = {
         'status':1,
         'tx_count':tx_count,
         'rx_count':rx_count,
+        'tx_total_count':tx_total_count,
+        'rx_total_count':rx_total_count,
     }
     return(traffic_stats)
 

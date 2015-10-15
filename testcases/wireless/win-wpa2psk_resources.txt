@@ -237,8 +237,6 @@
 # Verify wireless interface states
 | | ${Wlan Interfaces} | Win Get Wlan Interface Data | ${WinPC Hostname} |
 | | Nested Print | ${Wlan Interfaces} |
-| | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.State |
-| | Run Keyword If | '${Wlan Interface State}' != 'connected' | Fail | 'Verify wireless interface states: Interface State fails' |
 
 # Verify Client receives a correct IP address from FAP
 | | ${IPv4 Address} |  Win Get Resolved IPv4 Address | ${WinPC Hostname} | ${FGate Gateway} | ${SSID Name} | ${Wlan Profile} | ${Wlan Interface Name} |

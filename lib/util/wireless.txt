@@ -1,6 +1,6 @@
 # -*- coding: robot -*-
 | *Settings* |
-| Documentation | Common files for FSW related commands and variables
+| Documentation | Common files for wireless related commands and variables |
 | Library | String | 
 | Library | Collections | 
 | Library | OperatingSystem | 
@@ -159,7 +159,7 @@
 | | | Log To Console | \n\tWTP Connection State=${WTP Connection State} |
 | | | Run Keyword If | '${WTP Connection State}' == 'Connected' | Exit For Loop |
 | | | Log To Console | \n\tPlease wait 10 seconds.... |
-| | | Sleep | 10 seconds |
+| | | Sleep | 10 |
 | | Telnet.Switch Connection | ${org_id} |
 | | Should Be True | ${Loop Count} < 9 | 'Wireless Check WTP Connection State fail' |
 | | ${WTP FAP Data} | Get Nested Diction | ${WTP Status} | WTP.${FAP Hostname} |

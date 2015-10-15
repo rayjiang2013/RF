@@ -1,8 +1,9 @@
 # This is the argument file for sconfig.txt
 --variable autopath:/home/jimhe/git-repo/automation
---variable virtual_topo:FGateFAPMacBook.xml
+--variable virtual_topo:FGateFAPWin10.xml
 --variable testbed:wireless-tb 
---variable SSID Name:auto-MacBookAir-open
+--variable SSID Name:auto-win10-open
+--variable Wlan Profile:/cygwin/home/cyg_server/auto-win10-open
 --variable Security Type:open
 # Tag
---include macOs-Open
+--include Win10-Open

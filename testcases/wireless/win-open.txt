@@ -1,7 +1,7 @@
 # -*- coding: robot -*-
 | *Setting* | *Value *|
 | Documentation | Configure Wireless devices via a telnet Console, then do some tests |
-| Default Tags | Win-Open |
+| Default Tags | Win-Open | Win7-Open | Win8-Open | Win10-Open |
 | Resource | win-open_resources.txt |
 | Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
 | Suite Teardown | Suite Teardown Keyword |
