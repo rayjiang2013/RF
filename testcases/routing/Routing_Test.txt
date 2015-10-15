@@ -84,12 +84,6 @@
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Sleep | 2 |
 
-# Send 10 seconds learning traffic
-| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
-| | Sleep | 10 seconds |
-| | ${Stop Traffic Status} | Ixia Stop Traffic |
-| | Sleep | 5 seconds |
-
 # Send 30 seconds real traffic
 | | ${Start Traffic Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
 | | Sleep | 30 seconds |
@@ -112,7 +106,7 @@
 | | ${Port5 Rx} | Get From Dictionary | ${Port5 Count} | rx_count |
 
 | | ${Port6 Count} | Ixia Traffic Stats | ${Ixia Port6} |
-| | ${Port6 Rx} | Get From Dictionary | ${Port6 Count} | rx_total_count |
+| | ${Port6 Rx} | Get From Dictionary | ${Port6 Count} | rx_count |
 
 | | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx}+${Port4 Rx}+${Port5 Rx}+${Port6 Rx} |
 | | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port2 Rx:${Port2 Rx} |
