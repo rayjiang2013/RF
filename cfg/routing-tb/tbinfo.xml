@@ -6,7 +6,7 @@
   <mgmt ip="10.160.37.22" netmask="255.255.255.0" gateway="10.160.37.1" port="port24"> </mgmt>
   <pdu model="RARITAN" ip="10.160.37.20" port="9"> </pdu>
  </dev1>
- <trafgen1 type="IXIA" model="IXIA" chassis_ip="10.160.12.5" tcl_server_ip="10.160.12.5" ixnetwork_server_ip="10.160.37.24:8030">
+ <trafgen1 type="IXIA" model="IXIA" chassis_ip="10.160.12.5" tcl_server_ip="10.160.12.5" ixnetwork_server_ip="10.160.37.24:8050">
  </trafgen1>
  <connections>
   <link1 link="dev1:port13,trafgen1:5/12" type="GigabitEthernet" mode="Copper"> </link1>
