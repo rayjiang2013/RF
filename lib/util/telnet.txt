@@ -1,13 +1,14 @@
 # -*- coding: robot -*-
 | *Settings* |
 | Documentation | Contains telnet specific keywords that are totally generic
+
 | Library | Telnet
 
 | *Variables* |
 
 | *Keywords* |
-| Telnet Login | [Arguments] | ${host_ip} | ${connection_name} | ${username} | ${password} | ${timeout}=10 seconds | ${prompt}=# | ${port}=23 | ${open}=open | ${send_ctrlc}=no
-| | [Documentation] | Telnet Login host_ip:${host_ip} connection_name:${connection_name} username:${username} password:${password} timeout:${timeout} prompt:${prompt} port:${port} open:${open} send_ctrlc:${send_ctrlc}
+| Telnet Login | [Arguments] | ${host_ip} | ${connection_name} | ${username} | ${password} |  ${port}=23 | ${prompt}=# | ${timeout}=10 seconds | ${open}=open | ${send_ctrlc}=yes |
+| | [Documentation] | Telnet Login host_ip=${host_ip}, connection_name=${connection_name}, username=${username}, password=${password}, port=${port}=23, prompt=${prompt}, timeout=${timeout}, open=${open}, send_ctrlc=${send_ctrlc} |
 | | Run Keyword If | '${open}' == 'open' | Telnet.Open Connection | ${host_ip} | alias=${connection_name} | timeout=${timeout} | prompt=${prompt} | port=${port} |
 | | ${ctrl_]} | Evaluate | chr(int(29))
 | | ${ctrl_c} | Evaluate | chr(int(3))
