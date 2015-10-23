@@ -13,7 +13,7 @@
 #Testcase 1
 | Action: Count, Classifier:Dst IP |
 | | [Documentation] | Action: Count, Classifier:Dst IP |
-#| | [tags] | count_case1 |
+| | [tags] | count_case1 |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl policy
 | | | ... |     edit 1
@@ -67,7 +67,6 @@
 | | ${Header} | Set Variable | ID Packets Bytes description |
 | | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
 | | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
-| | Log To Console | \n\tParsed_dict=${Parsed_dict} |
 | | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
 | | ${packet_value}= | Get From List | ${packet_list} | 0 |
 | | ${packet_value_int}= | Convert To Integer | ${packet_value} |
@@ -139,7 +138,6 @@
 | | ${Header} | Set Variable | ID Packets Bytes description |
 | | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
 | | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
-| | Log To Console | \n\tParsed_dict=${Parsed_dict} |
 | | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
 | | ${packet_value}= | Get From List | ${packet_list} | 0 |
 | | ${packet_value_int}= | Convert To Integer | ${packet_value} |
@@ -213,7 +211,6 @@
 | | ${Header} | Set Variable | ID Packets Bytes description |
 | | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
 | | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
-| | Log To Console | \n\tParsed_dict=${Parsed_dict} |
 | | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
 | | ${packet_value}= | Get From List | ${packet_list} | 0 |
 | | ${packet_value_int}= | Convert To Integer | ${packet_value} |
@@ -287,7 +284,6 @@
 | | ${Header} | Set Variable | ID Packets Bytes description |
 | | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
 | | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
-| | Log To Console | \n\tParsed_dict=${Parsed_dict} |
 | | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
 | | ${packet_value}= | Get From List | ${packet_list} | 0 |
 | | ${packet_value_int}= | Convert To Integer | ${packet_value} |
@@ -362,7 +358,6 @@
 | | ${Header} | Set Variable | ID Packets Bytes description |
 | | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
 | | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
-| | Log To Console | \n\tParsed_dict=${Parsed_dict} |
 | | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
 | | ${packet_value}= | Get From List | ${packet_list} | 0 |
 | | ${packet_value_int}= | Convert To Integer | ${packet_value} |
