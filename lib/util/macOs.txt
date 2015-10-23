@@ -5,7 +5,8 @@
 | Library | Collections | 
 | Library | OperatingSystem | 
 | Library | SSHLibrary | 
-| Library | ${autopath}/lib/util/util.py |
+| Library | ${autopath}/lib/util/misc.py |
+| Library | ${autopath}/lib/util/wireless.py | WITH NAME | Wireless |
 | Library | ${autopath}/lib/util/tableparser.py |
 
 | *Variables* |
@@ -22,7 +23,7 @@
 | | | Sleep | 1 |
 | | | ${read_info}= | SSHLibrary.Read |
 | | | Log | \n\t${read_info} | console=yes |
-| | | ${Wifi Info}= | Get Wifi Info | ${read_info} | ${Default Gateway} |
+| | | ${Wifi Info}= | Wireless.Get Wifi Info | ${read_info} | ${Default Gateway} |
 | | | ${Status} | Get From Dictionary | ${Wifi Info} | status |
 | | | Run Keyword If | ${Status} == 1 | Exit For Loop |
 | | | Sleep | 10 |
