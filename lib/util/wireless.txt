@@ -4,6 +4,7 @@
 | Library | String | 
 | Library | Collections | 
 | Library | OperatingSystem | 
+| Library | ${autopath}/lib/util/wireless.py | WITH NAME | Wireless |
 
 | *Variables* |
 
@@ -64,7 +65,7 @@
 | | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} | console=yes |
 | | Telnet.Switch Connection | ${org_id} |
-| | ${Status} | Check Platform | ${get_info} | ${FAP Platform} |
+| | ${Status} | Wireless.Check Platform | ${get_info} | ${FAP Platform} |
 | | ${ret} | Get From Dictionary | ${Status} | status |
 | | Run Keyword If | ${ret} != 1 | Fail | 'Wireless Check FAP Platform fails" |
 
@@ -109,7 +110,7 @@
 | | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} | console=yes |
 | | Telnet.Switch Connection | ${org_id} |
-| | ${Status} | Get WTPID | ${read_info} |
+| | ${Status} | Wireless.Get WTPID | ${read_info} |
 | | ${ret} | Get From Dictionary | ${Status} | status |
 | | Run Keyword If | ${ret} != 1 | Fail | 'Wireless Get WTP ID fails" |
 | | @{WTP ID List} | Get From Dictionary | ${Status} | wtp_id |
@@ -152,7 +153,7 @@
 | | | Telnet.Write | get wireless-controller wtp-status |
 | | | Sleep | 2 |
 | | | ${read_info}= | Telnet.Read |
-| | | ${WTP Status} | Get WTP State | ${read_info} |
+| | | ${WTP Status} | Wireless.Get WTP State | ${read_info} |
 | | | ${Status}= | Get From Dictionary | ${WTP Status} | status |
 | | | Run Keyword If | ${Status} != 1 | Fail | 'Wireless Check WTP Connection State fails' |
 | | | ${WTP Connection State} | Get Nested Diction | ${WTP Status} | WTP.${FAP Hostname}.connection-state |
@@ -175,7 +176,7 @@
 | | ${read_info}= | Telnet.Read |
 | | Telnet.Switch Connection | ${org_id} |
 | | Log To Console | \n\tread_info=${read_info}
-| | ${WTP Status} | Get WTP State | ${read_info} |
+| | ${WTP Status} | Wireless.Get WTP State | ${read_info} |
 | | ${Status}= | Get From Dictionary | ${WTP Status} | status |
 | | Run Keyword If | ${Status} != 1 | Fail | 'Wireless Get FAP IP fails' |
 | | ${FAP IP} | Get Nested Diction | ${WTP Status} | WTP.${FAP Hostname}.local-ipv4-addr |
@@ -191,7 +192,7 @@
 | | ${read_info}= | Telnet.Read |
 | | Telnet.Switch Connection | ${org_id} |
 | | Log To Console | \n\t${read_info} |
-| | ${Ping Status} | Verify Ping Packets Loss | ${read_info} |
+| | ${Ping Status} | Wireless.Verify Ping Packets Loss | ${read_info} |
 | | ${ret} | Get From Dictionary | ${Ping Status} | status |
 | | Run Keyword If | ${ret} != 1 | Fail | 'Wireless Ping FAP fails' |
 
@@ -218,7 +219,7 @@
 | | Sleep | 2 |
 | | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} | console=yes |
-| | ${FAP Radio Info} | Parse FAP Radio Info | ${read_info} |
+| | ${FAP Radio Info} | Wireless.Parse FAP Radio Info | ${read_info} |
 | | ${Status} | Get From Dictionary | ${FAP Radio Info} | status |
 | | Run Keyword If | ${Status} != 1 | Fail | 'Unable to Parse FAP Radio Info' |
 | | Log | ${read_info} exit | console=yes |
