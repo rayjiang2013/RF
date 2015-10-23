@@ -1,0 +1,116 @@
+# -*- coding: robot -*-
+| *Setting* | *Value *|
+| Documentation | Script Template for Automation |
+| Resource | ${autopath}/lib/util/telnet.txt |
+| Resource | ${autopath}/lib/util/os.txt |
+| Resource | ${autopath}/lib/util/fsw.txt |
+| Library  | ${autopath}/lib/util/tableparser.py |
+| Library  | ${autopath}/lib/util/misc.py |
+| Library  | ${autopath}/lib/util/infra.py | WITH NAME | Infra |
+| Library | Collections |
+
+| *Variables*  | *Value* |
+| ${tbinfo} | ${autopath}/cfg/${testbed}/tbinfo.xml |
+| ${virtual_topo} | ${EMPTY} |
+| ${tbtopo} | ${autopath}/cfg/virtual_topos/${virtual_topo} |
+
+| *Keywords* |
+| Suite Setup Keyword | [Arguments] | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | [Documentation] | Initialize an Envirioment for Suite test |
+| | Run Keyword | Test Topo Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+
+| Suite Teardown Keyword | [Arguments] |
+| | [Documentation] | Suite Teardown Keyword |
+| | Log To Console | \n\tSuite Teardown |
+| | FortiSwitch Reboot From BIOS Mode | ${Dut Hostname} |
+| | Release Test Topo | ${testbed} | ${Test Topo} |
+| | Close All Connections |
+
+| Test Setup Keyword | [Arguments] | ${Dut Hostname} | @{Testcase Configure data} |
+| | [Documentation] | Test Setup Keyword |
+| | Log To Console | \n\tTest Setup |
+| | ${Testcase Configure String} | List To String | @{Testcase Configure data} |
+| | ${Testcase Configure Dict} | Create Dictionary | ${Dut Hostname} | ${Testcase Configure String} |
+| | Configure FortiSwitch | ${Testcase Configure Dict} |
+
+| Test Teardown Keyword | [Arguments] | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+| | [Documentation] | Test Teardown Keyword |
+| | ${Testcase Unset Configure String} | List To String | @{Testcase Unset Configure Data} |
+| | ${Testcase Unset Configure Dict} | Create Dictionary | ${Dut Hostname} | ${Testcase Unset Configure String} |
+| | Configure FortiSwitch | ${Testcase Unset Configure Dict} |
+
+| Test Topo Init | [Arguments] | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | [Documentation] | Test Topo Init Keyword |
+
+# Allocate Suite Test Resources |
+| | Log To Console | \n\tSuite Setup |
+| | ${Test Topo}= | Infra.Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | ${Dut Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev1.hostname |
+| | ${Dut Username} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.username |
+| | ${Dut Password} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.password |
+| | ${Dut Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.ip |
+| | ${Dut Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.line |
+| | ${TFTP Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.tftp.ip |
+| | ${TFTP Local Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.tftp.local_ip |
+| | ${TFTP Gateway} | Get Nested Diction | ${Test Topo} | test_topo.dev1.tftp.gateway |
+| | ${TFTP Netmask} | Get Nested Diction | ${Test Topo} | test_topo.dev1.tftp.netmask |
+| | Show Test Related Variables |
+
+# Make a few varaibles available in current suite
+| | Set Suite Variable | ${Dut Hostname} | ${Dut Hostname}
+| | ${Test Topo} | Get From Dictionary | ${Test Topo} | physical_topo |
+| | Set Suite Variable | ${Test Topo} | ${Test Topo} |
+
+# Check tftp server reachable
+| | Ping System Until Alive | ${TFTP Ip} |
+
+# Telnet to DUT
+| | [Documentation] | Test Topo Init Keyword |
+| | ${dut_prompt}= | Telnet Login | ${Dut Console Ip} | ${Dut Hostname} | ${Dut Username} | ${Dut Password} | ${Dut Console Port} | ${Dut Hostname} |
+
+# Parse FortiSwitch System Status
+| | ${System Status Data} | FortiSwitch Parse System Status | ${Dut Hostname} |
+| | Nested Print | ${System Status Data} |
+
+# Get DUT Module Name
+| | ${Serial Number} | Get From Dictionary | ${System Status Data} | Serial-Number |
+| | ${Module Name} | FortiSwitch Get Module Name | ${Serial Number} |
+| | Nested Print | \n\tModule Name=${Module Name} |
+
+# Reboot Switch to BIOS Mode
+| | ${BIOS Table} | FortiSwitch Reboot To BIOS Mode | ${Dut Hostname} |
+| | Nested Print | \n\t${BIOS Table} |
+ 
+# Check Table
+| | ${Line1} | Set Variable | [G]:  Get firmware image from TFTP server. |
+| | ${Line2} | Set Variable | [F]:  Format boot device. |
+| | ${Line3} | Set Variable | [I]:  Configuration and Information. |
+| | ${Line4} | Set Variable | [U]:  Upgrade BIOS image. |
+| | ${Line5} | Set Variable | [R]:  Reboot FortiSwitch. |
+| | ${Line6} | Set Variable | [Q]:  Quit menu and continue to boot. |
+| | ${Line7} | Set Variable | [H]:  Display this list of options. |
+| | ${Line8} | Set Variable | Enter G,F,I,U,R,Q,or H: |
+| | ${Table} | Catenate | SEPARATOR=\n | ${Line1} | ${Line2} | ${Line3} | ${Line4} | ${Line5} | ${Line6} | ${Line7} | ${Line8} |
+| | FortiSwitch Check Table | ${Dut Hostname} | ${BIOS Table} | ${Table} |
+
+# Load Switch with image.out
+| | FortiSwitch Upgrade Flash Firmware | ${Dut Hostname} | ${Image Name} | ${TFTP Ip} | ${TFTP Local Ip} | ${TFTP Netmask} | ${TFTP Gateway} | d |
+
+# Reboot Switch to BIOS Mode
+| | ${BIOS Table} | FortiSwitch Reboot To BIOS Mode | ${Dut Hostname} |
+| | Nested Print | \n\t${BIOS Table} |
+ 
+| Show Test Related Variables | [Documentation] | Show all variables using in this test, autopath and dut_id are passed via command line |
+| | Log To Console | \tautopath=${autopath} |
+| | Log To Console | \ttestbed=${testbed} |
+| | Log To Console | \ttbinfo=${tbinfo} |
+| | Log To Console | \ttbtopo=${tbtopo} |
+| | Log To Console | \tDut Hostname=${Dut Hostname} |
+| | Log To Console | \tDut Username=${Dut Username} |
+| | Log To Console | \tDut Password=${Dut Password} |
+| | Log To Console | \tDut Console Ip=${Dut Console Ip} |
+| | Log To Console | \tDut Console Port=${Dut Console Port} |
+| | Log To Console | \tTFTP Ip=${TFTP Ip} |
+| | Log To Console | \tTFTP Local Ip=${TFTP Local Ip} |
+| | Log To Console | \tTFTP Gateway=${TFTP Gateway} |
+| | Log To Console | \tTFTP Netmask=${TFTP Netmask}\n |
