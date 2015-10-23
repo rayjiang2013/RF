@@ -1,0 +1,191 @@
+# -*- coding: robot -*-
+| *Settings* |
+| Documentation | Common files for FSW related commands and variables
+| Library | String | 
+| Library | Collections | 
+| Library | OperatingSystem | 
+| Library  | ${autopath}/lib/util/fsw.py | WITH NAME | Fsw |
+
+| *Variables* |
+
+| *Keywords* |
+
+# show Switch configurations. Continue show in case see --More--
+| Show Switch | [Arguments] | ${dut_name} | ${telnet_lias} |
+| | [Documentation] | Show Switch |
+| | ${org_index} | Telnet.Switch Connection | ${telnet_lias} |
+| | Telnet.Write | "show" |
+| | :FOR | ${index} | IN RANGE | 20 |
+| | | Sleep | 2 |
+| | | ${read_info}= | Telnet.Read |
+| | | ${last_line} | Get Line | ${read_info} | -1 |
+| | | Log To Console | ${read_info} |
+| | | Run Keyword If | '${last_line}' == '${dut_name} # ' | Exit For Loop |
+| | | Run Keyword If | '${last_line}' == '--More-- ' | Telnet.Write | "a" |
+| | Telnet.Switch Connection | ${org_index} |
+
+# Configure FortiSwitch with cli in dictionary. The key is the switch hostname
+# This API can configure multiple devices with single call. The reason we have to divide the
+# code is because Robot Framework does not allow nested For loops
+| Configure FortiSwitch | [Arguments] | ${config_data_dict} |
+| | [Documentation] | Configure FortiSwitch |
+| | @{keys} | Get Dictionary Keys | ${config_data_dict} |
+| | :FOR | ${key} | IN | @{keys} |
+| | | Run Keyword | Write To FortiSwitch | ${config_data_dict} | ${key} |
+
+# THis is the second part of Configure FortiSwitch
+| Write To FortiSwitch | [Arguments] | ${config_data_dict} | ${key} |
+| | ${org_id} | Telnet.Switch Connection | ${key} |
+| | Telnet.Write | \n |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | ${last_line} | Get Line | ${read_info} | -1 |
+| | Run Keyword If | '${last_line}' == '${key} login:' | Telnet.Write | admin |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Run Keyword If | '${read_info}' == 'Password:' | Telnet.Write | \n |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | ${config_data} | Get From Dictionary | ${config_data_dict} | ${key} |
+| | @{config_data_list} | Split to lines | ${config_data} |
+| | :FOR | ${line} | IN | @{config_data_list} |
+| | | Telnet.Write | ${line} |
+| | | Sleep | 1 |
+| | | ${read_info}= | Telnet.Read |
+| | | Log To Console | ${read_info}${line} |
+| | Telnet.Switch Connection | ${org_id} |
+
+# Send cli to FortiSwitch via a telnet session
+# Return its output on console
+| FortiSwitch Command | [Arguments] | ${telnet_lias} | ${cli} |
+| | [Documentation] | FortiSwitch Command |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | Telnet.Write | ${cli} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | Log To Console | ${read_info}${cli} |
+| | Telnet.Switch Connection | ${org_id} |
+| | [Return] | ${read_info} |
+
+# Get SVI Mac Address
+| FortiSwitch Get SVI Mac Address | [Arguments] | ${handle} | ${SVI} |
+| | [Documentation] | FortiSwitch Get SVI Mac Address handle=${handle}, SVI=${SVI} |
+| | ${org_id} | Telnet.Switch Connection | ${handle} |
+| | Log | ${handle} fnsysctl ifconfig ${SVI} | console=yes |
+| | Telnet.Write | fnsysctl ifconfig ${SVI} |
+| | Sleep | 1 |
+| | ${Info Data}= | Telnet.Read |
+| | Log To Console | \n\tInfo Data=${Info Data}
+| | ${SVI Mac Status} | Fsw.Get Svi Mac | ${Info Data} |
+| | ${Status} | Get From Dictionary | ${SVI Mac Status} | status |
+| | Run Keyword If | ${Status} != 1 | 'FortiSwitch Get SVI Mac Address ${handle} ${SVI} fails' |
+| | ${Mac Address} | Get From Dictionary | ${SVI Mac Status} | svi_mac |
+| | [Return] | ${Mac Address} |
+
+# Reboot FortiSwitch and force to BIOS Mode
+| FortiSwitch Reboot To BIOS Mode | [Arguments] | ${handle} |
+| | [Documentation] | FortiSwitch Force To BIOS Mode handle=${handle} |
+| | Telnet.Set Timeout | 30 |
+| | ${org_id} | Telnet.Switch Connection | ${handle} |
+| | Log | \n\t${handle} exec factoryreset | console=yes |
+| | Telnet.Write | exec factoryreset |
+| | ${Info Data}= | Telnet.Read Until | Do you want to continue |
+| | Telnet.Write | y |
+| | Log | \n\t${Info Data} | console=yes |
+| | ${Info Data}= | Telnet.Read Until | Please wait for OS to boot, or press any key to display configuration menu |
+| | Telnet.Write | y |
+| | Log | \n\t${Info Data} | console=yes |
+| | ${Info Data}= | Telnet.Read Until | Enter G,F,I,U,R,Q,or H: |
+| | Telnet.Switch Connection | ${org_id} |
+| | [Return] | ${Info Data} |
+
+# Reboot FortiSwitch from BIOS Mode
+| FortiSwitch Reboot From BIOS Mode | [Arguments] | ${handle} |
+| | [Documentation] | FortiSwitch Reboot From BIOS Mode handle=${handle} |
+| | Telnet.Set Timeout | 120 |
+| | ${org_id} | Telnet.Switch Connection | ${handle} |
+| | Telnet.Write | \n |
+| | ${Info Data}= | Telnet.Read Until | Enter G,F,I,U,R,Q,or H: |
+| | Telnet.Write | RY |
+| | ${Info Data}= | Telnet.Read Until | login: |
+| | Log | \n\t${Info Data} | console=yes |
+| | Telnet.Write | admin |
+| | ${Info Data}= | Telnet.Read Until | Password |
+| | Log | \n\t${Info Data} | console=yes |
+| | Telnet.Write | \n |
+| | ${Info Data}= | Telnet.Read Until Prompt |
+| | Log | \n\t${Info Data} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
+
+# Parse System Status 
+| FortiSwitch Parse System Status | [Arguments] | ${handle} |
+| | [Documentation] | FortiSwitch Parse System Status handle=${handle} |
+| | ${org_id} | Telnet.Switch Connection | ${handle} |
+| | Log | ${handle} get system status | console=yes |
+| | Telnet.Write | get system status |
+| | Sleep | 2 |
+| | ${Info Data} = | Telnet.Read |
+| | ${System Status Data} = | Fsw.Parse System Status | ${Info Data} |
+| | ${Status} | Get From Dictionary | ${System Status Data} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'FortiSwitch Parse System Status fails' |
+| | ${System Status} | Get From Dictionary | ${System Status Data} | system_status |
+| | [Return] | ${System Status} |
+
+# Get Module Name
+| FortiSwitch Get Module Name | [Arguments] | ${Serial Number} |
+| | [Documentation] | FortiSwitch Get Module Name Serial-Number=${Serial-Number} |
+| | ${Module Name Data} = | Fsw.Get Module Name | ${Serial Number} |
+| | ${Status} | Get From Dictionary | ${Module Name Data} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'FortiSwitch Get Module Name fails' |
+| | ${Module Name} | Get From Dictionary | ${Module Name data} | module_name |
+| | [Return] | ${Module Name} |
+
+# Check Table
+| FortiSwitch Check Table | [Arguments] | ${handle} | ${Info} | ${Table} |
+| | [Documentation] | FortiSwitch Check Table handle=${handle}, Info, Table |
+| | ${org_id} | Telnet.Switch Connection | ${handle} |
+| | ${Table Status} = | Fsw.Check Table | ${Info} | ${Table} |
+| | Telnet.Switch Connection | ${org_id} |
+| | ${Status} | Get From Dictionary | ${Table Status} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'FortiSwitch Check Table fails' |
+
+# Upgrade Flash Firmware via TFTP Server
+| FortiSwitch Upgrade Flash Firmware | [Arguments] | ${handle} | ${build} | ${Server Ip} | ${Local Ip} | ${Netmask} | ${Gateway} | ${Load Type} |
+| | [Documentation] | FortiSwitch Upgrade Flash Firmware handle=${handle}, build=${build}, Server Ip=${Server Ip}, Local Ip=${Local Ip}, Netmask=${Netmask}, Gateway=${Gateway}, Load Type=${Load Type} |
+| | Telnet.Set Timeout | 300 |
+| | ${org_id} | Telnet.Switch Connection | ${handle} |
+| | Telnet.Write | \n |
+| | ${Info Data}= | Telnet.Read Until | Enter G,F,I,U,R,Q,or H: |
+| | Telnet.Write Bare | G |
+| | ${Info Data}= | Telnet.Read Until Regexp | Enter TFTP server address.*: |
+| | Log | ${Info Data} ${Server Ip} | console=yes |
+| | Telnet.Write | ${Server Ip} |
+| | ${Info Data}= | Telnet.Read Until Regexp | Enter local address.*: |
+| | Log | ${Info Data} ${Local Ip} | console=yes |
+| | Telnet.Write | ${Local Ip} |
+| | ${Info Data}= | Telnet.Read Until Regexp | Enter local netmask.*: |
+| | Log | ${Info Data} ${Netmask} | console=yes |
+| | Telnet.Write | ${Netmask} |
+| | ${Info Data}= | Telnet.Read Until Regexp | Enter default gateway.*: |
+| | Log | ${Info Data} ${Gateway} | console=yes |
+| | Telnet.Write | ${Gateway} |
+| | ${Info Data}= | Telnet.Read Until Regexp | Enter firmware image file name.*: |
+| | Log | ${Info Data} ${build} | console=yes |
+| | Telnet.Write | ${build} |
+| | Sleep | 2 |
+| | ${Info Data}= | Telnet.Read |
+| | Log | ${Info Data} | console=yes |
+| | ${Match Lines} | Get Lines Containing String | ${Info Data} |  Loading [ 0, 0 ]  Wait |
+| | Should Not Be Empty | ${Match Lines} | 'FortiSwitch Upgrade Flash Firmware fails' |
+| | ${Info Data}= | Telnet.Read Until Regexp | Save as Default/Backup/Run without saving: |
+| | Log | ${Info Data} ${Load Type} | console=yes |
+| | Telnet.Write Bare | ${Load Type} |
+| | ${Info Data}= | Telnet.Read Until | login: |
+| | Log | ${Info Data}: admin | console=yes |
+| | Telnet.Write | admin |
+| | ${Info Data}= | Telnet.Read Until | Password |
+| | Log | ${Info Data} | console=yes |
+| | Telnet.Write | \n |
+| | ${Info Data}= | Telnet.Read Until Prompt |
+| | Log | ${Info Data} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
