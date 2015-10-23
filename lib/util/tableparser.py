@@ -3,7 +3,7 @@
 # Author: Jim He
 #
 from robot.api import logger
-import util
+import misc
 import re, sys
 import pdb
 
@@ -273,7 +273,7 @@ def tableParserInSequence(kwargs):
         e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
         status_data = {'status':0, 'data':e}
     finally:
-        #util.nested_print(status_data)
+        #misc.nested_print(status_data)
         return(status_data)
 
 
@@ -332,7 +332,7 @@ def tableParserInPosition(kwargs):
         e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
         status_data = {'status':0, 'data':e}
     finally:
-        #util.nested_print(status_data)
+        #misc.nested_print(status_data)
         return(status_data)
 
 if __name__ == "__main__":
