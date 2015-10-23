@@ -4,12 +4,11 @@
 | Resource | ${autopath}/lib/util/telnet.txt |
 | Resource | ${autopath}/lib/util/ssh.txt |
 | Resource | ${autopath}/lib/util/os.txt |
-| Resource | ${autopath}/lib/util/util.txt |
+| Resource | ${autopath}/lib/util/fsw.txt |
 | Resource | ${autopath}/lib/util/win.txt |
 | Resource | ${autopath}/lib/util/wireless.txt |
-| Library  | ${autopath}/lib/util/infra.py | WITH NAME | Infra |
-| Library  | ${autopath}/lib/util/tableparser.py |
-| Library  | ${autopath}/lib/util/misc.py |
+| Library | ${autopath}/lib/util/infra.py | WITH NAME | Infra |
+| Library | ${autopath}/lib/util/misc.py |
 | Library | Collections |
 
 | *Variables*  | *Value* |
