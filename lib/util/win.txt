@@ -5,7 +5,7 @@
 | Library | Collections | 
 | Library | OperatingSystem | 
 | Library | SSHLibrary | 
-| Library | ${autopath}/lib/util/util.py |
+| Library | ${autopath}/lib/util/wireless.py | WITH NAME | Wireless |
 | Library | ${autopath}/lib/util/tableparser.py |
 
 | *Variables* |
@@ -65,7 +65,7 @@
 | | ${read_info}= | SSHLibrary.Read |
 | | SSHLibrary.Switch Connection | ${org_handle}
 | | Log | ${read_info} | console=yes |
-| | ${Adapter Data Dict}= | Get Adapter Data | ${read_info} | ${Adapter Type} |
+| | ${Adapter Data Dict}= | Wireless.Get Adapter Data | ${read_info} | ${Adapter Type} |
 | | ${Info Value List} | Get Nested Diction | ${Adapter Data Dict} | data.${Info Name} |
 | | ${Info Value} | Get From List | ${Info Value List} | 0 |
 | | Should Not Be Empty | ${Info Value} | 'Win Ipconfig Adapter Info ${Adapter Type} ${Info Name} fails' |
@@ -79,7 +79,7 @@
 | | | SSHLibrary.Write | ipconfig /all |
 | | | Sleep | 5 |
 | | | ${read_info}= | SSHLibrary.Read |
-| | | ${Resolved IPv4 Address}= | Get Resolved IPv4 Address | ${read_info} | ${Wlan Interface Name} | ${Default Gateway} |
+| | | ${Resolved IPv4 Address}= | Wireless.Get Resolved IPv4 Address | ${read_info} | ${Wlan Interface Name} | ${Default Gateway} |
 | | | ${Status} | Get From Dictionary | ${Resolved IPv4 Address} | status |
 | | | Run Keyword If | ${Status} == 1 | Exit For Loop |
 | | | Log | \n\tResolving IPv4 Address, wait 10 seconds.... | console=yes |
@@ -98,7 +98,7 @@
 | | | Sleep | 5 |
 | | | ${read_info}= | SSHLibrary.Read |
 | | | Log To Console | ${read_info} |
-| | | ${Ping Status} | Verify FAP Ping Packets Loss | ${read_info} |
+| | | ${Ping Status} | Wireless.Verify FAP Ping Packets Loss | ${read_info} |
 | | | ${Status} | Get From Dictionary | ${Ping Status} | status |
 | | | Run Keyword If | ${Status} == 1 | Exit For Loop |
 | | | Sleep | 10 |
@@ -143,7 +143,7 @@
 | | ${Info Data}= | SSHLibrary.Read |
 | | SSHLibrary.Write Until Expected Output | exit\n | expected=${handle} | timeout=5s | retry_interval=0.5s |
 | | SSHLibrary.Switch Connection | ${org_handle} |
-| | ${SSID Data} | Get SSID Data | ${Info Data} |
+| | ${SSID Data} | Wireless.Get SSID Data | ${Info Data} |
 | | ${Status} | Get From Dictionary | ${SSID Data} | status |
 | | Run Keyword If | ${Status} != 1 | Fail | 'Win Get SSID Data fails' |
 | | [Return] | ${SSID Data} |
@@ -171,7 +171,7 @@
 | | | Sleep | 2 |
 | | | ${Info Data}= | SSHLibrary.Read |
 | | | Log | \n\t${Info Data} | console=yes |
-| | | ${Wlan Interface Data} | Parse Wlan Interface Data | ${Info Data} |
+| | | ${Wlan Interface Data} | Wireless.Parse Wlan Interface Data | ${Info Data} |
 | | | ${Status} | Get From Dictionary | ${Wlan Interface Data} | status |
 | | | Run Keyword If | ${Status} != 1 | Fail | 'Parse Wlan Interface Data fails' |
 | | | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interface Data} | wlan_interfaces.intf1.State |
