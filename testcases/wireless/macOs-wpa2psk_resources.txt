@@ -7,7 +7,7 @@
 | Resource | ${autopath}/lib/util/util.txt |
 | Resource | ${autopath}/lib/util/macOs.txt |
 | Resource | ${autopath}/lib/util/wireless.txt |
-| Library  | ${autopath}/lib/util/util.py |
+| Library  | ${autopath}/lib/util/infra.py | WITH NAME | Infra |
 | Library  | ${autopath}/lib/util/tableparser.py |
 | Library | Collections |
 
@@ -50,7 +50,7 @@
 
 # Allocate Suite Test Resources |
 | | Log To Console | \n\tSuite Setup |
-| | ${Test Topo}= | Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | ${Test Topo}= | Infra.Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
 | | ${FGate Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev1.hostname |
 | | ${FGate Username} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.username |
 | | ${FGate Password} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.password |
@@ -84,9 +84,7 @@
 | | Set Suite Variable | ${macOs Hostname} | ${macOs Hostname} |
 
 # Telnet to FGate
-| | ${Prompt}= | Telnet Login | ${FGate Console Ip} | ${FGate Hostname} | ${FGate Username} | ${FGate Password} | 10 | ${FGate Hostname} | ${FGate Console Port} | open=open | send_ctrlc=yes |
-| | ${ret}= | Get Lines Containing String | ${Prompt} | ${FGate Hostname} |
-| | Should Not Be Empty | ${ret} | "Telnet Login to ${FGate Console Ip} failed" |
+| | ${Prompt}= | Telnet Login | ${FGate Console Ip} | ${FGate Hostname} | ${FGate Username} | ${FGate Password} | ${FGate Console Port} | ${FGate Hostname} |
 | | ${Status} | Wireless Exec Factoryreset | ${FGate Hostname} | ${FGate Username} | ${FGate Password} |
 
 # ssh to macOs
