@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork or IxRouter Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>MLD (MLD_host_group.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork or IxRouter Examples/MLD_host_group.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>MLD (MLD_host_group.tcl)</h3>
+        <p class="CodeBlock">          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534782"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534783"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534784"></a>
+          # This sample creates 10 MLD v2 hosts and a pool of two multicast groups, #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534785"></a>
+          # then adds the groups in the pool to each MLD hosts. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534786"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534787"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534788"></a>
+          # The sample was tested on a LM100TXS8 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534789"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534790"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534791"></a>
+          &#160;          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534793"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534794"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534795"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534796"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534797"></a>
+          set chassisIP 127.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534798"></a>
+          set port_list [list 10/1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534799"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534800"></a>
+          # Connect to the chassis, reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534801"></a>
+          set connect_status [ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534802"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534803"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534804"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534805"></a>
+                  -username ixiaApiUser ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534806"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534807"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534808"></a>
+          }          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534810"></a>
+          set port_handle [keylget connect_status port_handle.$chassisIP.$port_list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534811"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534812"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534813"></a>
+          # Configure 10 MLD hosts on interface 1/10/1 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534814"></a>
+          # MLD Version 2 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534815"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534816"></a>
+          set mld_host_status [ixia::emulation_mld_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534817"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534818"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534819"></a>
+                  -mld_version v2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534820"></a>
+                  -count 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534821"></a>
+                  -intf_ip_addr 30::31 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534822"></a>
+                  -intf_prefix_len 64 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534823"></a>
+                  -msg_interval 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534824"></a>
+                  -max_groups_per_pkts 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534825"></a>
+                  -unsolicited_report_interval 30 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534826"></a>
+                  -general_query 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534827"></a>
+                  -group_query 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534828"></a>
+                  -max_response_control 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534829"></a>
+                  -max_response_time 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534830"></a>
+                  -ip_router_alert 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534831"></a>
+                  -suppress_report 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534832"></a>
+                  -mac_address_init 0000.0000.0001 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534833"></a>
+                  -reset ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534834"></a>
+          if {[keylget mld_host_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534835"></a>
+              return "FAIL - $test_name - [keylget mld_host_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534836"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534837"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534838"></a>
+          # get the MLD Host handle from keyed list</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534839"></a>
+          set mld_host_handle_list [keylget mld_host_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534840"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534841"></a>
+          #####################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534842"></a>
+          # Configure 1 MLD groups on each MLD group on interface 1/10/1 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534843"></a>
+          # MLD Version 2 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534844"></a>
+          #####################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534845"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534846"></a>
+          set mld_group_status ""</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534847"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534848"></a>
+          # Set multicast group</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534849"></a>
+          set multicast_group_status [::ixia::emulation_multicast_group_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534850"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534851"></a>
+                  -num_groups 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534852"></a>
+                  -ip_addr_start FF15::1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534853"></a>
+                  -ip_addr_step 0::1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534854"></a>
+                  -ip_prefix_len 64 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534855"></a>
+          if {[keylget multicast_group_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534856"></a>
+              return "FAIL - $test_name - [keylget multicast_group_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534857"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534858"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534859"></a>
+          # Get the multicast group handle from keyed list</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534860"></a>
+          set multicast_group_handle [keylget multicast_group_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534861"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534862"></a>
+          foreach mld_host_handle $mld_host_handle_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534863"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534864"></a>
+              set single_mld_group_status [ixia::emulation_mld_group_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534865"></a>
+                      -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534866"></a>
+                      -session_handle $mld_host_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534867"></a>
+                      -group_pool_handle $multicast_group_handle ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534868"></a>
+              if {[keylget single_mld_group_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534869"></a>
+                  return "FAIL - $test_name - [keylget single_mld_group_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534870"></a>
+              }          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534872"></a>
+              lappend mld_group_status $single_mld_group_status</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534873"></a>
+          }          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534875"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534876"></a>
+          # START MLD #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534877"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534878"></a>
+          set mld_emulation_status [ixia::emulation_mld_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534879"></a>
+                  -mode start \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534880"></a>
+                  -port_handle $port_handle ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534881"></a>
+          if {[keylget mld_emulation_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534882"></a>
+              return "FAIL - $test_name - [keylget mld_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534883"></a>
+          }          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3534885"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

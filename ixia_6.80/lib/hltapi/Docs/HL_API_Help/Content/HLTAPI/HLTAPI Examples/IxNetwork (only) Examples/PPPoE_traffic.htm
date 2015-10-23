@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|TCL_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>PPPoE (PPPoE_traffic.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/PPPoE_traffic.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>PPPoE_traffic</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550414"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550415"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550416"></a>
+          # This sample configures a PPPoE tunnel with 20 sessions between the #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550417"></a>
+          # SRC port and the DUT. Traffic is sent over the tunnel and the DUT sends #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550418"></a>
+          # it to the DST port. After that a few statistics are being retrieved. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550419"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550420"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550421"></a>
+          # The sample was tested on a LM1000STXS4 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550422"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550423"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550424"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550016"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550017"></a>
+          # DUT configuration:</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550018"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550019"></a>
+          # vpdn enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550020"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550021"></a>
+          # bba-group pppoe global</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550022"></a>
+          # virtual-template 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550023"></a>
+          # sessions per-vc limit 1000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550024"></a>
+          # sessions per-mac limit 1000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550025"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550026"></a>
+          # interface Loopback1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550027"></a>
+          # ip address 10.10.10.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550028"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550029"></a>
+          # ip local pool pppoe 10.10.10.2 10.10.10.254</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550030"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550031"></a>
+          # interface GigabitEthernet 0/2</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550032"></a>
+          # no ip address</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550033"></a>
+          # no ip route-cache cef</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550034"></a>
+          # no ip route-cache</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550035"></a>
+          # duplex half</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550036"></a>
+          # pppoe enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550037"></a>
+          # no shutdown</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550038"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550039"></a>
+          # interface GigabitEthernet 0/3</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550040"></a>
+          # ip address 11.11.11.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550041"></a>
+          # duplex half</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550042"></a>
+          # no shutdown</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550043"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550044"></a>
+          # interface Virtual-Template1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550045"></a>
+          # mtu 1492</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550046"></a>
+          # ip unnumbered Loopback1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550047"></a>
+          # peer default ip address pool pppoe</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550048"></a>
+          # no keepalive</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550049"></a>
+          # ppp max-bad-auth 20</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550050"></a>
+          # ppp timeout retry 10</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550051"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550052"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550053"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550054"></a>
+          set env(IXIA_VERSION) HLTSET43</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550055"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550056"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550057"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550058"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550059"></a>
+          set chassisIP 10.205.19.228</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550060"></a>
+          set port_list [list 7/3 7/4]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550061"></a>
+          set sess_count 20</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550062"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550063"></a>
+          # Connect to the chassis, reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550064"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550065"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550066"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550067"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550068"></a>
+                  -username ixiaApiUser \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550069"></a>
+                  -break_locks 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550070"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550071"></a>
+          if {[keylget connect_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550072"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550073"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550074"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550075"></a>
+          set port_handle [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550076"></a>
+          foreach port $port_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550077"></a>
+              if {![catch {keylget connect_status port_handle.$chassisIP.$port} \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550078"></a>
+                          temp_port]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550079"></a>
+                  lappend port_handle $temp_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550080"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550081"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550082"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550083"></a>
+          set port_src_handle [lindex $port_handle 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550084"></a>
+          set port_dst_handle [lindex $port_handle 1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550085"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550086"></a>
+          puts "Ixia port handles are $port_handle ..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550087"></a>
+          update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550088"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550089"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550090"></a>
+          # Configure SRC interface in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550091"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550092"></a>
+          set interface_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550093"></a>
+                  -port_handle $port_src_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550094"></a>
+                  -mode config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550095"></a>
+                  -speed auto \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550096"></a>
+                  -duplex auto \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550097"></a>
+                  -phy_mode copper \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550098"></a>
+                  -autonegotiation 1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550099"></a>
+          if {[keylget interface_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550100"></a>
+              return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550101"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550102"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550103"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550104"></a>
+          # Configure DST interface in the test #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550105"></a>
+          ########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550106"></a>
+          set interface_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550107"></a>
+                  -port_handle $port_dst_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550108"></a>
+                  -mode config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550109"></a>
+                  -speed auto \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550110"></a>
+                  -duplex auto \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550111"></a>
+                  -phy_mode copper \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550112"></a>
+                  -autonegotiation 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550113"></a>
+                  -intf_ip_addr 11.11.11.110 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550114"></a>
+                  -gateway 11.11.11.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550115"></a>
+                  -netmask 255.255.255.0 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550116"></a>
+          if {[keylget interface_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550117"></a>
+              return "FAIL - $test_name - [keylget interface_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550118"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550119"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550120"></a>
+          set int_handle [keylget interface_status interface_handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550121"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550122"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550123"></a>
+          # Configure sessions #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550124"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550125"></a>
+          set config_status [::ixia::pppox_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550126"></a>
+                  -port_handle $port_src_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550127"></a>
+                  -protocol pppoe \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550128"></a>
+                  -encap ethernet_ii \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550129"></a>
+                  -num_sessions $sess_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550130"></a>
+                  -port_role access \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550131"></a>
+                  -ip_cp ipv4_cp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550132"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550133"></a>
+          if {[keylget config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550134"></a>
+              return "FAIL - $test_name - [keylget config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550135"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550136"></a>
+          set pppox_handle [keylget config_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550137"></a>
+          puts "Ixia pppox_handle is $pppox_handle "</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550138"></a>
+          update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550139"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550140"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550141"></a>
+          # Connect sessions #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550142"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550143"></a>
+          set control_status [::ixia::pppox_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550144"></a>
+                  -handle $pppox_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550145"></a>
+                  -action connect ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550146"></a>
+          if {[keylget control_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550147"></a>
+              return "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550148"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550149"></a>
+          puts "Sessions going up..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550150"></a>
+          update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550151"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550152"></a>
+          after 5000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550153"></a>
+          set pppoe_attempts 0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550154"></a>
+          set pppoe_sessions_up 0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550155"></a>
+          while {($pppoe_attempts &lt; 20) &amp;&amp; ($pppoe_sessions_up &lt; $sess_count)} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550156"></a>
+              after 1000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550157"></a>
+              set pppox_status [::ixia::pppox_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550158"></a>
+                      -handle $pppox_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550159"></a>
+                      -mode aggregate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550160"></a>
+                      ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550161"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3550162"></a>
+              if {[keylget pppox_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550163"></a>
+                  return "FAIL - $test_name - [keylget pppox_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550164"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550165"></a>
+              set aggregate_stats [keylget pppox_status $port_src_handle.aggregate]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550166"></a>
+              set pppoe_sessions_up [keylget aggregate_stats sessions_up]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550167"></a>
+              puts "PPPoE sessions up: $pppoe_sessions_up ..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550168"></a>
+              update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550169"></a>
+              incr pppoe_attempts</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550170"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550171"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3550172"></a>
+          if {$pppoe_sessions_up &lt; $sess_count} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550173"></a>
+              return "FAIL - $test_name - Not all sessions are up."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550174"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550175"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550176"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550177"></a>
+          # Delete all the streams first #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550178"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550179"></a>
+          set traffic_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550180"></a>
+                  -action reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550181"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550182"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550183"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550184"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550185"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550186"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550187"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550188"></a>
+          # Configure traffic #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550189"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550190"></a>
+          set traffic_status [::ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550191"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550192"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550193"></a>
+                  -bidirectional 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550194"></a>
+                  -emulation_dst_handle $int_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550195"></a>
+                  -emulation_src_handle $pppox_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550196"></a>
+                  -track_by endpoint_pair ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550197"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550198"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550199"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550200"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550201"></a>
+          # Clear traffic stats #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550202"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550203"></a>
+          set control_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550204"></a>
+                  -action clear_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550205"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550206"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550207"></a>
+          if {[keylget control_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550208"></a>
+              return "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550209"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550210"></a>
+          puts "Starting to transmit traffic over tunnels ..."</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550211"></a>
+          update idletasks</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550212"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550213"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550214"></a>
+          # Start the traffic #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550215"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550216"></a>
+          set traffic_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550217"></a>
+                  -action run \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550218"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550219"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550220"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550221"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550222"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550223"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550224"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550225"></a>
+          # The traffic must flow! #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550226"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550227"></a>
+          after 5000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550228"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550229"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550230"></a>
+          # Stop the traffic #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550231"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550232"></a>
+          set traffic_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550233"></a>
+                  -action stop \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550234"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550235"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550236"></a>
+          if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550237"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550238"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550239"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550240"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550241"></a>
+          # Wait for the traffic to stop #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550242"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550243"></a>
+          after 20000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550244"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550245"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550246"></a>
+          # Gather and display traffic statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550247"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550248"></a>
+          set aggregated_traffic_status [::ixia::traffic_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550249"></a>
+                  -mode aggregate \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550250"></a>
+                  -traffic_generator ixnetwork \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550251"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550252"></a>
+          if {[keylget aggregated_traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550253"></a>
+              return "FAIL - $test_name - [keylget aggregated_traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550254"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550255"></a>
+          set aggregated_traffic_results [list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550256"></a>
+                  "Frames Tx." aggregate.tx.pkt_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550257"></a>
+                  "Total Frames Tx." aggregate.tx.total_pkts \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550258"></a>
+                  "Bytes Tx." aggregate.tx.pkt_byte_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550259"></a>
+                  "Collisions" aggregate.rx.collisions_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550260"></a>
+                  "Valid Frames Rx." aggregate.rx.pkt_count \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550261"></a>
+                  ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550262"></a>
+          foreach port $port_handle {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550263"></a>
+              puts "Port $port:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550264"></a>
+              puts "\tAggregated statistics:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550265"></a>
+              foreach {name key} $aggregated_traffic_results {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550266"></a>
+                  puts "\t\t$name: [keylget aggregated_traffic_status $port.$key]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550267"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550268"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550269"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550270"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550271"></a>
+          # Disconnect sessions #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550272"></a>
+          #########################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550273"></a>
+          puts "Disconnecting $pppoe_sessions_up sessions ... "</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550274"></a>
+          set control_status [::ixia::pppox_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550275"></a>
+                  -handle $pppox_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550276"></a>
+                  -action disconnect ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550277"></a>
+          if {[keylget control_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550278"></a>
+              return "FAIL - $test_name - [keylget control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550279"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550280"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550281"></a>
+          set cleanup_status [::ixia::cleanup_session -port_handle $port_handle -reset]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550282"></a>
+          if {[keylget cleanup_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550283"></a>
+              return "FAIL - $test_name - [keylget cleanup_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550284"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3550285"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

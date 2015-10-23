@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxRouter (only) Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>MPLS 6PE (MPLS_6PE_OSPF_RIP.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxRouter (only) Examples/MPLS_6PE_OSPF_RIP.htm">Open topic with navigation</a>
+        </p>
+        <h3>MPLS 6PE (MPLS_6PE_OSPF_RIP.tcl)</h3>
+        <p class="Code">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556407"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556408"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556409"></a>
+          # This sample creates a 6PE setup. It uses two Ixia ports. One port is #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556410"></a>
+          # used as a PE and P router. One port is used as CE router. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556411"></a>
+          # Streams are generated on both ports and then started. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556412"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556413"></a>
+          ------ ----- ----- ------ #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556414"></a>
+          # | PE |-----| P |---------| DUT |--------| CE | #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556415"></a>
+          ------ ----- | ----- | ------ #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556416"></a>
+                                 | | #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556417"></a>
+                Ixia port 1 | Cisco 6500 | Ixia port 2 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556418"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556419"></a>
+          # PE runs mBGP #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556420"></a>
+          # P runs LDP and ISIS #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556421"></a>
+          # CE runs ISIS (v6) #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556422"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556423"></a>
+          # Cisco configuration: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556424"></a>
+          # ipv6 cef distributed</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556425"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556426"></a>
+          # ipv6 unicast-routing</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556427"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556428"></a>
+          # mpls label protocol ldp</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556429"></a>
+          # mpls ipv6 source-interface Loopback901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556430"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556431"></a>
+          # interface Loopback901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556432"></a>
+          # ip address 110.0.110.1 255.255.255.255</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556433"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556434"></a>
+          # interface GigabitEthernet1/29</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556435"></a>
+          # no ip address</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556436"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556437"></a>
+          # interface GigabitEthernet1/29.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556438"></a>
+          # description vpn901_ce</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556439"></a>
+          # encapsulation dot1Q 901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556440"></a>
+          # ipv6 address 20::/64</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556441"></a>
+          # ipv6 rip vpn901 enable</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556442"></a>
+          # ipv6 rip vpn901 default-information originate</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556443"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556444"></a>
+          # interface GigabitEthernet1/30</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556445"></a>
+          # description vpn901_pe</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556446"></a>
+          # ip address 100.28.0.1 255.255.255.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556447"></a>
+          # ip ospf network broadcast</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556448"></a>
+          # mpls label protocol ldp</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556449"></a>
+          # tag-switching ip</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556450"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556451"></a>
+          # router ospf 901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556452"></a>
+          # mpls traffic-eng router-id Loopback901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556453"></a>
+          # mpls traffic-eng area 0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556454"></a>
+          # log-adjacency-changes</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556455"></a>
+          # network 100.28.0.0 0.0.0.255 area 0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556456"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556457"></a>
+          # ipv6 router rip vpn901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556458"></a>
+          # maximum-paths 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556459"></a>
+          # no split-horizon</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556460"></a>
+          # poison-reverse</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556461"></a>
+          #        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3556462"></a>
+          # router bgp 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556463"></a>
+          # neighbor 110.0.110.100 remote-as 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556464"></a>
+          # neighbor 110.0.110.100 update-source Loopback901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556465"></a>
+          #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556466"></a>
+          # address-family ipv6</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556467"></a>
+          # neighbor 110.0.110.100 activate</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556468"></a>
+          # neighbor 110.0.110.100 send-label</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556469"></a>
+          # redistribute rip vpn901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556470"></a>
+          # exit-address-family</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556471"></a>
+          # end</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556472"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556473"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556474"></a>
+          # The sample was tested on a LM100TXS8 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556475"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556476"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556477"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556478"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556479"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556480"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556481"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556482"></a>
+          set chassisIP sylvester</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556483"></a>
+          set port_list [list 1/1 1/2]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556484"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556485"></a>
+          set pe_ip_address 110.0.110.100</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556486"></a>
+          set bgp_peer_ip 110.0.110.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556487"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556488"></a>
+          set p_ip_address 100.28.0.2</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556489"></a>
+          set p_prefix_len 24</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556490"></a>
+          set p_gateway_ip 100.28.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556491"></a>
+          set p_mac_address 0000.0002.0003</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556492"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556493"></a>
+          set ce_ip_address 20::21</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556494"></a>
+          set ce_prefix_len 64</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556495"></a>
+          set ce_vlan_id 901</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556496"></a>
+          set ce_mac_address 0000.0001.0002</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556497"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556498"></a>
+          set bgp_router_id 1.2.3.4</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556499"></a>
+          set bgp_as 1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556500"></a>
+          set ospf_router_id 1.2.3.4</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556501"></a>
+          set ospf_area_id 0.0.0.0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556502"></a>
+          set p_lsr_id 1.2.3.4</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556503"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556504"></a>
+          set pe_adv_label_start 101</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556505"></a>
+          set pe_adv_network 30::0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556506"></a>
+          set pe_adv_prefix_len 64</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556507"></a>
+          set pe_adv_num_routes 2</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556508"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556509"></a>
+          set c_network1 31::0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556510"></a>
+          set c_prefix_len1 64</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556511"></a>
+          set c_num_prefixes1 3</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556512"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556513"></a>
+          set c_network2 32::0</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556514"></a>
+          set c_prefix_len2 64</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556515"></a>
+          set c_num_prefixes2 2</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556516"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556517"></a>
+          # Connect to the chassis,reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556518"></a>
+          set connect_status [::ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556519"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556520"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556521"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556522"></a>
+                  -username ixiaApiUser]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556523"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556524"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556525"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556526"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556527"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556528"></a>
+          set port_handle [list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556529"></a>
+          foreach port $port_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556530"></a>
+              if {![catch {keylget connect_status port_handle.$chassisIP.$port} \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556531"></a>
+                          temp_port]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556532"></a>
+                  lappend port_handle $temp_port</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556533"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556534"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556535"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556536"></a>
+          set pe_port [lindex $port_handle 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556537"></a>
+          set ce_port [lindex $port_handle 1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556538"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556539"></a>
+          # Initialize ports</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556540"></a>
+          set intf_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556541"></a>
+                  -port_handle $pe_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556542"></a>
+                  -autonegotiation 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556543"></a>
+                  -transmit_mode advanced \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556544"></a>
+                  -signature_offset 62 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556545"></a>
+                  -pgid_offset 66 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556546"></a>
+          set intf_status [::ixia::interface_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556547"></a>
+                  -port_handle $ce_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556548"></a>
+                  -autonegotiation 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556549"></a>
+                  -transmit_mode advanced ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556550"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3556551"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556552"></a>
+          # Configure OSPFv2 neighbor on P/PE port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556553"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556554"></a>
+          set ospf_neighbor_status [ixia::emulation_ospf_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556555"></a>
+                  -port_handle $pe_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556556"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556557"></a>
+                  -session_type ospfv2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556558"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556559"></a>
+                  -count 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556560"></a>
+                  -mac_address_init $p_mac_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556561"></a>
+                  -intf_ip_addr $p_ip_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556562"></a>
+                  -intf_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556563"></a>
+                  -router_id $ospf_router_id \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556564"></a>
+                  -router_id_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556565"></a>
+                  -neighbor_intf_ip_addr $p_gateway_ip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556566"></a>
+                  -neighbor_intf_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556567"></a>
+                  -loopback_ip_addr $pe_ip_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556568"></a>
+                  -loopback_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556569"></a>
+                  -area_id $ospf_area_id \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556570"></a>
+                  -area_id_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556571"></a>
+                  -area_type external-capable \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556572"></a>
+                  -network_type broadcast ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556573"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556574"></a>
+          if {[keylget ospf_neighbor_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556575"></a>
+              return "FAIL - $test_name - [keylget ospf_neighbor_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556576"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556577"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556578"></a>
+          set ospf_handle [keylget ospf_neighbor_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556579"></a>
+          ##################### End of OSPF PE configuration ##################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556580"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556581"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556582"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556583"></a>
+          # Configure LDP Neighbor on P/PE port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556584"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556585"></a>
+          set ldp_routers_status [ixia::emulation_ldp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556586"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556587"></a>
+                  -port_handle $pe_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556588"></a>
+                  -label_adv unsolicited \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556589"></a>
+                  -peer_discovery link \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556590"></a>
+                  -count 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556591"></a>
+                  -intf_ip_addr $p_ip_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556592"></a>
+                  -intf_prefix_length $p_prefix_len \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556593"></a>
+                  -intf_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556594"></a>
+                  -lsr_id $p_lsr_id \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556595"></a>
+                  -label_space 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556596"></a>
+                  -lsr_id_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556597"></a>
+                  -mac_address_init $p_mac_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556598"></a>
+                  -gateway_ip_addr $p_gateway_ip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556599"></a>
+                  -gateway_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556600"></a>
+                  -reset ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556601"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556602"></a>
+          if {[keylget ldp_routers_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556603"></a>
+              return "FAIL - $test_name - [keylget ldp_routers_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556604"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556605"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556606"></a>
+          set ldp_handle [keylget ldp_routers_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556607"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556608"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556609"></a>
+          # Configure ipv4_prefix fec type routes #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556610"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556611"></a>
+          set ldp_routers_status [ixia::emulation_ldp_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556612"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556613"></a>
+                  -handle $ldp_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556614"></a>
+                  -fec_type ipv4_prefix \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556615"></a>
+                  -label_msg_type mapping \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556616"></a>
+                  -fec_ip_prefix_start $pe_ip_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556617"></a>
+                  -fec_ip_prefix_length 32 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556618"></a>
+                  -egress_label_mode imnull ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556619"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556620"></a>
+          ##################### End of LDP PE configuration ##################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556621"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556622"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556623"></a>
+          # Configure BGP Neighbor on PE port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556624"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556625"></a>
+          set bgp_router_status [ixia::emulation_bgp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556626"></a>
+                  -mode reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556627"></a>
+                  -port_handle 	 $pe_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556628"></a>
+                  -local_ip_addr $p_ip_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556629"></a>
+                  -remote_ip_addr $p_gateway_ip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556630"></a>
+                  -local_addr_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556631"></a>
+                  -local_loopback_ip_addr $pe_ip_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556632"></a>
+                  -remote_loopback_ip_addr $bgp_peer_ip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556633"></a>
+                  -local_loopback_ip_addr_step 0.0.1.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556634"></a>
+                  -count 	 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556635"></a>
+                  -mac_address_start $p_mac_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556636"></a>
+                  -local_router_id $bgp_router_id \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556637"></a>
+                  -neighbor_type internal \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556638"></a>
+                  -ip_version 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556639"></a>
+                  -local_as $bgp_as \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556640"></a>
+                  -local_as_mode fixed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556641"></a>
+                  -active_connect_enable \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556642"></a>
+                  -ipv4_unicast_nlri \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556643"></a>
+                  -ipv4_mpls_vpn_nlri \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556644"></a>
+                  -ipv6_mpls_nlri ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556645"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556646"></a>
+          if {[keylget bgp_router_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556647"></a>
+              return "FAIL - $test_name - [keylget bgp_router_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556648"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556649"></a>
+          set bgp_neighbor_handle [keylget bgp_router_status handles]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556650"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556651"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556652"></a>
+          # Configure L3 VPN Site on the BGP Neighbor #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556653"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556654"></a>
+          set bgp_route_range_status [::ixia::emulation_bgp_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556655"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556656"></a>
+                  -handle $bgp_neighbor_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556657"></a>
+                  -ip_version 6 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556658"></a>
+                  -prefix $pe_adv_network \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556659"></a>
+                  -prefix_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556660"></a>
+                  -ipv6_prefix_length $pe_adv_prefix_len \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556661"></a>
+                  -label_value $pe_adv_label_start \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556662"></a>
+                  -num_sites 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556663"></a>
+                  -num_routes $pe_adv_num_routes \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556664"></a>
+                  -label_step 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556665"></a>
+                  -local_pref 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556666"></a>
+                  -next_hop_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556667"></a>
+                  -origin_route_enable \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556668"></a>
+                  -enable_traditional_nlri 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556669"></a>
+                  -ipv6_mpls_nlri ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556670"></a>
+          if {[keylget bgp_route_range_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556671"></a>
+              return "FAIL - $test_name - [keylget bgp_route_range_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556672"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556673"></a>
+          ##################### End of iBGP PE configuration ##################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556674"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556675"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556676"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556677"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556678"></a>
+          # Configure RIPng Neighbor on CE port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556679"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556680"></a>
+          set rip_status [ixia::emulation_rip_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556681"></a>
+                  -port_handle $ce_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556682"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556683"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556684"></a>
+                  -session_type ripng \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556685"></a>
+                  -intf_ip_addr $ce_ip_address \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556686"></a>
+                  -intf_prefix_length $ce_prefix_len \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556687"></a>
+                  -receive_type store \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556688"></a>
+                  -count 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556689"></a>
+                  -vlan_id $ce_vlan_id \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556690"></a>
+                  -mac_address_init $ce_mac_address]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556691"></a>
+          if {[keylget rip_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556692"></a>
+              return "FAIL - $test_name - [keylget rip_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556693"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556694"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556695"></a>
+          set rip_router [keylget rip_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556696"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556697"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556698"></a>
+          # Configure two route ranges on RIP neighbor#</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556699"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556700"></a>
+          set rip_status [ixia::emulation_rip_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556701"></a>
+                  -handle $rip_router \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556702"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556703"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556704"></a>
+                  -num_prefixes $c_num_prefixes1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556705"></a>
+                  -prefix_start $c_network1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556706"></a>
+                  -prefix_length $c_prefix_len1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556707"></a>
+          if {[keylget rip_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556708"></a>
+              return "FAIL - $test_name - [keylget rip_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556709"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556710"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556711"></a>
+          set rip_status [ixia::emulation_rip_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556712"></a>
+                  -handle $rip_router \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556713"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556714"></a>
+                  -num_prefixes $c_num_prefixes2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556715"></a>
+                  -prefix_start $c_network2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556716"></a>
+                  -prefix_length $c_prefix_len2 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556717"></a>
+          if {[keylget rip_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556718"></a>
+              return "FAIL - $test_name - [keylget rip_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556719"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556720"></a>
+          ##################### End of RIP CE configuration ##################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556721"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556722"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556723"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556724"></a>
+          # START OSPF (PE) on #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556725"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556726"></a>
+          set ospf_emulation_status [::ixia::emulation_ospf_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556727"></a>
+                  -handle $ospf_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556728"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556729"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556730"></a>
+          if {[keylget ospf_emulation_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556731"></a>
+              return "FAIL - $test_name - [keylget ospf_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556732"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556733"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556734"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556735"></a>
+          # START LDP on #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556736"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556737"></a>
+          set ldp_emulation_status [::ixia::emulation_ldp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556738"></a>
+                  -handle $ldp_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556739"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556740"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556741"></a>
+          if {[keylget ldp_emulation_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556742"></a>
+              return "FAIL - $test_name - [keylget ldp_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556743"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556744"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556745"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556746"></a>
+          # START RIPng on #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556747"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556748"></a>
+          set isis_emulation_status [ixia::emulation_rip_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556749"></a>
+                  -handle $rip_router \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556750"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556751"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556752"></a>
+          if {[keylget isis_emulation_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556753"></a>
+              return "FAIL - $test_name - [keylget isis_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556754"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556755"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556756"></a>
+          after 40000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556757"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556758"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556759"></a>
+          # START BGP (PE) on #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556760"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556761"></a>
+          set bgp_emulation_status [::ixia::emulation_bgp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556762"></a>
+                  -handle $bgp_neighbor_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556763"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556764"></a>
+          if {[keylget bgp_emulation_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556765"></a>
+              return "FAIL - $test_name - [keylget bgp_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556766"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556767"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556768"></a>
+          after 30000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556769"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556770"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556771"></a>
+          # Create stream on CE ports #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556772"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556773"></a>
+          set traffic_status [::ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556774"></a>
+                  -mode reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556775"></a>
+                  -port_handle $ce_port ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556776"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556777"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556778"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556779"></a>
+          set traffic_status [::ixia::traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556780"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556781"></a>
+                  -port_handle $ce_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556782"></a>
+                  -length_mode random \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556783"></a>
+                  -l3_length_min 128 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556784"></a>
+                  -l3_length_max 1024 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556785"></a>
+                  -enable_pgid 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556786"></a>
+                  -pgid_value 1234 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556787"></a>
+                  -l3_protocol ipv6 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556788"></a>
+                  -ipv6_src_addr $c_network1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556789"></a>
+                  -ipv6_src_mode fixed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556790"></a>
+                  -ipv6_dst_addr $pe_adv_network \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556791"></a>
+                  -ipv6_dst_mode fixed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556792"></a>
+                  -mac_dst_mode discovery \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556793"></a>
+                  -vlan enable \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556794"></a>
+                  -vlan_id 901 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556795"></a>
+                  -vlan_id_mode fixed ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556796"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556797"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556798"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556799"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556800"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556801"></a>
+          # Start traffic on CE port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556802"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556803"></a>
+          # Clear stats before sending traffic</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556804"></a>
+          set clear_stats_status [ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556805"></a>
+                  -port_handle "$pe_port $ce_port" \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556806"></a>
+                  -action clear_stats ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556807"></a>
+          if {[keylget clear_stats_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556808"></a>
+              return "FAIL - $test_name - [keylget clear_stats_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556809"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556810"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556811"></a>
+          set traffic_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556812"></a>
+                  -port_handle $ce_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556813"></a>
+                  -action sync_run ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556814"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556815"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556816"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556817"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556818"></a>
+          after 40000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556819"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556820"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556821"></a>
+          # Stop traffic on CE port #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556822"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556823"></a>
+          set traffic_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556824"></a>
+                  -port_handle $ce_port \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556825"></a>
+                  -action stop ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556826"></a>
+          if {[keylget traffic_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556827"></a>
+              return "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556828"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556829"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556830"></a>
+          after 5000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556831"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556832"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556833"></a>
+          # Print traffic stats #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556834"></a>
+          #############################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556835"></a>
+          set ce_stats [ixia::traffic_stats -port_handle $ce_port -mode aggregate]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556836"></a>
+          if {[keylget ce_stats status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556837"></a>
+              return "FAIL - $test_name - [keylget ce_stats log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556838"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556839"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556840"></a>
+          set ce_transmit [keylget ce_stats $ce_port.aggregate.tx.pkt_count]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556841"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556842"></a>
+          set pe_stats [ixia::traffic_stats -port_handle $pe_port -packet_group_id 1234]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556843"></a>
+          if {[keylget pe_stats status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556844"></a>
+              return "FAIL - $test_name - [keylget pe_stats log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556845"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556846"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556847"></a>
+          set pe_receive [keylget pe_stats $pe_port.pgid.rx.pkt_count.1234]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556848"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556849"></a>
+          puts " Sent Received"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556850"></a>
+          puts "-------------------------------------------------------"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556851"></a>
+          puts [format "Frames %12s %12s" \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3556852"></a>
+                  $ce_transmit $pe_receive]</p>
+    </body>
+</html>

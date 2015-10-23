@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="utf-8"?>
+<method xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="emulation_dhcp_stats" displayPriority="4" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+  <description supportType="ixNetworkSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixLoadSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixHalOrProtocolSupport" contentType="noContent" target="noTarget" />
+  <description supportType="ixNetworkCpfSupport" contentType="new" target="noTarget">Controls DHCP subscriber group activity.</description>
+  <chapter>DHCP Client APIs</chapter>
+  <arguments>
+    <argument name="port_handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Specifies the port upon which emulation id configured. 
+        This parameter is returned from emulation_dhcp_config proc.
+        Emulation must have been previously enabled on the specified port 
+        via a call to emulation_dhcp_group_config proc.
+        This option is mandatory when -version is ixtclhal.
+        When -version is ixnetwork, one of -port_handle or -handle parameters 
+        should be provided.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="action" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Clear - reset the statistics for the specified port/subscriber group 
+        to 0. This parameter will be ignored if it is used.</text>
+          <choices>
+            <choice>
+              <choiceName>clear</choiceName>
+              <choiceText />
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="clear" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="handle" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>Allows the user to optionally select the groups to which the 
+        specified action is to be applied. 
+        If this parameter is not specified, then the specified action is 
+        applied to all groups configured on the port specified by 
+        the -port_handle command. The handle is obtained from the keyed list returned 
+        in the call to emulation_dhcp_group_config proc.
+        The port handle parameter must have been initialized and dhcp group 
+        emulation must have been configured prior to calling this function.
+        This option is not supported with IxTclAccess and will be ignored if it is used. 
+        For IxTclNetwork the statistics will be aggregated at port level (the 
+        port on which this handle has been configured). The stats aggregate.&lt;stat key&gt; 
+        will represent the aggregated port stats for the first port if multiple 
+        handles are provided.</text>
+        </description>
+        <restriction type="VALUETYPE" valueType="ANY" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="mode" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text />
+          <choices>
+            <choice>
+              <choiceName>session</choiceName>
+              <choiceText>retrieves session statistics for configured DHCP v4/v6 clients.Supported with IxTclNetwork.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>aggregate_stats</choiceName>
+              <choiceText>retrieves aggregate statistics for the selected port with configured DHCP v4/v6 clients.Supported with IxTclnetwork and IxTclHal.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>aggregate_stats_relay_agent</choiceName>
+              <choiceText>retrieves aggregate for the selected port with configured DHCP v4/v6 relay agents. Supported with IxTclnetwork and IxTclHal.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="session aggregate_stats aggregate_stats_relay_agent" />
+        <restriction type="DEFAULT" valueType="ANY" value="aggregate_stats" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="dhcp_version" definedBy="ciscoDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text />
+          <choices>
+            <choice>
+              <choiceName>dhcp4</choiceName>
+              <choiceText>retrieves session statistics for configured DHCP v4.</choiceText>
+            </choice>
+            <choice>
+              <choiceName>dhcp6</choiceName>
+              <choiceText>retrieves session statistics for configured DHCP v6.</choiceText>
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="dhcp4 dhcp6" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="dhcp_relay_type" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text />
+          <choices>
+            <choice>
+              <choiceName>normal</choiceName>
+              <choiceText />
+            </choice>
+            <choice>
+              <choiceName>lightweight</choiceName>
+              <choiceText />
+            </choice>
+          </choices>
+        </description>
+        <restriction type="VALUETYPE" valueType="CHOICES" value="normal lightweight" />
+        <restriction type="DEFAULT" valueType="ANY" value="normal" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="no_write" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="version" definedBy="CiscoDefinedNotSupported" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="false" ixNetworkCpfPythonScriptgenSupport="false" ixNetworkCpfPerlApiSupport="false" ixNetworkCpfPerlScriptgenSupport="false" ixNetworkCpfTclApiSupport="false" ixNetworkCpfTclScriptgenSupport="false" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+    <argument name="execution_timeout" definedBy="ixiaDefined" ixHalOrProtocolPythonApiSupport="false" ixHalOrProtocolPythonScriptgenSupport="false" ixHalOrProtocolPerlApiSupport="false" ixHalOrProtocolPerlScriptgenSupport="false" ixHalOrProtocolTclApiSupport="false" ixHalOrProtocolTclScriptgenSupport="false" ixLoadPythonApiSupport="false" ixLoadPythonScriptgenSupport="false" ixLoadPerlApiSupport="false" ixLoadPerlScriptgenSupport="false" ixLoadTclApiSupport="false" ixLoadTclScriptgenSupport="false" ixNetworkCpfPythonApiSupport="true" ixNetworkCpfPythonScriptgenSupport="supportedInOtherCommand" ixNetworkCpfPerlApiSupport="true" ixNetworkCpfPerlScriptgenSupport="supportedInOtherCommand" ixNetworkCpfTclApiSupport="true" ixNetworkCpfTclScriptgenSupport="supportedInOtherCommand" ixNetworkPythonApiSupport="false" ixNetworkPythonScriptgenSupport="false" ixNetworkPerlApiSupport="false" ixNetworkPerlScriptgenSupport="false" ixNetworkTclApiSupport="false" ixNetworkTclScriptgenSupport="false">
+      <ixHalOrProtocolSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkSupport contentType="noContent" target="noTarget" mandatory="false" />
+      <ixNetworkCpfSupport contentType="new" target="noTarget" mandatory="false">
+        <description>
+          <text>This is the timeout for the function.
+				The setting is in seconds.
+				Setting this setting to 60 it will mean that the command must complete in under 60 seconds.
+				If the command will last more than 60 seconds the command will be terminated by force.
+				This flag can be used to prevent dead locks occuring in IxNetwork.</text>
+        </description>
+        <restriction type="DEFAULT" valueType="ANY" value="1800" />
+        <restriction type="VALUETYPE" valueType="NUMERIC" />
+      </ixNetworkCpfSupport>
+      <ixLoadSupport contentType="noContent" target="noTarget" mandatory="false" />
+    </argument>
+  </arguments>
+  <returnValues>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>status</key>
+      <value>$::SUCCESS | $::FAILURE</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>log</key>
+      <value>When status is failure, contains more information</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.port_name</key>
+      <value>Port Name</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.currently_attempting</key>
+      <value>Number of currently attempting interfaces. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.currently_idle</key>
+      <value>Number of interfaces not bounded. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.currently_bound</key>
+      <value>Number of addresses learned. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.success_percentage</key>
+      <value>Percent rate of addresses learned. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.discover_tx_count</key>
+      <value>Number of discovered messages sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.request_tx_count</key>
+      <value>Number of requests sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.release_tx_count</key>
+      <value>Number of releases sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.ack_rx_count</key>
+      <value>Number of acks received. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.nak_rx_count</key>
+      <value>Number of nacks received. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.offer_rx_count</key>
+      <value>Number of offers received. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.declines_tx_count</key>
+      <value>Number of DHCPv4 DHCPDECLINE messages sent. A DHCPDECLINE message is sent to the server if the DHCP client is assigned any IP address from the 10.0.x.x subnet, any multicast address, or any of the following addresses: 0.0.0.0, 255.255.255.255, 127.0.0.1. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.enabled_interfaces</key>
+      <value>Number of enabled DHCPv4 interfaces. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.addr_discovered</key>
+      <value>Number of addresses learned. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.setup_initiated</key>
+      <value>Number of clients that were started. This corresponds to number of started DHCP discovery sessions. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.setup_success</key>
+      <value>Number of addresses that were successful configured. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.setup_success_rate</key>
+      <value>The rate at which addresses were successful configured (addresses set up per second). Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.setup_fail</key>
+      <value>Number of addresses that could not be configured until the Number of Retransmissions was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.teardown_initiated</key>
+      <value>Number of address teardowns that were initiated. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.teardown_success</key>
+      <value>Number of addresses that were successful torn down. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.teardown_failed</key>
+      <value>Number of addresses that could not be torn down until the Number of Retransmissions was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.relay_agent_sessions_up</key>
+      <value>Number of relay agent sessions that are up. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.relay_agent_sessions_down</key>
+      <value>Number of relay agent sessions that are down. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.relay_agent_sessions_not_started</key>
+      <value>Number of relay agent sessions that are not started. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.relay_agent_sessions_total</key>
+      <value>Total number of relay agent sessions. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.rx.force_renew</key>
+      <value>Force Renew Rx</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.port_name</key>
+      <value>Port Name</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.currently_attempting</key>
+      <value>Number of enabled interfaces. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.currently_idle</key>
+      <value>Number of interfaces not bounded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.currently_bound</key>
+      <value>Number of addresses learned. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.success_percentage</key>
+      <value>Percent rate of addresses learned. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.discover_tx_count</key>
+      <value>Number of discovered messages sent. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.request_tx_count</key>
+      <value>Number of requests sent. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.release_tx_count</key>
+      <value>Number of releases sent. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.ack_rx_count</key>
+      <value>Number of acks received. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.nak_rx_count</key>
+      <value>Number of nacks received. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.offer_rx_count</key>
+      <value>Number of offers received. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.declines_tx_count</key>
+      <value>Number of DHCPv4 DHCPDECLINE messages sent. A DHCPDECLINE message is sent to the server if the DHCP client is assigned any IP address from the 10.0.x.x subnet, any multicast address, or any of the following addresses: 0.0.0.0, 255.255.255.255, 127.0.0.1. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.enabled_interfaces</key>
+      <value>Number of enabled DHCPv4 interfaces. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.addr_discovered</key>
+      <value>Number of addresses learned. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.setup_initiated</key>
+      <value>Number of clients that were started. This corresponds to number of started DHCP discovery sessions. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.setup_success</key>
+      <value>Number of addresses that were successful configured. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.setup_success_rate</key>
+      <value>The rate at which addresses were successful configured (addresses set up per second). Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.setup_fail</key>
+      <value>Number of addresses that could not be configured until the Number of Retransmissions was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.teardown_initiated</key>
+      <value>Number of address teardowns that were initiated. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.teardown_success</key>
+      <value>Number of addresses that were successful torn down. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.teardown_failed</key>
+      <value>Number of addresses that could not be torn down until the Number of Retransmissions was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.rx.nak</key>
+      <value>Requests NAKed</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.rx.nak</key>
+      <value>Requests NAKed</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.reconfigure_rx</key>
+      <value>Reconfigure Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>aggregate.reconfigure_rx</key>
+      <value>Reconfigure Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.aggregate.rx.force_renew</key>
+      <value>Force Renew Rx</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;device_group&gt;.aggregate.rx.force_renew</key>
+      <value>Force Renew Rx</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;device_group&gt;.aggregate.reconfigure_rx</key>
+      <value>Reconfigure Received</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>&lt;device_group&gt;.aggregate.rx.nak</key>
+      <value />
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.port_name</key>
+      <value>Port Name</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.currently_attempting</key>
+      <value>Number of currently attempting interfaces. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.currently_idle</key>
+      <value>Number of interfaces not bounded. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.currently_bound</key>
+      <value>Number of addresses learned. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.solicits_tx_count</key>
+      <value>Number of solicit messages sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.adv_rx_count</key>
+      <value>Number of advertisement messages received. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.adv_ignored</key>
+      <value>Number of advertisement messages received but ignored. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.request_tx_count</key>
+      <value>Number of requests sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.addr_discovered</key>
+      <value>The number of DHCPv6 addresses learned. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.enabled_interfaces</key>
+      <value>The number of DHCPv6 enabled interfaces. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.reply_rx_count</key>
+      <value>Number of reply messages received. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.release_tx_count</key>
+      <value>Number of release messages sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.setup_initiated</key>
+      <value>Number of clients that were started. This corresponds to number of started DHCP discovery sessions. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.setup_success</key>
+      <value>Number of addresses that were successful configured. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.setup_success_rate</key>
+      <value>The rate at which addresses were successful configured (addresses set up per second). Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.setup_fail</key>
+      <value>Number of addresses that could not be configured until the REQ_MAX_RC was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.teardown_initiated</key>
+      <value>Number of address teardowns that were initiated. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.teardown_success</key>
+      <value>Number of addresses that were successful torn down. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.aggregate.teardown_failed</key>
+      <value>Number of interfaces that could not be configured until the REL_MAX_RC was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.port_name</key>
+      <value>Port Name</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.currently_attempting</key>
+      <value>Number of currently attempting interfaces. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.currently_idle</key>
+      <value>Number of interfaces not bounded. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.currently_bound</key>
+      <value>Number of addresses learned. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.solicits_tx_count</key>
+      <value>Number of solicit messages sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.adv_rx_count</key>
+      <value>Number of advertisement messages received. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.adv_ignored</key>
+      <value>Number of advertisement messages received but ignored. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.request_tx_count</key>
+      <value>Number of requests sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.addr_discovered</key>
+      <value>The number of DHCPv6 addresses learned. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.enabled_interfaces</key>
+      <value>The number of DHCPv6 enabled interfaces. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.reply_rx_count</key>
+      <value>Number of reply messages received. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.release_tx_count</key>
+      <value>Number of release messages sent. Supported with IxTclHal, IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.setup_initiated</key>
+      <value>Number of clients that were started. This corresponds to number of started DHCP discovery sessions. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.setup_success</key>
+      <value>Number of addresses that were successful configured. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.setup_success_rate</key>
+      <value>The rate at which addresses were successful configured (addresses set up per second). Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.setup_fail</key>
+      <value>Number of addresses that could not be configured until the REQ_MAX_RC was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.teardown_initiated</key>
+      <value>Number of address teardowns that were initiated. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.teardown_success</key>
+      <value>Number of addresses that were successful torn down. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>ipv6.&lt;port_handle&gt;.aggregate.teardown_failed</key>
+      <value>Number of interfaces that could not be configured until the REL_MAX_RC was exceeded. Supported with IxTclNetwork.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.currently_attempting</key>
+      <value>No of enabled interfaces on that group. Supported with IxTclHal.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.currently_idle</key>
+      <value>No of interfaces not bounded on that group. Supported with IxTclHal.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.currently_bound</key>
+      <value>No of addresses learned on that group. Supported with IxTclHal.</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.port_name</key>
+      <value>Port Name</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.session_name</key>
+      <value>Session Name</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.port_handle</key>
+      <value>Port handle</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.dhcp_group</key>
+      <value>DHCP group handle</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.discovers_sent</key>
+      <value>Discovers Sent (valid only for DHCPv4)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.offers_received</key>
+      <value>Offers Received (valid only for DHCPv4)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.requests_sent</key>
+      <value>Requests Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.acks_received</key>
+      <value>ACKs Received (valid only for DHCPv4)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.nacks_received</key>
+      <value>NACKs Received (valid only for DHCPv4)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.releases_sent</key>
+      <value>Releases Sent</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.declines_sent</key>
+      <value>Declines Sent (valid only for DHCPv4)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.ip_address</key>
+      <value>IP Address</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.gateway_address</key>
+      <value>Gateway Address</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.lease_time</key>
+      <value>Lease Time</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.solicits_sent</key>
+      <value>Solicits Sent (valid only for DHCPv6)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.advertisements_received</key>
+      <value>Advertisements Received (valid only for DHCPv6)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.advertisements_ignored</key>
+      <value>Advertisements Ignored (valid only for DHCPv6)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.replies_received</key>
+      <value>Replies Received (valid only for DHCPv6)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.rx.force_renew</key>
+      <value>Force Renew (valid only for DHCPv4)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="ciscoDefined" supportType="ixNetworkCpfSupport">
+      <key>session.&lt;session ID&gt;.reconfigure_rx</key>
+      <value>Reconfigure Rx (valid only for DHCPv6)</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.elapsed_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.total_attempted</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.total_retried</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.total_bound</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.bound_renewed</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.total_failed</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.bind_rate</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.attempted_rate</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.minimum_setup_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.maximum_setup_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>aggregate.average_setup_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.elapsed_time</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.total_attempted</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.total_retried</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.bound_renewed</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.total_bound</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.total_failed</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.bind_rate</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.attempt_rate</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.request_rate</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.release_rate</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.discover_tx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.request_tx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.release_tx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.ack_rx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.nak_rx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>group.&lt;group&gt;.offer_rx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.&lt;group&gt;.inform_tx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+    <returnValue definedBy="CiscoDefinedNotSupported" supportType="ixNetworkCpfSupport">
+      <key>&lt;port_handle&gt;.&lt;group&gt;.decline_tx_count</key>
+      <value>Cisco only</value>
+      <tag value="" />
+    </returnValue>
+  </returnValues>
+  <sampleInput>
+    <sampleInputElem supportType="ixNetworkCpfSupport">.</sampleInputElem>
+  </sampleInput>
+  <sampleOutput>
+    <sampleOutputElem supportType="ixNetworkCpfSupport">.</sampleOutputElem>
+  </sampleOutput>
+  <notes>
+    <note supportType="ixNetworkCpfSupport">When retrieving IxTclHal stats, there will be a difference between the 
+     aggregate and per group stats, because they are not extracted at the 
+     same time. There is a delay between the time when aggregate are extracted 
+     and the time  when per group stats are extracted. But in the end, when 
+     all bindings are finished the results should correspond. </note>
+  </notes>
+  <seeAlso>
+    <seeAlsoElem supportType="ixNetworkCpfSupport" />
+  </seeAlso>
+  <examples>
+    <example supportType="ixNetworkCpfSupport" />
+  </examples>
+</method>

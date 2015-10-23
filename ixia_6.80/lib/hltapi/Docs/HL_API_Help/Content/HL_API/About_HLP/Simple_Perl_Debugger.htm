@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="High Level API Basics|About HLPAPI|HLPAPI Basics">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Command Format: Option Passing</title>
+        <link href="../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../HL_API_Help.htm#HL_API/About_HLP/Simple_Perl_Debugger.htm">Open topic with navigation</a>
+        </p>
+        <h2>Simple Perl debugger</h2>
+        <p>The debugger needs the Perl Tk package, which you can install through the active state PPM utility (if you are using active state). After you install it, run it with the following syntax:</p>
+        <p><span style="font-family: monospace;">$ perl -d:ptkdb  myscript.pl</span>
+        </p>
+        <h3>PerlNotes</h3>
+        <h3>Hash references</h3>
+        <p>An anonymous hash is one that does not have a specific name. They are declared as follows:</p>
+        <p><span style="font-family: monospace;">my $myhash = { "key1" =&gt; "value1", "key2 =&gt; "value2", ... };</span>
+        </p>
+        <p>The variable defined here is a scalar, that is, it is more or less a number. It holds the memory location for the start of the hash and tells where the hash is. There are several ways to access the hash by using references to it:</p>
+        <p style="font-family: monospace;">%{$myhash}; # access the entire hash</p>
+        <p style="font-family: monospace;">${$myhash}{'key1'}; # one way to access the value of the 'key1' key.</p>
+        <p style="font-family: monospace;">$myhash-&gt;{'key1'}; # a better way to access the value of the 'key1' key.</p>
+        <p>The preceding examples are identical, except that they have a different syntax. You can pass hash references to subroutines, making it easier to remember passed parameters.</p>
+        <p style="font-family: monospace;">my $myhash = { "key1" =&gt; "value1", "key2 =&gt; "value2"};</p>
+        <p style="font-family: monospace;">mySub($myhash);</p>
+        <p style="font-family: monospace;">sub mySub</p>
+        <p style="font-family: monospace;">{</p>
+        <blockquote>
+            <p style="font-family: monospace;">my $hashref = shift;</p>
+            <p style="font-family: monospace;">$hashref-&gt;{'key1'}; # access to value1</p>
+        </blockquote>
+        <p style="font-family: monospace;">}</p>
+    </body>
+</html>

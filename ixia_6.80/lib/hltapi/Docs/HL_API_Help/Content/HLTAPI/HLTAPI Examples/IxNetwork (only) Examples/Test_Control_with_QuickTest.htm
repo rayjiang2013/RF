@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|PYTHON_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Test Control with QuickTest (Test_Control_with_QuickTest.py)</title>
+        <link href="../../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/Test_Control_with_QuickTest.htm">Open topic with navigation</a>
+        </p>
+        <h3>Test Control with QuickTest (Test_Control_with_QuickTest.py)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock"># Description:</p>
+        <p class="CodeBlock">#    This script is based on the following scenarios:     #</p>
+        <p class="CodeBlock"># - load an ixncfg containing a QuickTest     #</p>
+        <p class="CodeBlock"># - retrieve and change the input parameters of the QT     #</p>
+        <p class="CodeBlock"># - start the QT, retrieve statistics, stop the QT     #</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock"># Module:</p>
+        <p class="CodeBlock"># The sample was tested on a 1GE LSM XMVDC16NG module. #</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">from pprint import pprint</p>
+        <p class="CodeBlock">import os, sys</p>
+        <p class="CodeBlock">import time</p>
+        <p class="CodeBlock">from itertools import izip</p>
+        <p class="CodeBlock">import pdb</p>
+        <p class="CodeBlock"># Append paths to python APIs</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/hltapi/library/common/ixiangpf/python')</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/ixnetwork/api/python')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">from ixiatcl import IxiaTcl</p>
+        <p class="CodeBlock">from ixiahlt import IxiaHlt</p>
+        <p class="CodeBlock">from ixiangpf import IxiaNgpf</p>
+        <p class="CodeBlock">from ixiaerror import IxiaError</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ixiatcl = IxiaTcl()</p>
+        <p class="CodeBlock">ixiahlt = IxiaHlt(ixiatcl)</p>
+        <p class="CodeBlock">ixiangpf = IxiaNgpf(ixiahlt)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">try:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('', {})</p>
+        <p class="CodeBlock">except (NameError,):</p>
+        <p class="CodeBlock" style="margin-left: 25px;">def ErrorHandler(cmd, retval):</p>
+        <p class="CodeBlock" style="margin-left: 50px;">global ixiatcl</p>
+        <p class="CodeBlock" style="margin-left: 50px;">err = ixiatcl.tcl_error_info()</p>
+        <p class="CodeBlock" style="margin-left: 50px;">log = retval['log']</p>
+        <p class="CodeBlock" style="margin-left: 50px;">additional_info = '&gt; command: %s\n&gt; tcl errorInfo: %s\n&gt; log: %s' % (cmd, err, log)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">raise IxiaError(IxiaError.COMMAND_FAIL, additional_info)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dirname, filename = os.path.split(os.path.abspath(__file__))</p>
+        <p class="CodeBlock">config_file = os.path.join(dirname, 'sample_test_control_with_quickTest.ixncfg')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">chassis_ip = "ixro-hlt-xm2-09"</p>
+        <p class="CodeBlock">tcl_server = "ixro-hlt-xm2-09"</p>
+        <p class="CodeBlock">ixnetwork_tcl_server = 'localhost'</p>
+        <p class="CodeBlock">port_list = ['2/1','2/2']</p>
+        <p class="CodeBlock">errors = 0</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">&#160;&gt;print "Printing connection variables ... "</p>
+        <p class="CodeBlock">&#160;&gt;print "test_name = %s" % filename</p>
+        <p class="CodeBlock">&#160;&gt;print 'chassis_ip =  %s' % chassis_ip</p>
+        <p class="CodeBlock">&#160;&gt;print "tcl_server = %s " % tcl_server</p>
+        <p class="CodeBlock">&#160;&gt;print "ixnetwork_tcl_server = %s" % ixnetwork_tcl_server</p>
+        <p class="CodeBlock">&#160;&gt;print "port_list = %s " % port_list</p>
+        <p class="CodeBlock">&#160;&gt;print "config_file = %s" % config_file</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#===============================&gt; CONNECTION &lt;==========================================</p>
+        <p class="CodeBlock">print "Connecting to localhost ..."</p>
+        <p class="CodeBlock">connect_result = ixiangpf.connect(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnetwork_tcl_server = ixnetwork_tcl_server,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">tcl_server = tcl_server,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device = chassis_ip,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_list = port_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">break_locks = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">config_file = config_file,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if connect_result['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('connect', connect_result)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nPrinting connection result\n"</p>
+        <p class="CodeBlock">pprint(connect_result)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ports = connect_result['vport_list'].split()</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nRetrieving all QuickTest handles present in the config ...\n"</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">test_control_status = ixiahlt.test_control(action = 'get_all_qt_handles')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if test_control_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_control', test_control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">qt_handle = test_control_status['qt_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nHandle(s) retrieved: %s \n" % qt_handle</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#===============================&gt; RETRIEVE INPUT PARAMS &lt;==========================================</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nRetrieving the input parameters of the QT(s)\n"</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">test_control_status = ixiangpf.test_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action = 'qt_get_input_params',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">qt_handle = qt_handle,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if test_control_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_control', test_control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nInput parameters retrieved for QT (%s):\n %s\n" % (qt_handle, test_control_status[qt_handle]['input_params'])</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">param_list =test_control_status[qt_handle]['input_params']</p>
+        <p class="CodeBlock">aux=param_list[2:-2]</p>
+        <p class="CodeBlock">aux2=aux.replace('} {',' ')</p>
+        <p class="CodeBlock">params=aux2.split()</p>
+        <p class="CodeBlock">i = iter(params)</p>
+        <p class="CodeBlock">modified_params = dict(izip(i,i))</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nModifying input parameters ...\n"</p>
+        <p class="CodeBlock">lava_trial=2</p>
+        <p class="CodeBlock">lava_init_load=15</p>
+        <p class="CodeBlock">lava_iterations=02</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">modified_params['lava_trial']=lava_trial</p>
+        <p class="CodeBlock">modified_params['lava_init_load'] = lava_init_load</p>
+        <p class="CodeBlock">modified_params['lava_iterations']=lava_iterations</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nModified params = %s\n" % modified_params</p>
+        <p class="CodeBlock">#===============================&gt; APPLY CONFIG - SYNC &lt;==========================================</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">test_control_status = ixiangpf.test_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action    = 'qt_apply_config',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">qt_handle = qt_handle,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if test_control_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_control', test_control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#===============================&gt; START TEST - SYNC &lt;==========================================</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nStarting QT with modified parameters ... \n"</p>
+        <p class="CodeBlock">test_control_status = ixiangpf.test_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action            =    'qt_start',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">qt_handle         =     qt_handle,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">#input_params      =     modified_params,</p>
+        <p class="CodeBlock">if test_control_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_control', test_control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#===============================&gt; RETRIEVE STATS &lt;==========================================</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(20)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nRetrieving currently running QuickTest ... \n"</p>
+        <p class="CodeBlock">test_stats_status=ixiangpf.test_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode = 'qt_currently_running',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if test_stats_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_stats', test_stats_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">new_qt_handle=test_stats_status['qt_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nGetting the status of the currently running QuickTest ...\n"</p>
+        <p class="CodeBlock">test_stats_status=ixiangpf.test_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode = 'qt_running_status',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">qt_handle = new_qt_handle,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if test_stats_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_stats', test_stats_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">running_qt=test_stats_status[new_qt_handle]['is_running']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">while running_qt:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">qt_progress = ixiangpf.test_stats(</p>
+        <p class="CodeBlock" style="margin-left: 50px;">mode = 'qt_progress',</p>
+        <p class="CodeBlock" style="margin-left: 50px;">qt_handle = new_qt_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if qt_progress['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">ErrorHandler('test_stats', qt_progress)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if qt_progress[new_qt_handle]['progress'] == '':</p>
+        <p class="CodeBlock" style="margin-left: 50px;">break</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">print " qt_progress : %s " % qt_progress</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">time.sleep(10)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">test_stats_status=ixiangpf.test_stats(</p>
+        <p class="CodeBlock" style="margin-left: 50px;">mode = 'qt_running_status',</p>
+        <p class="CodeBlock" style="margin-left: 50px;">qt_handle = new_qt_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if test_stats_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">ErrorHandler('test_stats', test_stats_status)</p>
+        <p class="CodeBlock" style="margin-left: 25px;">running_qt=test_stats_status[new_qt_handle]['is_running']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nGetting and printing the run result of the QuickTest ...\n"</p>
+        <p class="CodeBlock">qt_result=ixiangpf.test_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode = 'qt_result',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">qt_handle = new_qt_handle,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if qt_result['status'] != IxiaHlt.SUCCESS :</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_stats', qt_result)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nQT Result: %s\n" % qt_result[new_qt_handle]['result']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">pprint(qt_result)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(10)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nRetrieving flow view stats ...\n"</p>
+        <p class="CodeBlock">test_stats_status = ixiangpf.test_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode = 'qt_flow_view',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">qt_handle = new_qt_handle,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if test_stats_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('test_stats', test_stats_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">pprint(test_stats_status)</p>
+        <p class="CodeBlock">flow_keys = test_stats_status.keys()</p>
+        <p class="CodeBlock">aux1=flow_keys[0]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if test_stats_status[aux1]['rx_frames'] != test_stats_status[aux1]['tx_frames'] or test_stats_status[aux1]['loss_percentage'] &gt; '0.03':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">errors +=1</p>
+        <p class="CodeBlock" style="margin-left: 25px;">print "FAIL - %s - rx and tx frame no doesn't match / loss_percentage is bigger than 0" % filename</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "\nSUCCESS!\n"</p>
+    </body>
+</html>

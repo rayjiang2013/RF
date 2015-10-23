@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|TCL_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>NGPF IPv4 Traffic (IPv4_traffic.tcl)</title>
+        <link href="../../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork_Traffic/IPv4_Traffic.html">Open topic with navigation</a>
+        </p>
+        <h3>Configures 100 NGPF IPv4 Sessions on Two Ports and Configures Two Traffic Items, Starts Traffic and Collects Stats (HLT_IPv4_traffic.tcl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock"># Description: #</p>
+        <p class="CodeBlock"># This sample configures 100 NGPF IPv4 sessions on each of the two ports #</p>
+        <p class="CodeBlock"># configures two traffic items, starts traffic and collects stats #</p>
+        <p class="CodeBlock">                                                                    # Module:                                                                      #</p>
+        <p class="CodeBlock">#    The sample was tested on a 10/100/1000 LSM XMVDC16NG module.                          #</p>
+        <p class="CodeBlock">#                                                                              #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Logging and error handling procs</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">if {![info exists ::ixnHLT_log]} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">proc ::my_ixnhlt_logger {s} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">puts stderr $s; flush stderr; update; update idletasks</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ::ixnHLT_log ::my_ixnhlt_logger</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">if {![info exists ::ixnHLT_errorHandler]} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">proc ::my_ixnhlt_errorhandler {module status} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">set msg "FAIL - $module - [keylget status log]"</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_log $msg</p>
+        <p class="CodeBlock" style="margin-left: 50px;">return -code error $msg</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ::ixnHLT_errorHandler ::my_ixnhlt_errorhandler</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Package require Ixia</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">if {[catch {package require Ixia} retCode]} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts "FAIL - [info script] - $retCode"</p>
+        <p class="CodeBlock" style="margin-left: 25px;">return 0</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># chassis, card, port configuration</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">set chassis ixro-hlt-xm12-2</p>
+        <p class="CodeBlock">set ixnetwork_tcl_server localhost</p>
+        <p class="CodeBlock">set tcl_server localhost</p>
+        <p class="CodeBlock">set port_list {1/1 1/2}</p>
+        <p class="CodeBlock">set vport_name_list {{{{Ethernet - 001}} {{Ethernet - 002}}}}</p>
+        <p class="CodeBlock">set guard_rail statistics</p>
+        <p class="CodeBlock">set test_name                   [info script]</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># START - Connect to the chassis</p>
+        <p class="CodeBlock"># Connect to the IxNetwork Tcl Server &amp; chassis, reset to factory defaults and take ownership		   #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">set connect_status [::ixiangpf::connect  \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">-reset 1 \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">-device $chassis \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">-port_list $port_list \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">-ixnetwork_tcl_server $ixnetwork_tcl_server \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">-tcl_server $tcl_server \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">-guard_rail $guard_rail \</p>
+        <p class="CodeBlock">]</p>
+        <p class="CodeBlock">puts "End connecting to chassis ..."</p>
+        <p class="CodeBlock">set port1 [keylget connect_status port_handle.$chassis.[lindex $port_list 0]]</p>
+        <p class="CodeBlock">set port2 [keylget connect_status port_handle.$chassis.[lindex $port_list 1]]</p>
+        <p class="CodeBlock">set port_handle [list $port1 $port2]</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Configure Topology, Device Group</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set topology_1_status [::ixiangpf::topology_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-topology_name      {Topology 1}                            \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-port_handle        $port1\</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget topology_1_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $topology_1_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set topology_1_handle [keylget topology_1_status topology_handle]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set device_group_1_status [::ixiangpf::topology_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-topology_handle              $topology_1_handle      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-device_group_name            {Device Group 1}        \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-device_group_multiplier      100                     \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-device_group_enabled         1                       \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget device_group_1_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $device_group_1_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set deviceGroup_1_handle [keylget device_group_1_status device_group_handle]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Create Ethernet Stack for the Device Group</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ethernet_1_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-protocol_name                {Ethernet 1}               \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-protocol_handle              $deviceGroup_1_handle      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-mtu                          1500                       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-src_mac_addr                 00.11.01.00.00.01          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-src_mac_addr_step            00.00.00.00.00.01          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-vlan						  1							 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-vlan_id                      1                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-vlan_id_step                 1                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-vlan_id_count                1                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-vlan_tpid                    0x8100                     \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-vlan_user_priority           0                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-vlan_user_priority_step      0                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-use_vpn_parameters           0                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;text-align: left;column-break-before: auto;">-site_id                      0                          \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget ethernet_1_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $ethernet_1_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ethernet_1_handle [keylget ethernet_1_status ethernet_handle]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Create IPv4 Stack on top of Ethernet Stack</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ipv4_1_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_name                     {IPv4 1}                \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_handle                   $ethernet_1_handle      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_resolve_gateway              1                       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_manual_gateway_mac           00.00.00.00.00.01       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_manual_gateway_mac_step      00.00.00.00.00.00       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-gateway                           100.1.0.1               \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-gateway_step                      0.0.1.0                 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-intf_ip_addr                      100.1.0.2               \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-intf_ip_addr_step                 0.0.1.0                 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-netmask                           255.255.255.0           \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget ipv4_1_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $ipv4_1_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ipv4_1_handle [keylget ipv4_1_status ipv4_handle]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Configure 2nd Topology, Device Group</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set topology_2_status [::ixiangpf::topology_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-topology_name      {Topology 2}                            \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-port_handle        $port2\</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget topology_2_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $topology_2_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set topology_2_handle [keylget topology_2_status topology_handle]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ixnHLT(HANDLE,//topology:&lt;2&gt;) $topology_2_handle</p>
+        <p class="CodeBlock" style="margin-left: 25px;">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set device_group_2_status [::ixiangpf::topology_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-topology_handle              $topology_2_handle      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-device_group_name            {Device Group 2}        \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-device_group_multiplier      100                      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-device_group_enabled         1                       \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget device_group_2_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $device_group_2_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set deviceGroup_2_handle [keylget device_group_2_status device_group_handle]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Configure multivalue for the mac addresses</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set multivalue_1_status [::ixiangpf::multivalue_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-pattern                counter                 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-counter_start          00.12.01.00.00.01       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-counter_step           00.00.00.00.00.01       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-counter_direction      increment               \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-nest_step              00.00.01.00.00.00       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-nest_owner             $topology_2_handle      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-nest_enabled           1                       \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget multivalue_1_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $multivalue_1_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set multivalue_1_handle [keylget multivalue_1_status multivalue_handle]</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Configure ethernet stack for the device group</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ethernet_2_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_name                {Ethernet 2}               \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_handle              $deviceGroup_2_handle      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-mtu                          1500                       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-src_mac_addr                 $multivalue_1_handle       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-vlan 						  1							 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-vlan_id                      1                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-vlan_id_step                 1                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-vlan_id_count                1                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-vlan_tpid                    0x8100                     \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-vlan_user_priority           0                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-vlan_user_priority_step      0                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-use_vpn_parameters           0                          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-site_id                      0                          \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget ethernet_2_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $ethernet_2_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ethernet_2_handle [keylget ethernet_2_status ethernet_handle]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Configure ipv4 stack on top of the ethernet stack</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ipv4_2_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_name                     {IPv4 2}                \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_handle                   $ethernet_2_handle      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_resolve_gateway              1                       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_manual_gateway_mac           00.00.00.00.00.01       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_manual_gateway_mac_step      00.00.00.00.00.00       \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-gateway                           100.1.0.2               \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-gateway_step                      0.0.1.0                 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-intf_ip_addr                      100.1.0.1               \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-intf_ip_addr_step                 0.0.1.0                 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-netmask                           255.255.255.0           \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;"># n The attribute: connectedVia with the value: {} is not supported by scriptgen.</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget ipv4_2_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $ipv4_2_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ipv4_2_handle [keylget ipv4_2_status ipv4_handle]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Configure global options for ipv4 arp</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ipv4_3_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_handle                    /globals      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-arp_on_linkup                      1             \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-single_arp_per_gateway             1             \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_send_arp_rate                 200           \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_send_arp_interval             1000          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_send_arp_max_outstanding      400           \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_send_arp_scale_mode           port          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_attempt_enabled               0             \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_attempt_rate                  200           \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_attempt_interval              1000          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_attempt_scale_mode            port          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_diconnect_enabled             0             \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_disconnect_rate               200           \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_disconnect_interval           1000          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ipv4_disconnect_scale_mode         port          \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget ipv4_3_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $ipv4_3_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Configure global options for ethernet</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set ethernet_3_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-protocol_handle                     /globals      \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_attempt_enabled            0             \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_attempt_rate               100           \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_attempt_interval           999          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_attempt_scale_mode         port          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_diconnect_enabled          0             \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_disconnect_rate            100           \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_disconnect_interval        999          \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-ethernet_disconnect_scale_mode      port          \</p>
+        <p class="CodeBlock" style="margin-left: 25px;">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget ethernet_3_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $ethernet_3_status</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Start All Protocols - This command also starts ethernet stack &amp; sends out ARP REQ</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">$::ixnHLT_log {Starting all protocol(s) ...}</p>
+        <p class="CodeBlock">set r [::ixia::test_control -action start_all_protocols]</p>
+        <p class="CodeBlock">if {[keylget r status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">$::ixnHLT_errorHandler [info script] $r</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Wait 30 seconds</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">after 30000</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Send ARP request for ipv4 interfaces - sending ARP without starting other protocols</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">$::ixnHLT_log "Sending ARP Request on $ipv4_1_handle ..."</p>
+        <p class="CodeBlock">set arp_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-protocol_handle                   $ipv4_1_handle\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-arp_send_req                      1\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">]</p>
+        <p class="CodeBlock">$::ixnHLT_log "Sending ARP Request on $ipv4_2_handle ..."</p>
+        <p class="CodeBlock">set arp_status [::ixiangpf::interface_config \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-protocol_handle                   $ipv4_2_handle\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-arp_send_req                      1\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Create Traffic item from Topology 1 to Topology 2</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">$::ixnHLT_log {Configuring traffic for traffic item: //traffic/trafficItem:&lt;1&gt;}</p>
+        <p class="CodeBlock">set _result_ [::ixia::traffic_config  \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-mode create \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-endpointset_count 1 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-emulation_src_handle $topology_1_handle\</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-emulation_dst_handle $topology_2_handle\</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-src_dest_mesh one_to_one \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-route_mesh one_to_one \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-bidirectional 1 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-name Traffic_Item_1 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-circuit_endpoint_type ipv4 \</p>
+        <p class="CodeBlock" style="margin-left: 50px;">-track_by endpoint_pair\</p>
+        <p class="CodeBlock">]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {[keylget _result_ status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 50px;">$::ixnHLT_errorHandler [info script] $_result_</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock">set traffic_item_name [keylget _result_ stream_id]</p>
+        <p class="CodeBlock">set current_config_elements [keylget _result_ traffic_item]</p>
+        <p class="CodeBlock">puts "Created $traffic_item_name.  Config Element is: $current_config_elements"</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Wait 10 seconds</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">after 10000</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Create Traffic item from subset of endpoints in Topology 1 to subset of endpoints in Topology 2</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">$::ixnHLT_log {Configuring traffic for traffic item: //traffic/trafficItem:&lt;1&gt;}</p>
+        <p class="CodeBlock">set ti_scalable_srcs(EndpointSet-1) $ipv4_1_handle</p>
+        <p class="CodeBlock">set ti_scalable_srcs_port_start(EndpointSet-1) [list 1]</p>
+        <p class="CodeBlock">set ti_scalable_srcs_port_count(EndpointSet-1) [list 1]</p>
+        <p class="CodeBlock">set ti_scalable_srcs_intf_start(EndpointSet-1) [list 1]</p>
+        <p class="CodeBlock">set ti_scalable_srcs_intf_count(EndpointSet-1) [list 5]</p>
+        <p class="CodeBlock">set ti_scalable_dsts(EndpointSet-1) $ipv4_2_handle</p>
+        <p class="CodeBlock">set ti_scalable_dsts_port_start(EndpointSet-1) [list 1]</p>
+        <p class="CodeBlock">set ti_scalable_dsts_port_count(EndpointSet-1) [list 1]</p>
+        <p class="CodeBlock">set ti_scalable_dsts_intf_start(EndpointSet-1) [list 6]</p>
+        <p class="CodeBlock">set ti_scalable_dsts_intf_count(EndpointSet-1) [list 5]</p>
+        <p class="CodeBlock">set _result_ [::ixia::traffic_config  \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-mode create \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-endpointset_count 1 \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_src_handle {}\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_dst_handle {}\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_src_handle ti_scalable_srcs \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_src_port_start ti_scalable_srcs_port_start \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_src_port_count ti_scalable_srcs_port_count \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_src_intf_start ti_scalable_srcs_intf_start \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_src_intf_count ti_scalable_srcs_intf_count \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_dst_handle ti_scalable_dsts \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_dst_port_start ti_scalable_dsts_port_start \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_dst_port_count ti_scalable_dsts_port_count \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_dst_intf_start ti_scalable_dsts_intf_start \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-emulation_scalable_dst_intf_count ti_scalable_dsts_intf_count \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-src_dest_mesh one_to_one \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-route_mesh one_to_one \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-bidirectional 0\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-name Traffic_Item_1 \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-circuit_endpoint_type ipv4 \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-track_by endpoint_pair\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">]</p>
+        <p class="CodeBlock">if {[keylget _result_ status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">$::ixnHLT_errorHandler [info script] $_result_</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">set traffic_item_name [keylget _result_ stream_id]</p>
+        <p class="CodeBlock">set current_config_elements [keylget _result_ traffic_item]</p>
+        <p class="CodeBlock">puts "Created $traffic_item_name.  Config Element is: $current_config_elements"</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Wait 10 seconds</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">after 10000</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Start Traffic - for a large traffic config, it may take sometime to start the traffic.</p>
+        <p class="CodeBlock"># max_wait_timer option &amp; return key:stopped_flag are used to ensure that the traffic is started before</p>
+        <p class="CodeBlock"># moving on to the next step</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">puts "Starting Traffic..."</p>
+        <p class="CodeBlock">set retry_cnt 3</p>
+        <p class="CodeBlock">set cmd_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-action run\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-max_wait_timer 60 \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">]</p>
+        <p class="CodeBlock">if {[keylget cmd_status status] == $::FAILURE} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts  "Error: starting traffic"</p>
+        <p class="CodeBlock" style="margin-left: 25px;">return 0</p>
+        <p class="CodeBlock">} else {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set stopped_flag [keylget cmd_status stopped]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">while {$stopped_flag == 1} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">after 3000</p>
+        <p class="CodeBlock" style="margin-left: 25px;">incr retry_cnt -1</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set poll_status [ixia::traffic_control -action poll]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set stopped_flag [keylget poll_status stopped]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {$retry_cnt == 0} break;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">if {$stopped_flag} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts "Error: starting traffic after $retry_cnt attempts"</p>
+        <p class="CodeBlock" style="margin-left: 25px;">return 0</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Wait 20 seconds</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">after 20000</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Collect Traffic Item Stats</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">puts "Collecting Traffic Item Stats"</p>
+        <p class="CodeBlock">set traffic_status [::ixia::traffic_stats \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-mode traffic_item\</p>
+        <p class="CodeBlock" style="margin-left: 75px;">]</p>
+        <p class="CodeBlock">if {[keylget traffic_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts "FAIL - $test_name - [keylget traffic_status log]"</p>
+        <p class="CodeBlock" style="margin-left: 25px;">return 0</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">set traffic_items [keylget traffic_status traffic_item]</p>
+        <p class="CodeBlock">set traffic_items [keylkeys traffic_items]</p>
+        <p class="CodeBlock">foreach traffic_item $traffic_items {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts "***** Traffic item: $traffic_item"</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts [format "%24s %s" "Rx Total packets: "\</p>
+        <p class="CodeBlock" style="margin-left: 25px;">[keylget traffic_status traffic_item.$traffic_item.rx.total_pkts]]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts [format "%24s %s" "Rx Lost packets: "\</p>
+        <p class="CodeBlock" style="margin-left: 25px;">[keylget traffic_status traffic_item.$traffic_item.rx.loss_pkts]]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts [format "%24s %s" "Rx Total packet bytes: "\</p>
+        <p class="CodeBlock" style="margin-left: 25px;">[keylget traffic_status traffic_item.$traffic_item.rx.total_pkt_bytes]]</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Stop Traffic - for a large traffic config, it may take sometime to stop the traffic.</p>
+        <p class="CodeBlock"># max_wait_timer option &amp; return key:stopped_flag are used to ensure that the traffic is started before</p>
+        <p class="CodeBlock"># moving on to the next step</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">puts "Stopping Traffic"</p>
+        <p class="CodeBlock">set retry_cnt 3</p>
+        <p class="CodeBlock">set cmd_status [::ixia::traffic_control \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-action stop \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">-max_wait_timer 60 \</p>
+        <p class="CodeBlock" style="margin-left: 75px;">]</p>
+        <p class="CodeBlock">if {[keylget cmd_status status] == $::FAILURE} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts  "Error: starting traffic"</p>
+        <p class="CodeBlock" style="margin-left: 25px;">return 0</p>
+        <p class="CodeBlock">} else {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set stopped_flag [keylget cmd_status stopped]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">while {$stopped_flag != 1} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">after 3000</p>
+        <p class="CodeBlock" style="margin-left: 25px;">incr retry_cnt -1</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set poll_status [ixia::traffic_control -action poll]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">set stopped_flag [keylget poll_status stopped]</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if {$retry_cnt == 0} break;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">}</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">if {!$stopped_flag} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">puts "Error: stopping traffic after $retry_cnt attempts"</p>
+        <p class="CodeBlock" style="margin-left: 25px;">return 0</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"># Stop All Protocols</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">$::ixnHLT_log {Stopping all protocol(s) ...}</p>
+        <p class="CodeBlock">set r [::ixia::test_control -action stop_all_protocols]</p>
+        <p class="CodeBlock">if {[keylget r status] != $::SUCCESS} {</p>
+        <p class="CodeBlock" style="margin-left: 25px;">$::ixnHLT_errorHandler [info script] $r</p>
+        <p class="CodeBlock">}</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

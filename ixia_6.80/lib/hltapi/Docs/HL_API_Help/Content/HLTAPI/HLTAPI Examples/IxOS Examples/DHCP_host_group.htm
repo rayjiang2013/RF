@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxOS Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>DHCPv4 (DHCP_host_group.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxOS Examples/DHCP_host_group.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>DHCP_host_group</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538937"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538938"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538939"></a>
+          # This sample configures/modifies 1 group of DHCP subscribers on a port. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538940"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538941"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538942"></a>
+          # The sample was tested on a LM100TXS8 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538943"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538944"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538945"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538946"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538947"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538948"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538949"></a>
+           &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538950"></a>
+          set chassisIP 127.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538951"></a>
+          set port_list [list 10/1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538952"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538953"></a>
+          # Connect to the chassis, reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538954"></a>
+          set connect_status [ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538955"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538956"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538957"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538958"></a>
+                  -username ixiaApiUser ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538959"></a>
+          if {[keylget connect_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538960"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538961"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538962"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538963"></a>
+          set port_handle [keylget connect_status port_handle.$chassisIP.$port_list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538964"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538965"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538966"></a>
+          # Configure DHCP on the interface 1/4/1 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538967"></a>
+          #################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538968"></a>
+          set dhcp_portHandle_status [ixia::emulation_dhcp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538969"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538970"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538971"></a>
+                  -lease_time 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538972"></a>
+                  -max_dhcp_msg_size 1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538973"></a>
+                  -reset ]        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3538974"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538975"></a>
+          if {[keylget dhcp_portHandle_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538976"></a>
+              return "FAIL - $test_name - [keylget dhcp_portHandle_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538977"></a>
+          } </p>
+        <p class="CodeBlock"><a name="0_pgfId-3538978"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538979"></a>
+          # Get the DHCP port handle from the keyed list (a session handle)</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538980"></a>
+          set dhcp_portHandle [keylget dhcp_portHandle_status handle] </p>
+        <p class="CodeBlock"><a name="0_pgfId-3538981"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538982"></a>
+          set dhcp_portHandle_status [ixia::emulation_dhcp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538983"></a>
+                  -mode modify \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538984"></a>
+                  -handle $dhcp_portHandle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538985"></a>
+                  -lease_time 200 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538986"></a>
+                  -max_dhcp_msg_size 2000 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538987"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538988"></a>
+          if {[keylget dhcp_portHandle_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538989"></a>
+              return "FAIL - $test_name - [keylget dhcp_portHandle_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538990"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538991"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538992"></a>
+          #####################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538993"></a>
+          # Configure one group on each session on the interface 1/4/1 #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538994"></a>
+          #####################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538995"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538996"></a>
+          # Set dhcp group</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538997"></a>
+          set dhcp_group_status [::ixia::emulation_dhcp_group_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538998"></a>
+                  -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3538999"></a>
+                  -mac_addr 00.10.95.22.11.09 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539000"></a>
+                  -mac_addr_step 00.00.00.00.00.01 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539001"></a>
+                  -num_sessions 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539002"></a>
+                  -handle $dhcp_portHandle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539003"></a>
+                  -encap vc_mux \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539004"></a>
+                  -vci 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539005"></a>
+                  -vpi 32 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539006"></a>
+                  -vci_step 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539007"></a>
+                  -vpi_step 3 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539008"></a>
+                  -vci_count 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539009"></a>
+                  -vpi_count 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539010"></a>
+                  -sessions_per_vc 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539011"></a>
+                  -pvc_incr_mode vci ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539012"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539013"></a>
+          if {[keylget dhcp_group_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539014"></a>
+              return "FAIL - $test_name - [keylget dhcp_group_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539015"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539016"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539017"></a>
+          # Get the group handle from keyed list</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539018"></a>
+          set dhcp_groupHandle [keylget dhcp_group_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539019"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539020"></a>
+          set dhcp_group_status [::ixia::emulation_dhcp_group_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539021"></a>
+                  -mode modify \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539022"></a>
+                  -handle $dhcp_groupHandle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539023"></a>
+                  -vci 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539024"></a>
+                  -vpi 10 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539025"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539026"></a>
+          if {[keylget dhcp_group_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539027"></a>
+              return "FAIL - $test_name - [keylget dhcp_group_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539028"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539029"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539030"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539031"></a>
+          # START DHCP #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539032"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539033"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3539034"></a>
+          set dhcp_control_status [::ixia::emulation_dhcp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539035"></a>
+                  -port_handle $dhcp_portHandle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539036"></a>
+                  -action bind \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539037"></a>
+                  -handle $dhcp_groupHandle ]        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3539038"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539039"></a>
+          if {[keylget dhcp_control_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539040"></a>
+              return "FAIL - $test_name - [keylget dhcp_control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539041"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539042"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539043"></a>
+          # A delay is needed for seeing all the messages on the router</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539044"></a>
+          after 15000</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539045"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539046"></a>
+          set dhcp_control_status [::ixia::emulation_dhcp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539047"></a>
+                  -port_handle $dhcp_portHandle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539048"></a>
+                  -action renew \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539049"></a>
+                  -handle $dhcp_groupHandle ]        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3539050"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539051"></a>
+          if {[keylget dhcp_control_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539052"></a>
+              return "FAIL - $test_name - [keylget dhcp_control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539053"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539054"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539055"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539056"></a>
+          # DHCP STATISTICS #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539057"></a>
+          ######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539058"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539059"></a>
+          set dhcp_stats_status [::ixia::emulation_dhcp_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539060"></a>
+                  -port_handle $dhcp_portHandle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539061"></a>
+                  -handle $dhcp_groupHandle ]        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3539062"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539063"></a>
+          if {[keylget dhcp_control_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539064"></a>
+              return "FAIL - $test_name - [keylget dhcp_control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539065"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539066"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539067"></a>
+          if {![catch {keylget dhcp_stats_status aggregate} dhcp_aggregate_stats]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539068"></a>
+              ixPuts "dhcp aggregate stats = $dhcp_aggregate_stats"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539069"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539070"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539071"></a>
+          if {![catch {keylget dhcp_stats_status group} dhcp_group_stats]} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539072"></a>
+              ixPuts "dhcp group stats = $dhcp_group_stats"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539073"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539074"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539075"></a>
+          set dhcp_stats_status [::ixia::emulation_dhcp_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539076"></a>
+                  -port_handle $dhcp_portHandle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539077"></a>
+                  -action clear ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539078"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539079"></a>
+          if {[keylget dhcp_control_status status] != $SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539080"></a>
+              return "FAIL - $test_name - [keylget dhcp_control_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539081"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539082"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3539083"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

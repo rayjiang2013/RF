@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|PYTHON_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Traffic_Capture_api (Traffic_Capture_api.py)</title>
+        <link href="../../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/Traffic_Capture_api.htm">Open topic with navigation</a>
+        </p>
+        <h3>Traffic_Capture_api (Traffic_Capture_api.py)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">#</p>
+        <p class="CodeBlock"># Description:</p>
+        <p class="CodeBlock"># This sample creates an IPv4 stream with increasing frame length.     #</p>
+        <p class="CodeBlock"># It configures buffer triggers and filters to capture only frames within a #</p>
+        <p class="CodeBlock"># a small length range.     #</p>
+        <p class="CodeBlock"># Starts the capture, then starts the streams, collects statistics and     #</p>
+        <p class="CodeBlock"># returns the capture buffer in a csv file. #</p>
+        <p class="CodeBlock"># #</p>
+        <p class="CodeBlock"># Module: #</p>
+        <p class="CodeBlock"># The sample was tested on a LSM XMVDC16NG module. #</p>
+        <p class="CodeBlock"># #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">from pprint import pprint</p>
+        <p class="CodeBlock">import os, sys</p>
+        <p class="CodeBlock">import time</p>
+        <p class="CodeBlock">import pdb</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># Append paths to python APIs</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/hltapi/library/common/ixiangpf/python')</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/ixnetwork/api/python')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">from ixiatcl import IxiaTcl</p>
+        <p class="CodeBlock">from ixiahlt import IxiaHlt</p>
+        <p class="CodeBlock">from ixiangpf import IxiaNgpf</p>
+        <p class="CodeBlock">from ixiaerror import IxiaError</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ixiatcl = IxiaTcl()</p>
+        <p class="CodeBlock">ixiahlt = IxiaHlt(ixiatcl)</p>
+        <p class="CodeBlock">ixiangpf = IxiaNgpf(ixiahlt)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">try:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('', {})</p>
+        <p class="CodeBlock">except (NameError,):</p>
+        <p class="CodeBlock" style="margin-left: 25px;">def ErrorHandler(cmd, retval):</p>
+        <p class="CodeBlock" style="margin-left: 50px;">global ixiatcl</p>
+        <p class="CodeBlock" style="margin-left: 50px;">err = ixiatcl.tcl_error_info()</p>
+        <p class="CodeBlock" style="margin-left: 50px;">log = retval['log']</p>
+        <p class="CodeBlock" style="margin-left: 50px;">additional_info = '&gt; command: %s\n&gt; tcl errorInfo: %s\n&gt; log: %s' % (cmd, err, log)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">raise IxiaError(IxiaError.COMMAND_FAIL, additional_info)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dirname, filename = os.path.split(os.path.abspath(__file__))</p>
+        <p class="CodeBlock">chassis_ip = "ixro-hlt-xm2-09"</p>
+        <p class="CodeBlock">tcl_server = "ixro-hlt-xm2-09"</p>
+        <p class="CodeBlock">ixnetwork_tcl_server = 'localhost'</p>
+        <p class="CodeBlock">port_list = ['2/1','2/2']</p>
+        <p class="CodeBlock">cfgErrors = 0</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "Printing connection variables ... "</p>
+        <p class="CodeBlock">print "test_name = %s" % filename</p>
+        <p class="CodeBlock">print 'chassis_ip =  %s' % chassis_ip</p>
+        <p class="CodeBlock">print "tcl_server = %s " % tcl_server</p>
+        <p class="CodeBlock">print "ixnetwork_tcl_server = %s" % ixnetwork_tcl_server</p>
+        <p class="CodeBlock">print "port_list = %s " % port_list</p>
+        <p class="CodeBlock">print "dirname = %s " % dirname</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">connect_result = ixiangpf.connect(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnetwork_tcl_server = ixnetwork_tcl_server,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">tcl_server = tcl_server,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device = chassis_ip,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_list = port_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">break_locks = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">reset = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if connect_result['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('connect', connect_result)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print " Printing connection result"</p>
+        <p class="CodeBlock">pprint(connect_result)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ports = connect_result['vport_list'].split()</p>
+        <p class="CodeBlock">rx_port = ports[0]</p>
+        <p class="CodeBlock">tx_port = ports[1]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ipV4_ixia_list    =['1.1.1.2', '1.1.1.1']</p>
+        <p class="CodeBlock">ipV4_gateway_list =['1.1.1.1', '1.1.1.2']</p>
+        <p class="CodeBlock">ipV4_netmask_list =['255.255.255.0', '255.255.255.0']</p>
+        <p class="CodeBlock">ipV4_mac_list     =['0000.debb.0001', '0000.debb.0002']</p>
+        <p class="CodeBlock">ipV4_version_list =[4, 4]</p>
+        <p class="CodeBlock">ipV4_autoneg_list =[1, 1]</p>
+        <p class="CodeBlock">ipV4_duplex_list  =['full', 'full']</p>
+        <p class="CodeBlock">ipV4_speed_list   =['ether100', 'ether100']</p>
+        <p class="CodeBlock">ipV4_port_rx_mode =['capture', 'capture']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">########################################</p>
+        <p class="CodeBlock"># Configure the IPv4 interfaces        #</p>
+        <p class="CodeBlock">########################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">interface_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle     = ports,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">intf_ip_addr    = ipV4_ixia_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">gateway         = ipV4_gateway_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">netmask         = ipV4_netmask_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">autonegotiation = ipV4_autoneg_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">duplex          = ipV4_duplex_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">src_mac_addr    = ipV4_mac_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">speed           = ipV4_speed_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_rx_mode    = ipV4_port_rx_mode,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if interface_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('interface_config', interface_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">##################################</p>
+        <p class="CodeBlock">#  Configure streams on TX port  #</p>
+        <p class="CodeBlock">##################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">pkts_per_burst_1=1000</p>
+        <p class="CodeBlock">ipv4_handles = interface_status['ipv4_handle'].split()</p>
+        <p class="CodeBlock">ti_src = ipv4_handles[0]</p>
+        <p class="CodeBlock">ti_dst = ipv4_handles[1]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">traffic_status = ixiangpf.traffic_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode                                       = 'create',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">traffic_generator                          = 'ixnetwork_540',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">endpointset_count                          = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">emulation_src_handle                       = ti_src,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">emulation_dst_handle                       = ti_dst,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_dest_mac_retry_count                = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_dest_mac_retry_delay                = 5,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">enable_data_integrity                      = 1               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_enable_dest_mac_retry               = 1               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_enable_min_frame_size               = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_enable_staggered_transmit           = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_enable_stream_ordering              = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_stream_control                      = 'continuous'      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_stream_control_iterations           = 1               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_large_error_threshhold              = 2               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_enable_mac_change_on_fly            = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_max_traffic_generation_queries      = 500             ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_mpls_label_learning_timeout         = 30              ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_refresh_learned_info_before_apply   = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_use_tx_rx_sync                      = 1               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_wait_time                           = 1               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">global_display_mpls_current_label_value    = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">frame_sequencing                           = 'disable'         ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">frame_sequencing_mode                      = 'rx_threshold'    ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">src_dest_mesh                              = 'one_to_one'      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">route_mesh                                 = 'one_to_one'      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">bidirectional                              = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">allow_self_destined                        = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">enable_dynamic_mpls_labels                 = 0               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">hosts_per_net                              = 1               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">name                                       = 'Traffic_Item_1'  ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">source_filter                              = 'all'             ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">destination_filter                         = 'all'             ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">merge_destinations                         = 1               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">circuit_endpoint_type                      = 'ipv4'            ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">egress_tracking                            = 'none'            ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">if traffic_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('traffic_config', traffic_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">traffic_item = traffic_status['traffic_item']</p>
+        <p class="CodeBlock">interface_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle     = tx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">arp_send_req    = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if interface_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('interface_config', interface_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(10)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">interface_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle     = rx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">arp_send_req    = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if interface_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('interface_config', interface_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># Clear stats before sending traffic</p>
+        <p class="CodeBlock">clear_stats_status = ixiangpf.traffic_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle    = ports,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action         = 'clear_stats',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if clear_stats_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('traffic_control', clear_stats_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(5)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">####################################</p>
+        <p class="CodeBlock">#  Configure triggers and filters  #</p>
+        <p class="CodeBlock">####################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">config_status = ixiangpf.packet_config_buffers(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle   = tx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_mode = 'trigger',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if config_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('packet_config_buffers', config_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">config_status = ixiangpf.packet_config_filter(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle = tx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">if config_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('packet_config_filter', config_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">uds1_size_from = 62</p>
+        <p class="CodeBlock">uds1_size_to = 67</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">uds2_size_from = 68</p>
+        <p class="CodeBlock">uds2_size_to = 1020</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">config_status = ixiangpf.packet_config_triggers(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle                    = tx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_trigger                = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_trigger_framesize      = 1 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_trigger_framesize_from = uds1_size_from,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_trigger_framesize_to   = uds1_size_to,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_filter                 = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_filter_framesize       = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_filter_framesize_from  = uds1_size_from,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">capture_filter_framesize_to    = uds1_size_to,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds1                           = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds1_framesize                 = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds1_framesize_from            = uds1_size_from,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds1_framesize_to              = uds1_size_to,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds2                           = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds2_framesize                 = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds2_framesize_from            = uds2_size_from,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">uds2_framesize_to              = uds2_size_to,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if config_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('packet_config_triggers', config_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(5)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock"># Start capture on port #</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "Starting capture ..."</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">start_status = ixiangpf.packet_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle = tx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action      = 'start',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">packet_type = 'data',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">if start_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('packet_control', start_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(10)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "Capturing ..."</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock"># Start traffic on port #</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">traffic_control_status = ixiangpf.traffic_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle      = traffic_item,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action      = 'run',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">if traffic_control_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('traffic_control', traffic_control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(10)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "Stopping traffic ..."</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock"># Stop traffic on port  #</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">traffic_control_status = ixiangpf.traffic_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle      = traffic_item,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action      = 'stop',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">if traffic_control_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('traffic_control', traffic_control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "Traffic stopped"</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(20)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock"># Stop capture on port  #</p>
+        <p class="CodeBlock">#########################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "Stopping capture..."</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">stop_status = ixiangpf.packet_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle = tx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action      = 'stop',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if stop_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('packet_control', stop_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(15)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">#############################################</p>
+        <p class="CodeBlock"># Get capture and statistics to csv         #</p>
+        <p class="CodeBlock">#############################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">stats_status = ixiangpf.packet_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle = tx_port,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">format      = 'csv',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">stop        = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">dirname     = dirname,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">)</p>
+        <p class="CodeBlock">if stats_status['status'] != '1':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ErrorHandler('packet_stats', stats_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print "SUCCESS!"</p>
+    </body>
+</html>

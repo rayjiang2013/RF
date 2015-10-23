@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="High Level API Basics|About HLPython API|Installing HLPython API">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Python Environment Variables</title>
+        <link href="../../Resources/Stylesheets/Table_Style_Sheet.css" rel="stylesheet" data-mc-stylesheet-type="table" />
+        <link href="../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../HL_API_Help.htm#HL_API/About_HLPython/Python_Environment_Variables.htm">Open topic with navigation</a>
+        </p>
+        <h1>Python Environment Variables</h1>
+        <p>Following environment variables are recognized by Python:</p>
+        <table style="width: 100%;mc-table-style: url('../../Resources/Stylesheets/Table_Style_Sheet.css');" class="TableStyle-Table_Style_Sheet" cellspacing="0">
+            <col class="TableStyle-Table_Style_Sheet-Column-Column1" />
+            <col class="TableStyle-Table_Style_Sheet-Column-Column1" />
+            <tbody>
+                <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                    <th class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">Variable</th>
+                    <th class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">Description</th>
+                </tr>
+                <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                    <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">PYTHONPATH</td>
+                    <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">This variable tells the Python interpreter where to locate the module files you import into a program. PYTHONPATH should include the Python source library directory and the directories containing your Python source code. PYTHONPATH is sometimes preset by the Python installer.</td>
+                </tr>
+                <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                    <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">PYTHONSTARTUP</td>
+                    <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">Contains the path of an initialization file containing Python source code that is executed every time you start the interpreter (similar to the Unix .profile or .login file). This file, often named .pythonrc.py in Unix, usually contains commands that load utilities or modify PYTHONPATH.</td>
+                </tr>
+                <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                    <td class="TableStyle-Table_Style_Sheet-BodyE-Column1-Body">PYTHONCASEOK</td>
+                    <td class="TableStyle-Table_Style_Sheet-BodyD-Column1-Body">Used in Windows to instruct Python to find the first case-insensitive match in an import statement. Set this variable to any value to activate it.</td>
+                </tr>
+                <tr class="TableStyle-Table_Style_Sheet-Body-Body">
+                    <td class="TableStyle-Table_Style_Sheet-BodyB-Column1-Body">PYTHONHOME</td>
+                    <td class="TableStyle-Table_Style_Sheet-BodyA-Column1-Body">An alternative module search path. It is usually embedded in the PYTHONSTARTUP or PYTHONPATH directories to make switching module libraries easy.</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr width="100%" size="0" align="center" />
+    </body>
+</html>

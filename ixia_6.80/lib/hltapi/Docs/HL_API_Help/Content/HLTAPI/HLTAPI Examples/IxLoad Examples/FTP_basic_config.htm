@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxLoad Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>FTP (FTP_basic_config.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxLoad Examples/FTP_basic_config.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>FTP (FTP_basic_config.tcl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546197"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546198"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546199"></a>
+          # This sample creates a FTP client and server basic configuration. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546200"></a>
+          # FTP traffic is sent from client side to server side. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546201"></a>
+          # At the end statistics are being retrieved. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546202"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546203"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546204"></a>
+          # The sample was tested on a LM1000STXS4-256 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546205"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546206"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546207"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546208"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546209"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546210"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546211"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546212"></a>
+          set chassisIP sylvester</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546213"></a>
+          set tclServer winston-400t</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546214"></a>
+          set port_list [list 1/3 1/4]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546215"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546216"></a>
+          set error ""</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546217"></a>
+          catch {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546218"></a>
+              #####</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546219"></a>
+              # Connect to the chassis,reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546220"></a>
+              #####</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546221"></a>
+              set connect_status [ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546222"></a>
+                      -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546223"></a>
+                      -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546224"></a>
+                      -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546225"></a>
+                      -username ixiaApiUser \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546226"></a>
+                      -tcl_server $tclServer ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546227"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546228"></a>
+              if {[keylget connect_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546229"></a>
+                  return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546230"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546231"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546232"></a>
+              set port_handle1 [keylget \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546233"></a>
+                      connect_status port_handle.$chassisIP.[lindex $port_list 0]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546234"></a>
+              set port_handle2 [keylget \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546235"></a>
+                      connect_status port_handle.$chassisIP.[lindex $port_list 1]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546236"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546237"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546238"></a>
+          #####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546239"></a>
+          # Client FTP config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546240"></a>
+          #####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546241"></a>
+          set ftp_client_conf [::ixia::emulation_ftp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546242"></a>
+                  -property ftp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546243"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546244"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546245"></a>
+                  -port_handle $port_handle1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546246"></a>
+                  -mac_mapping_mode macip \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546247"></a>
+                  -source_port_from 1024 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546248"></a>
+                  -source_port_to 65535 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546249"></a>
+                  -dns_cache_timeout 35000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546250"></a>
+                  -grat_arp_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546251"></a>
+                  -congestion_notification_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546252"></a>
+                  -time_stamp_enable 1 	 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546253"></a>
+                  -keep_alive_time 9 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546254"></a>
+                  -keep_alive_probes 75 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546255"></a>
+                  -keep_alive_interval 9600 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546256"></a>
+                  -fin_timeout 60 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546257"></a>
+                  -receive_buffer_size 4096 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546258"></a>
+                  -transmit_buffer_size 4096 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546259"></a>
+                  -syn_ack_retries 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546260"></a>
+                  -syn_retries 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546261"></a>
+                  -retransmit_retries 15 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546262"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546263"></a>
+          if {[keylget ftp_client_conf status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546264"></a>
+              return "FAIL - $test_name - [keylget ftp_client_conf log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546265"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546266"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546267"></a>
+          ####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546268"></a>
+          # Sever FTP config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546269"></a>
+          ####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546270"></a>
+          set ftp_server_conf [::ixia::emulation_ftp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546271"></a>
+                  -property ftp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546272"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546273"></a>
+                  -target server \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546274"></a>
+                  -port_handle $port_handle2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546275"></a>
+                  -mac_mapping_mode macip ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546276"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546277"></a>
+          if {[keylget ftp_server_conf status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546278"></a>
+              return "FAIL - $test_name - [keylget ftp_server_conf log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546279"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546280"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546281"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546282"></a>
+          # Client network config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546283"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546284"></a>
+          set client_network_conf [::ixia::emulation_ftp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546285"></a>
+                  -property network \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546286"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546287"></a>
+                  -handle [keylget ftp_client_conf handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546288"></a>
+                  -ip_address_start 198.18.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546289"></a>
+                  -network_mask 255.255.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546290"></a>
+                  -ip_count 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546291"></a>
+                  -ip_increment_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546292"></a>
+                  -gateway 0.0.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546293"></a>
+                  -mac_address_start 00:C6:12:00:01:00 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546294"></a>
+                  -mac_increment_step 00:00:00:00:01:00 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546295"></a>
+                  -grat_arp_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546296"></a>
+                  -mss_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546297"></a>
+                  -mss 1460 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546298"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546299"></a>
+          if {[keylget client_network_conf status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546300"></a>
+              return "FAIL - $test_name - [keylget client_network_conf log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546301"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546302"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546303"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546304"></a>
+          # Server network config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546305"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546306"></a>
+          set server_network_conf [::ixia::emulation_ftp_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546307"></a>
+                  -property network \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546308"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546309"></a>
+                  -handle [keylget ftp_server_conf handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546310"></a>
+                  -ip_address_start 198.18.0.101 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546311"></a>
+                  -network_mask 255.255.0.0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546312"></a>
+                  -ip_count 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546313"></a>
+                  -ip_increment_step 0.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546314"></a>
+                  -grat_arp_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546315"></a>
+                  -mss_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546316"></a>
+                  -mss 1460 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546317"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546318"></a>
+          if {[keylget server_network_conf status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546319"></a>
+              return "FAIL - $test_name - [keylget server_network_conf log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546320"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546321"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546322"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546323"></a>
+          # Client traffic config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546324"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546325"></a>
+          set ftp_client_traffic [::ixia::emulation_ftp_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546326"></a>
+                  -property traffic \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546327"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546328"></a>
+                  -target client ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546329"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546330"></a>
+          if {[keylget ftp_client_traffic status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546331"></a>
+              return "FAIL - $test_name - [keylget ftp_client_traffic log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546332"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546333"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546334"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546335"></a>
+          # Server traffic config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546336"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546337"></a>
+          set ftp_server_traffic [::ixia::emulation_ftp_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546338"></a>
+                  -property traffic \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546339"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546340"></a>
+                  -target server ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546341"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546342"></a>
+          if {[keylget ftp_server_traffic status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546343"></a>
+              return "FAIL - $test_name - [keylget ftp_server_traffic log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546344"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546345"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546346"></a>
+          #######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546347"></a>
+          # Server agent config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546348"></a>
+          #######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546349"></a>
+          set ftp_server_agent [::ixia::emulation_ftp_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546350"></a>
+                  -property agent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546351"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546352"></a>
+                  -handle [keylget ftp_server_traffic handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546353"></a>
+                  -target server ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546354"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546355"></a>
+          if {[keylget ftp_server_agent status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546356"></a>
+              return "FAIL - $test_name - [keylget ftp_server_agent log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546357"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546358"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546359"></a>
+          #######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546360"></a>
+          # Client agent config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546361"></a>
+          #######################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546362"></a>
+          set ftp_client_agent [::ixia::emulation_ftp_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546363"></a>
+                  -property agent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546364"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546365"></a>
+                  -handle [keylget ftp_client_traffic handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546366"></a>
+                  -target client ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546367"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546368"></a>
+          if {[keylget ftp_client_agent status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546369"></a>
+              return "FAIL - $test_name - [keylget ftp_client_agent log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546370"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546371"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546372"></a>
+          ########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546373"></a>
+          # Client action config #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546374"></a>
+          ########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546375"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546376"></a>
+          ### LOGIN ###</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546377"></a>
+          set ftp_client_action [::ixia::emulation_ftp_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546378"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546379"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546380"></a>
+                  -handle [keylget ftp_client_agent handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546381"></a>
+                  -command "login" \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546382"></a>
+                  -destination 198.18.0.101 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546383"></a>
+                  -user_name root \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546384"></a>
+                  -password noreply@ixiacom.com \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546385"></a>
+                  -agent_handler [keylget ftp_server_agent handles] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546386"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546387"></a>
+          if {[keylget ftp_client_action status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546388"></a>
+              return "FAIL - $test_name - [keylget ftp_client_action log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546389"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546390"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546391"></a>
+          ### THINK ###</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546392"></a>
+          set ftp_client_action [::ixia::emulation_ftp_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546393"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546394"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546395"></a>
+                  -handle [keylget ftp_client_agent handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546396"></a>
+                  -command "think" \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546397"></a>
+                  -arguments 5000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546398"></a>
+                  -agent_handler [keylget ftp_server_agent handles] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546399"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546400"></a>
+          if {[keylget ftp_client_action status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546401"></a>
+              return "FAIL - $test_name - [keylget ftp_client_action log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546402"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546403"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546404"></a>
+          ### QUIT ###</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546405"></a>
+          set ftp_client_action [::ixia::emulation_ftp_traffic_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546406"></a>
+                  -property action \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546407"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546408"></a>
+                  -command "quit" \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546409"></a>
+                  -handle [keylget ftp_client_agent handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546410"></a>
+                  -agent_handler [keylget ftp_server_agent handles] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546411"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546412"></a>
+          if {[keylget ftp_client_action status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546413"></a>
+              return "FAIL - $test_name - [keylget ftp_client_action log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546414"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546415"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546416"></a>
+          ############################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546417"></a>
+          # Client map configuration #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546418"></a>
+          ############################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546419"></a>
+          set ftp_client_map [::ixia::emulation_ftp_control_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546420"></a>
+                  -property map \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546421"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546422"></a>
+                  -client_iterations 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546423"></a>
+                  -target client \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546424"></a>
+                  -client_ftp_handle [keylget ftp_client_conf handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546425"></a>
+                  -client_traffic_handle [keylget ftp_client_traffic handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546426"></a>
+                  -objective_type users \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546427"></a>
+                  -ramp_up_type users_per_second \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546428"></a>
+                  -objective_value 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546429"></a>
+                  -ramp_up_value 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546430"></a>
+                  -client_sustain_time 43 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546431"></a>
+                  -port_map_policy pairs \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546432"></a>
+                  -ramp_down_time 20 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546433"></a>
+                  -client_offline_time 3 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546434"></a>
+                  -client_total_time 64 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546435"></a>
+                  -client_standby_time 0 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546436"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546437"></a>
+          if {[keylget ftp_client_map status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546438"></a>
+              return "FAIL - $test_name - [keylget ftp_client_map log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546439"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546440"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546441"></a>
+          ############################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546442"></a>
+          # Server map configuration #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546443"></a>
+          ############################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546444"></a>
+          set ftp_server_map [::ixia::emulation_ftp_control_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546445"></a>
+                  -property map \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546446"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546447"></a>
+                  -target server \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546448"></a>
+                  -server_ftp_handle [keylget ftp_server_conf handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546449"></a>
+                  -server_traffic_handle [keylget ftp_server_traffic handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546450"></a>
+                  -server_sustain_time 65 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546451"></a>
+                  -server_total_time 65 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546452"></a>
+                  -server_iterations 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546453"></a>
+                  -match_client_totaltime 1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546454"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546455"></a>
+          if {[keylget ftp_server_map status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546456"></a>
+              return "FAIL - $test_name - [keylget ftp_server_map log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546457"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546458"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546459"></a>
+          set client_stats_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546460"></a>
+                      ftp_simulated_users \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546461"></a>
+                      ftp_concurrent_sessions \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546462"></a>
+                      ftp_connections \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546463"></a>
+                      ftp_transactions \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546464"></a>
+                      ftp_bytes \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546465"></a>
+                      ftp_control_conn_requested \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546466"></a>
+                      ftp_control_conn_established \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546467"></a>
+                      ftp_control_conn_failed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546468"></a>
+                      ftp_control_conn_failed_rejected \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546469"></a>
+                      ftp_control_conn_failed_other \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546470"></a>
+                      ftp_control_conn_active \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546471"></a>
+                      ftp_data_conn_established \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546472"></a>
+                      ftp_data_conn_established_active_mode \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546473"></a>
+                      ftp_data_conn_requested_passive_mode \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546474"></a>
+                      ftp_data_conn_established_passive_mode \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546475"></a>
+                      ftp_data_conn_failed_passive_mode \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546476"></a>
+                      ftp_file_uploads_requested \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546477"></a>
+                      ftp_file_uploads_successful \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546478"></a>
+                      ftp_file_uploads_failed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546479"></a>
+                      ftp_file_downloads_requested \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546480"></a>
+                      ftp_file_downloads_successful \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546481"></a>
+                      ftp_file_downloads_failed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546482"></a>
+                      ftp_data_bytes_sent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546483"></a>
+                      ftp_data_bytes_received \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546484"></a>
+                      ftp_control_connection_latency \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546485"></a>
+                      ftp_data_connection_latency_passive_mode \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546486"></a>
+                      ftp_data_connection_latency_passive_mode \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546487"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546488"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546489"></a>
+          #####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546490"></a>
+          # Client statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546491"></a>
+          #####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546492"></a>
+          set ftp_client_stats [::ixia::emulation_ftp_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546493"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546494"></a>
+                  -aggregation_type sum \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546495"></a>
+                  -stat_name $client_stats_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546496"></a>
+                  -stat_type client ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546497"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546498"></a>
+          if {[keylget ftp_client_stats status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546499"></a>
+              return "FAIL - $test_name - [keylget ftp_client_stats log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546500"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546501"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546502"></a>
+          set server_stats_list {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546503"></a>
+                      ftp_control_conn_received \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546504"></a>
+                      ftp_control_conn_established \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546505"></a>
+                      ftp_control_conn_rejected \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546506"></a>
+                      ftp_control_conn_active \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546507"></a>
+                      ftp_data_conn_established \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546508"></a>
+                      ftp_data_conn_requested_active \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546509"></a>
+                      ftp_data_conn_established_active \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546510"></a>
+                      ftp_data_conn_failed_active \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546511"></a>
+                      ftp_data_conn_established_passive \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546512"></a>
+                      ftp_data_conn_active \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546513"></a>
+                      ftp_file_uploads_requested \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546514"></a>
+                      ftp_file_uploads_successful \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546515"></a>
+                      ftp_file_uploads_failed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546516"></a>
+                      ftp_file_downloads_requested \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546517"></a>
+                      ftp_file_downloads_successful \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546518"></a>
+                      ftp_file_downloads_failed \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546519"></a>
+                      ftp_data_bytes_sent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546520"></a>
+                      ftp_data_bytes_received \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546521"></a>
+                      ftp_control_bytes_sent \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546522"></a>
+                      ftp_control_bytes_received \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546523"></a>
+                      ftp_data_conn_latency \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546524"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546525"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546526"></a>
+          #####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546527"></a>
+          # Server statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546528"></a>
+          #####################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546529"></a>
+          set ftp_server_stats [::ixia::emulation_ftp_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546530"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546531"></a>
+                  -aggregation_type sum \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546532"></a>
+                  -stat_name $server_stats_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546533"></a>
+                  -stat_type server ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546534"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546535"></a>
+          if {[keylget ftp_server_stats status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546536"></a>
+              return "FAIL - $test_name - [keylget ftp_server_stats log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546537"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546538"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546539"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546540"></a>
+          # Control configuration #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546541"></a>
+          #########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546542"></a>
+          set ftp_control [::ixia::emulation_ftp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546543"></a>
+                  -mode add \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546544"></a>
+                  -map_handle [list [keylget ftp_client_map handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546545"></a>
+                  [keylget ftp_server_map handles]] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546546"></a>
+                  -results_dir_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546547"></a>
+                  -results_dir {/home/testuser/ftp_results_dir} \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546548"></a>
+                  -force_ownership_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546549"></a>
+                  -release_config_afterrun_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546550"></a>
+                  -reset_ports_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546551"></a>
+                  -stats_required 1 ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546552"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546553"></a>
+          if {[keylget ftp_control status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546554"></a>
+              return "FAIL - $test_name - [keylget ftp_control log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546555"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546556"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546557"></a>
+          ###############</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546558"></a>
+          # Start test</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546559"></a>
+          ###</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546560"></a>
+          set ftp_control [::ixia::emulation_ftp_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546561"></a>
+                  -handle [keylget ftp_control handles] \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546562"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546563"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546564"></a>
+          if {[keylget ftp_control status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546565"></a>
+              return "FAIL - $test_name - [keylget ftp_control log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546566"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546567"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546568"></a>
+          ###################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546569"></a>
+          # Get statistics</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546570"></a>
+          ###</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546571"></a>
+          set client_stats_result [::ixia::emulation_ftp_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546572"></a>
+                  -mode get \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546573"></a>
+                  -handle [keylget ftp_client_stats handles] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546574"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546575"></a>
+          if {[keylget client_stats_result status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546576"></a>
+              return "FAIL - $test_name - [keylget client_stats_result log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546577"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546578"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546579"></a>
+          set server_stats_result [::ixia::emulation_ftp_stats \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546580"></a>
+                  -mode get \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546581"></a>
+                  -handle [keylget ftp_server_stats handles] ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546582"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546583"></a>
+          if {[keylget server_stats_result status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546584"></a>
+              return "FAIL - $test_name - [keylget server_stats_result log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546585"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546586"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546587"></a>
+          ###########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546588"></a>
+          # Print client statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546589"></a>
+          ###########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546590"></a>
+          ixPuts "CLIENT STATISTICS:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546591"></a>
+          foreach {stat_handle} [keylkeys client_stats_result] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546592"></a>
+              if {$stat_handle != "status"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546593"></a>
+                  set stat_handle_kl [keylget client_stats_result $stat_handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546594"></a>
+                  foreach {stat_type} [keylkeys stat_handle_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546595"></a>
+                      set stat_type_kl [keylget stat_handle_kl $stat_type]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546596"></a>
+                      foreach {stat_name} [keylkeys stat_type_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546597"></a>
+                          set stat_name_kl [keylget stat_type_kl $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546598"></a>
+                          ixPuts -nonewline [format \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546599"></a>
+                                  "%10s %10s %40s" $stat_handle $stat_type $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546600"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546601"></a>
+                          set timestamp [lindex [lsort -dictionary \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546602"></a>
+                                  [keylkeys stat_name_kl]] end]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546603"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546604"></a>
+                          ixPuts [format "%15s %15s" $timestamp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546605"></a>
+                                  [keylget stat_name_kl $timestamp]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546606"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546607"></a>
+                      }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546608"></a>
+                  }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546609"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546610"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546611"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546612"></a>
+          ###########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546613"></a>
+          # Print server statistics #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546614"></a>
+          ###########################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546615"></a>
+          ixPuts "SERVER STATISTICS:"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546616"></a>
+          foreach {stat_handle} [keylkeys server_stats_result] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546617"></a>
+              if {$stat_handle != "status"} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546618"></a>
+                  set stat_handle_kl [keylget server_stats_result $stat_handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546619"></a>
+                  foreach {stat_type} [keylkeys stat_handle_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546620"></a>
+                      set stat_type_kl [keylget stat_handle_kl $stat_type]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546621"></a>
+                      foreach {stat_name} [keylkeys stat_type_kl] {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546622"></a>
+                          set stat_name_kl [keylget stat_type_kl $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546623"></a>
+                          ixPuts -nonewline [format \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546624"></a>
+                                  "%10s %10s %40s" $stat_handle $stat_type $stat_name]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546625"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546626"></a>
+                          set timestamp [lindex [lsort -dictionary \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546627"></a>
+                                  [keylkeys stat_name_kl]] end]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546628"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546629"></a>
+                          ixPuts [format "%15s %15s" $timestamp \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546630"></a>
+                                  [keylget stat_name_kl $timestamp]]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546631"></a>
+        </p>
+        <p class="CodeBlock"><a name="0_pgfId-3546632"></a>
+                      }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546633"></a>
+                  }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546634"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546635"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546636"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546637"></a>
+          } error</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546638"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546639"></a>
+          ##################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546640"></a>
+          # Disconnect and cleanup variables and sessions</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546641"></a>
+          ###</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546642"></a>
+          ::ixia::cleanup_session</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546643"></a>
+          if {$error != ""} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546644"></a>
+              ixPuts $error</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546645"></a>
+          } else {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546646"></a>
+              return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3546647"></a>
+          }</p>
+    </body>
+</html>

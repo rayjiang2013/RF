@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="High Level API Basics|About HLPython API|Installing HLPython API">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>Installing HLPython API on Linux Systems</title>
+        <link href="../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../HL_API_Help.htm#HL_API/About_HLPython/Python_Installation_Unix_Linux.htm">Open topic with navigation</a>
+        </p>
+        <h1>Installing HLPython API on Linux Systems</h1>
+        <p>The following section describes the process of installing HLPython API on a Linux and Unix systems.</p>
+        <p>HLPython API is included in the installer of the HLTAPI product, so you need to install HLTAPI in order to access HLPython API libraries.</p>
+        <p>In order to install HLTAPI:</p>
+        <ol>
+            <li value="1">Download either the ZIP,BIN or TAR file from the portal. </li>
+            <li value="2">Extract and copy all folders and files from the ZIP or TAR file into the lib folder of the IxOS client installation. For example, if the IxOS client is installed in <code>/home/ixia/ixos6.70</code>, the HLTAPI should be extracted to <code>/home/ixia/ixos6.70/lib</code>. </li>
+            <p>Alternatively, create an HLTAPI only folder and extract the files there. In this case, set the TCLLIBPATH to point to both IXIA client installation and the HLTAPI installation.</p>
+            <li value="3">Add the following environment variables to point to the HLTAPI package:<ul><li value="1">IXIA_HOME: where the IxOS client is installed.</li><li value="2">IXIA_VERSION–HLTSET value: This is one of several preset options. For more information on how to set this variable, see Setting the IXIA_VERSION Variable.</li><li value="3">TCLLIBPATH: path to the IxTclHal and HLTAPI library where the package can be found.</li></ul></li>
+        </ol>
+        <p>See the following example:</p>
+        <p class="CodeBlock">IXIA_HOME=/home/ixia/ixos6.70</p>
+        <p class="CodeBlock">IXIA_VERSION=HLTSET166</p>
+        <p class="CodeBlock">TCLLIBPATH=$IXIA_HOME/lib</p>
+        <p>If HLTAPI is installed in its own folder, set TCLLIBPATH to also point to the HLTAPI folder. For example:</p>
+        <p><code>HLTAPI_HOME</code>=<code>/home/HLTAPI4.90</code></p>
+        <p><code>TCLLIBPATH</code>=<code>"$IXIA_HOME/lib $HLTAPI _HOME"</code></p>
+        <p>To access HLTAPI library procedures, issue the following commands in Tcl or expect shell:</p>
+        <p class="CodeBlock">package require Ixia</p>
+        <p>LD_LIBRARY_PATH: folders to search for shared libraries.</p>
+        <p class="CodeBlock">LD_LIBRARY_PATH=$IXIA_HOME/lib:$TCL_HOME/lib:$LD_LIBRARY_PATH</p>
+        <p class="CodeBlock">PATH=$IXIA_HOME/bin:$TCL_HOME/bin:$PATH</p>
+        <p>&#160;</p>
+        <p>For HLT Python API,</p>
+        <p>The Python version installed by HLT can be accessed using the<code> ixiapython</code> command, which is a symbolic link created while installing HLT. In case you have installed multiple versions of Python on your system, the <code>ixiapython</code> command runs the Python version added with the latest Ixia application installed.</p>
+        <p>To run your script using the latest version of Python installed use the following syntax:</p>
+        <p class="CodeBlock">ixiapython &lt;script name&gt;</p>
+        <p>To run your script using a different version of Python, use the <code>ixiapython</code> command from the specific Python installation folder. You can use the following syntax:</p>
+        <p class="CodeBlock">~/Ixia/&lt;hltapi version 1&gt;/python/bin/ixiapython  &lt;script name&gt;</p>
+        <p>HLPython API requires the following Tcl lib packages:</p>
+        <ul>
+            <li value="1">Tclx: this is used for keyed lists. The HLT commands need this to return a keyed list. This library is usually included in third-party Tclsh like Active Tcl 8.4.</li>
+            <li value="2">Tcl8.5</li>
+            <li value="3">Tk8.5</li>
+            <li value="4">libXft</li>
+            <li value="5">libXScrnSaver</li>
+        </ul>
+        <p>Sample packages installation: “yum install libXft libXScrnSaver tclx tcl tk “</p>
+        <p>Please note that LD_LIBRARY_PATH needs to be updated to include the paths to the libraries.</p>
+        <hr width="100%" size="0" align="center" />
+    </body>
+</html>

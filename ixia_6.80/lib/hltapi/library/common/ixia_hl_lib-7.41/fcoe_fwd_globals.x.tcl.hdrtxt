@@ -1,0 +1,75 @@
+##Procedure Header
+# 
+# Name:
+#     ixia::fcoe_fwd_globals_config
+# 
+# Description:
+#     Performs fcoe_fwd_globals configuration.
+#     StackManager FCoE Global Settings
+#     
+# 
+# Synopsis:
+#     ixia::fcoe_fwd_globals_config
+#          -mode CHOICES create add modify delete
+#          -parent_handle ANY
+#         [-handle ANY]
+#         [-style ANY]
+#         [-accept_partial_config CHOICES true false  DEFAULT false]
+#         [-dcbx_timeout RANGE 10 - 1000 DEFAULT 60]
+#         [-fip_clear_vlink_with_port_ids ??? (ixn value fipClearVlinkWithPortIds)]
+#         [-max_packets_per_second RANGE 1 - 2000 DEFAULT 500]
+#         [-max_retries RANGE 1 - 9999 DEFAULT 5]
+#         [-retry_interval RANGE 1 - 1000 DEFAULT 2]
+# 
+# Arguments:
+# -mode
+#     create - creates and configures a new object
+#     add - adds a child object to the one specified by the -handle param
+#     modify - modified attributes on the given object by the -handle param
+#     delete - deletes the object given by the -handle param
+#     
+# -parent_handle
+#     The parent handle used for creating this object. Has the form: //vport
+#     
+# -handle
+#     A handle returned via a ::<namespace>::fcoe_fwd_globals_config command. This is used for mode modify.
+#     
+# -style
+#     The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add.
+#     
+# -accept_partial_config (PropertyBoolean)
+#     This flag controls how the negotiation process reports success or failure.
+#     When is true the plugin reports success if at least one session is established.
+#     When is false the plugin reports success only if all sessions are established.
+#     (DEFAULT = false)
+#     
+# -dcbx_timeout (PropertyInt)
+#     The number of seconds to wait for DCBX to negotiate.
+#     (DEFAULT = 60)
+#     
+# -fip_clear_vlink_with_port_ids
+#     (DEFAULT = ??)
+#     
+# -max_packets_per_second (PropertyInt)
+#     The maximum number of requests transmitted in each second.
+#     (DEFAULT = 500)
+#     
+# -max_retries (PropertyInt)
+#     The number of request retries for each negotiation stage in case of response timeout or error.
+#     (DEFAULT = 5)
+#     
+# -retry_interval (PropertyInt)
+#     The number of seconds to wait for a response before sending a new request.
+#     (DEFAULT = 2)
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:handles    value:fcoe_fwd_globals handles
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# See Also:
+#     External documentation on Tclx keyed lists
+

@@ -1,0 +1,79 @@
+##Procedure Header
+# 
+# Name:
+#     ixia::ptp_options_config
+# 
+# Description:
+#     Performs ptp_options configuration.
+#     PortGroup settings placeholder for PtpPlugin.
+#     
+# 
+# Synopsis:
+#     ixia::ptp_options_config
+#          -mode CHOICES create add modify delete
+#          -parent_handle ANY
+#         [-handle ANY]
+#         [-style ANY]
+#         [-max_outstanding RANGE 1 - 100 DEFAULT 20]
+#         [-override_global_rate_options CHOICES true false  DEFAULT false]
+#         [-role CHOICES master slave transparentMaster DEFAULT master]
+#         [-setup_rate RANGE 1 - 200 DEFAULT 5]
+#         [-teardown_rate RANGE 1 - 200 DEFAULT 5]
+# 
+# Arguments:
+# -mode
+#     create - creates and configures a new object
+#     add - adds a child object to the one specified by the -handle param
+#     modify - modified attributes on the given object by the -handle param
+#     delete - deletes the object given by the -handle param
+#     
+# -parent_handle
+#     The parent handle used for creating this object. Has the form: //vport
+#     
+# -handle
+#     A handle returned via a ::<namespace>::ptp_options_config command. This is used for mode modify.
+#     
+# -style
+#     The IxNetwork object typepath that is created after the command is run. Is optional in most cases. Only applies to modes create/add.
+#     
+# -max_outstanding (PropertyInt)
+#     The number of PTP connections to be in initiation or terminating state at any time.
+#     The number of PTP connections to be in initiation or terminating state at any time.
+#     (DEFAULT = 20)
+#     
+# -override_global_rate_options (PropertyBoolean)
+#     If true then all the rate settings defined at Session level will be overriden by
+#     rate settings defined on this PortGroup.
+#     If true then all the rate settings defined at Session level will be overriden by
+#     rate settings defined on this PortGroup.
+#     (DEFAULT = false)
+#     
+# -role (PropertyString)
+#     Clock type.
+#     (DEFAULT = master) Valid choices are:
+#     master - Master
+#     slave - Slave
+#     transparentMaster - Transparent/Master
+#     
+#     
+# -setup_rate (PropertyInt)
+#     Initiation rate for the PTP connection establishement.
+#     The number of PTP connections initiated in a second.
+#     (DEFAULT = 5)
+#     
+# -teardown_rate (PropertyInt)
+#     Teardown rate for the PTP connection establishement.
+#     The number of PTP connections torn down in a second.
+#     (DEFAULT = 5)
+#     
+# 
+# Return Values:
+#     A keyed list.
+#     key:status     value:$::SUCCESS | $::FAILURE
+#     key:handles    value:ptp_options handles
+#     key:log        value:When status is failure, contains more information
+#     
+# 
+# See Also:
+#     External documentation on Tclx keyed lists
+

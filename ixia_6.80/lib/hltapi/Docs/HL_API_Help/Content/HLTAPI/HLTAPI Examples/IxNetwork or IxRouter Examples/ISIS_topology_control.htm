@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork or IxRouter Examples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>ISIS (ISIS_topology_control.tcl)</title>
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork or IxRouter Examples/ISIS_topology_control.htm">Open topic with navigation</a>
+        </p>
+        <h3><a name="top"></a>ISIS (ISIS_topology_control.tcl)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533790"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533791"></a>
+          # Description: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533792"></a>
+          # This sample creates an ISIS router and adds a route range for it. Then it #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533793"></a>
+          # starts, stops and restarts the router. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533794"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533795"></a>
+          # Module: #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533796"></a>
+          # The sample was tested on a LM100TXS8 module. #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533797"></a>
+                                                                               #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533798"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533799"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533800"></a>
+          package require Ixia</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533801"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533802"></a>
+          set test_name [info script]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533803"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533804"></a>
+          set chassisIP 127.0.0.1</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533805"></a>
+          set port_list [list 10/1]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533806"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533807"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533808"></a>
+                              START TEST #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533809"></a>
+          ################################################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533810"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533811"></a>
+          # Connect to the chassis,reset to factory defaults and take ownership</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533812"></a>
+          set connect_status [ ixia::connect \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533813"></a>
+                  -reset \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533814"></a>
+                  -device $chassisIP \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533815"></a>
+                  -port_list $port_list \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533816"></a>
+                  -username ixiaApiUser ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533817"></a>
+          if {[keylget connect_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533818"></a>
+              return "FAIL - $test_name - [keylget connect_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533819"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533820"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533821"></a>
+          set port_handle [keylget connect_status port_handle.$chassisIP.$port_list]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533822"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533823"></a>
+          #####################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533824"></a>
+          # Configure 10 ISIS L1L2 neighbors interface #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533825"></a>
+          #####################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533826"></a>
+          set isis_router_status [ixia::emulation_isis_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533827"></a>
+          		-mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533828"></a>
+          		-reset 			 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533829"></a>
+          		-port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533830"></a>
+          		-intf_ip_addr 22.1.1.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533831"></a>
+          		-gateway_ip_addr 22.1.1.2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533832"></a>
+          		-intf_ip_prefix_length 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533833"></a>
+          		-mac_address_init 0000.0000.0001 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533834"></a>
+          		-count 		 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533835"></a>
+          		-wide_metrics 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533836"></a>
+          		-discard_lsp 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533837"></a>
+          		-attach_bit 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533838"></a>
+          		-partition_repair 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533839"></a>
+          		-overloaded 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533840"></a>
+          		-lsp_refresh_interval 		 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533841"></a>
+          		-lsp_life_time 			 777 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533842"></a>
+          		-max_packet_size 1492 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533843"></a>
+          		-intf_metric 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533844"></a>
+          		-routing_level 				 L1L2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533845"></a>
+          		-te_enable 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533846"></a>
+          		-te_router_id 198.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533847"></a>
+          		-te_max_bw 			 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533848"></a>
+          		-te_max_resv_bw 	 20 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533849"></a>
+          		-te_unresv_bw_priority0 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533850"></a>
+          		-te_unresv_bw_priority1 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533851"></a>
+          		-te_unresv_bw_priority2 20 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533852"></a>
+          		-te_unresv_bw_priority3 30 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533853"></a>
+          		-te_unresv_bw_priority4 40 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533854"></a>
+          		-te_unresv_bw_priority5 50 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533855"></a>
+          		-te_unresv_bw_priority6 60 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533856"></a>
+          		-te_unresv_bw_priority7 70 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533857"></a>
+          		-te_metric 10]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533858"></a>
+          if {[keylget isis_router_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533859"></a>
+              return "FAIL - $test_name - [keylget isis_router_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533860"></a>
+          }          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533862"></a>
+          #Get the list of ISIS router handle form the keye list returned</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533863"></a>
+          set isis_router_handle_list [keylget isis_router_status handle]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533864"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533865"></a>
+          ##############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533866"></a>
+          # For each ISIS router configure 2 IPv4 route range on each #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533867"></a>
+          ##############################################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533868"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533869"></a>
+          set isis_router_handle [lindex $isis_router_handle_list 0]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533870"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533871"></a>
+          #foreach isis_router_handle [lindex $isis_router_handle_list 0] /{</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533872"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533873"></a>
+              set route_config_status [ixia::emulation_isis_topology_route_config \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533874"></a>
+                      -mode create \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533875"></a>
+                      -handle $isis_router_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533876"></a>
+                      -type router \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533877"></a>
+                      -ip_version 4_6 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533878"></a>
+                      -router_system_id 112233445566 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533879"></a>
+                      -router_id 44.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533880"></a>
+                      -router_area_id 000001 000002 112244 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533881"></a>
+                      -link_ip_addr 198.0.0.1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533882"></a>
+                      -link_ip_prefix_length 24 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533883"></a>
+                      -link_enable 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533884"></a>
+                      -link_ipv6_addr 4000::1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533885"></a>
+                      -link_ipv6_prefix_length 64 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533886"></a>
+                      -link_narrow_metric 10 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533887"></a>
+                      -link_wide_metric 999 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533888"></a>
+                      -link_te 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533889"></a>
+                      -link_te_metric 77 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533890"></a>
+                      -link_te_max_bw 1000 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533891"></a>
+                      -link_te_max_resv_bw 9999 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533892"></a>
+                      -link_te_unresv_bw_priority0 0 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533893"></a>
+                      -link_te_unresv_bw_priority1 1 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533894"></a>
+                      -link_te_unresv_bw_priority2 2 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533895"></a>
+                      -link_te_unresv_bw_priority3 3 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533896"></a>
+                      -link_te_unresv_bw_priority4 4 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533897"></a>
+                      -link_te_unresv_bw_priority5 5 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533898"></a>
+                      -link_te_unresv_bw_priority6 6 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533899"></a>
+                      -link_te_unresv_bw_priority7 7 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533900"></a>
+                      -link_te_admin_group 100 \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533901"></a>
+                      ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533902"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533903"></a>
+              if {[keylget route_config_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533904"></a>
+                  return "FAIL - $test_name - [keylget route_config_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533905"></a>
+              }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533906"></a>
+          #/}</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533907"></a>
+          &#160;          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533910"></a>
+          #######################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533911"></a>
+          # START / STOP / RESTART ISIS #</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533912"></a>
+          #######################################</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533913"></a>
+          set isis_emulation_status [ixia::emulation_isis_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533914"></a>
+                  -handle $isis_router_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533915"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533916"></a>
+                  -mode start ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533917"></a>
+          if {[keylget isis_emulation_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533918"></a>
+              return "FAIL - $test_name - [keylget isis_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533919"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533921"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533922"></a>
+          set isis_emulation_status [ixia::emulation_isis_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533923"></a>
+                  -handle $isis_router_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533924"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533925"></a>
+                  -mode stop ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533926"></a>
+          if {[keylget isis_emulation_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533927"></a>
+              return "FAIL - $test_name - [keylget isis_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533928"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533929"></a>
+          &#160;</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533930"></a>
+          set isis_emulation_status [ixia::emulation_isis_control \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533931"></a>
+                  -handle $isis_router_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533932"></a>
+                  -port_handle $port_handle \</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533933"></a>
+                  -mode restart ]</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533934"></a>
+          if {[keylget isis_emulation_status status] != $::SUCCESS} {</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533935"></a>
+              return "FAIL - $test_name - [keylget isis_emulation_status log]"</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533936"></a>
+          }</p>
+        <p class="CodeBlock"><a name="0_pgfId-3533937"></a>
+          return "SUCCESS - $test_name - [clock format [clock seconds]]"</p>
+    </body>
+</html>

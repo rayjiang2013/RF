@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="HL_API_Help.xml" data-mc-path-to-help-system="../../../../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Appendix|IxNetwork (only) Examples|PYTHON_Samples">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="../../../../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" type="text/css" />
+        <link href="../../../../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" type="text/css" /><title>VXLAN DHCP Start Stop Stats (VXLAN_DHCP_start_stop_stats.py)</title>
+        <link href="../../../Resources/Stylesheets/Advanced_Information_Manager.css" rel="stylesheet" type="text/css" />
+        <script src="../../../../Resources/Scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/plugins.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.min.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/require.config.js" type="text/javascript">
+        </script>
+        <script src="../../../../Resources/Scripts/MadCapAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p class="MCWebHelpFramesetLink MCWebHelpFramesetLinkTop"><a href="../../../../HL_API_Help.htm#HLTAPI/HLTAPI Examples/IxNetwork (only) Examples/VXLAN_DHCP_start_stop_stats.htm">Open topic with navigation</a>
+        </p>
+        <h3>VXLAN DHCP Start Stop Stats (VXLAN_DHCP_start_stop_stats.py)</h3>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">#                                                                              #</p>
+        <p class="CodeBlock"># Description:                                                                 #</p>
+        <p class="CodeBlock"># This script configures a scenario with 2 topologies:		                   #</p>
+        <p class="CodeBlock">#        - Topology 1 with VXLAN and DHCP Client							   #</p>
+        <p class="CodeBlock">#        - Topology 2 with VXLAN and DHCP Server				    		   #</p>
+        <p class="CodeBlock"># The script does:										                       #</p>
+        <p class="CodeBlock">#    	 - start/stop protocol												   #</p>
+        <p class="CodeBlock">#		 - collect and display VXLAN/DHCP statistics						   #</p>
+        <p class="CodeBlock">#																			   #</p>
+        <p class="CodeBlock"># Module:                                                                      #</p>
+        <p class="CodeBlock">#    The sample was tested on a FlexAP10G16S			                       #</p>
+        <p class="CodeBlock">#                                                                              #</p>
+        <p class="CodeBlock">################################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">import sys, os</p>
+        <p class="CodeBlock">import time, re</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># Append paths to python APIs</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/hltapi/library/common/ixiangpf/python')</p>
+        <p class="CodeBlock"># sys.path.append('/path/to/ixnetwork/api/python')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">from ixiatcl import IxiaTcl</p>
+        <p class="CodeBlock">from ixiahlt import IxiaHlt</p>
+        <p class="CodeBlock">from ixiangpf import IxiaNgpf</p>
+        <p class="CodeBlock">from ixiaerror import IxiaError</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ixiatcl = IxiaTcl()</p>
+        <p class="CodeBlock">ixiahlt = IxiaHlt(ixiatcl)</p>
+        <p class="CodeBlock">ixiangpf = IxiaNgpf(ixiahlt)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">try:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('', {})</p>
+        <p class="CodeBlock">except (NameError,):</p>
+        <p class="CodeBlock" style="margin-left: 25px;">def ixnHLT_errorHandler(cmd, retval):</p>
+        <p class="CodeBlock" style="margin-left: 50px;">global ixiatcl</p>
+        <p class="CodeBlock" style="margin-left: 50px;">err = ixiatcl.tcl_error_info()</p>
+        <p class="CodeBlock" style="margin-left: 50px;">log = retval['log']</p>
+        <p class="CodeBlock" style="margin-left: 50px;">additional_info = '&gt; command: %s\n&gt; tcl errorInfo: %s\n&gt; log: %s' % (cmd, err, log)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">raise IxiaError(IxiaError.COMMAND_FAIL, additional_info)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">def printDict(obj, nested_level=0, output=sys.stdout):</p>
+        <p class="CodeBlock" style="margin-left: 25px;">spacing = '   '</p>
+        <p class="CodeBlock" style="margin-left: 25px;">if type(obj) == dict:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s' % ((nested_level) * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">for k, v in obj.items():</p>
+        <p class="CodeBlock" style="margin-left: 75px;">if hasattr(v, '__iter__'):</p>
+        <p class="CodeBlock" style="margin-left: 100px;">print &gt;&gt; output, '%s%s:' % ((nested_level + 1) * spacing, k)</p>
+        <p class="CodeBlock" style="margin-left: 100px;">printDict(v, nested_level + 1, output)</p>
+        <p class="CodeBlock" style="margin-left: 75px;">else:</p>
+        <p class="CodeBlock" style="margin-left: 100px;">print &gt;&gt; output, '%s%s: %s' % ((nested_level + 1) * spacing, k, v)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s' % (nested_level * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 25px;">elif type(obj) == list:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s[' % ((nested_level) * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">for v in obj:</p>
+        <p class="CodeBlock" style="margin-left: 75px;">if hasattr(v, '__iter__'):</p>
+        <p class="CodeBlock" style="margin-left: 100px;">printDict(v, nested_level + 1, output)</p>
+        <p class="CodeBlock" style="margin-left: 75px;">else:</p>
+        <p class="CodeBlock" style="margin-left: 100px;">print &gt;&gt; output, '%s%s' % ((nested_level + 1) * spacing, v)</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s]' % ((nested_level) * spacing)</p>
+        <p class="CodeBlock" style="margin-left: 25px;">else:</p>
+        <p class="CodeBlock" style="margin-left: 50px;">print &gt;&gt; output, '%s%s' % (nested_level * spacing, obj)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">chassis_ip              = '10.205.15.184'</p>
+        <p class="CodeBlock">ixnetwork_tcl_server    = 'localhost'</p>
+        <p class="CodeBlock">port_list               = '9/1 9/9'</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								CONNECT AND PORT HANDLES</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nConnect to IxNetwork Tcl Server and get port handles...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">connect_status = ixiangpf.connect(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">reset                  = 1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device                 = chassis_ip,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_list              = port_list,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnetwork_tcl_server   = ixnetwork_tcl_server,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">tcl_server             = chassis_ip,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if connect_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('connect', connect_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">port_handle = connect_status['vport_list']</p>
+        <p class="CodeBlock">port_0 = port_handle.split(' ')[0]</p>
+        <p class="CodeBlock">port_1 = port_handle.split(' ')[1]</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								VTEP 1 CONFIG</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE TOPOLOGY 1</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nConfigure VXLAN stack 1 ...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_1_status =ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_name = 'Topology 1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle = port_0,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if topology_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', topology_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_1_handle = topology_1_status['topology_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE DEVICE GROUP 1</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_group_1_status = ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_handle          =    topology_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_name        =   'VTEP 1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_multiplier  =    '3',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_enabled     =    '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if device_group_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', device_group_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_1_handle	= device_group_1_status['device_group_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE ETHERNET STACK FOR VXLAN 1</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_1_status = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern              =  'counter',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start        =  '00.11.01.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step         =  '00.00.00.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction    =  'increment',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step            =  '00.00.01.00.00.00',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner           =  topology_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled         =  '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if multivalue_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', multivalue_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_1_handle = multivalue_1_status['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_1_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_name           =     'Ethernet 1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_handle         =     device_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mtu                     =     '1500',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">src_mac_addr            =     multivalue_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan                    =     '1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id                 =     '101',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_step            =     '1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_count           =     '1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_tpid               =     '0x8100',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority      =     '0',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority_step =     '0',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">use_vpn_parameters      =     '0',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">site_id                 =     '0',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ethernet_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('interface_config', ethernet_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_1_handle = ethernet_1_status['ethernet_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">vxlan_1_status = ixiangpf.emulation_vxlan_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode						=	'create',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle					    =	ethernet_1_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">intf_ip_addr				=	'23.0.0.1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">intf_ip_addr_step			=	'0.0.0.1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ip_num_sessions            =   '2',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">intf_ip_prefix_length		=	'24',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">gateway					=	'23.0.0.100',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">gateway_step				=	'0.0.0.1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">enable_resolve_gateway	    =	'1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vni						=	'600',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">create_ig					=	'0',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ipv4_multicast			    =	'225.3.0.9',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">sessions_per_vxlan		    =	'1',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ip_to_vxlan_multiplier	    =   '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if vxlan_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_config', vxlan_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">vxlan_1_handle = vxlan_1_status['vxlan_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								VTEP 2 CONFIG</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE TOPOLOGY 2</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nConfigure VXLAN stack 2 ...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_2_status = ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_name      = 'Topology 2',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle        = port_1</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if topology_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', topology_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">topology_2_handle = topology_2_status['topology_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE DEVICE GROUP 2</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_group_2_status = ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">topology_handle          =    topology_2_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_name        =    'VTEP 2',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_multiplier  =    '3',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_enabled     =    '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if device_group_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', device_group_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_2_handle	= device_group_2_status ['device_group_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE ETHERNET STACK FOR VXLAN 2</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_2_status = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern              =  'counter',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start        =  '00.24.01.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step         =  '00.00.00.00.00.01',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction    =  'increment',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step            =  '00.00.01.00.00.00',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner           =  topology_2_handle,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled         =  '1',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if multivalue_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', multivalue_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_2_handle = multivalue_2_status ['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_2_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_name           =     'Ethernet 2'               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_handle         =     device_2_handle           ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mtu                     =     '1500'                       ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">src_mac_addr            =     multivalue_2_handle       ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan                    =     '1'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id                 =     '101'                        ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_step            =     '1'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_id_count           =     '1'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_tpid               =     '0x8100'                    ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority      =     '0'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vlan_user_priority_step =     '0'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">use_vpn_parameters      =     '0'                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">site_id                 =     '0'                          ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ethernet_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('interface_config', ethernet_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ethernet_2_handle = ethernet_2_status ['ethernet_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CREATE IPv4 STACK FOR VXLAN 2</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_2_status = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern              =  'counter'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start        =  '23.0.0.100'              ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step         =  '0.0.0.1'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction    =  'increment'               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step            =  '0.1.0.0'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner           =  topology_1_handle      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled         =  '1'                       ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if multivalue_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', multivalue_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_2_handle = multivalue_2_status ['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">gw_multivalue_1_status = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern              =  'counter'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start        =  '23.0.0.1'              ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step         =  '0.0.0.1'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction    =  'increment'               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step            =  '0.1.0.0'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner           =  topology_1_handle      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled         =  '1'                       ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if gw_multivalue_1_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', gw_multivalue_1_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">gw_multivalue_1_handle = gw_multivalue_1_status ['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ipv4_2_status = ixiangpf.interface_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_name           =     'IPv4 2'                  ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">protocol_handle         =     ethernet_2_handle        ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ipv4_resolve_gateway    =     '1'                         ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">gateway                 =     gw_multivalue_1_handle   ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">intf_ip_addr            =     multivalue_2_handle      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">netmask                 =     '255.255.255.0'             ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if ipv4_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('interface_config', ipv4_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">ipv4_2_handle = ipv4_2_status ['ipv4_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">vxlan_2_status = ixiangpf.emulation_vxlan_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode							=		'create'							,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle							=	ipv4_2_handle					,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">intf_ip_prefix_length			=		'24'								,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">vni							=		'600'								,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">create_ig						=		'1'								,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ipv4_multicast					=	'225.3.0.9'						,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ip_to_vxlan_multiplier			=	'1'								,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_intf_ip_addr			    =     '80.0.0.100'			            ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_intf_ip_addr_step		    =        '1.0.0.0'			                ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_intf_ip_prefix_length	    =			'16'								,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_mac_address_init			=		'00:67:22:33:00:00'				,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_mac_address_step			=		'00:00:00:00:00:11'				,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_gateway						=	'80.0.0.101'						,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_gateway_step				=		'1.0.0.0'							,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ig_enable_resolve_gateway		=		'0'								,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">sessions_per_vxlan				=	'1'								,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if vxlan_2_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_config', vxlan_2_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">inner_ipv4_2_handle = vxlan_2_status['ig_ipv4_handle']</p>
+        <p class="CodeBlock">vxlan_2_handle      = vxlan_2_status['vxlan_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								 DHCPv4 SERVER</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_pool = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern           =     'counter'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start     =     '80.0.0.1'		       ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step      =     '1.0.0.0'			       ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction =     'increment'               ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step         =     '1.0.0.0'				       ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner        =     topology_2_handle      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled      =     '1'                       ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if multivalue_pool['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', multivalue_pool)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_pool_handle = multivalue_pool['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_prefix = ixiangpf.multivalue_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">pattern            =    'counter'                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_start		=	'16'					,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_step		=	'0'					,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">counter_direction	=	'increment'					,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_step			=	'0'			,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_owner          =   topology_2_handle      ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">nest_enabled        =   '1'                       ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if multivalue_prefix['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('multivalue_config', multivalue_prefix)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">multivalue_prefix_handle = multivalue_prefix['multivalue_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dhcp_server_config_status1 = ixiangpf.emulation_dhcp_server_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode                              =          'create'                                  ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle						      =			 inner_ipv4_2_handle  					,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">lease_time						  =			 '84600'							,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ipaddress_count					  =		     '100'		                          ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ipaddress_pool					  =			 multivalue_pool_handle                         ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ipaddress_pool_prefix_length 	  =			 multivalue_prefix_handle                            ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ip_version                        =          '4'                                       ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if dhcp_server_config_status1['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_dhcp_server_config', dhcp_server_config_status1)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dhcp_server_handle = dhcp_server_config_status1['dhcpv4server_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								 DHCPv4 CLIENT</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">device_group_chained_status_1 = ixiangpf.topology_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_multiplier   =   '5'                         ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">device_group_handle       =   device_1_handle      ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if device_group_chained_status_1['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('topology_config', device_group_chained_status_1)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">chained_dg_1_handle = device_group_chained_status_1['device_group_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dhcp_status = ixiangpf.emulation_dhcp_group_config(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle						=	chained_dg_1_handle    ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">dhcp_range_ip_type			=	'ipv4'						 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">dhcp_range_renew_timer		=	'2'							 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">use_rapid_commit			=	'0'							 ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if dhcp_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_dhcp_group_config', dhcp_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dhcp_client_handle = dhcp_status['dhcpv4client_handle']</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								START PROTOCOLS</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nStart VXLAN ...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">control_status_1 = ixiangpf.emulation_vxlan_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle     = 	  vxlan_1_handle                    ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action     =      'start'                      ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if control_status_1['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_control', control_status_1)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">control_status_2 = ixiangpf.emulation_vxlan_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle      =	  vxlan_2_handle              ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action      =  'start'                     ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if control_status_2['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_control', control_status_2)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print ('\n\nStart DHCP server...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">control_status = ixiangpf.emulation_dhcp_server_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">dhcp_handle 	=		dhcp_server_handle 		,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action 			=	'collect'								,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if control_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_dhcp_server_control', control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock" style="margin-left: 25px;">print('\n\nStart DHCP clients...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">control_status = ixiangpf.emulation_dhcp_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle 		=		dhcp_client_handle ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action 		=		'bind'							,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if control_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_dhcp_control', control_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(20)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								STATISTICS</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># CLIENT</p>
+        <p class="CodeBlock">vxlan_stats_2 = ixiangpf.emulation_vxlan_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle 		=	port_0                                   ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode 				=    'aggregate_stats'                                                 ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">execution_timeout  =    '30'                                              ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if vxlan_stats_2['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_stats', vxlan_stats_2)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dhcp_client_stats = ixiangpf.emulation_dhcp_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle  = port_0,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode  = 'aggregate_stats',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">execution_timeout  = '30',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if dhcp_client_stats['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_dhcp_stats', dhcp_client_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># SERVER</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">vxlan_stats_1 = ixiangpf.emulation_vxlan_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle 	=		port_1                                   ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">mode 			=	'aggregate_stats'                                                ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">execution_timeout = '30'                                              ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if vxlan_stats_1['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_stats', vxlan_stats_1)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">dhcp_server_stats = ixiangpf.emulation_dhcp_server_stats(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">port_handle = port_1,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action = 'collect',</p>
+        <p class="CodeBlock" style="margin-left: 25px;">execution_timeout = '30',</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if dhcp_server_stats['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_dhcp_server_stats', dhcp_server_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">time.sleep(3)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nVXLAN aggregate stats port 1:\n')</p>
+        <p class="CodeBlock">printDict(vxlan_stats_2)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nVXLAN aggregate stats port 2:\n')</p>
+        <p class="CodeBlock">printDict(vxlan_stats_1)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nDHCP Client aggregate stats:\n')</p>
+        <p class="CodeBlock">printDict(dhcp_client_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nDHCP Server aggregate stats:\n')</p>
+        <p class="CodeBlock">printDict(dhcp_server_stats)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">if dhcp_client_stats[port_0]['aggregate']['success_percentage'] != '100':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">raise IxiaError(IxiaError.COMMAND_FAIL, 'Not all DHCP sessions are up!')</p>
+        <p class="CodeBlock">if dhcp_server_stats['aggregate'][port_1]['sessions_up'] != '3':</p>
+        <p class="CodeBlock" style="margin-left: 25px;">raise IxiaError(IxiaError.COMMAND_FAIL, 'Not all DHCP Server sessions are up!')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								STOP PROTOCOLS</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nStop VXLAN ...\n\n')</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">control_status_1 = ixiangpf.emulation_vxlan_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle     = 	  vxlan_1_handle                    ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action     =      'stop'                      ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if control_status_1['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_control', control_status_1)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">control_status_2 = ixiangpf.emulation_vxlan_control(</p>
+        <p class="CodeBlock" style="margin-left: 25px;">handle      =	  vxlan_2_handle              ,</p>
+        <p class="CodeBlock" style="margin-left: 25px;">action      =  'stop'                     ,</p>
+        <p class="CodeBlock">)</p>
+        <p class="CodeBlock">if control_status_2['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('emulation_vxlan_control', control_status_2)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock" style="margin-left: 250px;"># 								CLEANUP SESSION</p>
+        <p class="CodeBlock"># #############################################################################</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">cleanup_status = ixiangpf.cleanup_session(reset='1')</p>
+        <p class="CodeBlock">if cleanup_status['status'] != IxiaHlt.SUCCESS:</p>
+        <p class="CodeBlock" style="margin-left: 25px;">ixnHLT_errorHandler('cleanup_session', cleanup_status)</p>
+        <p class="CodeBlock">&#160;</p>
+        <p class="CodeBlock">print('\n\nIxNetwork session is closed...\n\n')</p>
+        <p class="CodeBlock">print('!!! TEST is PASSED !!!')</p>
+    </body>
+</html>
