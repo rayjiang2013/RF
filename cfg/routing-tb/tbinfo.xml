@@ -12,7 +12,7 @@
   <link1 link="dev1:port13,trafgen1:5/12" type="GigabitEthernet" mode="Copper"> </link1>
   <link2 link="dev1:port14,trafgen1:5/13" type="GigabitEthernet" mode="Copper"> </link2>
   <link3 link="dev1:port15,trafgen1:5/14" type="GigabitEthernet" mode="Copper"> </link3>
-  <link4 link="dev1:port16,trafgen1:5/9" type="GigabitEthernet" mode="Copper"> </link4>
+  <link4 link="dev1:port16,trafgen1:5/8" type="GigabitEthernet" mode="Copper"> </link4>
   <link5 link="dev1:port17,trafgen1:5/10" type="GigabitEthernet" mode="Copper"> </link5>
   <link6 link="dev1:port18,trafgen1:5/11" type="GigabitEthernet" mode="Copper"> </link6>
  </connections>

@@ -1,5 +1,5 @@
 # This is the argument file for sconfig.txt
---variable autopath:/home/jack/git-repo/automation
+--variable autopath:/home/auto/git-repo/automation
 --variable virtual_topo:singleSw6Trafgens.xml
 --variable testbed:routing-tb 
 # Tag
