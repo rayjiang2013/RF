@@ -3,10 +3,11 @@
 | Documentation | LAYER 2-3 SIX FLOW SVI |
 | Resource | ${autopath}/lib/util/telnet.txt |
 | Resource | ${autopath}/lib/util/os.txt |
-| Resource | ${autopath}/lib/util/util.txt |
+| Resource | ${autopath}/lib/util/fsw.txt |
 | Library  | ${autopath}/lib/trafgen/ixia_lib.py |
-| Library  | ${autopath}/lib/util/util.py |
+| Library  | ${autopath}/lib/util/infra.py | WITH NAME | Infra |
 | Library  | ${autopath}/lib/util/tableparser.py |
+| Library | ${autopath}/lib/util/misc.py |
 | Library | Collections |
 
 | *Variables*  | *Value* |
@@ -71,7 +72,7 @@
 
 # Allocate Suite Test Resources |
 | | Log To Console | \n\tSuite Setup |
-| | ${Test Topo Status}= | Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | ${Test Topo Status}= | Infra.Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
 | | ${Status}= | Get From Dictionary | ${Test Topo Status} | status |
 | | Run Keyword If | ${Status} != 1 | Fail | 'Allocate Suite Test Resources fail' |
 | | ${Dut Hostname} | Get Nested Diction | ${Test Topo Status} | test_topo.dev1.hostname |
@@ -109,9 +110,7 @@
 
 # Telnet to DUT
 | | [Documentation] | Test Topo Init Keyword |
-| | ${dut_prompt}= | Telnet Login | ${Dut Console Ip} | ${Dut Hostname} | ${Dut Username} | ${Dut Password} | 10 | ${Dut Hostname} | ${Dut Console Port} | open=open | send_ctrlc=yes |
-| | ${ret}= | Get Lines Containing String | ${dut_prompt} | ${Dut Hostname} |
-| | Should Match Regexp | ${ret} | ${Dut Hostname} | "Telnet Login to ${Dut Console Ip} failed" |
+| | ${dut_prompt}= | Telnet Login | ${Dut Console Ip} | ${Dut Hostname} | ${Dut Username} | ${Dut Password} | ${Dut Console Port} | ${Dut Hostname} | 1800 |
 
 # Configure DUT
 | | @{Init Configure Data}= | Set Variable |
