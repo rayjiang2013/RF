@@ -36,6 +36,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Log To Console | 'Sleep For 10 Seconds' |
 | | Sleep | 10 seconds |
@@ -117,6 +118,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Log To Console | 'Sleep For 10 Seconds' |
 | | Sleep | 10 seconds |
@@ -200,6 +202,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Log To Console | 'Sleep For 10 Seconds' |
 | | Sleep | 10 seconds |
@@ -282,6 +285,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Log To Console | 'Sleep For 10 Seconds' |
 | | Sleep | 10 seconds |

@@ -29,6 +29,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Sleep | 10 seconds |
 
@@ -114,6 +115,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data2} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data2} |
 | | Sleep | 10 seconds |
 
@@ -201,6 +203,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Sleep | 10 seconds |
 
@@ -286,6 +289,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Sleep | 10 seconds |
 
@@ -372,6 +376,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Sleep | 10 seconds |
 
@@ -454,6 +459,7 @@
 | | | ... | config switch acl policy
 | | | ... |     del 1
 | | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data2} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data2} |
 | | Sleep | 10 seconds |
 
