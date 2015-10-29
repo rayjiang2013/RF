@@ -85,11 +85,6 @@
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
-
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
 | | Log To Console | \n\t'ACL Redirect_dst_ip Test Case Complete' |
 
 #Testcase 2
@@ -168,11 +163,6 @@
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 | | Log To Console | \n\tPASSED, REDIRECT SUCCESS |
 
-
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
 | | Log To Console | \n\t'ACL Redirect_src_ip Test Case Complete' |
 
 
@@ -252,11 +242,6 @@
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 | | Log To Console | \n\tPASSED, REDIRECT SUCCESS |
 
-
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
 | | Log To Console | \n\t'ACL Redirect_src_mac Test Case Complete' |
 
 #Testcase 4
@@ -335,10 +320,5 @@
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 | | Log To Console | \n\tPASSED, REDIRECT SUCCESS |
 
-
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
 | | Log To Console | \n\t'ACL Redirect_vlan-id Test Case Complete' |
 

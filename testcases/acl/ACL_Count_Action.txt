@@ -13,7 +13,7 @@
 #Testcase 1
 | Action: Count, Classifier:Dst IP |
 | | [Documentation] | Action: Count, Classifier:Dst IP |
-| | [tags] | count_case1 |
+#| | [tags] | count_case1 |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl policy
 | | | ... |     edit 1
@@ -76,19 +76,14 @@
 | | ${Test Result} | PacketDiff | ${packet_value} | ${Port2 Rx} | 0.97 |
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
-
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
-
-
+| | Log To Console | \n\t'Action: Count, Classifier:Dst IP to Port2 Test Case Complete' |
 
 #change port2-port3
+| Change port2-port3 |
 | | [Documentation] | Action: Count, Classifier:Dst IP |
-| | @{Testcase Configure Data2}= | Set Variable |
+| | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl policy
-| | | ... |     edit 1
+| | | ... |     edit 2
 | | | ... |             config action
 | | | ... |                 set count enable
 | | | ... |             end
@@ -98,12 +93,12 @@
 | | | ... |             set ingress-interface ${Dut Port1}
 | | | ... |     next
 | | | ... | end
-| | @{Testcase Unset Configure Data2}= | Set Variable |
+| | @{Testcase Unset Configure Data}= | Set Variable |
 | | | ... | config switch acl policy
-| | | ... |     del 1
+| | | ... |     del 2
 | | | ... | end
-| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data2} |
-| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data2} |
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Log To Console | 'Sleep For 10 Seconds' |
 | | Sleep | 10 seconds |
 
@@ -149,11 +144,8 @@
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data2} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
-| | Log To Console | \n\t'Action: Count, Classifier:Dst IP Test Case Complete' |
+| | Log To Console | \n\t'Action: Count, Classifier:Dst IP to Port3 Test Case Complete' |
+
 
 
 #Testcase 2
@@ -223,10 +215,6 @@
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
 | | Log To Console | \n\t'Action: Count, Classifier:Src IP Test Case Complete' |
 
 
@@ -297,11 +285,6 @@
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
-
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
 | | Log To Console | \n\t'Action: Count, Classifier:Src Mac Test Case Complete' |
 
 
@@ -372,11 +355,6 @@
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
-
-# remove ACL configuration
-| | Run Keyword | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Log To Console | 'Sleep for 10 Seconds' |
-| | Sleep | 10 seconds |
 | | Log To Console | \n\t'Action: Count, Classifier:vlan-id Test Case Complete' |
 
 
