@@ -131,7 +131,7 @@
 | | Run Keyword If | ${Port3 Rx} != 0 | 'Check Port3=${Port3 Rx} Traffic fails' |
 | | Run Keyword If | ${Port4 Rx} != 0 | 'Check Port4=${Port4 Rx} Traffic fails' |
 | | Run Keyword If | ${Port5 Rx} != 0 | 'Check Port5=${Port5 Rx} Traffic fails' |
-| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port6 Rx} | 0.9 |
+| | ${Test Result} | PacketDiff | ${Port6 Rx} | ${Port1 Tx} | 0.85 |
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
