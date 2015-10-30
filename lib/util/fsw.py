@@ -108,7 +108,37 @@ class fsw(object):
                     'status':0,
                     'missing_string': missing_string
                 }
+        except:
+            e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return(status_data)
 
+    def compare_info(self, cli_info, info):
+        '''
+        This python API compare two info content's and returns fail if there is any mismatch
+        '''
+        func_name = 'compare_info'
+        try:
+            status_data = {'status':0}
+            mismatch_lines = ""
+            cli_info = re.sub(r'(\\r)+', '', cli_info, re.DOTALL)
+            info = re.sub(r'(\\r)+', '', info, re.DOTALL)
+            for line in info:
+                match_line = 0
+                for c_line in cli_info:
+                    if c_line == line:
+                        match_line = 1
+                        break
+                if match_line == 0:
+                    mismatch_lines = mismatch_lines + line
+            if mismatch_lines == "":
+                status_data = {'status':1}
+            else:
+                status_data = {
+                    'status':0,
+                    'mismatch_lines':mismatch_lines,
+                }
         except:
             e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
             status_data = {'status':0, 'msg':e}
@@ -117,13 +147,21 @@ class fsw(object):
 
 if __name__ == "__main__":
     info = '''
-[F]: Format boot device.
-Enter G,F,I,U,R,Q,or H:
+config switch physical-port
+    edit "port1"
+        set max-frame-size 4500
+        set speed 1000full
+    next
+end
     '''
     info1 = '''
-[F]: Format boot device.
-Enter G,F,I,U,R,Q,or H:
+config switch physical-port
+    edit "port1"
+        set max-frame-size 4500
+        set speed 1000full
+    next
+end
     '''
     f = fsw()
-    Status = f.check_table(info, info1)
+    Status = f.compare_info(info, info1)
     nested_print(Status)
