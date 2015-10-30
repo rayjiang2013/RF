@@ -1,6 +1,0 @@
-# This is the argument file for sconfig.txt
---variable autopath:/home/jimhe/git-repo/automation
---variable virtual_topo:singleSw3Trafgens.xml
---variable testbed:acl-tb 
-# Tag
---include ACL
