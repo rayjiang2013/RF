@@ -189,3 +189,39 @@
 | | ${Info Data}= | Telnet.Read Until Prompt |
 | | Log | ${Info Data} | console=yes |
 | | Telnet.Switch Connection | ${org_id} |
+
+# Exec Factoryreset
+| FortiSwitch Exec Factoryreset | [Arguments] | ${telnet_lias} | ${User Name}=admin | ${Password}='' |
+| | [Documentation] | FortiSwitch Exec Factoryreset telnet_lias=${telnet_lias}, User Name=${User Name}, Password=${Password} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | Telnet.Write | exec factoryreset |
+| | ${read_info}= | Telnet.Read Until Regexp | Do you want to continue |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Write | y |
+| | Sleep | 2 second |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | Sleep | 3 minutes |
+| | ${read_info}= | Telnet.Read Until Regexp | login: |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Write | ${User Name}
+| | ${read_info}= | Telnet.Read Until Regexp | Password: |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Write | ${Password} |
+| | Sleep | 1 second |
+| | ${read_info}= | Telnet.Read |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
+
+# Compare CLI output with given patent
+| FortiSwitch Compare Info | [Arguments] | ${handle} | ${Cli} | ${Cli Info} |
+| | [Documentation] | FortiSwitch Compare Info handle=${handle}, Cli=$${Cli}, Cli Info |
+| | ${org_id} | Telnet.Switch Connection | ${handle} |
+| | Log | \n\t${handle} ${cli} | console=yes |
+| | Telnet.Write | ${cli} |
+| | ${Info Data}= | Telnet.Read Until Prompt |
+| | Log | ${Info Data} | console=yes |
+| | ${Compare Status} = | Fsw.Compare Info | ${Info Data} | ${cli info} |
+| | Telnet.Switch Connection | ${org_id} |
+| | ${Status} | Get From Dictionary | ${Compare Status} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'FortiSwitch Compare Info fails' |
