@@ -1,0 +1,660 @@
+# -*- coding: robot -*-
+| *Setting* | *Value *|
+| Documentation | Configure FSW via a telnet Console, then configure device with dynamic data file |
+| Default Tags | ACL | ACL-sequence |
+| Resource | ACL-Sequence-Firsthit-Firstout-resources.txt |
+| Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
+| Suite Teardown | Suite Teardown Keyword |
+| Test Timeout | 20 minutes |
+
+| *Variables*  | *Value* |
+
+| *Test Cases*  | *Value* | *Value* | *Value* |
+# Testcase 1
+| ACL-Sequence_Firsthit-Firstout |
+| | [Documentation] | Test case1: ACL-Sequence_Firsthit-Firstout |
+#| | [tags] | Testcase1 |
+| | @{Testcase Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... | 	edit 1
+| | | ... | 		set dst ${Static route IP1}/${Netmask1}
+| | | ... | 		set device vlan12
+| | | ... |		set gateway ${Ixia Port3 Ip}
+| | | ... |	next
+| | | ... | 	edit 2
+| | | ... | 		set dst ${Static route IP2}/${Netmask2}
+| | | ... | 		set device vlan13
+| | | ... |		set gateway ${Ixia Port4 Ip}
+| | | ... |	next
+| | | ... | 	edit 3
+| | | ... | 		set dst ${Static route IP3}/${Netmask3}
+| | | ... | 		set device vlan14
+| | | ... |		set gateway ${Ixia Port5 Ip}
+| | | ... |	next
+| | | ... | 	edit 4
+| | | ... | 		set device vlan15
+| | | ... |		set gateway ${Ixia Port6 Ip}
+| | | ... |	end	
+| | | ... | config switch acl policy
+| | | ... |     edit 1
+| | | ... |             config action
+| | | ... |                 set drop enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set service "ALL_UDP"
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 2
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP1}/${Netmask1}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... | end
+| | @{Testcase Unset Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... |    del 1
+| | | ... |    del 2
+| | | ... |    del 3
+| | | ... |    del 4
+| | | ... | end
+| | | ... | config switch acl policy
+| | | ... |     del 1
+| | | ... | 	del 2
+| | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+
+# Configure Static rout
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Sleep | 2 |
+
+# Get SVI Mac Address
+| | ${SVI Mac Address} | FortiSwitch Get SVI Mac Address | ${Dut Hostname} | vlan10 |
+| | Log | \n\tSVI Mac Address=${SVI Mac Address} | console=yes |
+
+# Configure a new ipv4 packet
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port3} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP1} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port4} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP2} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port5} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP3} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port6} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP4} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Stream Id} | Get From Dictionary | ${Traffic Config Status} | stream_id |
+
+# Enable regenerate
+| | ${Regenerate Status} | Ixia Regenerate |
+| | ${status} | Get From Dictionary | ${Regenerate Status} | status |
+| | Run Keyword If | ${status} != 1 | Fail | 'Ixia Regenerate fails' |
+| | Sleep | 2 |
+
+
+# Send 2 seconds learning traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 2 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 5 seconds |
+
+
+# Send 30 seconds real udp traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 30 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 10 seconds |
+
+# Check ixia packet loss         
+| | ${Port1 Count} | Ixia Traffic Stats | ${Ixia Port1} |
+| | ${Port1 Tx} | Get From Dictionary | ${Port1 Count} | tx_count |
+
+| | ${Port2 Count} | Ixia Traffic Stats | ${Ixia Port2} |
+| | ${Port2 Rx} | Get From Dictionary | ${Port2 Count} | rx_count |
+
+| | ${Port3 Count} | Ixia Traffic Stats | ${Ixia Port3} |
+| | ${Port3 Rx} | Get From Dictionary | ${Port3 Count} | rx_count |
+
+| | ${Port4 Count} | Ixia Traffic Stats | ${Ixia Port4} |
+| | ${Port4 Rx} | Get From Dictionary | ${Port4 Count} | rx_count |
+
+| | ${Port5 Count} | Ixia Traffic Stats | ${Ixia Port5} |
+| | ${Port5 Rx} | Get From Dictionary | ${Port5 Count} | rx_count |
+
+| | ${Port6 Count} | Ixia Traffic Stats | ${Ixia Port6} |
+| | ${Port6 Rx} | Get From Dictionary | ${Port6 Count} | rx_count |
+
+| | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx}+${Port4 Rx}+${Port5 Rx}+${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port4 Rx:${Port4 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port5 Rx:${Port5 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port6 Rx:${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
+
+| | Should Be Equal As Numbers | ${Port3 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port4 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port5 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port6 Rx} | 0 | 'ACL UDP Drop Error' |
+
+#remove
+| | Ixia Remove Traffic Config | stream_id=${Traffic Stream Id} |
+
+| | Log To Console | \n\t'ACL udp all drop action Complete' |
+
+#Testcase2
+| Change the sequence to 1: ACL count port3. 2: ACL other port udp_drop |
+| | [Documentation] | Test case2: Change the sequence to 1: ACL count port3. 2: ACL other port udp_drop |
+#| | [tags] | ACL-Sequence-Testcase2 |
+| | @{Testcase Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... | 	edit 1
+| | | ... | 		set dst ${Static route IP1}/${Netmask1}
+| | | ... | 		set device vlan12
+| | | ... |		set gateway ${Ixia Port3 Ip}
+| | | ... |	next
+| | | ... | 	edit 2
+| | | ... | 		set dst ${Static route IP2}/${Netmask2}
+| | | ... | 		set device vlan13
+| | | ... |		set gateway ${Ixia Port4 Ip}
+| | | ... |	next
+| | | ... | 	edit 3
+| | | ... | 		set dst ${Static route IP3}/${Netmask3}
+| | | ... | 		set device vlan14
+| | | ... |		set gateway ${Ixia Port5 Ip}
+| | | ... |	next
+| | | ... | 	edit 4
+| | | ... | 		set device vlan15
+| | | ... |		set gateway ${Ixia Port6 Ip}
+| | | ... |	end	
+| | | ... | config switch acl policy
+| | | ... |     edit 1
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP1}/${Netmask1}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 2
+| | | ... |             config action
+| | | ... |                 set drop enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set service "ALL_UDP"
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... | end
+| | @{Testcase Unset Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... |    del 1
+| | | ... |    del 2
+| | | ... |    del 3
+| | | ... |    del 4
+| | | ... | end
+| | | ... | config switch acl policy
+| | | ... |     del 1
+| | | ... | 	del 2
+| | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+
+# Configure Static rout
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Sleep | 2 |
+
+# Get SVI Mac Address
+| | ${SVI Mac Address} | FortiSwitch Get SVI Mac Address | ${Dut Hostname} | vlan10 |
+| | Log | \n\tSVI Mac Address=${SVI Mac Address} | console=yes |
+
+# Configure a new ipv4 packet
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port3} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP1} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port4} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP2} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port5} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP3} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port6} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP4} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Stream Id} | Get From Dictionary | ${Traffic Config Status} | stream_id |
+
+# Enable regenerate
+| | ${Regenerate Status} | Ixia Regenerate |
+| | ${status} | Get From Dictionary | ${Regenerate Status} | status |
+| | Run Keyword If | ${status} != 1 | Fail | 'Ixia Regenerate fails' |
+| | Sleep | 2 |
+
+# Send 2 seconds learning traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 2 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 5 seconds |
+
+# check ACL table count
+| | ${Table} | FortiSwitch Command | ${Dut Hostname} | get switch acl counter |
+| | ${Header} | Set Variable | ID Packets Bytes description |
+| | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
+| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
+| | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
+| | ${packet_value1}= | Get From List | ${packet_list} | 0 |
+| | ${packet_value_int1}= | Convert To Integer | ${packet_value1} |
+
+# Send 30 seconds real traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 30 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 10 seconds |
+
+# Check ixia packet loss         
+| | ${Port1 Count} | Ixia Traffic Stats | ${Ixia Port1} |
+| | ${Port1 Tx} | Get From Dictionary | ${Port1 Count} | tx_count |
+
+| | ${Port2 Count} | Ixia Traffic Stats | ${Ixia Port2} |
+| | ${Port2 Rx} | Get From Dictionary | ${Port2 Count} | rx_count |
+
+| | ${Port3 Count} | Ixia Traffic Stats | ${Ixia Port3} |
+| | ${Port3 Rx} | Get From Dictionary | ${Port3 Count} | rx_count |
+
+| | ${Port4 Count} | Ixia Traffic Stats | ${Ixia Port4} |
+| | ${Port4 Rx} | Get From Dictionary | ${Port4 Count} | rx_count |
+
+| | ${Port5 Count} | Ixia Traffic Stats | ${Ixia Port5} |
+| | ${Port5 Rx} | Get From Dictionary | ${Port5 Count} | rx_count |
+
+| | ${Port6 Count} | Ixia Traffic Stats | ${Ixia Port6} |
+| | ${Port6 Rx} | Get From Dictionary | ${Port6 Count} | rx_count |
+
+| | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx}+${Port4 Rx}+${Port5 Rx}+${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port4 Rx:${Port4 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port5 Rx:${Port5 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port6 Rx:${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
+
+
+| | Should Be Equal As Numbers | ${Port4 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port5 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port6 Rx} | 0 | 'ACL UDP Drop Error' |
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port3 Rx} | 0.24 |
+| | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
+| | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'ACL first count action does not hit' |
+| | Log To Console | \n\t'ACL First count action works' |
+
+# check ACL table count
+| | ${Table} | FortiSwitch Command | ${Dut Hostname} | get switch acl counter |
+| | ${Header} | Set Variable | ID Packets Bytes description |
+| | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
+| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
+| | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
+| | ${packet_value11}= | Get From List | ${packet_list} | 0 |
+| | ${packet_value_int11}= | Convert To Integer | ${packet_value11} |
+| | ${packet_value_int11}= | Evaluate | ${packet_value_int11}-${packet_value_int1} |
+| | Log To Console | \n\tPort1 Tx: ${Port1 Tx} -- Counter Value: ${packet_value_int11} |
+
+| | ${Test Result} | PacketDiff |  ${packet_value_int11} | ${Port3 Rx} | 0.9 |
+| | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
+| | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic Count loss' |
+
+#remove
+| | Ixia Remove Traffic Config | stream_id=${Traffic Stream Id} |
+
+| | Log To Console | \n\t'ACL port3 count and the rest udp_all drop action Complete' |
+
+
+
+#Testcase3
+| Change the sequence to 1: drop all udp. 2 Change to ACL count port3, port4, port5 and port6.|
+| | [Documentation] | Test case3: | Change the sequence to 1: drop all udp. 2 Change to ACL count port3, port4, port5 and port6. |
+#| | [tags] | Testcase3 |
+| | @{Testcase Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... | 	edit 1
+| | | ... | 		set dst ${Static route IP1}/${Netmask1}
+| | | ... | 		set device vlan12
+| | | ... |		set gateway ${Ixia Port3 Ip}
+| | | ... |	next
+| | | ... | 	edit 2
+| | | ... | 		set dst ${Static route IP2}/${Netmask2}
+| | | ... | 		set device vlan13
+| | | ... |		set gateway ${Ixia Port4 Ip}
+| | | ... |	next
+| | | ... | 	edit 3
+| | | ... | 		set dst ${Static route IP3}/${Netmask3}
+| | | ... | 		set device vlan14
+| | | ... |		set gateway ${Ixia Port5 Ip}
+| | | ... |	next
+| | | ... | 	edit 4
+| | | ... | 		set device vlan15
+| | | ... |		set gateway ${Ixia Port6 Ip}
+| | | ... |	end	
+| | | ... | config switch acl policy
+| | | ... |     edit 1
+| | | ... |             config action
+| | | ... |                 set drop enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set service "ALL_UDP"
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 2
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP1}/${Netmask1}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 3
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP2}/${Netmask2}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 4
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP3}/${Netmask3}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 5
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route dst IP4}/${Netmask}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... | 	end
+| | @{Testcase Unset Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... |    del 1
+| | | ... |    del 2
+| | | ... |    del 3
+| | | ... |    del 4
+| | | ... | end
+| | | ... | config switch acl policy
+| | | ... |     del 1
+| | | ... | 	del 2
+| | | ... | 	del 3
+| | | ... | 	del 4
+| | | ... |	del 5
+| | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+
+# Configure Static rout
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Sleep | 2 |
+
+# Get SVI Mac Address
+| | ${SVI Mac Address} | FortiSwitch Get SVI Mac Address | ${Dut Hostname} | vlan10 |
+| | Log | \n\tSVI Mac Address=${SVI Mac Address} | console=yes |
+
+# Configure a new ipv4 packet
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port3} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP1} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port4} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP2} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port5} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP3} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port6} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP4} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Stream Id} | Get From Dictionary | ${Traffic Config Status} | stream_id |
+
+# Enable regenerate
+| | ${Regenerate Status} | Ixia Regenerate |
+| | ${status} | Get From Dictionary | ${Regenerate Status} | status |
+| | Run Keyword If | ${status} != 1 | Fail | 'Ixia Regenerate fails' |
+| | Sleep | 2 |
+
+# Send 2 seconds learning traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 2 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 5 seconds |
+
+# Send 30 seconds real traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 30 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 10 seconds |
+
+# Check ixia packet loss         
+| | ${Port1 Count} | Ixia Traffic Stats | ${Ixia Port1} |
+| | ${Port1 Tx} | Get From Dictionary | ${Port1 Count} | tx_count |
+
+| | ${Port2 Count} | Ixia Traffic Stats | ${Ixia Port2} |
+| | ${Port2 Rx} | Get From Dictionary | ${Port2 Count} | rx_count |
+
+| | ${Port3 Count} | Ixia Traffic Stats | ${Ixia Port3} |
+| | ${Port3 Rx} | Get From Dictionary | ${Port3 Count} | rx_count |
+
+| | ${Port4 Count} | Ixia Traffic Stats | ${Ixia Port4} |
+| | ${Port4 Rx} | Get From Dictionary | ${Port4 Count} | rx_count |
+
+| | ${Port5 Count} | Ixia Traffic Stats | ${Ixia Port5} |
+| | ${Port5 Rx} | Get From Dictionary | ${Port5 Count} | rx_count |
+
+| | ${Port6 Count} | Ixia Traffic Stats | ${Ixia Port6} |
+| | ${Port6 Rx} | Get From Dictionary | ${Port6 Count} | rx_count |
+
+| | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx}+${Port4 Rx}+${Port5 Rx}+${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port4 Rx:${Port4 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port5 Rx:${Port5 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port6 Rx:${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
+| | Should Be Equal As Numbers | ${Port3 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port4 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port5 Rx} | 0 | 'ACL UDP Drop Error' |
+| | Should Be Equal As Numbers | ${Port6 Rx} | 0 | 'ACL UDP Drop Error' |
+#remove
+| | Ixia Remove Traffic Config | stream_id=${Traffic Stream Id} |
+| | Log To Console | \n\t'ACL udp all drop action Complete' |
+
+
+#Testcase4
+| Change the sequence to 1: ACL count port3, port4, port5 and port6. 2: ACL no port udp_drop |
+| | [Documentation] | Test case4: | Change the sequence to 1: ACL count port3, port4, port5 and port6. 2: ACL no port udp_drop |
+#| | [tags] | Testcase4 |
+| | @{Testcase Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... | 	edit 1
+| | | ... | 		set dst ${Static route IP1}/${Netmask1}
+| | | ... | 		set device vlan12
+| | | ... |		set gateway ${Ixia Port3 Ip}
+| | | ... |	next
+| | | ... | 	edit 2
+| | | ... | 		set dst ${Static route IP2}/${Netmask2}
+| | | ... | 		set device vlan13
+| | | ... |		set gateway ${Ixia Port4 Ip}
+| | | ... |	next
+| | | ... | 	edit 3
+| | | ... | 		set dst ${Static route IP3}/${Netmask3}
+| | | ... | 		set device vlan14
+| | | ... |		set gateway ${Ixia Port5 Ip}
+| | | ... |	next
+| | | ... | 	edit 4
+| | | ... | 		set device vlan15
+| | | ... |		set gateway ${Ixia Port6 Ip}
+| | | ... |	end	
+| | | ... | config switch acl policy
+| | | ... |     edit 1
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP1}/${Netmask1}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 2
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP2}/${Netmask2}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 3
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route IP3}/${Netmask3}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 4
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-ip-prefix ${Static route dst IP4}/${Netmask}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... |     edit 5
+| | | ... |             config action
+| | | ... |                 set drop enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set service "ALL_UDP"
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... | 	end
+| | @{Testcase Unset Configure Data}= | Set Variable |
+| | | ... | config router static
+| | | ... |    del 1
+| | | ... |    del 2
+| | | ... |    del 3
+| | | ... |    del 4
+| | | ... | end
+| | | ... | config switch acl policy
+| | | ... |     del 1
+| | | ... | 	del 2
+| | | ... | 	del 3
+| | | ... | 	del 4
+| | | ... |	del 5
+| | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+
+# Configure Static rout
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Sleep | 2 |
+
+# Get SVI Mac Address
+| | ${SVI Mac Address} | FortiSwitch Get SVI Mac Address | ${Dut Hostname} | vlan10 |
+| | Log | \n\tSVI Mac Address=${SVI Mac Address} | console=yes |
+
+# Configure a new ipv4 packet
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port3} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP1} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port4} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP2} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port5} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP3} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Config Status} | Ixia Traffic Config | name='Traffic_Item_7' | traffic_generator=ixnetwork_540 | circuit_type=quick_flows | port_handle=${Ixia Port1} | port_handle2=${Ixia Port6} | mac_src=${Ixia Port1 Mac} | l4_protocol=udp | mac_dst=${SVI Mac Address} | ip_src_addr=${Ixia Port1 Ip} | ip_dst_addr=${Static route dst IP4} | vlan=enable | vlan_id_count=1 | vlan_id=10 | frame_size=128 |
+| | ${Traffic Stream Id} | Get From Dictionary | ${Traffic Config Status} | stream_id |
+
+# Enable regenerate
+| | ${Regenerate Status} | Ixia Regenerate |
+| | ${status} | Get From Dictionary | ${Regenerate Status} | status |
+| | Run Keyword If | ${status} != 1 | Fail | 'Ixia Regenerate fails' |
+| | Sleep | 2 |
+
+# Send 2 seconds learning traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 2 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 5 seconds |
+
+# check ACL table count
+| | ${Table} | FortiSwitch Command | ${Dut Hostname} | get switch acl counter |
+| | ${Header} | Set Variable | ID Packets Bytes description |
+| | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
+| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
+| | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
+| | ${packet_value1}= | Get From List | ${packet_list} | 0 |
+| | ${packet_value2}= | Get From List | ${packet_list} | 1 |
+| | ${packet_value3}= | Get From List | ${packet_list} | 2 |
+| | ${packet_value4}= | Get From List | ${packet_list} | 3 |
+| | ${packet_value_int1}= | Convert To Integer | ${packet_value1} |
+| | ${packet_value_int2}= | Convert To Integer | ${packet_value2} |
+| | ${packet_value_int3}= | Convert To Integer | ${packet_value3} |
+| | ${packet_value_int4}= | Convert To Integer | ${packet_value4} |
+
+
+# Send 30 seconds real traffic
+| | ${Start Traffic1 Status} | Ixia Start Traffic | handle=${Traffic Stream Id} |
+| | Sleep | 30 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+| | Sleep | 10 seconds |
+
+# Check ixia packet loss         
+| | ${Port1 Count} | Ixia Traffic Stats | ${Ixia Port1} |
+| | ${Port1 Tx} | Get From Dictionary | ${Port1 Count} | tx_count |
+
+| | ${Port2 Count} | Ixia Traffic Stats | ${Ixia Port2} |
+| | ${Port2 Rx} | Get From Dictionary | ${Port2 Count} | rx_count |
+
+| | ${Port3 Count} | Ixia Traffic Stats | ${Ixia Port3} |
+| | ${Port3 Rx} | Get From Dictionary | ${Port3 Count} | rx_count |
+
+| | ${Port4 Count} | Ixia Traffic Stats | ${Ixia Port4} |
+| | ${Port4 Rx} | Get From Dictionary | ${Port4 Count} | rx_count |
+
+| | ${Port5 Count} | Ixia Traffic Stats | ${Ixia Port5} |
+| | ${Port5 Rx} | Get From Dictionary | ${Port5 Count} | rx_count |
+
+| | ${Port6 Count} | Ixia Traffic Stats | ${Ixia Port6} |
+| | ${Port6 Rx} | Get From Dictionary | ${Port6 Count} | rx_count |
+
+| | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx}+${Port4 Rx}+${Port5 Rx}+${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port4 Rx:${Port4 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port5 Rx:${Port5 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port6 Rx:${Port6 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
+
+
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port3 Rx} | 0.24 |
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port4 Rx} | 0.24 |
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port5 Rx} | 0.24 |
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port6 Rx} | 0.24 |
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port Rx} | 0.97 |
+| | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
+| | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'ACL first count action does not hit' |
+| | Log To Console | \n\t'ACL First count action works' |
+
+# check ACL table count
+| | ${Table} | FortiSwitch Command | ${Dut Hostname} | get switch acl counter |
+| | ${Header} | Set Variable | ID Packets Bytes description |
+| | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
+| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
+| | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
+| | ${packet_value11}= | Get From List | ${packet_list} | 0 |
+| | ${packet_value12}= | Get From List | ${packet_list} | 1 |
+| | ${packet_value13}= | Get From List | ${packet_list} | 2 |
+| | ${packet_value14}= | Get From List | ${packet_list} | 3 |
+| | ${packet_value_int11}= | Convert To Integer | ${packet_value11} |
+| | ${packet_value_int12}= | Convert To Integer | ${packet_value12} |
+| | ${packet_value_int13}= | Convert To Integer | ${packet_value13} |
+| | ${packet_value_int14}= | Convert To Integer | ${packet_value14} |
+| | ${packet_value_int11}= | Evaluate | ${packet_value_int11}-${packet_value_int1} |
+| | ${packet_value_int12}= | Evaluate | ${packet_value_int12}-${packet_value_int2} |
+| | ${packet_value_int13}= | Evaluate | ${packet_value_int13}-${packet_value_int3} |
+| | ${packet_value_int14}= | Evaluate | ${packet_value_int14}-${packet_value_int4} |
+| | Log To Console | \n\tPort1 Tx: ${Port1 Tx} -- Counter Value: ${packet_value_int11} |
+| | Log To Console | \n\tPort1 Tx: ${Port1 Tx} -- Counter Value: ${packet_value_int12} |
+| | Log To Console | \n\tPort1 Tx: ${Port1 Tx} -- Counter Value: ${packet_value_int13} |
+| | Log To Console | \n\tPort1 Tx: ${Port1 Tx} -- Counter Value: ${packet_value_int14} 
+|
+| | ${Test Result} | PacketDiff | ${packet_value_int11} | ${Port3 Rx} | 0.95 |
+| | ${Test Result} | PacketDiff | ${packet_value_int12} | ${Port4 Rx} | 0.95 |
+| | ${Test Result} | PacketDiff | ${packet_value_int13} | ${Port5 Rx} | 0.95 |
+| | ${Test Result} | PacketDiff | ${packet_value_int14} | ${Port6 Rx} | 0.95 |
+| | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
+| | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic count loss' |
+
+| | Log To Console | \n\t'ACL port3, port4, port5, port6 count and the rest no drop action Complete' |
+
+
+
