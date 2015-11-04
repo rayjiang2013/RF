@@ -1,0 +1,104 @@
+# -*- coding: robot -*-
+| *Setting* | *Value *|
+| Documentation | Fortiswitch RESTful API Test |
+| Resource | ${autopath}/lib/util/telnet.txt |
+| Resource | ${autopath}/lib/util/os.txt |
+| Resource | ${autopath}/lib/util/fsw.txt |
+| Library  | ${autopath}/lib/util/tableparser.py |
+| Library  | ${autopath}/lib/util/misc.py |
+| Library  | ${autopath}/lib/util/rest.py | WITH NAME | REST |
+| Library  | ${autopath}/lib/util/infra.py | WITH NAME | Infra |
+| Library | Collections |
+
+| *Variables*  | *Value* |
+| ${tbinfo} | ${autopath}/cfg/${testbed}/tbinfo.xml |
+| ${virtual_topo} | ${EMPTY} |
+| ${tbtopo} | ${autopath}/cfg/virtual_topos/${virtual_topo} |
+
+| *Keywords* |
+| Suite Setup Keyword | [Arguments] | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | [Documentation] | Initialize an Envirioment for Suite test |
+| | Run Keyword | Test Topo Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+
+| Suite Teardown Keyword | [Arguments] |
+| | [Documentation] | Suite Teardown Keyword |
+| | Log To Console | \n\tSuite Teardown |
+| | REST.Logout | ${Rest Login} |
+#| | FortiSwitch Exec Factoryreset | ${Dut Hostname} |
+| | Release Test Topo | ${testbed} | ${Test Topo} |
+| | Close All Connections |
+
+| Test Setup Keyword | [Arguments] | ${Dut Hostname} | @{Testcase Configure data} |
+| | [Documentation] | Test Setup Keyword |
+| | Log To Console | \n\tTest Setup |
+| | ${Testcase Configure String} | List To String | @{Testcase Configure data} |
+| | ${Testcase Configure Dict} | Create Dictionary | ${Dut Hostname} | ${Testcase Configure String} |
+| | Configure FortiSwitch | ${Testcase Configure Dict} |
+
+| Test Teardown Keyword | [Arguments] | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+| | [Documentation] | Test Teardown Keyword |
+| | ${Testcase Unset Configure String} | List To String | @{Testcase Unset Configure Data} |
+| | ${Testcase Unset Configure Dict} | Create Dictionary | ${Dut Hostname} | ${Testcase Unset Configure String} |
+| | Configure FortiSwitch | ${Testcase Unset Configure Dict} |
+
+| Test Topo Init | [Arguments] | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | [Documentation] | Test Topo Init Keyword |
+
+# Allocate Suite Test Resources |
+| | Log To Console | \n\tSuite Setup |
+| | ${Test Topo}= | Infra.Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | ${Dut Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev1.hostname |
+| | ${Dut Username} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.username |
+| | ${Dut Password} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.password |
+| | ${Dut Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.ip |
+| | ${Dut Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.line |
+| | ${Dut Mgmt Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.mgmt.ip |
+| | ${Dut Mgmt Netmask} | Get Nested Diction | ${Test Topo} | test_topo.dev1.mgmt.netmask |
+| | ${link1_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link1.link |
+| | ${dev_ports_dict} | Restruct Dev Ports | ${link1_ports} |
+| | Log To Console | \n\tlink1_ports=${link1_ports}
+| | ${Dut ports} | Get From Dictionary | ${dev_ports_dict} | dev1 |
+| | ${Dut Port1} | ${Dut Port2} | Split String | ${Dut ports} |
+| | Show Test Related Variables |
+
+# Make a few varaibles available in current suite
+| | Set Suite Variable | ${Dut Hostname} | ${Dut Hostname}
+| | ${Test Topo} | Get From Dictionary | ${Test Topo} | physical_topo |
+| | Set Suite Variable | ${Test Topo} | ${Test Topo} |
+| | Set Suite Variable | ${Dut Port1} | ${Dut Port1} |
+| | Set Suite Variable | ${Dut Port2} | ${Dut Port2} |
+
+# Telnet to DUT
+| | [Documentation] | Test Topo Init Keyword |
+| | ${dut_prompt}= | Telnet Login | ${Dut Console Ip} | ${Dut Hostname} | ${Dut Username} | ${Dut Password} | ${Dut Console Port} | ${Dut Hostname} |
+
+# Configure DUT
+| | @{Init Configure Data}= | Set Variable |
+| | ... | config system interface
+| | ... |    edit "mgmt"
+| | ... |        set ip ${Dut Mgmt Ip} ${Dut Mgmt Netmask}
+| | ... |        set allowaccess ping https http ssh snmp telnet
+| | ... | end
+| | ${Init Configure String} | List To String | @{Init Configure Data} |
+| | ${Init Configure Dict} | Create Dictionary | ${Dut Hostname} | ${Init Configure String} |
+| | Configure FortiSwitch | ${Init Configure Dict} |
+
+# https login to FortiSwitch
+| | ${Rest Login Status} | REST.Login | ${Dut Mgmt Ip} |
+| | ${Rest Login} | Get From Dictionary | ${Rest Login Status} | ${Dut Mgmt Ip} |
+| | Set Suite Variable | ${Rest Login} | ${Rest Login} |
+
+| Show Test Related Variables | [Documentation] | Show all variables using in this test, autopath and dut_id are passed via command line |
+| | Log To Console | \tautopath=${autopath} |
+| | Log To Console | \ttestbed=${testbed} |
+| | Log To Console | \ttbinfo=${tbinfo} |
+| | Log To Console | \ttbtopo=${tbtopo} |
+| | Log To Console | \tDut Hostname=${Dut Hostname} |
+| | Log To Console | \tDut Username=${Dut Username} |
+| | Log To Console | \tDut Password=${Dut Password} |
+| | Log To Console | \tDut Console Ip=${Dut Console Ip} |
+| | Log To Console | \tDut Console Port=${Dut Console Port} |
+| | Log To Console | \tDut Mgmt Ip=${Dut Mgmt Ip} |
+| | Log To Console | \tDut Mgmt Netmask=${Dut Mgmt Netmask} |
+| | Log To Console | \tDut Port1=${Dut Port1} |
+| | Log To Console | \tDut Port2=${Dut Port2} |
