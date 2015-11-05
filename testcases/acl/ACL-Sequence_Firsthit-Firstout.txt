@@ -11,8 +11,8 @@
 
 | *Test Cases*  | *Value* | *Value* | *Value* |
 # Testcase 1
-| ACL-Sequence_Firsthit-Firstout |
-| | [Documentation] | Test case1: ACL-Sequence_Firsthit-Firstout |
+| ACL-Sequence_First_udpall_drop |
+| | [Documentation] | Test case1: ACL-Sequence_First_udpall_drop |
 #| | [tags] | Testcase1 |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config router static
@@ -137,7 +137,7 @@
 #remove
 | | Ixia Remove Traffic Config | stream_id=${Traffic Stream Id} |
 
-| | Log To Console | \n\t'ACL udp all drop action Complete' |
+| | Log To Console | \n\t'ACL-Sequence_First_udpall_drop action Complete' |
 
 #Testcase2
 | Change the sequence to 1: ACL count port3. 2: ACL other port udp_drop |
