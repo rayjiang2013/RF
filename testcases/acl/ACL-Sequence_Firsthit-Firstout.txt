@@ -140,7 +140,7 @@
 | | Log To Console | \n\t'ACL-Sequence_First_udpall_drop action Complete' |
 
 #Testcase2
-| Change the sequence to 1: ACL count port3. 2: ACL other port udp_drop |
+| ACL_Sequence-FirstCount-DropRest |
 | | [Documentation] | Test case2: Change the sequence to 1: ACL count port3. 2: ACL other port udp_drop |
 #| | [tags] | ACL-Sequence-Testcase2 |
 | | @{Testcase Configure Data}= | Set Variable |
@@ -297,7 +297,7 @@
 
 
 #Testcase3
-| Change the sequence to 1: drop all udp. 2 Change to ACL count port3, port4, port5 and port6.|
+| ACL_Sequence-FirstDropALLUDP-SecondAllNoCount|
 | | [Documentation] | Test case3: | Change the sequence to 1: drop all udp. 2 Change to ACL count port3, port4, port5 and port6. |
 #| | [tags] | Testcase3 |
 | | @{Testcase Configure Data}= | Set Variable |
@@ -452,7 +452,7 @@
 
 
 #Testcase4
-| Change the sequence to 1: ACL count port3, port4, port5 and port6. 2: ACL no port udp_drop |
+| ACL_Sequence-FirstCountAll-SecondNoUDPDrop |
 | | [Documentation] | Test case4: | Change the sequence to 1: ACL count port3, port4, port5 and port6. 2: ACL no port udp_drop |
 #| | [tags] | Testcase4 |
 | | @{Testcase Configure Data}= | Set Variable |
