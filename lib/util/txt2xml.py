@@ -56,13 +56,11 @@ def text2xml(txtfile, status, keyword):
 
         # each test suite starts with TestSuiteName::
         for line in tc_data_list:
-
             # start a new suite section
             if re.match(r'TestSuiteName::', line):
                 testcase_id = 1
                 testSuiteStage = 1
                 continue
-
             re_line = re.match(r'^[0-9]+\.[0-9]+\s(.*)', line)
             if re_line and testSuiteStage == 1:
                 xml_data = xml_data + '<testsuite name="' + re_line.group(1)+'" id="">'
@@ -120,15 +118,33 @@ def text2xml(txtfile, status, keyword):
                 stepsOpen = '<steps><step>'
                 stepsClose = '</step></steps>'
                 step_data = ""
+                in_step_data = ""
                 testSuiteStage = 8
+                prev_step_line = ""
                 step_number = 0
                 continue
             if re.match(r'^[0-9]+\.\s(.*)', line) and testSuiteStage == 8:
-                step_data = step_data + '<p>' + line + '</p>'
+                if prev_step_line == "":
+                    prev_step_line = line
+                else:
+                    if in_step_data == "":
+                        step_data = step_data + '<p>' + prev_step_line + '</p>'
+                    else:
+                        step_data = step_data + '<p>' + prev_step_line + '<p>' + in_step_data + '</p></p>'
+                        in_step_data = ""
+                    prev_step_line = line
                 step_number += 1
                 continue
             if re.match(r'^ExpectedResults::', line) and testSuiteStage == 8:
+                if in_step_data == "":
+                    step_data = step_data + '<p>' + prev_step_line + '</p>'
+                else:
+                    step_data = step_data + '<p>' + prev_step_line + '<p>' + in_step_data + '</p></p>'
                 testSuiteStage = 9
+                continue
+            if  re.match(r'^[\s]?(.*)', line) and testSuiteStage == 8:
+                line = line.strip()
+                in_step_data = in_step_data + line + '<br>'
                 continue
             if testSuiteStage == 9:
                 testSuiteStage = 5
