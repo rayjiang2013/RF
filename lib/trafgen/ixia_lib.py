@@ -5,6 +5,7 @@ import time
 import ast
 import pdb
 
+
 from ixiatcl import IxiaTcl
 from ixiahlt import IxiaHlt
 from ixiangpf import IxiaNgpf
@@ -896,9 +897,14 @@ def ixia_flow_stats(flow, port):
     flow_stats = ixiangpf.traffic_stats(**kwargs)
 
     if flow_stats['status'] != IxiaHlt.SUCCESS:
-        ErrorHandler('traffic_stats', flow_stats)
+        ErrorHandler('flow_stats', flow_stats)
     else:
-        flow_count = flow_stats['flow'][flow][port]
+        flow_count = None
+        for fn in flow_stats['flow']:
+            if fn.flow_name == flow:
+                flow_count = flow_stats['flow'][fn][port]
+        if flow_count == None:
+            ErrorHandler('flow_stats', flow_stats)
 
     flow_stats = {
         'status':1,
