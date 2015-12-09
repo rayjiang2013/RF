@@ -387,7 +387,7 @@
 
 # Wireless Change Beacon Interval
 | Wireless Change Beacon Interval | [Arguments] | ${telnet_lias} | ${WTP Profile Name} | ${radio number} | ${beacon interval} | 
-| | [Documentation] | Wireless Change Beacon Interval telnet_lias=${telnet_lias} |
+| | [Documentation] | Wireless Change Beacon Interval telnet_lias=${telnet_lias}, WTP Profile Name=${WTP Profile Name}, radio number=${radio number}, beacon interval=${beacon interval} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
 | | @{Beacon Interval Configure Data}= | Set Variable |
 | | ... | config wireless-controller wtp-profile
@@ -404,7 +404,7 @@
 
 # To get beacon interval on AP
 | Get Beacon Interval | [Arguments] | ${telnet_lias} | ${radio number} | ${beacon interval} | ${FAP IP} | ${FAP Username} | ${FAP Password} | ${FAP Model} | ${FAP Hostname} | ${FAP Login Prompt}=login:  | ${FAP Password Prompt}=Password:  | 
-| | [Documentation] | Get Beacon Interval telnet_lias=${telnet_lias} |
+| | [Documentation] | Get Beacon Interval telnet_lias=${telnet_lias}, radio number=${radio number}, beacon interval=${beacon interval}, FAP IP=${FAP IP}, FAP Username=${FAP Username}, FAP Password=${FAP Password}, FAP Model=${FAP Model}, FAP Hostname=${FAP Hostname}, FAP Login Prompt=${FAP Login Prompt}, FAP Password Prompt=${FAP Password Prompt}
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
 | | Log | ${telnet_lias} \# exec telnet ${FAP IP} | console=yes |
 | | Telnet.Write | exec telnet ${FAP IP} |
