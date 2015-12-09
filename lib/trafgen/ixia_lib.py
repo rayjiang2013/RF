@@ -5,6 +5,7 @@ import time
 import ast
 import pdb
 
+
 from ixiatcl import IxiaTcl
 from ixiahlt import IxiaHlt
 from ixiangpf import IxiaNgpf
@@ -839,7 +840,7 @@ def ixia_clear_traffic():
 
 def ixia_traffic_stats(port):
     '''
-    This command Collecting Flow Stats for a port
+    This command Collecting traffic Stats for a port
     Arguments:
      -mode:
        ALPHA
@@ -877,6 +878,39 @@ def ixia_traffic_stats(port):
         'rx_total_count':rx_total_count,
     }
     return(traffic_stats)
+
+def ixia_flow_stats(flow, port):
+    '''
+    This command Collecting Flow Stats for a port
+     -flowe:
+       NUMERIC
+     -flowe:
+       port
+    '''
+
+    kwargs={}
+    kwargs['mode']='flow'
+
+    #################################################
+    ##  Create Create Traffic                       #
+    #################################################
+    flow_stats = ixiangpf.traffic_stats(**kwargs)
+
+    if flow_stats['status'] != IxiaHlt.SUCCESS:
+        ErrorHandler('flow_stats', flow_stats)
+    else:
+        flow_count = None
+        for fn in flow_stats['flow']:
+            if fn.flow_name == flow:
+                flow_count = flow_stats['flow'][fn][port]
+        if flow_count == None:
+            ErrorHandler('flow_stats', flow_stats)
+
+    flow_stats = {
+        'status':1,
+        'flow_count':flow_count,
+    }
+    return(flow_stats)
 
 def ixia_traffic_packets(port, ptype, count_title):
     '''
@@ -999,6 +1033,131 @@ def ixia_get_resolved_mac(handle):
         status_data = {'status':0, 'resolvedGatewayMac':e}
     finally:
         return(status_data)
+
+def ixia_enable_capture(**kwargs):
+    '''
+    Enable capture
+    Arguments:
+     -port_handle:
+       ANY
+     -data_plane_capture_enable:
+       CHOICES 0 1
+     -control_plane_capture_enable:
+       CHOICES 0 1
+     -slice_size:
+       NUMERIC
+     -capture_mode:
+       trigger
+     -trigger_position:
+       NUMERIC
+     -after_trigger_filter:
+       ANY
+     -before_trigger_filter:
+       ANY
+     -continuous_filter:
+       ANY
+    '''
+    tkwargs = {
+        'data_plane_capture_enable':1,
+        'control_plane_capture_enable':0,
+        'slice_size':0,
+        'capture_mode':'trigger',
+        'trigger_position':1,
+        'after_trigger_filter':'trigger',
+        'before_trigger_filter':none,
+        'continuous_filter':'all',
+    }
+    for key, value in kwargs.iteritems():
+        tkwargs[key]=value
+
+    #################################################
+    ##  Enable capture
+    #################################################
+    enable_capture_status = ixiangpf.packet_config_buffers(**tkwargs)
+
+    if enable_capture_status['status'] != '1':
+        ErrorHandler('enable_capture', enable_capture_status)
+    else:
+        ixia_print('\nenable_capture done')
+
+    return(enable_capture_status)
+
+def ixia_start_capture(**kwargs):
+    '''
+    Enable capture
+    Arguments:
+     -port_handle:
+       ANY
+    '''
+    tkwargs = {
+        'action':'start',
+    }
+    for key, value in kwargs.iteritems():
+        tkwargs[key]=value
+
+    #################################################
+    ##  Enable capture
+    #################################################
+    start_capture_status = ixiangpf.packet_config_buffers(**tkwargs)
+
+    if start_capture_status['status'] != '1':
+        ErrorHandler('start_capture', start_capture_status)
+    else:
+        ixia_print('\nstart_capture done')
+
+    return(start_capture_status)
+
+def ixia_stop_capture(**kwargs):
+    '''
+    Enable capture
+    Arguments:
+     -port_handle:
+       ANY
+    '''
+    tkwargs = {
+        'action':'stop',
+    }
+    for key, value in kwargs.iteritems():
+        tkwargs[key]=value
+
+    #################################################
+    ##  Enable capture
+    #################################################
+    stop_capture_status = ixiangpf.packet_config_buffers(**tkwargs)
+
+    if stop_capture_status['status'] != '1':
+        ErrorHandler('stop_capture', stop_capture_status)
+    else:
+        ixia_print('\nstop_capture done')
+
+    return(stop_capture_status)
+
+def ixia_get_captured_data(**kwargs):
+    '''
+    Enable capture
+    Arguments:
+     -port_handle:
+       ANY
+    '''
+    tkwargs = {
+        'format':'var',
+        'frame_id_start':1,
+        'frame_id_end':2,
+    }
+    for key, value in kwargs.iteritems():
+        tkwargs[key]=value
+
+    #################################################
+    ##  Enable capture
+    #################################################
+    get_captured_data_status = ixiangpf.packet_config_buffers(**tkwargs)
+
+    if get_captured_data_status['status'] != '1':
+        ErrorHandler('get_captured_data', get_captured_data_status)
+    else:
+        ixia_print('\nget_captured_data done')
+
+    return(get_captured_data_status)
 
 if __name__ == "__main__":
     pdb.set_trace()
