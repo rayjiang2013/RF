@@ -31,7 +31,7 @@ def nested_print(obj, nested_level=0, output=sys.stdout):
 
 def get_nested_diction(d, keys):
     '''
-    This python API returns the value of nested keys in the diction since Robor Framework does not provide it
+    This python API returns the value of nested keys in the diction since Robot Framework does not provide it
     '''
     for k in keys.split('.'):
         if type(d) != dict:
@@ -74,3 +74,8 @@ def restruct_dev_ports(link_ports):
             else:
                 link_ports_dict[dev] = port
     return(link_ports_dict)
+
+if __name__ == '__main__': 
+    d={'status': 1, 'WTP': {u'FP320C3X14006196': {u'mgmt_vlanid': u'0', u'last-failure': u'0 -- N/A', u'image-download-progress': u'0', u'data-chan-sec': u'clear-text', 'ip_group': u'0-192.168.1.110:5246'}}}
+    keys='WTP.FP320C3X14006196.non_exist'
+    get_nested_diction(d, keys)
