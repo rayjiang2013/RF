@@ -7,8 +7,8 @@
 | *Variables* |
 
 | *Keywords* |
-| Telnet Login | [Arguments] | ${host_ip} | ${connection_name} | ${username} | ${password} |  ${port}=23 | ${prompt}=# | ${timeout}=10 seconds | ${open}=open | ${send_ctrlc}=yes |
-| | [Documentation] | Telnet Login host_ip=${host_ip}, connection_name=${connection_name}, username=${username}, password=${password}, port=${port}=23, prompt=${prompt}, timeout=${timeout}, open=${open}, send_ctrlc=${send_ctrlc} |
+| Telnet Login | [Arguments] | ${host_ip} | ${connection_name} | ${username} | ${password} |  ${port}=23 | ${prompt}=# | ${login prompt}=login: | ${password prompt}=Password:  | ${timeout}=10 seconds | ${open}=open | ${send_ctrlc}=yes |
+| | [Documentation] | Telnet Login host_ip=${host_ip}, connection_name=${connection_name}, username=${username}, password=${password}, login prompt=${login prompt}, password prompt=${password prompt}, port=${port}=23, prompt=${prompt}, timeout=${timeout}, open=${open}, send_ctrlc=${send_ctrlc} |
 | | Run Keyword If | '${open}' == 'open' | Telnet.Open Connection | ${host_ip} | alias=${connection_name} | timeout=${timeout} | prompt=${prompt} | port=${port} |
 | | ${ctrl_]} | Evaluate | chr(int(29))
 | | ${ctrl_c} | Evaluate | chr(int(3))
@@ -20,7 +20,18 @@
 | | Run Keyword If | '${send_ctrlc}' == 'yes' | Sleep | 1s |
 | | Run Keyword If | '${send_ctrlc}' == 'yes' | Telnet.Write Bare | ${ctrl_]}${ctrl_c}
 | | Run Keyword If | '${send_ctrlc}' == 'yes' | Sleep | 4s |
-| | ${read_prompt} | Telnet.Login | ${username} | ${password} 
+| | Telnet.Write Bare | \n
+| | Sleep | 1s |
+| | ${read_info}= | Telnet.Read |
+| | Log To Console | \n${read_info} |
+| | ${Prompt Lines} | Get Lines Containing String | ${read_info} | ${login prompt} |
+| | ${returns}= | Evaluate | '${login prompt}' in '''${Prompt Lines}''' |
+| | Log To Console | \n${returns} |
+| | Run Keyword Unless | '${login prompt}' in '''${Prompt Lines}''' | Telnet.Write Bare | exit\n |
+| | Sleep | 3s |
+| | ${read_info}= | Telnet.Read |
+| | Log To Console | \n${read_info} |
+| | ${read_prompt} | Telnet.Login | ${username} | ${password} |  | ${password prompt} |
 | | [Return] | ${read_prompt} |
 
 | Telnet Close All Connections | [Arguments] |
