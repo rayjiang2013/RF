@@ -286,6 +286,45 @@ class wireless(object):
         finally:
             return(status_data)
 
+    def parse_beacon_interval(self, info, radio_number):
+        '''
+        This python API parses output from FAP output and return beacon interval
+        '''
+        func_name = 'get_beacon_interval'
+        try:
+            status_data = {'status':0}
+            s = re.search(r'Radio %s:[.\s:\n\w=/\-,]+?beacon\sintv\s+\:\s+(\d+)' % str(int(radio_number) - 1), info)
+            if s:
+                status_data = {
+                    'status':1,
+                    'beacon_interval':s.group(1)
+                }
+        except:
+            e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return(status_data)
+
+    def parse_beacon_interval_from_wtp_profile(self, info, radio_number):
+        '''
+        This python API parses output from controller output and return beacon interval
+        '''
+        func_name = 'get_beacon_interval'
+        try:
+            status_data = {'status':0}
+            s = re.search(r'radio-%s:[.\s:\n\w=/\-,]+?beacon-interval\s+\:\s+(\d+)' % str(int(radio_number)), info)
+            if s:
+                status_data = {
+                    'status':1,
+                    'beacon_interval':s.group(1)
+                }
+        except:
+            e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return(status_data)
+
+
     def get_SSID_data(self, info):
         '''
         This python API return SSID data in a dictionary format
