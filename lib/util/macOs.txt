@@ -32,7 +32,7 @@
 | | ${Wifi Data}= | Get From Dictionary | ${Wifi Info} | wifi |
 | | [Return] | ${Wifi Data} |
 
-# Get SSID Data
+# Check SSID Presence
 | macOs Check SSID Presence | [Arguments] | ${handle} | ${Wireless Hardware Port} | ${SSID Name} |
 | | [Documentation] | macOs Check SSID Presence handle=${handle}, Wireless Hardware Port=${Wireless Hardware Port}, SSID Name=${SSID Name} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
@@ -46,20 +46,58 @@
 | | Should Not Be Empty | ${Match Lines} | 'Unable find ${SSID Name} on Hardware Port ${Wireless Hardware Port}' |
 
 # Get SSID Data
-| macOs Get SSID Data | [Arguments] | ${handle} | ${SSID Name} |
-| | [Documentation] | macOs Get SSID Data handle=${handle}, SSID Name=${SSID Name} |
+| macOs Get SSID Data | [Arguments] | ${handle} | ${SSID Name} | ${macOs Interface Name} |
+| | [Documentation] | macOs Get SSID Data handle=${handle}, SSID Name=${SSID Name}, macOs Interface Name=${macOs Interface Name} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
-| | Log | \n\t${handle} /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan | console=yes |
-| | SSHLibrary.Write | /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan |
-| | Sleep | 5 |
-| | ${Info Data}= | SSHLibrary.Read |
-| | Log To Console | \n\t${Info Data}
+#for loop solution
+| | :FOR | ${Loop Count} | IN RANGE | 1 | 5 |
+| | | ${Pass}= | Set Variable | True
+| | | Log | \n\t${handle} /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan | console=yes |
+| | | SSHLibrary.Write | /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan |
+| | | Sleep | 5 |
+| | | ${Info Data}= | SSHLibrary.Read |
+| | | Log To Console | \n\t${Info Data} |
+| | | ${Len Info Data}= | Get Length | ${Info Data} | 
+| | | ${SSID Verified}= | Verify SSID Scanned | ${Info Data}
+| | | Run Keyword If | ${SSID Verified} == True | Log To Console | The intended ssid is found in the scan list |
+| | | ... | ELSE | Log To Console | The intended ssid cannot be found in the scan list
+| | | Run Keyword If | ${Len Info Data} > 40 and ${SSID Verified} == True | Exit For Loop |
+| | | ... | ELSE | Run Keywords | 
+| | | ... | Set Suite Variable | ${Pass} | False
+| | | ... | AND | macOs Turn Off Wifi | ${handle} | ${macOs Interface Name} |
+| | | ... | AND | macOs Turn On Wifi | ${handle} | ${macOs Interface Name} |
+| | ${Pass} | Set Variable | ${Pass}
 | | SSHLibrary.Switch Connection | ${org_handle} |
 | | ${Header} | Set Variable | SSID BSSID RSSI CHANNEL HT CC SECURITY |
-| | ${Parse Info} | Create Dictionary | table | ${Info Data} | header | ${Header} |
+| | ${Parse Info}= | Create Dictionary | table=${Info Data} | header=${Header} |
 | | ${Parsed Dict} | TableParserInPosition | ${Parse Info} |
 | | ${Status} | Get From Dictionary | ${Parsed Dict} | status |
-| | Run Keyword If | ${Status} != 1 | Fail | 'macOs Get SSID Data fails' |
+| | Run Keyword If | ${Status} != 1 or ${Pass} == False | Fail | 'macOs Get SSID Data fails' |
+#run keyword if solution
+#| | Log | \n\t${handle} /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan | console=yes |
+#| | SSHLibrary.Write | /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan |
+#| | Sleep | 5 |
+#| | ${Info Data}= | SSHLibrary.Read |
+#| | Log To Console | \n\t${Info Data} |
+#| | ${Len Info Data}= | Get Length | ${Info Data} | 
+#| | Run Keyword If | ${Len Info Data} < 40 | 
+#| | ... | Run Keywords |
+#| | ... | SSHLibrary.Write | /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan 
+#| | ... | AND | Sleep | 5 |
+#| | ${Info Data Again}= | SSHLibrary.Read |
+#| | ${Len Info Data Again}= | Get Length | ${Info Data Again} | 
+#| | Run Keyword if | ${Len Info Data Again} > 40 | 
+#| | ... | Log To Console | \n\t${Info Data Again} |
+#| | SSHLibrary.Switch Connection | ${org_handle} |
+#| | ${Header} | Set Variable | SSID BSSID RSSI CHANNEL HT CC SECURITY |
+##| | ${Parse Info}= | Set Variable if |
+##| | ... | ${Len Info Data Again} > 40 | Create Dictionary | table=${Info Data Again} | header=${Header} |
+##| | ... | ${Len Info Data Again} <= 40 | Create Dictionary | table=${Info Data} | header=${Header} |
+#| | ${Parse Info}= | Run Keyword if | ${Len Info Data Again} > 40 | kw that create variable of dictionary with two elements | table | ${Info Data Again} | header | ${Header} |
+#| | | ... | ELSE | kw that create variable of dictionary with two elements | table | ${Info Data} | header | ${Header} |
+#| | ${Parsed Dict} | TableParserInPosition | ${Parse Info} |
+#| | ${Status} | Get From Dictionary | ${Parsed Dict} | status |
+#| | Run Keyword If | ${Status} != 1 | Fail | 'macOs Get SSID Data fails' |
 | | ${SSID List} | Get Nested Diction | ${Parsed Dict} | data.SSID |
 | | ${BSSID List} | Get Nested Diction | ${Parsed Dict} | data.BSSID |
 | | ${RSSI List} | Get Nested Diction | ${Parsed Dict} | data.RSSI |
@@ -78,6 +116,27 @@
 | | ${SECURITY Value} | Get From List | ${SECURITY List} | ${SSID Index} |
 | | ${SSID Info} | Create Dictionary | SSID | ${SSID Value} | BSSID | ${RSSI Value} | CHANNEL | ${CHANNEL Value} | HT | ${HT Value} | CC | ${CC Value} | SECURITY | ${SECURITY Value} |
 | | [Return] | ${SSID Info} |
+
+# kw that create variable of dictionary with two elements that is used by "macOs Get SSID Data"
+| kw that create variable of dictionary with two elements | [Arguments] | ${key1} | ${value1} | ${key2} | ${value2} |
+| | [Documentation] | kw that create variable of dictionary with two elements that is used by "macOs Get SSID Data" |
+| | ${dict}= | Create Dictionary | ${key1}=${value1} | ${key2}=${value2} |
+| | [Return] | ${dict} |
+
+#To verify intended ssid shown in the scan output
+| Verify SSID Scanned | [Arguments] | ${Info Data} |
+| | [Documentation] | To verify intended ssid shown in the scan output. Info Data=${Info Data} |
+| | ${Header} | Set Variable | SSID BSSID RSSI CHANNEL HT CC SECURITY |
+| | ${Parse Info}= | Create Dictionary | table=${Info Data} | header=${Header} |
+| | ${Parsed Dict} | TableParserInPosition | ${Parse Info} |
+| | ${Status} | Get From Dictionary | ${Parsed Dict} | status |
+| | Run Keyword If | ${Status} != 1 | Return From Keyword | False |
+| | ${SSID Subname} | Get Substring | ${SSID Name} | -4 |
+| | ${SSID List} | Get Nested Diction | ${Parsed Dict} | data.SSID |
+| | ${SSID Index} | Get Index From List | ${SSID List} | ${SSID Subname} |
+| | ${SSID Value} | Get From List | ${SSID List} | ${SSID Index} |
+| | Return From Keyword If | '${SSID Value}' == '''${EMPTY}''' | False |
+| | Return From Keyword | True
 
 # Verify if Wireless Client can ping FAP
 | macOs Ping | [Arguments] | ${handle} | ${Destination IP} |
@@ -99,36 +158,49 @@
 | macOs Connect To SSID | [Arguments] | ${handle} | ${SSID Name} | ${Interface Name} | ${Password}='' |
 | | [Documentation] | macOs Connect To SSID handle=${handle}, SSID Name=${SSID Name}, Interface Name=${Interface Name}, Password=${Password} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
-| | :FOR | ${Loop Count} | IN RANGE | 1 | 10 |
-| | | Log | ${handle} networksetup -setairportnetwork ${Interface Name} ${SSID Name} ${Password} | console=yes |
-| | | SSHLibrary.Write | networksetup -setairportnetwork ${Interface Name} ${SSID Name} ${Password} |
-| | | Sleep | 1 |
+| | ${Pass}= | Set Variable | False
+| | :FOR | ${Loop Count} | IN RANGE | 1 | 5 |
+| | | Log | ${handle} sudo networksetup -setairportnetwork ${Interface Name} ${SSID Name} ${Password} | console=yes |
+| | | SSHLibrary.Write | sudo networksetup -setairportnetwork ${Interface Name} ${SSID Name} ${Password} |
+| | | Sleep | 5 |
 | | | ${Info Data}= | SSHLibrary.Read |
+| | | Run Keyword If | 'Password:' in '''${Info Data}''' | SSHLibrary.Write | fortinet
 | | | Log To Console | \n\t${Info Data}
 | | | ${Match Lines} | Get Lines Containing String | ${Info Data} | Unable to commit systemconfig database |
-| | | Run Keyword If | '${Match Lines}' == '${EMPTY}' | Exit For Loop |
+| | | ${Match Lines 2} | Get Lines Containing String | ${Info Data} | Error: -3900 |
+| | | ${Match Lines 3} | Get Lines Containing String | ${Info Data} | Could not find network |
+| | | ${Match Lines 4} | Get Lines Containing String | ${Info Data} | You cannot join a network when Wi-Fi power is off |
+| | | Run Keyword If | '''${Match Lines}''' == '${EMPTY}' and '''${Match Lines 2}''' == '${EMPTY}' and '''${Match Lines 3}''' == '${EMPTY}' and '''${Match Lines 4}''' == '${EMPTY}' | Run Keywords |
+| | | | ... | Set Suite Variable | ${Pass} | True 
+| | | | ... | AND | Exit For Loop |
+| | | ... | ELSE | Run Keywords | 
+| | | ... | macOs Turn Off Wifi | ${handle} | ${Interface Name} |
+| | | ... | AND | macOs Turn On Wifi | ${handle} | ${Interface Name} |
 | | | Sleep | 10 |
+| | ${Pass} | Set Variable | ${Pass} |
+#| | ${Loop Count}= | Evaluate | ${Loop Count}+1 |
+| | Log To Console | \n\t${Loop Count} |
 | | SSHLibrary.Switch Connection | ${org_handle} |
-| | Should Be True | ${Loop Count} < 9 | 'macOs Connect To SSID  ${SSID Name} ${Interface Name} ${Password} fails' |
+| | Should Be True | ${Pass} == True | 'macOs Connect To SSID  ${SSID Name} ${Interface Name} ${Password} fails' |
 
 # Trun Off Wifi
-| macOs Trun Off Wifi | [Arguments] | ${handle} | ${Interface Name} |
-| | [Documentation] | macOs Trun Off Wifi handle=${handle}, Interface Name=${Interface Name} |
+| macOs Turn Off Wifi | [Arguments] | ${handle} | ${Interface Name} |
+| | [Documentation] | macOs Turn Off Wifi handle=${handle}, Interface Name=${Interface Name} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
 | | Log | ${handle} networksetup -setairportpower ${Interface Name} off | console=yes |
 | | SSHLibrary.Write | networksetup -setairportpower ${Interface Name} off |
-| | Sleep | 1 |
+| | Sleep | 10 |
 | | ${Info Data}= | SSHLibrary.Read |
 | | Log To Console | \n\t${Info Data}
 | | SSHLibrary.Switch Connection | ${org_handle} |
 
 # Trun On Wifi
-| macOs Trun On Wifi | [Arguments] | ${handle} | ${Interface Name} |
-| | [Documentation] | macOs Trun On Wifi handle=${handle}, Interface Name=${Interface Name} |
+| macOs Turn On Wifi | [Arguments] | ${handle} | ${Interface Name} |
+| | [Documentation] | macOs Turn On Wifi handle=${handle}, Interface Name=${Interface Name} |
 | | ${org_handle} | SSHLibrary.Switch Connection | ${handle} |
 | | Log | ${handle} networksetup -setairportpower ${Interface Name} on | console=yes |
 | | SSHLibrary.Write | networksetup -setairportpower ${Interface Name} on |
-| | Sleep | 1 |
+| | Sleep | 10 |
 | | ${Info Data}= | SSHLibrary.Read |
 | | Log To Console | \n\t${Info Data}
 | | SSHLibrary.Switch Connection | ${org_handle} |
