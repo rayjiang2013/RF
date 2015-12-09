@@ -1,0 +1,59 @@
+# -*- coding: robot -*-
+| *Setting* | *Value *|
+| Documentation | Configure Wireless devices via a telnet Console, then change beacon interval from 100ms to 50ms |
+| Default Tags | macOs-beacon-interval |
+| Resource | macOs-beacon-interval_resources.txt |
+#| Library  | ${autopath}/lib/util/fap.py | WITH NAME | FAP |
+#| Library  | ${autopath}/lib/util/wireless.py | WITH NAME | Wireless |
+| Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
+| Suite Teardown | Suite Teardown Keyword |
+| Test Setup | Test Setup Keyword | ${FGate Hostname} | @{Testcase Configure data} |
+| Test Teardown | Test Teardown Keyword | ${FGate Hostname} | @{Testcase Unset Configure Data} |
+| Test Timeout | 20 minutes |
+
+| *Variables*  | *Value* |
+| ${radio number} | 2 |
+| ${beacon interval} | 50 |
+#| ${pass status} | 1 |
+| @{Testcase Configure data}= |
+| ... | config wireless-controller vap
+| ... |     edit ${WTP Profile Name}
+| ... |         set vdom "root"
+| ... |         set ssid ${SSID Name}
+| ... |         set schedule "always"
+| ... |         set broadcast-ssid enable
+| ... |         set security ${Security Type}
+| ... |         set local-bridging enable
+| ... |         set max-clients 10
+| ... | end
+| ... | config wireless-controller wtp-profile
+| ... |     edit ${WTP Profile Name}
+| ... |         config radio-${radio number}
+| ... |             set vaps ${WTP Profile Name}
+| ... |         end
+| ... | end
+| @{Testcase Unset Configure Data}= |
+| ... | config wireless-controller wtp-profile
+| ... |     edit ${WTP Profile Name}
+| ... |         config radio-${radio number}
+| ... |             unset vaps
+| ... |         end
+| ... | end
+| ... | config wireless-controller vap
+| ... |     delete ${WTP Profile Name}
+| ... | end
+
+| *Test Cases*  | *Value* | *Value* | *Value* |
+| Test Case 1 |
+| | [Documentation] | Test Case 1 |
+| | Run Keyword | Echo Message | 'Test Case 1, FGate Hostname=${FGate Hostname}, FGate Port=${FGate Port}' |
+| | Wireless Change Beacon Interval | ${FGate Hostname} | ${WTP Profile Name} | ${radio number} | ${beacon interval} | 
+| | ${new beacon interval}= | Get Beacon Interval | ${FGate Hostname} | ${radio number} | ${beacon interval} | ${FAP IP} | ${FAP Username} | ${FAP Password} | ${FAP Model} | ${FAP Hostname} | ${FAP Login Prompt} | ${FAP Password Prompt} | 
+| | Should Be Equal As Integers | ${new beacon interval} | ${beacon interval} | 
+
+| *Keywords* |
+| Echo Message | [Arguments] | ${message to say} |
+| | [Documentation] | Echo passing message |
+| | Log To Console | ${message to say} |
+
+
