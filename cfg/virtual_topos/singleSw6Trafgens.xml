@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testtopo>
- <dev1 type="FSW" model="1024D" role="DUT"> </dev1>
+ <dev1 type="FSW" model="1048D" role="DUT"> </dev1>
  <trafgen1 type="IXIA" model="IXIA" role="trafgen"> </trafgen1>
  <connections>
   <link1 link="dev1,trafgen1" type="GigabitEthernet" mode="Copper"> </link1>
