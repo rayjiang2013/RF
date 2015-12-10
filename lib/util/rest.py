@@ -147,7 +147,7 @@ class rest(object):
                 raise Exception('Invalid payload type. Has to be dictionary')
 
             # execute the command
-            r = client.post(url_cmdb, data=payload, verify=verify)
+            r = client.post(url_cmdb, data=json.dumps(payload), verify=verify)
             if r.status_code != requests.codes.ok:
                 raise Exception("%s:%s" % (r.status_code, http_response_codes[r.status_code]))
             status_data = {'status':1}
@@ -290,8 +290,7 @@ class rest(object):
         func_name = 'delete'
         try:
             status_data = {'status':0}
-            payload = args[0]
-            client_info = args[1]
+            client_info = args[0]
 
             if (type(client_info) != dict or
                 'client' not in client_info or
@@ -309,11 +308,9 @@ class rest(object):
             url_cmdb = url_cmdb + url_cmd
 
             # execute the command
-            if type(payload) != dict:
-                raise Exception("%s:%s" % (r.status_code, http_response_codes[r.status_code]))
-            json_payload = {'json':payload}
-
-            r = client.delete(url_cmdb, data=json.dumps(json_payload), cookies=apscookie, verify=verify)
+            
+            r = client.delete(url_cmdb, cookies=apscookie, verify=verify)
+        
             if r.status_code != requests.codes.ok:
                 raise Exception("%s:%s" % (r.status_code, http_response_codes[r.status_code]))
 

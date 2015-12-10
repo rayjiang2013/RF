@@ -145,6 +145,12 @@ class fsw(object):
         finally:
             return(status_data)
 
+def change_mac(mac, offset):
+    mac = mac.replace(":","")
+    mac_out = "{:012X}".format(int(str(mac), 16) + int(offset))
+    mac_out = ':'.join(s.encode('hex') for s in mac_out.decode('hex'))
+    return mac_out
+
 if __name__ == "__main__":
     info = '''
 config switch physical-port
