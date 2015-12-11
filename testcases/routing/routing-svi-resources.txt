@@ -114,6 +114,7 @@
 
 # Configure DUT
 | | @{Init Configure Data}= | Set Variable |
+| | ... | get hardware memory
 | | ... | config switch interface
 | | ... |     edit ${Dut Port1}
 | | ... |        set allowed-vlan 10

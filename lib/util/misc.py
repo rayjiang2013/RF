@@ -75,7 +75,20 @@ def restruct_dev_ports(link_ports):
                 link_ports_dict[dev] = port
     return(link_ports_dict)
 
-if __name__ == '__main__': 
-    d={'status': 1, 'WTP': {u'FP320C3X14006196': {u'mgmt_vlanid': u'0', u'last-failure': u'0 -- N/A', u'image-download-progress': u'0', u'data-chan-sec': u'clear-text', 'ip_group': u'0-192.168.1.110:5246'}}}
-    keys='WTP.FP320C3X14006196.non_exist'
-    get_nested_diction(d, keys)
+def increment_mac(mac, offset):
+    '''
+    This python API increment mac address
+    '''
+    if mac.find(":")>0:
+        mac = mac.replace(":","")
+        mac_out = "{:012X}".format(int(str(mac), 16) + int(offset))
+        mac_out = ':'.join(s.encode('hex') for s in mac_out.decode('hex'))
+    elif mac.find(".")>0:
+        mac = mac.replace(".","")
+        mac_out = "{:012X}".format(int(str(mac), 16) + int(offset))
+        mac_out = '.'.join(s.encode('hex') for s in mac_out.decode('hex'))
+    else :
+        mac_out = "{:012X}".format(int(str(mac), 16) + int(offset))
+       
+    return mac_out
+
