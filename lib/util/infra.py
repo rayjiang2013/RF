@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import re
 import threading
 from misc import *
 import pdb
@@ -92,6 +93,36 @@ class infra(object):
         finally:
             return(status_data)
 
+    def get_forti_device_info(self, test_topo):
+        '''
+        This python API return Fortinet device info in test topo
+        '''
+        func_name = 'get_forti_device_info'
+        try:
+            # default status is failure
+            status_data = {'status':0}
+            forti_device_info = {}
+            for dev, value in test_topo.iteritems():
+               if not re.search(r'dev[0-9]+', dev):
+                   continue
+               if 'type' not in test_topo[dev]:
+                   continue
+               if (test_topo[dev]['type'] == 'FSW' or
+                   test_topo[dev]['type'] == 'FAP' or
+                   test_topo[dev]['type'] == 'CFAP' or
+                   test_topo[dev]['type']== 'FDD'):
+                   forti_device_info[dev] = value
+            if forti_device_info != {}:
+                status_data = {
+                    'status':1,
+                    'forti_devices':forti_device_info,
+                }
+        except:
+            e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return(status_data)
+
     def _set_resource_db(self, testbed, available_resource, inuse_resource=None):
         '''
         This is a API for internal use only
@@ -159,7 +190,7 @@ class infra(object):
             # save parsed data in dict
             status_data['testbedname'] = root.attrib['name']
             for child in root:
-                if re.search(r'dev[0-9]+', child.tag):
+                if re.search(r'(dev[0-9]+|matrix[0-9]+)', child.tag):
                     device_data = {
                         'type':child.attrib['type'],
                         'hostname':child.attrib['hostname'],
@@ -193,6 +224,12 @@ class infra(object):
                             device_data['tftp'] = {
                                 'ip':gchild.attrib['ip'],
                                 'local_ip':gchild.attrib['local_ip'],
+                                'gateway':gchild.attrib['gateway'],
+                                'netmask':gchild.attrib['netmask'],
+                            }
+                        elif gchild.tag == 'data_port':
+                            device_data['data_port'] = {
+                                'ip':gchild.attrib['ip'],
                                 'gateway':gchild.attrib['gateway'],
                                 'netmask':gchild.attrib['netmask'],
                             }
@@ -312,7 +349,7 @@ class infra(object):
             if available_resource == {}:
                 nested_print('Unable to allocate test topo because available resource for testbed %s is empty' % \
                      testbed)
-
+    
             # this resource buffer is for handling multiple traffic gen topo because we should
             # delete trafgen as a shared resource in resource_db
             available_trafgen_resource = available_resource.copy()
@@ -378,25 +415,27 @@ class infra(object):
                 return(status_data)
                           
             # search a match connections
-            matrix_device = {}
+            matrix_device = set()
             if vconnections != 0:
                 for vkey, vlink in vconnections.iteritems():
                     for dkey, dlink in dconnections.iteritems():
+                        lsrc_matrix = 0
+                        ldst_matrix = 0
                         if vlink['type'] == dlink['type'] and \
                            vlink['mode'] == dlink['mode']:
                              vsrc, vdst = vlink['link'].split(',')
                              lsrc, ldst = dlink['link'].split(',')
                              lsrc_index = lsrc.find('-')
                              if lsrc_index != -1:
-                                 src = re.search(r'(matrix[0-9]+):(port[0-9]+)', lsrc)
-                                 if src:
-                                     lsrc_matrix = src.group(1)
+                                 s = re.search(r'(matrix[0-9]+)', lsrc)
+                                 if s:
+                                     lsrc_matrix = s.group(1)
                                  lsrc = lsrc[:lsrc_index]
                              ldst_index = ldst.find('-')
                              if ldst_index != -1:
-                                 dst = re.search(r'(matrix[0-9])+:(port[0-9]+)', ldst)
-                                 if dst:
-                                     ldst_matrix = dst.group(1)
+                                 s = re.search(r'(matrix[0-9]+)', ldst)
+                                 if s:
+                                     ldst_matrix = s.group(1)
                                  ldst_index += 1
                                  ldst = ldst[ldst_index:]
                              dsrc, dummy = lsrc.split(':')
@@ -404,14 +443,10 @@ class infra(object):
                              if vsrc in match_resources and vdst in match_resources and \
                                  match_resources[vsrc] == dsrc and match_resources[vdst] == ddst or \
                                  match_resources[vsrc] == ddst and match_resources[vdst] == dsrc:
-                                 if lsrc_matrix != 0 and ldst_matrix != 0:
-                                     if lsrc_matrix != ldst_matrix:
-                                        raise Exception('%s, src_matrix and dst_matrix have to be equal %s,%s' % (testbed, lsrc_matrix, ldst_matrix))
-                                     if lsrc_matrix not in matrix_device:
-                                         matrix_device[lsrc_matrix] = {}
-                                         matrix_device[lsrc_matrix] = [[src.group(2), dst.group(2)]]
-                                     else:
-                                         matrix_device[lsrc_matrix].append([src.group(2), dst.group(2)])
+                                 if lsrc_matrix != 0:
+                                     matrix_device.add(lsrc_matrix)
+                                 if ldst_matrix != 0:
+                                     matrix_device.add(ldst_matrix)
                                  tmp_db['connections'][dkey] = dlink
                                  vtmp_db['connections'][vkey] = dlink
                                  # have to delete this allocated link to void reuse
@@ -446,14 +481,12 @@ class infra(object):
             matrixs = {}
             if len(matrix_device) != 0:
                 for matrix in matrix_device:
-                    matrixs[matrix] = {
-                        'matrix':available_resource[matrix],
-                        'port_pairs':matrix_device[matrix],
-                    }
+                    matrixs[matrix] = available_resource[matrix]
             status_data = {
                 'status':1,
                 'physical_topo':tmp_db,
                 'test_topo':vtmp_db,
+                'matrixs':matrixs,
             }
         except Exception as msg:
             e = '%s, %s Exception: %s' % (func_name, testbed, msg)
@@ -654,43 +687,21 @@ class infra(object):
                 if test_topo['status'] != 1:
                     raise Exception('%s, %s fail: %s' % (func_name, testbed, test_topo))
 
-                matrix_device = {}
-                if 'connections' in test_topo['test_topo']:
-                    for dkey, dlink in test_topo['test_topo']['connections'].iteritems():
-                        lsrc_matrix = 0
-                        ldst_matrix = 0
-                        lsrc, ldst = dlink['link'].split(',')
-                        if lsrc.find('-') != -1:
-                            src = re.search(r'(matrix[0-9]+):(port[0-9]+)', lsrc)
-                            if src:
-                                lsrc_matrix = src.group(1)
-                        if ldst.find('-') != -1:
-                            dst = re.search(r'(matrix[0-9])+:(port[0-9]+)', ldst)
-                            if dst:
-                                ldst_matrix = dst.group(1)
-                        if lsrc_matrix != 0 and ldst_matrix != 0:
-                            if lsrc_matrix != ldst_matrix:
-                                raise Exception('%s, src_matrix and dst_matrix have to be equal %s,%s' % (testbed, lsrc_matrix, ldst_matrix))
-                            if lsrc_matrix not in matrix_device:
-                                matrix_device[lsrc_matrix] = {}
-                                matrix_device[lsrc_matrix] = [[src.group(2), dst.group(2)]]
-                            else:
-                                matrix_device[lsrc_matrix].append([src.group(2), dst.group(2)])
+                matrix_device = set()
+                for key in test_topo['test_topo']:
+                    s = re.search(r'(matrix[0-9])', key)
+                    if s:
+                        matrix_device.add(s.group(1))
                 matrixs = {}
                 if len(matrix_device) != 0:
                     for matrix in matrix_device:
-                        matrixs[matrix] = {
-                            'matrix':test_topo['test_topo'][matrix],
-                            'port_pairs':matrix_device[matrix],
-                        }
-                status = self._allocate_availabe(testbed)
-                if status['status'] != 1:
-                    raise Exception('%s, %s fail: %s' % (func_name, testbed, status))
+                        matrixs[matrix] = test_topo['test_topo'][matrix]
     
                 status_data = {
                     'status':1,
-                    'test_topo':status['test_topo'],
-                    'physical_topo':status['test_topo'],
+                    'test_topo':test_topo['test_topo'],
+                    'physical_topo':test_topo['test_topo'],
+                    'matrixs':matrixs,
                 }
             else:
                 # parse virtaul topo data
@@ -715,13 +726,10 @@ class infra(object):
 
 if __name__ == "__main__":
     inf = infra()
-    test_topo = inf.suite_test_init('jim-tb', '/home/jimhe/git-repo/automation/cfg/jim-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/twoSw2trafgens.xml')
-    #nested_print(test_topo)
+    #test_topo = inf.suite_test_init('rest-tb', '/home/jimhe/git-repo/automation/cfg/rest-tb/tbinfo.xml')
+    test_topo = inf.suite_test_init('jim-tb', '/home/jimhe/git-repo/automation/cfg/jim-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/singleSw2Trafgens.xml')
     print('---------------------------')
-    if 'matrixs' in test_topo:
-        nested_print(test_topo['matrixs'])
+    nested_print(test_topo['matrixs'])
     print('---------------------------')
-    if 'test_topo' in test_topo:
-        forti_devices = inf.get_forti_device_info(test_topo['test_topo'])
-        nested_print(forti_devices)
-    test_topo = inf.suite_test_init('wireless-tb', '/home/jimhe/git-repo/automation/cfg/wireless-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/FGateFAPMacBook.xml')
+    forti_devices = inf.get_forti_device_info(test_topo['test_topo'])
+    nested_print(forti_devices)
