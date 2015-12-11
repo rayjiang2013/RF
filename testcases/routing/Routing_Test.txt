@@ -1,11 +1,11 @@
 .# -*- coding: robot -*-
 | *Setting* | *Value *|
 | Documentation | Configure FSW via a telnet Console, then configure device with count action |
-| Default Tags | ROUTING |
+| Default Tags | ROUTING | SVI |
 | Resource | routing-svi-resources.txt |
 | Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
 | Suite Teardown | Suite Teardown Keyword |
-| Test Timeout | 20 minutes |
+| Test Timeout | 40 minutes |
 
 | *Variables*  | *Value* |
 
@@ -13,7 +13,7 @@
 #Testcase 1
 | SVI Routing Test |
 | | [Documentation] | Test Case 1: SVI |
-#| | [tags] | svi |
+| | [tags] | svi |
 | | Log To Console | \n\t' Test Case SVI vlan10 to vlan20 and vlan80 Complete' |
 
 #Testcase 2

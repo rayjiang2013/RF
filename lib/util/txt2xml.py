@@ -45,7 +45,7 @@ def text2xml(txtfile, status, keyword):
         fid.close()
 
         # initialize xml_data
-        xml_data = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        xml_data = '<?xml version="1.0" encoding="UTF-8"?>'
 
         tc_data_list = tc_data.split("\n")
         testSuiteStage = 0
@@ -56,115 +56,93 @@ def text2xml(txtfile, status, keyword):
 
         # each test suite starts with TestSuiteName::
         for line in tc_data_list:
-            line = re.sub('(\r|\n)', '', line, re.DOTALL)
-            line = re.sub('\t', ' ', line, re.DOTALL)
-            line = re.sub('(\x93|\x94)', "'", line, re.DOTALL)
-            line = re.sub('"', '', line, re.DOTALL)
-            line = re.sub('&', 'and', line, re.DOTALL)
 
             # start a new suite section
             if re.match(r'TestSuiteName::', line):
                 testcase_id = 1
                 testSuiteStage = 1
                 continue
+
             re_line = re.match(r'^[0-9]+\.[0-9]+\s(.*)', line)
             if re_line and testSuiteStage == 1:
-                xml_data = xml_data + ' <testsuite name="' + re_line.group(1)+'" id="">\n'
-                xml_data = xml_data + ' <node_order><![CDATA[' + str(testcase_id) + ']]></node_order>\n'
-                testsuiteClose = ' </testsuite>\n'
+                xml_data = xml_data + '<testsuite name="' + re_line.group(1)+'" id="">'
+                xml_data = xml_data + '<node_order><![CDATA[' + str(testcase_id) + ']]></node_order>'
+                testsuiteClose = '</testsuite>'
                 testSuiteStage = 2
                 testcase_id += 1
                 continue
             re_line = re.match(r'^Summary::\s(.*)', line)
             if re_line and testSuiteStage == 2:
-                xml_data = xml_data + ' <details>"' + re_line.group(1) + '"</details>\n'
+                xml_data = xml_data + '<details>"' + re_line.group(1) + '"</details>'
                 if keyword != None:
-                    xml_data = xml_data + ' <keywords><keyword name="' + keyword + '"><notes><![CDATA[]]></notes></keyword></keywords>\n'
+                    xml_data = xml_data + '<keywords><keyword name="' + keyword + '"><notes><![CDATA[]]></notes></keyword></keywords>'
                 testSuiteStage = 3
                 continue
             # start a sub-suite section
             re_line = re.match(r'^[0-9]+\.[0-9]+\.[0-9]+\s(.*)', line)
             if re_line and testSuiteStage == 3:
-                xml_data = xml_data + '  <testsuite name="' + re_line.group(1) +'" id="' + str(suite_id) + '">\n'
-                xml_data = xml_data + '  <node_order><![CDATA[' + str(testcase_id) + ']]></node_order>\n'
-                testSubsuiteClose = '  </testsuite>\n'
+                xml_data = xml_data + '<testsuite name="' + re_line.group(1) +'" id="' + str(suite_id) + '">'
+                xml_data = xml_data + '<node_order><![CDATA[' + str(testcase_id) + ']]></node_order>'
+                testSubsuiteClose = '</testsuite>'
                 testSuiteStage = 4
                 continue
             re_line = re.match(r'^Summary::\s(.*)', line)
             if re_line and testSuiteStage == 4:
-                xml_data = xml_data + '  <details>"' + re_line.group(1) + '"</details>\n'
+                xml_data = xml_data + '<details>"' + re_line.group(1) + '"</details>'
                 if keyword != None:
-                    xml_data = xml_data + '  <keywords><keyword name="' + keyword + '"><notes><![CDATA[]]></notes></keyword></keywords>\n'
+                    xml_data = xml_data + '<keywords><keyword name="' + keyword + '"><notes><![CDATA[]]></notes></keyword></keywords>'
                 testSuiteStage = 5
                 continue
             # start test cases
             re_line = re.match(r'^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\s(.*)', line)
             if re_line and testSuiteStage == 5:
-                xml_data = xml_data + '   <testcase name="' + re_line.group(1) + '" internalid="' + str(testcase_id) + '">\n'
-                xml_data = xml_data + '    <node_order><![CDATA[' + str(testcase_id) + ']]></node_order>\n'
-                xml_data = xml_data + '    <externalid><![CDATA["' + str(testcase_id) + '"]]></externalid>\n'
-                xml_data = xml_data + '    <version><![CDATA[1]]></version>\n'
+                xml_data = xml_data + '<testcase name="' + re_line.group(1) + '" internalid="' + str(testcase_id) + '">'
+                xml_data = xml_data + '<node_order><![CDATA[' + str(testcase_id) + ']]></node_order>'
+                xml_data = xml_data + '<externalid><![CDATA["' + str(testcase_id) + '"]]></externalid>'
+                xml_data = xml_data + '<version><![CDATA[1]]></version>'
                 testcase_id += 1
                 testCaseClose = None
                 testSuiteStage = 6
                 continue
             re_line = re.match(r'^Summary::\s(.*)', line)
             if re_line and testSuiteStage == 6:
-                xml_data = xml_data + '    <summary>"' + re_line.group(1) + '"</summary>\n'
-                xml_data = xml_data + '    <preconditions><![CDATA[]]></preconditions>\n'
-                xml_data = xml_data + '    <importance><![CDATA[2]]></importance>\n'
-                xml_data = xml_data + '    <estimated_exec_duration>1.00</estimated_exec_duration>\n'
-                xml_data = xml_data + '    <status>"' + str(status) + '"</status>\n'
+                xml_data = xml_data + '<summary>"' + re_line.group(1) + '"</summary>'
+                xml_data = xml_data + '<preconditions><![CDATA[]]></preconditions>'
+                xml_data = xml_data + '<importance><![CDATA[2]]></importance>'
+                xml_data = xml_data + '<estimated_exec_duration>1.00</estimated_exec_duration>'
+                xml_data = xml_data + '<status>"' + str(status) + '"</status>'
                 if keyword != None:
-                    xml_data = xml_data + '    <keywords><keyword name="' + keyword + '"><notes><![CDATA[]]></notes></keyword></keywords>\n'
+                    xml_data = xml_data + '<keywords><keyword name="' + keyword + '"><notes><![CDATA[]]></notes></keyword></keywords>'
                 testSuiteStage = 7
                 continue
             # start text case steps
             if re.match(r'^Steps::', line) and testSuiteStage == 7:
-                stepsOpen = '    <steps><step>\n'
-                stepsClose = '    </step></steps>\n'
+                stepsOpen = '<steps><step>'
+                stepsClose = '</step></steps>'
                 step_data = ""
-                in_step_data = ""
                 testSuiteStage = 8
-                prev_step_line = ""
                 step_number = 0
                 continue
             if re.match(r'^[0-9]+\.\s(.*)', line) and testSuiteStage == 8:
-                if prev_step_line == "":
-                    prev_step_line = line
-                else:
-                    if in_step_data == "":
-                        step_data = step_data + '<p>' + prev_step_line + '</p>'
-                    else:
-                        step_data = step_data + '<p>' + prev_step_line + '<p>' + in_step_data + '</p></p>'
-                        in_step_data = ""
-                    prev_step_line = line
+                step_data = step_data + '<p>' + line + '</p>'
                 step_number += 1
                 continue
             if re.match(r'^ExpectedResults::', line) and testSuiteStage == 8:
-                if in_step_data == "":
-                    step_data = step_data + '<p>' + prev_step_line + '</p>'
-                else:
-                    step_data = step_data + '<p>' + prev_step_line + '<p>' + in_step_data + '</p></p>'
                 testSuiteStage = 9
-                continue
-            if  re.match(r'^[\s]?(.*)', line) and testSuiteStage == 8:
-                line = line.strip()
-                in_step_data = in_step_data + line + '<br>'
                 continue
             if testSuiteStage == 9:
                 testSuiteStage = 5
                 if step_data == "":
-                    xml_data = xml_data + '   </testcase>\n'
+                    xml_data = xml_data + '</testcase>'
                     continue
                 xml_data = xml_data + stepsOpen
                 stepsOpen = None
-                xml_data = xml_data + '    <step_number><![CDATA[' + str(step_number) + ']]></step_number>\n'
-                xml_data = xml_data + '    <actions><![CDATA[' + step_data + ']]></actions>\n'
-                xml_data = xml_data + '    <expectedresults><![CDATA[<p>' + line + '</p>]]></expectedresults>\n'
-                xml_data = xml_data + '    <execution_type><![CDATA[1]]></execution_type>\n'
+                xml_data = xml_data + '<step_number><![CDATA[' + str(step_number) + ']]></step_number>'
+                xml_data = xml_data + '<actions><![CDATA[' + step_data + ']]></actions>'
+                xml_data = xml_data + '<expectedresults><![CDATA[<p>' + line + '</p>]]></expectedresults>'
+                xml_data = xml_data + '<execution_type><![CDATA[1]]></execution_type>'
                 xml_data = xml_data + stepsClose
-                xml_data = xml_data + '   </testcase>\n'
+                xml_data = xml_data + '</testcase>'
                 stepsClose = None
                 continue
             if re.match(r'Section::', line) and testSubsuiteClose != None:

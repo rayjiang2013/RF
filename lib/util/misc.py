@@ -74,3 +74,21 @@ def restruct_dev_ports(link_ports):
             else:
                 link_ports_dict[dev] = port
     return(link_ports_dict)
+
+
+def increment_mac(mac, offset):
+    '''
+    This python API increment mac address
+    '''
+    if mac.find(":")>0:
+        mac = mac.replace(":","")
+        mac_out = "{:012X}".format(int(str(mac), 16) + int(offset))
+        mac_out = ':'.join(s.encode('hex') for s in mac_out.decode('hex'))
+    elif mac.find(".")>0:
+        mac = mac.replace(".","")
+        mac_out = "{:012X}".format(int(str(mac), 16) + int(offset))
+        mac_out = '.'.join(s.encode('hex') for s in mac_out.decode('hex'))
+    else :
+        mac_out = "{:012X}".format(int(str(mac), 16) + int(offset))
+       
+    return mac_out
