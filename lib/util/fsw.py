@@ -66,7 +66,7 @@ class fsw(object):
         func_name = 'get_module_name'
         try:
             status_data = {'status':0}
-            s = re.search(r'^([A-Z][0-9]{3}[A-Z]+)', module_info, re.U)
+            s = re.search(r'^FortiSwitch-([0-9A-Z\-]+) ', module_info, re.U)
             if s:
                 status_data = {
                     'status':1,
