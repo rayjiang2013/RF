@@ -349,7 +349,7 @@ class infra(object):
             if available_resource == {}:
                 nested_print('Unable to allocate test topo because available resource for testbed %s is empty' % \
                      testbed)
-    
+
             # this resource buffer is for handling multiple traffic gen topo because we should
             # delete trafgen as a shared resource in resource_db
             available_trafgen_resource = available_resource.copy()
@@ -415,7 +415,7 @@ class infra(object):
                 return(status_data)
                           
             # search a match connections
-            matrix_device = set()
+            matrix_device = {}
             if vconnections != 0:
                 for vkey, vlink in vconnections.iteritems():
                     for dkey, dlink in dconnections.iteritems():
@@ -427,15 +427,15 @@ class infra(object):
                              lsrc, ldst = dlink['link'].split(',')
                              lsrc_index = lsrc.find('-')
                              if lsrc_index != -1:
-                                 s = re.search(r'(matrix[0-9]+)', lsrc)
-                                 if s:
-                                     lsrc_matrix = s.group(1)
+                                 src = re.search(r'(matrix[0-9]+):(port[0-9]+)', lsrc)
+                                 if src:
+                                     lsrc_matrix = src.group(1)
                                  lsrc = lsrc[:lsrc_index]
                              ldst_index = ldst.find('-')
                              if ldst_index != -1:
-                                 s = re.search(r'(matrix[0-9]+)', ldst)
-                                 if s:
-                                     ldst_matrix = s.group(1)
+                                 dst = re.search(r'(matrix[0-9])+:(port[0-9]+)', ldst)
+                                 if dst:
+                                     ldst_matrix = dst.group(1)
                                  ldst_index += 1
                                  ldst = ldst[ldst_index:]
                              dsrc, dummy = lsrc.split(':')
@@ -443,10 +443,14 @@ class infra(object):
                              if vsrc in match_resources and vdst in match_resources and \
                                  match_resources[vsrc] == dsrc and match_resources[vdst] == ddst or \
                                  match_resources[vsrc] == ddst and match_resources[vdst] == dsrc:
-                                 if lsrc_matrix != 0:
-                                     matrix_device.add(lsrc_matrix)
-                                 if ldst_matrix != 0:
-                                     matrix_device.add(ldst_matrix)
+                                 if lsrc_matrix != 0 and ldst_matrix != 0:
+                                     if lsrc_matrix != ldst_matrix:
+                                        raise Exception('%s, src_matrix and dst_matrix have to be equal %s,%s' % (testbed, lsrc_matrix, ldst_matrix))
+                                     if lsrc_matrix not in matrix_device:
+                                         matrix_device[lsrc_matrix] = {}
+                                         matrix_device[lsrc_matrix] = [[src.group(2), dst.group(2)]]
+                                     else:
+                                         matrix_device[lsrc_matrix].append([src.group(2), dst.group(2)])
                                  tmp_db['connections'][dkey] = dlink
                                  vtmp_db['connections'][vkey] = dlink
                                  # have to delete this allocated link to void reuse
@@ -481,7 +485,10 @@ class infra(object):
             matrixs = {}
             if len(matrix_device) != 0:
                 for matrix in matrix_device:
-                    matrixs[matrix] = available_resource[matrix]
+                    matrixs[matrix] = {
+                        'matrix':available_resource[matrix],
+                        'port_pairs':matrix_device[matrix],
+                    }
             status_data = {
                 'status':1,
                 'physical_topo':tmp_db,
@@ -687,15 +694,35 @@ class infra(object):
                 if test_topo['status'] != 1:
                     raise Exception('%s, %s fail: %s' % (func_name, testbed, test_topo))
 
-                matrix_device = set()
-                for key in test_topo['test_topo']:
-                    s = re.search(r'(matrix[0-9])', key)
-                    if s:
-                        matrix_device.add(s.group(1))
+                matrix_device = {}
+                if 'connections' in test_topo['test_topo']:
+                    for dkey, dlink in test_topo['test_topo']['connections'].iteritems():
+                        lsrc_matrix = 0
+                        ldst_matrix = 0
+                        lsrc, ldst = dlink['link'].split(',')
+                        if lsrc.find('-') != -1:
+                            src = re.search(r'(matrix[0-9]+):(port[0-9]+)', lsrc)
+                            if src:
+                                lsrc_matrix = src.group(1)
+                        if ldst.find('-') != -1:
+                            dst = re.search(r'(matrix[0-9])+:(port[0-9]+)', ldst)
+                            if dst:
+                                ldst_matrix = dst.group(1)
+                        if lsrc_matrix != 0 and ldst_matrix != 0:
+                            if lsrc_matrix != ldst_matrix:
+                                raise Exception('%s, src_matrix and dst_matrix have to be equal %s,%s' % (testbed, lsrc_matrix, ldst_matrix))
+                            if lsrc_matrix not in matrix_device:
+                                matrix_device[lsrc_matrix] = {}
+                                matrix_device[lsrc_matrix] = [[src.group(2), dst.group(2)]]
+                            else:
+                                matrix_device[lsrc_matrix].append([src.group(2), dst.group(2)])
                 matrixs = {}
                 if len(matrix_device) != 0:
                     for matrix in matrix_device:
-                        matrixs[matrix] = test_topo['test_topo'][matrix]
+                        matrixs[matrix] = {
+                            'matrix':test_topo['test_topo'][matrix],
+                            'port_pairs':matrix_device[matrix],
+                        }
     
                 status_data = {
                     'status':1,
@@ -720,15 +747,18 @@ class infra(object):
             e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
             status_data = {'status':0, 'msg':e}
         finally:
-            nested_print(status_data['test_topo'])
+            if 'test_topo' in status_data:
+                nested_print(status_data['test_topo'])
             return(status_data)
 
 if __name__ == "__main__":
     inf = infra()
-    #test_topo = inf.suite_test_init('rest-tb', '/home/jimhe/git-repo/automation/cfg/rest-tb/tbinfo.xml')
-    test_topo = inf.suite_test_init('jim-tb', '/home/jimhe/git-repo/automation/cfg/jim-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/singleSw2Trafgens.xml')
+    test_topo = inf.suite_test_init('jim-tb', '/home/jimhe/git-repo/automation/cfg/jim-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/twoSw2trafgens.xml')
+    #nested_print(test_topo)
     print('---------------------------')
-    nested_print(test_topo['matrixs'])
+    if 'matrixs' in test_topo:
+        nested_print(test_topo['matrixs'])
     print('---------------------------')
-    forti_devices = inf.get_forti_device_info(test_topo['test_topo'])
-    nested_print(forti_devices)
+    if 'test_topo' in test_topo:
+        forti_devices = inf.get_forti_device_info(test_topo['test_topo'])
+        nested_print(forti_devices)
