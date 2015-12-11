@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-import re
 import threading
 from misc import *
 import pdb
@@ -93,36 +92,6 @@ class infra(object):
         finally:
             return(status_data)
 
-    def get_forti_device_info(self, test_topo):
-        '''
-        This python API return Fortinet device info in test topo
-        '''
-        func_name = 'get_forti_device_info'
-        try:
-            # default status is failure
-            status_data = {'status':0}
-            forti_device_info = {}
-            for dev, value in test_topo.iteritems():
-               if not re.search(r'dev[0-9]+', dev):
-                   continue
-               if 'type' not in test_topo[dev]:
-                   continue
-               if (test_topo[dev]['type'] == 'FSW' or
-                   test_topo[dev]['type'] == 'FAP' or
-                   test_topo[dev]['type'] == 'CFAP' or
-                   test_topo[dev]['type']== 'FDD'):
-                   forti_device_info[dev] = value
-            if forti_device_info != {}:
-                status_data = {
-                    'status':1,
-                    'forti_devices':forti_device_info,
-                }
-        except:
-            e = '%s, Unexpected error: %s' % (func_name, sys.exc_info()[0])
-            status_data = {'status':0, 'msg':e}
-        finally:
-            return(status_data)
-
     def _set_resource_db(self, testbed, available_resource, inuse_resource=None):
         '''
         This is a API for internal use only
@@ -190,7 +159,7 @@ class infra(object):
             # save parsed data in dict
             status_data['testbedname'] = root.attrib['name']
             for child in root:
-                if re.search(r'(dev[0-9]+|matrix[0-9]+)', child.tag):
+                if re.search(r'dev[0-9]+', child.tag):
                     device_data = {
                         'type':child.attrib['type'],
                         'hostname':child.attrib['hostname'],
@@ -224,12 +193,6 @@ class infra(object):
                             device_data['tftp'] = {
                                 'ip':gchild.attrib['ip'],
                                 'local_ip':gchild.attrib['local_ip'],
-                                'gateway':gchild.attrib['gateway'],
-                                'netmask':gchild.attrib['netmask'],
-                            }
-                        elif gchild.tag == 'data_port':
-                            device_data['data_port'] = {
-                                'ip':gchild.attrib['ip'],
                                 'gateway':gchild.attrib['gateway'],
                                 'netmask':gchild.attrib['netmask'],
                             }
@@ -419,8 +382,6 @@ class infra(object):
             if vconnections != 0:
                 for vkey, vlink in vconnections.iteritems():
                     for dkey, dlink in dconnections.iteritems():
-                        lsrc_matrix = 0
-                        ldst_matrix = 0
                         if vlink['type'] == dlink['type'] and \
                            vlink['mode'] == dlink['mode']:
                              vsrc, vdst = vlink['link'].split(',')
@@ -493,7 +454,6 @@ class infra(object):
                 'status':1,
                 'physical_topo':tmp_db,
                 'test_topo':vtmp_db,
-                'matrixs':matrixs,
             }
         except Exception as msg:
             e = '%s, %s Exception: %s' % (func_name, testbed, msg)
@@ -723,12 +683,14 @@ class infra(object):
                             'matrix':test_topo['test_topo'][matrix],
                             'port_pairs':matrix_device[matrix],
                         }
+                status = self._allocate_availabe(testbed)
+                if status['status'] != 1:
+                    raise Exception('%s, %s fail: %s' % (func_name, testbed, status))
     
                 status_data = {
                     'status':1,
-                    'test_topo':test_topo['test_topo'],
-                    'physical_topo':test_topo['test_topo'],
-                    'matrixs':matrixs,
+                    'test_topo':status['test_topo'],
+                    'physical_topo':status['test_topo'],
                 }
             else:
                 # parse virtaul topo data
@@ -762,3 +724,4 @@ if __name__ == "__main__":
     if 'test_topo' in test_topo:
         forti_devices = inf.get_forti_device_info(test_topo['test_topo'])
         nested_print(forti_devices)
+    test_topo = inf.suite_test_init('wireless-tb', '/home/jimhe/git-repo/automation/cfg/wireless-tb/tbinfo.xml', '/home/jimhe/git-repo/automation/cfg/virtual_topos/FGateFAPMacBook.xml')
