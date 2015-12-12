@@ -572,6 +572,58 @@ class wireless(object):
         finally:
             return(status_data)
 
+
+    def general_parser_get(self, info):
+        '''
+        This python API parses the output of get command and return the data in a dictionary format
+        '''
+        func_name = 'general_parser_get'
+        try:
+            status_data = {'status':1}
+            t_info = re.sub(r'(\r)+', '', info, re.DOTALL)
+            data = {'data' : {}}
+            last_key = ''
+            for line in t_info.split('\n'):
+                # parsing each lines
+                space_s = re.search(r'^(\s+)\w+', line)
+                line = line.strip()
+                if line == '':
+                    # ignore empty line
+                    continue
+                if space_s:
+                    # there is spaces before the characters at the beginning of string; it means it is second level key/value pairs
+                    data_pair = re.search(r'(.*): (.*)', line, re.U)
+                    if data_pair:
+                        # parsing key and value
+                        key = data_pair.group(1).strip()
+                        value = data_pair.group(2).strip()
+                    else:
+                        # parsing key and empty value
+                        key = re.sub(r':', '', line).strip()
+                        value = ''
+                    data['data'][last_key] = {}
+                    data['data'][last_key][key] = value
+                else:
+                    data_pair = re.search(r'(.*): (.*)', line, re.U)
+                    if data_pair:
+                        # parsing key and value
+                        key = data_pair.group(1).strip()
+                        value = data_pair.group(2).strip()
+                    else:
+                        # parsing key and empty value
+                        key = re.sub(r':', '', line).strip()
+                        value = ''
+                    data['data'][key] = value
+                    last_key = key
+            status_data.update(data)
+        except Exception, error:
+            e = '%s, Unexpected error: %s: %s' % (func_name,  sys.exc_info()[0], error)
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return(status_data)
+        
+        
+        
 if __name__ == "__main__":
     info = '''
     FC220C  #
