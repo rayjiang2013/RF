@@ -25,3 +25,10 @@ class TestFap(object):
         fap_obj = wireless()
         assert fap_obj.parse_beacon_interval(info, radio_number) == expected_return
         
+    @pytest.mark.parametrize("info, expected_return", 
+                             [(variables.INFO_3, {'status': 1, 'data': {'comment': '', 'lbs': {'ekahau-blink-mode': 'disable'}, 'wan-port-mode': 'wan-only', 'name': 'FAP320C-default', 'radio-1': {'mode': 'ap'}, 'radio-2': {'mode': 'ap'}, 'platform': {'type': '320C'}, 'max-clients': '0', 'channel': '"36" "40" "44" "48"'}}),
+                              (variables.INFO_4, {'status': 1, 'data': {'comment': '', 'lbs': {'ekahau-blink-mode': 'disable'}, 'wan-port-mode': 'wan-only', 'name': 'FAP320C-default', 'radio-1': {'mode': 'ap'}, 'radio-2': {'mode': 'ap'}, 'platform': {'type': '320C'}, 'max-clients': '0', 'channel': '"36" "40" "44" "48"'}})])
+    def test_general_parser_get(self, info, expected_return):
+        fap_obj = wireless()
+        assert fap_obj.general_parser_get(info) == expected_return        
+        
