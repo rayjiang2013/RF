@@ -62,7 +62,7 @@ def text2xml(txtfile, status, keyword):
             line = re.sub('\t', ' ', line, re.DOTALL)
             line = re.sub('"', '', line, re.DOTALL)
             line = re.sub('&', ' and ', line, re.DOTALL)
-            line = re.sub('(\x93|\x94)', '', line)
+            line = re.sub('(\x92|\x93|\x94)', '', line)
  
             # start a new suite section
             if re.match(r'TestSuiteName::', line):
@@ -116,8 +116,9 @@ def text2xml(txtfile, status, keyword):
                 xml_data = xml_data + '   <summary>"' + re_line.group(1) + '"</summary>\n'
                 xml_data = xml_data + '   <preconditions><![CDATA[]]></preconditions>\n'
                 xml_data = xml_data + '   <importance><![CDATA[2]]></importance>\n'
-                xml_data = xml_data + '   <estimated_exec_duration>1.00</estimated_exec_duration>\n'
-                xml_data = xml_data + '   <status>"' + str(status) + '"</status>\n'
+                xml_data = xml_data + '   <execution_type><![CDATA[2]]></execution_type>\n'
+                xml_data = xml_data + '   <estimated_exec_duration>3.00</estimated_exec_duration>\n'
+                xml_data = xml_data + '   <status><![CDATA[%s]]></status>\n' % str(status)
                 if keyword != None:
                     xml_data = xml_data + '   <keywords><keyword name="' + keyword + '"><notes><![CDATA[]]></notes></keyword></keywords>\n'
                 testSuiteStage = 7
