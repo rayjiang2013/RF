@@ -62,7 +62,7 @@ def text2xml(txtfile, status, keyword):
             line = re.sub('\t', ' ', line, re.DOTALL)
             line = re.sub('"', '', line, re.DOTALL)
             line = re.sub('&', ' and ', line, re.DOTALL)
-            line = re.sub('(\x92|\x93|\x94)', '', line)
+            line = re.sub(r'(\xc2|\x92|\x93|\x94)', '', line, re.DOTALL)
  
             # start a new suite section
             if re.match(r'TestSuiteName::', line):
@@ -158,6 +158,9 @@ def text2xml(txtfile, status, keyword):
                 testSubsuiteClose = None
                 testSuiteStage = 3
                 suite_id += 1
+            if re.match(r'^[0-9a-zA-Z]+', line) and testSuiteStage == 8:
+                step_data = step_data + '      <p>' + '\t' + line + '</p>\n'
+                continue
 
         if testSubsuiteClose != None:
             xml_data = xml_data + testSubsuiteClose
