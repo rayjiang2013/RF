@@ -6,6 +6,7 @@ from testlinkapi import TestlinkAPIClient, TestLinkHelper
 from testlinkerrors import TestLinkError, TLAPIError
 from datetime import date
 import parseXml
+import re, os
 import pdb
 
 class TestLink(TestlinkAPIClient):
@@ -50,6 +51,7 @@ class TestLink(TestlinkAPIClient):
             - testProjectName: the project to fill
             - testPlanName: the active test plan
             - buildName: the active build.
+            - platform: the active build.
         Raise a TestLinkError error with the error message in case of trouble
         Return the execution id needs to attach files to test execution
         """
@@ -99,7 +101,7 @@ class TestLink(TestlinkAPIClient):
 
         logger.console("testNotes: %s" % testNotes)
         # Now report results
-        results = self.reportTCResult(caseId, planId, kwargs["buildName"], testResult, testNotes)
+        results = self.reportTCResult(caseId, planId, kwargs["buildName"], testResult, testNotes, kwargs["platformname"])
         # Check errors
         if results[0]["message"] != "Success!":
             raise TestLinkError(results[0]["message"])
@@ -148,7 +150,7 @@ class TestLink(TestlinkAPIClient):
         # No build found with builName name
         raise TestLinkError("(getBuildByName) - Builds %s does not exists for test plan %s" % (buildName, testPlanName))
 
-def report_test_result(testProjectName, testPlanName, buildName, testResultFile):
+def report_test_result(testProjectName, testPlanName, buildName, platform, testResultFile):
     """
     This method is for robot framework specifically
     """
@@ -182,10 +184,15 @@ def report_test_result(testProjectName, testPlanName, buildName, testResultFile)
             'testProjectName':testProjectName,
             'testPlanName':testPlanName,
             'buildName':buildName,
+            'platformname':platform,
         }
 
         for tc in tc_name_list:
-            reportResult = myTestLink.reportResult(tc, pdata[tc]['status'], suiteName, testNotes="", **kwargs)
+            suites, scriptname = os.path.splitext(pdata[tc]['classname'])
+            notes, suiteName = os.path.splitext(suites)
+            suiteName = re.sub('\.', '', suiteName, re.DOTALL)
+            notes = re.sub('\.', '::', notes, re.DOTALL)
+            reportResult = myTestLink.reportResult(tc, pdata[tc]['status'], suiteName, notes, **kwargs)
             logger.console('testCase=%s, reportResult=%s' % reportResult)
 
     except Exception as msg:
@@ -195,7 +202,7 @@ def report_test_result(testProjectName, testPlanName, buildName, testResultFile)
 
 def main():
     """
-    Usage: python testlink.py --testProjectName 'Hellos' --testPlanName 'Hellos-plan' --buildName 'hello_1' --testResultFile '/var/www/html/Jenkins/workspace/Hellos/junit.xml'
+    Usage: python testlink.py --testProjectName 'Hellos' --testPlanName 'Hellos-plan' --buildName 'hello_1' --platform '1048D' --testResultFile '/var/www/html/Jenkins/workspace/Hellos/junit.xml'
     Or python testlink.py -h for a help
     """
     try:
@@ -213,6 +220,9 @@ def main():
             return 0
         if tl_helper._buildName is None: 
             logger.console("Missing Argument: buildName. Get help using 'python testlink.py -h'")
+            return 0
+        if tl_helper._platform is None: 
+            logger.console("Missing Argument: platform. Get help using 'python testlink.py -h'")
             return 0
         if tl_helper._testResultFile is None: 
             logger.console("Missing Argument: testResultFile. Get help using 'python testlink.py -h'")
@@ -239,10 +249,15 @@ def main():
             'testProjectName':tl_helper._testProjectName,
             'testPlanName':tl_helper._testPlanName,
             'buildName':tl_helper._buildName,
+            'platformname':tl_helper._platform,
         }
 
         for tc in tc_name_list:
-            reportResult = myTestLink.reportResult(pdata[tc]['status'], tc, suiteName, testNotes="", **kwargs)
+            suites, scriptname = os.path.splitext(pdata[tc]['classname'])
+            notes, suiteName = os.path.splitext(suites)
+            suiteName = re.sub('\.', '', suiteName, re.DOTALL)
+            notes = re.sub('\.', '::', notes, re.DOTALL)
+            reportResult = myTestLink.reportResult(pdata[tc]['status'], tc, suiteName, notes, **kwargs)
             logger.console('testCase=%s, reportResult=%s' % (tc, reportResult))
 
     except Exception as msg:
@@ -253,4 +268,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    #report_test_result('hello', 'hello-plan', 'hello-1', '/hme/jimhe/working/cfg/jimhe-tb/juint.xml')
+    #report_test_result('hello', 'hello-plan', 'hello-1', '1048D', '/hme/jimhe/working/cfg/jimhe-tb/juint.xml')
