@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 import sys, os, re
 import pdb
 
-DEFAULT_DESCRIPTION = 'python txt2xml.py --txtfile txtfilename --keyword keyword'
+DEFAULT_DESCRIPTION = 'python txt2xml.py --txtfile txtfilename --status status --importance importance --execution_type execution_type --keyword keyword'
 
 def _createArgparser(usage):
     '''  
@@ -13,9 +13,13 @@ def _createArgparser(usage):
     a_parser.add_argument('--txtfile', default=None,
         help='Test cases file in txt format (default: %(default)s) ')
     a_parser.add_argument('--status', default=1,
-        help='Test cases status: (default: %(default)s) ')
+        help='1~7: 1=Draft, 2=Read for Review, 3=Review in Progress, 4=Rework, 5=Obsolete, 6=Future, 7=Final: (default: %(default)s) ')
+    a_parser.add_argument('--importance', default=2,
+        help='1~3: 1=High, 2=Medium, 3=Low: (default: %(default)s) ')
+    a_parser.add_argument('--execution_type', default=None,
+        help='1~2: 1=Manual, 2=Automated: (default: %(default)s) ')
     a_parser.add_argument('--keyword', default=None,
-        help='Search test suite and test cases: (default: %(default)s) ')
+        help='Robot Framework Tag: Used to search test suite and test cases: (default: %(default)s) ')
     return a_parser
 
 def _setParamsFromArgs(usage=DEFAULT_DESCRIPTION, args=None):
@@ -23,6 +27,8 @@ def _setParamsFromArgs(usage=DEFAULT_DESCRIPTION, args=None):
     fill slots _txtfile from command line argument
     txtfile <- --txtfile
     status <- --status
+    importance <- --importance
+    execution_type <- --execution_type
     keyword <- --keyword
     uses current values of these slots as default values
     '''
@@ -30,7 +36,7 @@ def _setParamsFromArgs(usage=DEFAULT_DESCRIPTION, args=None):
     args     = a_parser.parse_args(args)
     return(args)
 
-def text2xml(txtfile, status, keyword):
+def text2xml(txtfile, status, importance, execution_type, keyword):
     '''
     This python API converts textfile to xml format file
     '''
@@ -38,6 +44,15 @@ def text2xml(txtfile, status, keyword):
         # confirm tbinfo file exist
         if not os.path.exists(txtfile):
             raise Exception("Please provides a valid tc file: %s" % txtfile)
+
+        if int(status) < 1 or int(status) > 7:
+            raise Exception('Invalid status value. Has to be integer and 1 ~ 7') 
+
+        if int(importance) < 1 or int(importance) > 3:
+            raise Exception('Invalid importance value. Has to be integer and 1 ~ 3') 
+
+        if int(execution_type) < 1 or int(execution_type) > 2:
+            raise Exception('Invalid execution_type value. Has to be integer and 1 ~ 2') 
 
         # Read txtfile
         fid = open(txtfile, 'r')
@@ -115,8 +130,8 @@ def text2xml(txtfile, status, keyword):
             if re_line and testSuiteStage == 6:
                 xml_data = xml_data + '   <summary>"' + re_line.group(1) + '"</summary>\n'
                 xml_data = xml_data + '   <preconditions><![CDATA[]]></preconditions>\n'
-                xml_data = xml_data + '   <importance><![CDATA[2]]></importance>\n'
-                xml_data = xml_data + '   <execution_type><![CDATA[2]]></execution_type>\n'
+                xml_data = xml_data + '   <importance><![CDATA[%s]]></importance>\n' % str(importance)
+                xml_data = xml_data + '   <execution_type><![CDATA[%s]]></execution_type>\n' % str(execution_type)
                 xml_data = xml_data + '   <estimated_exec_duration>3.00</estimated_exec_duration>\n'
                 xml_data = xml_data + '   <status><![CDATA[%s]]></status>\n' % str(status)
                 if keyword != None:
@@ -187,10 +202,12 @@ def main():
         cli_args = _setParamsFromArgs()
         txtfile = cli_args.txtfile
         status = cli_args.status
+        importance = cli_args.importance
+        execution_type = cli_args.execution_type
         keyword = cli_args.keyword
         if txtfile == None:
             raise Exception('"python txt2xml.py -h" for a help')
-        status_data = text2xml(txtfile, status, keyword)
+        status_data = text2xml(txtfile, status, importance, execution_type, keyword)
         if status_data['status'] != 1:
             raise Exception(status_data['msg'])
         (prefix, sep, suffix) = txtfile.rpartition('.')
