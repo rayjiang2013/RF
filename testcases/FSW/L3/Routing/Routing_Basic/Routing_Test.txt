@@ -13,7 +13,7 @@
 #Testcase 1
 | SVI Routing Test |
 | | [Documentation] | Test Case 1: SVI |
-| | [tags] | svi |
+#| | [tags] | svi |
 | | Log To Console | \n\t' Test Case SVI vlan10 to vlan20 and vlan80 Complete' |
 
 #Testcase 2
