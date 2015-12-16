@@ -1,0 +1,204 @@
+# -*- coding: robot -*-
+| *Setting* | *Value *|
+| Documentation | Configure FSW via a telnet Console, then configure device with dynamic data file |
+| Default Tags | ACL | DST_MAC_DROP_COUNT_ACTION |
+| Resource | ACL-Count-Drop-Dstmac-Resources.txt |
+| Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
+| Suite Teardown | Suite Teardown Keyword |
+| Test Timeout | 20 minutes |
+
+| *Variables*  | *Value* |
+
+| *Test Cases*  | *Value* | *Value* | *Value* |
+# Testcase 1
+| Action: Count Classifier: Dst-Mac |
+| | [Documentation] | ACL Count Layer 2 Double Flow |
+| | @{Testcase Configure Data}= | Set Variable |
+| | | ... | config switch acl policy
+| | | ... |     edit 1
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-mac ${Ixia Port2 Mac}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... | end
+| | @{Testcase Unset Configure Data}= | Set Variable |
+| | | ... | config switch acl policy
+| | | ... |     del 1
+| | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Log To Console | 'Sleep For 10 Seconds' |
+| | Sleep | 10 seconds |
+
+# Send 30 seconds real traffic
+| | ${Start Traffic Status} | Ixia Start Traffic |
+| | Sleep | 30 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+
+# Stop ixia traffic
+| | ${Stop Protocols Status} | Ixia Stop Protocols |
+| | Sleep | 10 seconds |
+
+# Check ixia packet loss         
+| | ${Port1 Count} | Ixia Traffic Stats | ${Ixia Port1} |
+| | ${Port1 Tx} | Get From Dictionary | ${Port1 Count} | tx_count |
+
+| | ${Port2 Count} | Ixia Traffic Stats | ${Ixia Port2} |
+| | ${Port2 Rx} | Get From Dictionary | ${Port2 Count} | rx_count |
+
+| | ${Port3 Count} | Ixia Traffic Stats | ${Ixia Port3} |
+| | ${Port3 Rx} | Get From Dictionary | ${Port3 Count} | rx_count |
+
+| | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port2 Rx:${Port2 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
+| | Log To Console | \n\t Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
+
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port Rx} | 0.98 |
+| | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
+| | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
+| | Log To Console | \n\tPASSED, NO TRAFFIC LOSS |
+
+# check ACL table count
+| | ${Table} | FortiSwitch Command | ${Dut Hostname} | get switch acl counter |
+| | ${Header} | Set Variable | ID Packets Bytes description |
+| | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
+| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
+| | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
+| | ${packet_value}= | Get From List | ${packet_list} | 0 |
+| | ${packet_value_int}= | Convert To Integer | ${packet_value} |
+| | Log To Console | \n\tPort2 Rx: ${Port2 Rx} -- Counter Value: ${packet_value_int} |
+
+| | ${Test Result} | PacketDiff | ${Port2 Rx} | ${packet_value_int} | 0.98 |
+| | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
+| | Should Be Equal As Numbers | ${packet_value} | ${Port2 Rx} | 'Traffic loss' |
+| | Log To Console | \n\tPASSED, Port2Rx = Counter Packet Value |
+
+| | Log To Console | \n\t'ACL Count Test Case Complete' |
+
+# Testcase 2
+| Action: Drop Classifier: Dst-Mac | 
+| | [Documentation] | ACL Drop Layer 2 Double Flow |
+| | @{Testcase Configure Data}= | Set Variable |
+| | | ... | config switch acl policy
+| | | ... |     edit 2
+| | | ... |             config action
+| | | ... |                 set drop enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-mac ${Ixia Port2 Mac}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... | end
+| | @{Testcase Unset Configure Data}= | Set Variable |
+| | | ... | config switch acl policy
+| | | ... |     del 2
+| | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Log To Console | 'Sleep For 10 Seconds' |
+| | Sleep | 10 seconds |
+
+# Send 30 seconds real traffic
+| | ${Start Traffic Status} | Ixia Start Traffic |
+| | Sleep | 30 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+
+# Stop ixia traffic
+| | ${Stop Protocols Status} | Ixia Stop Protocols |
+| | Sleep | 10 seconds |
+
+# Check ixia packet loss
+| | ${Port1 Count} | Ixia Traffic Stats | ${Ixia Port1} |
+| | ${Port1 Tx} | Get From Dictionary | ${Port1 Count} | tx_count |
+
+| | ${Port2 Count} | Ixia Traffic Stats | ${Ixia Port2} |
+| | ${Port2 Rx} | Get From Dictionary | ${Port2 Count} | rx_count |
+
+| | ${Port3 Count} | Ixia Traffic Stats | ${Ixia Port3} |
+| | ${Port3 Rx} | Get From Dictionary | ${Port3 Count} | rx_count |
+
+| | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx} |
+| | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port2 Rx:${Port2 Rx} |
+| | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
+| | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
+| | Should Be Equal As Numbers | ${Port2 Rx} | 0 | 'ACL Drop Error' |
+| | Log To Console | \n\tPASSED, Drop Action -> Port2Rx All Packets Dropped |
+
+
+# Testcase 3
+| Action: Drop, Count Classifier: Dst-Mac |
+#| | [Tags] | acl-l3f2-3 |
+| | [Documentation] | ACL Count and Drop Layer 2 Double Flow |
+| | @{Testcase Configure Data}= | Set Variable |
+| | | ... | config switch acl policy
+| | | ... |     edit 3
+| | | ... |             config action
+| | | ... |                 set count enable
+| | | ... |                 set drop enable
+| | | ... |             end
+| | | ... |             config classifier
+| | | ... |                 set dst-mac ${Ixia Port2 Mac}
+| | | ... |             end
+| | | ... |             set ingress-interface ${Dut Port1}
+| | | ... |     next
+| | | ... | end
+| | @{Testcase Unset Configure Data}= | Set Variable |
+| | | ... | config switch acl policy
+| | | ... |     del 3
+| | | ... | end
+| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Log To Console | 'Sleep For 10 Seconds' |
+| | Sleep | 10 seconds |
+
+# Send 30 seconds real traffic
+| | ${Start Traffic Status} | Ixia Start Traffic |
+| | Sleep | 30 seconds |
+| | ${Stop Traffic Status} | Ixia Stop Traffic |
+# Stop ixia traffic
+| | ${Stop Protocols Status} | Ixia Stop Protocols |
+| | Sleep | 10 seconds |
+
+# Check ixia packet loss
+| | ${Port1 Count} | Ixia Traffic Stats | ${Ixia Port1} |
+| | ${Port1 Tx} | Get From Dictionary | ${Port1 Count} | tx_count |
+
+| | ${Port2 Count} | Ixia Traffic Stats | ${Ixia Port2} |
+| | ${Port2 Rx} | Get From Dictionary | ${Port2 Count} | rx_count |
+
+| | ${Port3 Count} | Ixia Traffic Stats | ${Ixia Port3} |
+| | ${Port3 Rx} | Get From Dictionary | ${Port3 Count} | rx_count |
+
+| | ${Port Rx}= | Evaluate | ${Port2 Rx}+${Port3 Rx} |
+| | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port2 Rx:${Port2 Rx} |
+| | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
+| | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
+
+| | Should Be Equal As Numbers | ${Port2 Rx} | 0 | 'ACL Drop Test Failed. Test Failed' |
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port3 Rx} | 0.49 |
+| | Log To Console | \n\tPASSED, Drop Action SUCCESS |
+
+# check ACL table count
+| | ${Table} | FortiSwitch Command | ${Dut Hostname} | get switch acl counter |
+| | ${Header} | Set Variable | ID Packets Bytes description |
+| | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
+| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
+| | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets |
+| | ${packet_value}= | Get From List | ${packet_list} | 0 |
+| | ${packet_value_int}= | Convert To Integer | ${packet_value} |
+| | Log To Console | \n\tPort1 Tx: ${Port1 Tx} -- Counter Value: ${packet_value_int} |
+
+| | ${Test Result} | PacketDiff | ${Port1 Tx} | ${packet_value_int} | 0.49 |
+| | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
+| | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
+| | Log To Console | \n\tPASSED, Port1 Tx DOUBLE Counter Packet Value |
+
+
+
+

@@ -1,0 +1,7 @@
+# -*- coding: robot -*-
+| *Setting* |
+| Documentation | All test cases in this dir and below belongs to Robot framework FSW module
+
+| *Variables*  | *Value* |
+
+| *Keywords* |
