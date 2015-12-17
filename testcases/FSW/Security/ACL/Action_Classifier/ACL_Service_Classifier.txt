@@ -72,8 +72,7 @@
 #| | Log To Console | \n\tParsed_dict=${Parsed_dict} |
 
 
-#change service from udp to tcp
-| Change service from udp to tcp |
+# Change service from udp to tcp
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl service custom
 | | | ... |     edit  "tcp_deny"
@@ -191,8 +190,7 @@
 
 | | Log To Console | \n\t'ACL udp_count passed' |
 
-#change service from udp to tcp
-| Change service from udp to tcp |
+# Change service from udp to tcp
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl service custom
 | | | ... |     edit  "tcp_count"
