@@ -63,8 +63,7 @@
 
 | | Log To Console | \n\tPASSED, Drop Action -> Port2Rx All Packets Dropped |
 
-#change port
-| Change Port |
+# Change Port
 | | [Documentation] | Action: Drop, Classifier:Ether-type |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl policy

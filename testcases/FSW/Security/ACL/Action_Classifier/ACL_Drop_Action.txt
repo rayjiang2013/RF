@@ -64,8 +64,7 @@
 | | Log To Console | \n\tPASSED, Drop Action -> Port2Rx All Packets Dropped |
 
 
-#change port
-| Change Port2 to Port3 |
+# Change Port2 to Port3
 | | [Documentation] | Action: Drop, Classifier:Dst Ip |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl policy
@@ -273,8 +272,7 @@
 | | Log To Console | \n\tPASSED, Drop Action -> Port2Rx, Port3Rx All Packets Dropped |
 
 
-#change vlan-id
-| Chang vlan-ud to 3500 |
+# Chang vlan-ud to 3500
 | | [Documentation] | Action: Drop, Classifier:vlan-id |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl policy
