@@ -11,8 +11,8 @@
 
 | *Test Cases*  | *Value* | *Value* | *Value* |
 # Testcase 1
-| ACL-Sequence_First_udpall_drop |
-| | [Documentation] | Test case1: ACL-Sequence_First_udpall_drop |
+| ACL-Sequence_First-udpall-drop |
+| | [Documentation] | Test case1: ACL-Sequence-First-udpall-drop |
 #| | [tags] | Testcase1 |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config router static
@@ -140,7 +140,7 @@
 | | Log To Console | \n\t'ACL-Sequence_First_udpall_drop action Complete' |
 
 #Testcase2
-| ACL_Sequence-FirstCount-DropRest |
+| ACL-Sequence-FirstCount-DropRest |
 | | [Documentation] | Test case2: Change the sequence to 1: ACL count port3. 2: ACL other port udp_drop |
 #| | [tags] | ACL-Sequence-Testcase2 |
 | | @{Testcase Configure Data}= | Set Variable |
@@ -297,7 +297,7 @@
 
 
 #Testcase3
-| ACL_Sequence-FirstDropALLUDP-SecondAllNoCount |
+| ACL-Sequence-FirstDropALLUDP-SecondAllNoCount |
 | | [Documentation] | Test case3: | Change the sequence to 1: drop all udp. 2 Change to ACL count port3, port4, port5 and port6. |
 #| | [tags] | Testcase3 |
 | | @{Testcase Configure Data}= | Set Variable |
@@ -452,7 +452,7 @@
 
 
 #Testcase4
-| ACL_Sequence-FirstCountAll-SecondNoUDPDrop |
+| ACL-Sequence-FirstCountAll-SecondNoUDPDrop |
 | | [Documentation] | Test case4: | Change the sequence to 1: ACL count port3, port4, port5 and port6. 2: ACL no port udp_drop |
 #| | [tags] | Testcase4 |
 | | @{Testcase Configure Data}= | Set Variable |
@@ -655,6 +655,3 @@
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic count loss' |
 
 | | Log To Console | \n\t'ACL port3, port4, port5, port6 count and the rest no drop action Complete' |
-
-
-
