@@ -11,7 +11,7 @@
 
 | *Test Cases*  | *Value* | *Value* | *Value* |
 # Testcase 1
-| ACL-Sequence_First-udpall-drop |
+| ACL-Sequence-First-udpall-drop |
 | | [Documentation] | Test case1: ACL-Sequence-First-udpall-drop |
 #| | [tags] | Testcase1 |
 | | @{Testcase Configure Data}= | Set Variable |
