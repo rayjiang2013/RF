@@ -56,56 +56,63 @@ class TestLink(TestlinkAPIClient):
         Return the execution id needs to attach files to test execution
         """
         
-        # Check parameters
-        for data in ["testProjectName", "testPlanName", "buildName"]:
-            if not kwargs.has_key(data):
-                raise TestLinkError("(reportResult) - Missing key %s in anonymous dictionnary" % data)
+        try:
+            # Check parameters
+            for data in ["testProjectName", "testPlanName", "buildName"]:
+                if not kwargs.has_key(data):
+                    raise TestLinkError("(reportResult) - Missing key %s in anonymous dictionnary" % data)
 
-        # Get project id
-        project = self.getTestProjectByName(kwargs["testProjectName"])
+            # Get project id
+            project = self.getTestProjectByName(kwargs["testProjectName"])
 
-        # Check if project is active
-        if project['active'] != '1':
-            raise TestLinkError("(reportResult) - Test project %s is not active" % kwargs["testProjectName"])
+            # Check if project is active
+            if project['active'] != '1':
+                raise TestLinkError("(reportResult) - Test project %s is not active" % kwargs["testProjectName"])
 
-        # Check test plan name
-        plan = self.getTestPlanByName(kwargs["testProjectName"], kwargs["testPlanName"])
+            # Check test plan name
+            plan = self.getTestPlanByName(kwargs["testProjectName"], kwargs["testPlanName"])
 
-        # Check is test plan is open and active
-        if plan['is_open'] != '1' or plan['active'] != '1':
-            raise TestLinkError("(reportResult) - Test plan %s is not active or not open" % kwargs["testPlanName"])
-        # Memorise test plan id
-        planId = plan['id']
+            # Check is test plan is open and active
+            if plan['is_open'] != '1' or plan['active'] != '1':
+                raise TestLinkError("(reportResult) - Test plan %s is not active or not open" % kwargs["testPlanName"])
+            # Memorise test plan id
+            planId = plan['id']
 
-        # Check build name
-        build = self.getBuildByName(kwargs["testProjectName"], kwargs["testPlanName"], kwargs["buildName"])
+            # Check build name
+            build = self.getBuildByName(kwargs["testProjectName"], kwargs["testPlanName"], kwargs["buildName"])
 
-        # Check if build is open and active
-        if build['is_open'] != '1' or build['active'] != '1':
-            raise TestLinkError("(reportResult) - Build %s in not active or not open" % kwargs["buildName"])
+            # Check if build is open and active
+            if build['is_open'] != '1' or build['active'] != '1':
+                raise TestLinkError("(reportResult) - Build %s in not active or not open" % kwargs["buildName"])
 
-        # Get test case id
-        caseId = self.getTestCaseIDByName(testCaseName, testSuiteName, kwargs["testProjectName"])
+            # Get test case id
+            caseId = self.getTestCaseIDByName(testCaseName, testSuiteName, kwargs["testProjectName"])
 
-        # Check results parameters
-        if testResult not in "pbf":
-            raise TestLinkError("(reportResult) - Test result must be 'p', 'f' or 'b'")
+            # Check results parameters
+            if testResult not in "pbf":
+                raise TestLinkError("(reportResult) - Test result must be 'p', 'f' or 'b'")
 
-        if testNotes == "":
-            # Builds testNotes if empty
-            today = date.today()
-            testNotes = "%s - Test performed automatically" % today.strftime("%c")
-        elif testNotes == " ":
-            #No notes
-            testNotes = ""
+            if testNotes == "":
+                # Builds testNotes if empty
+                today = date.today()
+                testNotes = "%s - Test performed automatically" % today.strftime("%c")
+            elif testNotes == " ":
+                #No notes
+                testNotes = ""
 
-        logger.console("testNotes: %s" % testNotes)
-        # Now report results
-        results = self.reportTCResult(caseId, planId, kwargs["buildName"], testResult, testNotes, kwargs["platformname"])
-        # Check errors
-        if results[0]["message"] != "Success!":
-            raise TestLinkError(results[0]["message"])
-    
+            logger.console("testNotes: %s" % testNotes)
+            # Now report results
+            results = self.reportTCResult(caseId, planId, kwargs["buildName"], testResult, testNotes, kwargs["platformname"])
+            # Check errors
+            if results[0]["message"] != "Success!":
+                raise TestLinkError(results[0]["message"])
+        except Exception as msg:
+            logger.console(msg)
+            return -1
+        except:
+            logger.console('System Unexpected error: %s' % sys.exc_info()[0])
+            return -1
+
         return results[0]['id']
 
     def getTestProjectByName(self, testProjectName):
@@ -257,11 +264,15 @@ def main():
             notes, suiteName = os.path.splitext(suites)
             suiteName = re.sub('\.', '', suiteName, re.DOTALL)
             notes = re.sub('\.', '::', notes, re.DOTALL)
+            #pdb.set_trace()
             reportResult = myTestLink.reportResult(pdata[tc]['status'], tc, suiteName, notes, **kwargs)
-            logger.console('testCase=%s, reportResult=%s' % (tc, reportResult))
+            if reportResult == -1:
+                logger.console('Unable reportResult: notes=%s, suiteName=%s, testCase=%s' % (notes, suiteName, tc))
+            else: 
+                logger.console('notes=%s, suiteName=%s, testCase=%s, reportResult=%s' % (notes, suiteName, tc, reportResult))
 
     except Exception as msg:
-        raise TestLinkError("report_test_result fails %s" % msg)
+        logger.console("report_test_result fails %s" % msg)
         return 0
 
     return 1
