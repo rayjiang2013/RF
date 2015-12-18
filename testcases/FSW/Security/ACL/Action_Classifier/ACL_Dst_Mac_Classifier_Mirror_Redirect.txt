@@ -11,7 +11,7 @@
 
 | *Test Cases*  | *Value* | *Value* | *Value* |
 # Testcase 1
-| Action: Mirror Classifier: Dst-MAC|
+| Action: Mirror Classifier: Dst-MAC |
 #| | [Tags] | ACL-L2F1 |
 | | [Documentation] | ACL Mirror Layer 2 Single Flow |
 | | @{Testcase Configure Data}= | Set Variable |
