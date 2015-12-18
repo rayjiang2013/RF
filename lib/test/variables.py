@@ -25,3 +25,69 @@ INFO_3 = "name                : FAP320C-default\r\ncomment             : \r\npla
 INFO_4 = "name                : FAP320C-default\r\ncomment             : \r\nplatform:\r\n    type                : 320C \r\n" +\
         "wan-port-mode       : wan-only\r\nmax-clients         : 0\r\nradio-1:\r\n    mode                : ap \r\nchannel             :\r\n" +\
         'radio-2: \r\n    mode                : ap \r\n  \r\nchannel             : "36" "40" "44" "48"\r\nlbs:\r\n    ekahau-blink-mode   : disable' 
+
+# show Full
+INFO_5 = "config system global\r\n" +\
+        "    set admin-concurrent enable\r\n" +\
+        "end\r\n" +\
+        "config system virtual-switch\r\n" +\
+        '    edit "internal"\r\n' +\
+        '        set physical-switch "sw0"\r\n' +\
+        '        config port\r\n' +\
+        '            edit "internal1"\r\n' +\
+        '                set status up\r\n' +\
+        "                set alias ''\r\n" +\
+        '            next\r\n' +\
+        '            edit "internal2"\r\n' +\
+        '                set speed auto\r\n' +\
+        "                set alias ''\r\n" +\
+        '            next\r\n' +\
+        '        end\r\n' +\
+        '    next\r\n' +\
+        'end\r\n'
+        
+# 3 set in edit
+INFO_6 = "config system virtual-switch\r\n" +\
+        '    edit "internal"\r\n' +\
+        '        set physical-switch "sw0"\r\n' +\
+        '        config port\r\n' +\
+        '            edit "internal1"\r\n' +\
+        '                set status up\r\n' +\
+        "                set alias ''\r\n" +\
+        "                set X Y\r\n" +\
+        '            next\r\n' +\
+        '        end\r\n' +\
+        '    next\r\n' +\
+        'end\r\n'
+
+# 2 set in edit
+INFO_7 = "config system virtual-switch\r\n" +\
+        '    edit "internal"\r\n' +\
+        '        set physical-switch "sw0"\r\n' +\
+        '        config port\r\n' +\
+        '            edit "internal1"\r\n' +\
+        '                set status up\r\n' +\
+        "                set alias ''\r\n" +\
+        "                set X Y\r\n" +\
+        '            next\r\n' +\
+        '        end\r\n' +\
+        '        set A B\r\n' +\
+        '    next\r\n' +\
+        'end\r\n'
+# More than 1 config in edit
+INFO_8 = "config system virtual-switch\r\n" +\
+        '    edit "internal"\r\n' +\
+        '        set A B\r\n' +\
+        '        config C\r\n' +\
+        '            edit D\r\n' +\
+        "                set X Y\r\n" +\
+        '            next\r\n' +\
+        '        end\r\n' +\
+        '        config E\r\n' +\
+        '            edit F\r\n' +\
+        "                set X Y\r\n" +\
+        '            next\r\n' +\
+        '        end\r\n' +\
+        '        set G H\r\n' +\
+        '    next\r\n' +\
+        'end\r\n'

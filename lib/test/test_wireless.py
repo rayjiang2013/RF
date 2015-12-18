@@ -31,4 +31,12 @@ class TestFap(object):
     def test_general_parser_get(self, info, expected_return):
         fap_obj = wireless()
         assert fap_obj.general_parser_get(info) == expected_return        
-        
+
+    @pytest.mark.parametrize("info, expected_return", 
+                             [(variables.INFO_8, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'A': 'B', 'C': {'D': {'X': 'Y'}}, 'E': {'F': {'X': 'Y'}}, 'G': 'H'}}}}),
+                              (variables.INFO_7, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'A': 'B', 'physical-switch': '"sw0"', 'port': {'"internal1"': {'X': 'Y', 'alias': "''", 'status': 'up'}}}}}}),
+                              (variables.INFO_6, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'physical-switch': '"sw0"', 'port': {'"internal1"': {'status': 'up', 'alias': "''", 'X': 'Y'}}}}}}),
+                              (variables.INFO_5, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'physical-switch': '"sw0"', 'port': {'"internal2"': {'alias': "''", 'speed': 'auto'}, '"internal1"': {'status': 'up', 'alias': "''"}}}}, 'system global': {'admin-concurrent': 'enable'}}})])
+    def test_general_parser_show(self, info, expected_return):
+        fap_obj = wireless()
+        assert fap_obj.general_parser_show(info)[3] == expected_return    

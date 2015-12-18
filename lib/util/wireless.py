@@ -621,8 +621,98 @@ class wireless(object):
             status_data = {'status':0, 'msg':e}
         finally:
             return(status_data)
-        
-        
+
+    def general_parser_show(self, info, current_line='', lvl=0, parent_key='', start=True, status_data={}, prev_num_sp=0):
+        '''
+        This python API parses the output of show command and return the data in a dictionary format
+        '''
+        func_name = 'general_parser_show'
+        try:
+            if start == True:
+                t_info = re.sub(r'(\r)+', '', info, re.DOTALL)
+                data = {}
+                status_data = {'status':1, 'data':data}
+                prev_num_sp = 0
+                start = False
+            else:
+                t_info = info
+                #status_data = {'status':1, 'data':data}
+            current_line = re.search(r'^(.*)\n', t_info).group(1)
+            while current_line != '' and t_info != '':
+                # parsing each lines
+                t_info = t_info.replace(current_line + '\n', '', 1)
+                space_s = re.search(r'^(\s+)\w+', current_line)
+                if space_s != None:
+                    sp = space_s.group(1)
+                    num_sp = len(sp)
+                else:
+                    sp = ''
+                    num_sp = 0
+                current_line = current_line.strip()
+                s1 = re.search(r'^config\s(.*)', current_line)
+                s2 = re.search(r'^edit\s(.*)', current_line)
+                if s1 != None or s2 != None:
+                    current_key = s1.group(1) if s1 != None else s2.group(1)
+                    next_line = re.search(r'^(.*)\n', t_info).group(1)
+                    if prev_num_sp < num_sp:
+                        status_data['data'][parent_key] = {}
+                        status_data['data'][parent_key][current_key] = ''
+                        #parent_key = current_key
+                        lvl+=1                       
+                        t_info, current_line, lvl, update_status_data, num_sp = self.general_parser_show(t_info, next_line, lvl, current_key, start, {'status':1, 'data':{}}, num_sp)
+                        status_data['data'][parent_key].update(update_status_data['data'])
+                    elif prev_num_sp == num_sp:
+                        status_data['data'][current_key] = ''
+                        t_info, current_line, lvl, update_status_data, num_sp = self.general_parser_show(t_info, next_line, lvl, current_key, start, {'status':1, 'data':{}}, num_sp)
+                        status_data['data'].update(update_status_data['data'])
+                s3 = re.search(r'^set\s(.*)?\s(.*)?', current_line)
+                if s3 != None:
+                    current_key = s3.group(1)
+                    current_value = s3.group(2)
+                    if prev_num_sp < num_sp:
+                        lvl+=1
+                        status_data['data'][parent_key] = {}
+                        status_data['data'][parent_key][current_key] = current_value
+                        #parent_key = current_key
+                        next_line = re.search(r'^(.*)\n', t_info).group(1)
+                        t_info, current_line, lvl, update_status_data, num_sp = self.general_parser_show(t_info, next_line, lvl, current_key, start, {'status':1, 'data':status_data['data'][parent_key]}, num_sp)
+                        status_data['data'][parent_key].update(update_status_data['data'])
+                        #return 
+                    elif prev_num_sp == num_sp:
+                        status_data['data'][current_key] = current_value
+                        next_line = re.search(r'^(.*)\n', t_info).group(1)
+                        t_info, next_line, lvl, update_status_data, num_sp = self.general_parser_show(t_info, next_line, lvl, current_key, start, {'status':1, 'data':{current_key : current_value}}, num_sp)
+                        status_data['data'].update(update_status_data['data'])
+                        return 
+                        
+                s4 = re.search(r'^next', current_line)
+                if s4 != None:
+                    #if prev_num_sp > num_sp:
+                        lvl-=1
+                        next_line = re.search(r'^(.*)\n', t_info).group(1)
+                        #t_info = t_info.replace(next_line + '\n', '')
+                        return     
+                s5 = re.search(r'^end', current_line)
+                if s5 != None:
+                    #if prev_num_sp > num_sp:
+                        lvl-=1
+                        #data[parent_key] = {}
+                        #data[parent_key][current_key] = current_value
+                        #parent_key = current_key
+                        if t_info != '':
+                            next_line = re.search(r'^(.*)\n', t_info).group(1)
+                            #t_info = t_info.replace(next_line + '\n', '')
+                        return 
+                prev_num_sp = num_sp
+                #current_line = next_line
+            #parent_key = current_key
+        except Exception, error:
+            e = '%s, Unexpected error: %s: %s' % (func_name,  sys.exc_info()[0], error)
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return(t_info, next_line, lvl, status_data, num_sp)            
+
+    
         
 if __name__ == "__main__":
     info = '''
