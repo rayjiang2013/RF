@@ -78,6 +78,9 @@ def text2xml(txtfile, status, importance, execution_type, keyword):
             line = re.sub('"', '', line, re.DOTALL)
             line = re.sub('&', ' and ', line, re.DOTALL)
             line = re.sub(r'(\xc2|\x92|\x93|\x94)', '', line, re.DOTALL)
+            line = re.sub('/', ' ', line, re.DOTALL)
+            line = re.sub('\s+', ' ', line, re.DOTALL)
+            line = re.sub('_', '-', line, re.DOTALL)
  
             # start a new suite section
             if re.match(r'TestSuiteName::', line):
