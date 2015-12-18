@@ -297,7 +297,7 @@
 
 
 #Testcase3
-| ACL_Sequence-FirstDropALLUDP-SecondAllNoCount|
+| ACL_Sequence-FirstDropALLUDP-SecondAllNoCount |
 | | [Documentation] | Test case3: | Change the sequence to 1: drop all udp. 2 Change to ACL count port3, port4, port5 and port6. |
 #| | [tags] | Testcase3 |
 | | @{Testcase Configure Data}= | Set Variable |
