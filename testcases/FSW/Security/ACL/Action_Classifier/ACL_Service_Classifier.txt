@@ -11,9 +11,9 @@
 
 | *Test Cases*  | *Value* | *Value* | *Value* |
 #Testcase 1
-| Action: Drop, Classifier:service:udp_deny-tcp_deny |
+| Action: Drop, Classifier:service:udp-deny-tcp-deny |
 #| | [Tags] | ACL-SERVICES-CASE1 |
-| | [Documentation] | Test Case 1 |
+| | [Documentation] | Action: Drop, Classifier:service:udp-deny-tcp-deny |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl service custom
 | | | ... |     edit  "udp_deny"
@@ -117,9 +117,9 @@
 | | Log To Console | \n\tPASSED, Drop Action -> Port3Rx All Packets Dropped |
 
 #Testcase 2
-| Action: Count, Classifier:service:udp_count-tcp_count |
+| Action: Count, Classifier:service:udp-count-tcp-count |
 #| | [Tags] | ACL-SERVICE2 |
-| | [Documentation] | Action: Count, Classifier:service:udp_deny-tcp_deny |
+| | [Documentation] | Action: Count, Classifier:service:udp-count-tcp-count |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl service custom
 | | | ... |     edit  "udp_count"
