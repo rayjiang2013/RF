@@ -11,7 +11,7 @@
 
 | *Test Cases*  | *Value* | *Value* | *Value* |
 #Testcase 1
-| Action: Drop, Classifier:service:udp_deny/tcp_deny |
+| Action: Drop, Classifier:service:udp_deny-tcp_deny |
 #| | [Tags] | ACL-SERVICES-CASE1 |
 | | [Documentation] | Test Case 1 |
 | | @{Testcase Configure Data}= | Set Variable |
@@ -57,7 +57,7 @@
 | | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port3 Rx:${Port3 Rx} |
 | | Log To Console | \n\t$ Port1 Tx:${Port1 Tx} -- Port Rx:${Port Rx} |
 
-| | Should Be Equal As Numbers | ${Port2 Rx} | 0 | 'ACL Drop/Service Error' |
+| | Should Be Equal As Numbers | ${Port2 Rx} | 0 | 'ACL Drop-Service Error' |
 | | ${Test Result} | PacketDiff | ${Port1 Tx} | ${Port Rx} | 0.49 |
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
@@ -67,7 +67,7 @@
 # Delet ACL policy
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 
-| | Log To Console | \n\tPASSED, Drop/service Action -> Port2Rx All Packets Dropped |
+| | Log To Console | \n\tPASSED, Drop-service Action -> Port2Rx All Packets Dropped |
 
 
 # Change service from udp to tcp
@@ -117,9 +117,9 @@
 | | Log To Console | \n\tPASSED, Drop Action -> Port3Rx All Packets Dropped |
 
 #Testcase 2
-| Action: Count, Classifier:service:udp_count/tcp_count |
+| Action: Count, Classifier:service:udp_count-tcp_count |
 #| | [Tags] | ACL-SERVICE2 |
-| | [Documentation] | Action: Count, Classifier:service:udp_deny/tcp_deny |
+| | [Documentation] | Action: Count, Classifier:service:udp_deny-tcp_deny |
 | | @{Testcase Configure Data}= | Set Variable |
 | | | ... | config switch acl service custom
 | | | ... |     edit  "udp_count"
