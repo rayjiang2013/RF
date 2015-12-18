@@ -61,11 +61,11 @@
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
+# Delete ACL policy
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Log To Console | \n\tPASSED, Drop Action -> Port2Rx All Packets Dropped |
 
-# Change Port
-| | [Documentation] | Action: Drop, Classifier:Ether-type |
-| | @{Testcase Configure Data}= | Set Variable |
+| | @{Testcase Configure Data2}= | Set Variable |
 | | | ... | config switch acl policy
 | | | ... |     edit 1
 | | | ... |             config action
@@ -77,12 +77,7 @@
 | | | ... |             set ingress-interface ${Dut Port1}
 | | | ... |     next
 | | | ... | end
-| | @{Testcase Unset Configure Data}= | Set Variable |
-| | | ... | config switch acl policy
-| | | ... |     del 1
-| | | ... | end
-| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data2} |
 | | Sleep | 10 seconds |
 
 # Send 30 seconds real traffic

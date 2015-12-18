@@ -63,13 +63,11 @@
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
-| | Log To Console | \n\tPASSED, Drop/service Action -> Port2Rx All Packets Dropped |
 
-#| | ${Table} | FortiSwitch Command | ${Dut Hostname} | get switch acl counter |
-#| | ${Header} | Set Variable | ID Packets Bytes description |
-#| | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
-#| | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
-#| | Log To Console | \n\tParsed_dict=${Parsed_dict} |
+# Delet ACL policy
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+
+| | Log To Console | \n\tPASSED, Drop/service Action -> Port2Rx All Packets Dropped |
 
 
 # Change service from udp to tcp
@@ -89,11 +87,6 @@
 | | | ... |             set ingress-interface ${Dut Port1}
 | | | ... |     next
 | | | ... | end
-| | @{Testcase Unset Configure Data}= | Set Variable |
-| | | ... | config switch acl policy
-| | | ... |     del 1
-| | | ... | end
-| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Sleep | 10 seconds |
 
@@ -188,6 +181,9 @@
 | | ${No Packets Loss} | Get From Dictionary | ${Test Result} | result |
 | | Should Be Equal As Numbers | ${No Packets Loss} | 1 | 'Traffic loss' |
 
+# Delet ACL policy
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+
 | | Log To Console | \n\t'ACL udp_count passed' |
 
 # Change service from udp to tcp
@@ -207,11 +203,6 @@
 | | | ... |             set ingress-interface ${Dut Port1}
 | | | ... |     next
 | | | ... | end
-| | @{Testcase Unset Configure Data}= | Set Variable |
-| | | ... | config switch acl policy
-| | | ... |     del 1
-| | | ... | end
-| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
 | | Sleep | 10 seconds |
 

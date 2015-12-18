@@ -1,7 +1,7 @@
 # -*- coding: robot -*-
 | *Setting* | *Value *|
 | Documentation | Configure FSW via a telnet Console, then configure device with mirror action |
-| Default Tags | ACL | MIRROR |
+| Default Tags | ACL | MR |
 | Resource | ACL_MR_resources.txt |
 | Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
 | Suite Teardown | Suite Teardown Keyword |

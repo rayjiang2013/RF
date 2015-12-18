@@ -1,7 +1,7 @@
 # -*- coding: robot -*-
 | *Setting* | *Value *|
 | Documentation | Configure FSW via a telnet Console, then configure device with dynamic data file |
-| Default Tags | ACL | DST_MAC_MIRROR_REDIRECT_ACTION |
+| Default Tags | ACL | DST-MAC-MR-REDIRECT-ACTION |
 | Resource | ACL-Mirror-Redirect-Dstmac-Resources.txt |
 | Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
 | Suite Teardown | Suite Teardown Keyword |

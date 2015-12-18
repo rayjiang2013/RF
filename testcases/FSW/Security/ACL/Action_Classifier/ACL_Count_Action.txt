@@ -29,6 +29,7 @@
 | | @{Testcase Unset Configure Data}= | Set Variable |
 | | | ... | config switch acl policy
 | | | ... |     del 1
+| | | ... | 	del 2
 | | | ... | end
 | | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
 | | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
@@ -79,9 +80,7 @@
 | | Log To Console | \n\t'Action: Count, Classifier:Dst IP to Port2 Test Case Complete' |
 
 #change port2-port3
-| Change port2-port3 |
-| | [Documentation] | Action: Count, Classifier:Dst IP |
-| | @{Testcase Configure Data}= | Set Variable |
+| | @{Testcase Configure Data2}= | Set Variable |
 | | | ... | config switch acl policy
 | | | ... |     edit 2
 | | | ... |             config action
@@ -93,12 +92,7 @@
 | | | ... |             set ingress-interface ${Dut Port1}
 | | | ... |     next
 | | | ... | end
-| | @{Testcase Unset Configure Data}= | Set Variable |
-| | | ... | config switch acl policy
-| | | ... |     del 2
-| | | ... | end
-| | [Teardown] | Test Teardown Keyword | ${Dut Hostname} | @{Testcase Unset Configure Data} |
-| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data} |
+| | Run Keyword | Test Setup Keyword | ${Dut Hostname} | @{Testcase Configure Data2} |
 | | Log To Console | 'Sleep For 10 Seconds' |
 | | Sleep | 10 seconds |
 
@@ -136,7 +130,7 @@
 | | ${Parse_info} | Create Dictionary | table | ${Table} | header | ${Header} | delimiter | ${Dut Hostname} |
 | | ${Parsed_dict} | TableParserInSequence | ${Parse_info} |
 | | ${packet_list}= | Get Nested Diction | ${Parsed_dict} | data.Packets | 
-| | ${packet_value}= | Get From List | ${packet_list} | 0 |
+| | ${packet_value}= | Get From List | ${packet_list} | 1 |
 | | ${packet_value_int}= | Convert To Integer | ${packet_value} |
 | | Log To Console | \n\tPort1 Tx: ${Port1 Tx} -- Counter Value: ${packet_value_int} |
 
