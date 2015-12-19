@@ -11,7 +11,7 @@
 
 | *Test Cases*  | *Value* | *Value* | *Value* |
 #Testcase 1
-| ACL Scale Drop Test |
+| Drop Test |
 | | [Documentation] | ACL Scale Test |
 #| | [tags] | Scale Drop |
 # Post ACL drop
@@ -128,7 +128,7 @@
 | | Sleep | 5 seconds |
 
 #Testcase 2
-| Scale Count Test |
+| Count Test |
 | | [Documentation] | Scale Count Test |
 #| | [tags] | Count Scale |
 
@@ -212,7 +212,7 @@
 | | Log To Console | \n\tACL Scale Drop Testcase Complete |
 
 #Testcase 3
-| ACL Scale Specific Flow Test |
+| Specific Flow Test |
 | | [Documentation] | ACL Scale Specific Flow Test |
 #| | [tags] | Specific Flow |
 
