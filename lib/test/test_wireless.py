@@ -39,4 +39,21 @@ class TestFap(object):
                               (variables.INFO_5, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'physical-switch': '"sw0"', 'port': {'"internal2"': {'alias': "''", 'speed': 'auto'}, '"internal1"': {'status': 'up', 'alias': "''"}}}}, 'system global': {'admin-concurrent': 'enable'}}})])
     def test_general_parser_show(self, info, expected_return):
         fap_obj = wireless()
-        assert fap_obj.general_parser_show(info)[3] == expected_return    
+        assert fap_obj.general_parser_show(info)[3] == expected_return
+        
+    @pytest.mark.parametrize("info, expected_return", 
+                             [(variables.INFO_10, {'status': 1, 'data': [['bssid', 'ssid', 'intf', 'x:y', 'wtp-id', 'vfid:ip-port', 'rId', 'wId'], ['08:5b:0e:79:16:0c', 'fortinet', 'wifi', 'ab', 'FP320C3X14006196', 'ws(0-192.168.1.111:5246)', '0', '0'], ['08:5b:0e:ae:2d:38', 'fortinet', 'wifi', 'cd', 'FWF90D-WIFI0', 'ws(0-127.0.0.1:15246)', '0', '0']]}),
+                              (variables.INFO_9, {'status': 1, 'data': [['bssid', 'ssid', 'intf', 'wtp-id', 'vfid:ip-port', 'rId', 'wId'], ['08:5b:0e:79:16:0c', 'fortinet', 'wifi', 'FP320C3X14006196', 'ws(0-192.168.1.111:5246)', '0', '0'], ['08:5b:0e:ae:2d:38', 'fortinet', 'wifi', 'FWF90D-WIFI0', 'ws(0-127.0.0.1:15246)', '0', '0']]})])
+    def test_general_parser_diagnose_table(self, info, expected_return):
+        fap_obj = wireless()
+        assert fap_obj.general_parser_diagnose_table(info) == expected_return
+
+    @pytest.mark.parametrize("info, expected_return", 
+                             [(variables.INFO_15, {'status': 1, 'data': [{'wlan': 'wifi', 'vf': '0', 'ip': '0.0.0.0', 'chan': '6', 'cp_authed': 'no', 'vlan_id': '0', 'use': '4', 'group': '', 'vci': '', 'online': 'yes', 'wtp': '3', 'noise': '0', 'radio_type': '11N', 'host': '', 'bw': '0', 'user': '', 'encrypt': 'aes', 'rId': '1', 'signal': '0', 'mac': '08:5b:0e:ae:2d:38', 'idle': '396733', 'security': 'wpa2_only_personal'}, {'wtp': '3', 'use': '4', 'base': '08:5b:0e:ae:2d:38 127.0.0.1:1024<->127.0.0.1:5247', 'vf': '0'}, {'wtp': '3', 'use': '5', 'wlan': 'wifi', 'vf': '0', 'bssid': '08:5b:0e:ae:2d:38', 'lan': '0', 'idx': '0', 'in_kern': '1', 'tun': '01', 'vlan_id': '0', 'monitor': '0'}]}),
+                              (variables.INFO_14, {'status': 1, 'data': [{'use': '4', 'lbr': '0', 'wlan': 'wifi UP', 'cpauth': '0', 'ip': '0.0.0.0/0', 'fast_roaming': '1', 'lsw': '1', 'mac': '00:ff:db:8c:96:70', 'bc_suppression': '3', 'sta_cnt': '1', 'intra_priv': '0', 'dynamic_vlan': '0'}, {'wtp': '3', 'use': '4', 'base': '08:5b:0e:ae:2d:38 127.0.0.1:1024<->127.0.0.1:5247', 'vf': '0'}, {'wtp': '3', 'lan': '0', 'wlan': 'wifi', 'vf': '0', 'bssid': '08:5b:0e:ae:2d:38', 'use': '5', 'idx': '0', 'in_kern': '1', 'tun': '01', 'vlan_id': '0', 'monitor': '0'}]}),
+                              (variables.INFO_13, {'status': 1, 'data': [{'use': '4', 'lbr': '0', 'wlan': 'wifi UP', 'cpauth': '0', 'ip': '0.0.0.0/0', 'fast_roaming': '1', 'lsw': '1', 'mac': '00:ff:db:8c:96:70', 'bc_suppression': '3', 'sta_cnt': '1', 'intra_priv': '0', 'dynamic_vlan': '0'}]}),
+                              (variables.INFO_12, {'status': 1, 'data': [{'wtp': '3', 'use': '4', 'base': '08:5b:0e:ae:2d:38 127.0.0.1:1024<->127.0.0.1:5247', 'vf': '0'}]}),
+                              (variables.INFO_11, {'status': 1, 'data': [{'wlan': 'wifi', 'vf': '0', 'ip': '0.0.0.0', 'chan': '6', 'cp_authed': 'no', 'vlan_id': '0', 'use': '4', 'group': '', 'vci': '', 'online': 'yes', 'wtp': '3', 'noise': '0', 'radio_type': '11N', 'host': '', 'bw': '0', 'user': '', 'encrypt': 'aes', 'rId': '1', 'signal': '0', 'mac': '08:5b:0e:ae:2d:38', 'idle': '396733', 'security': 'wpa2_only_personal'}]})])
+    def test_general_parser_diagnose_equal(self, info, expected_return):
+        fap_obj = wireless()
+        assert fap_obj.general_parser_diagnose_equal(info) == expected_return

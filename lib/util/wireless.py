@@ -712,8 +712,82 @@ class wireless(object):
         finally:
             return(t_info, next_line, lvl, status_data, num_sp)            
 
-    
-        
+    def general_parser_diagnose_table(self, info):
+        '''
+        This python API parses the output of diagnose command and return the data in a 2-D list
+        '''
+        func_name = 'general_parser_diagnose_table'
+        try:
+            status_data = {'status':1}
+            t_info = re.sub(r'(\r)+', '', info, re.DOTALL)
+            data = {'data' : []}
+            counter = 0
+            combine_i_lst = []
+            for line in t_info.split('\n'):
+                # parsing each lines
+                line = line.strip()
+                if line == '':
+                    # ignore empty line
+                    continue
+                items = line.split()
+                if counter == 0:
+                    data['data'].append(items)
+                    for i in xrange(0, len(items)):
+                        if ':' in items[i]:
+                            combine_i_lst.append(i)
+                else:
+                    if combine_i_lst != []:
+                        for combine_i in combine_i_lst:
+                            items[combine_i] = items[combine_i] + items[combine_i+1]
+                            del items[combine_i+1]
+                    data['data'].append(items)
+                counter+=1
+            status_data.update(data)
+        except Exception, error:
+            e = '%s, Unexpected error: %s: %s' % (func_name,  sys.exc_info()[0], error)
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return status_data
+
+    def general_parser_diagnose_equal(self, info):
+        '''
+        This python API parses the output of diagnose command and return the data in a list of dictionary -2
+        '''
+        func_name = 'general_parser_diagnose_equal'
+        try:
+            status_data = {'status':1}
+            t_info = re.sub(r'(\r)+', '', info, re.DOTALL)
+            data = {'data' : []}
+            counter =0 
+            for line in t_info.split('\n'):
+                # parsing each lines
+                line = line.strip()
+                if line == '':
+                    # ignore empty line
+                    continue
+                items = line.split()
+                diction = {}
+                for item in items:
+                    pair_re = re.search(r'(.*)=(.*)', item)
+                    if pair_re != None:
+                        key = pair_re.group(1)
+                        value = pair_re.group(2)                             
+                        diction[key] = value
+                    else:
+                        if counter == 0 and item == '*':
+                            continue
+                        else:
+                            value = value + ' ' + item
+                            diction[key] = value
+                data['data'].append(diction)
+                counter+=1
+            status_data.update(data)
+        except Exception, error:
+            e = '%s, Unexpected error: %s: %s' % (func_name,  sys.exc_info()[0], error)
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return status_data            
+
 if __name__ == "__main__":
     info = '''
     FC220C  #

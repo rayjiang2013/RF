@@ -91,3 +91,46 @@ INFO_8 = "config system virtual-switch\r\n" +\
         '        set G H\r\n' +\
         '    next\r\n' +\
         'end\r\n'
+# diagnose wireless-controller wlac -c vap
+INFO_9 = "\r\n" +\
+        "bssid             ssid                 intf                 wtp-id               vfid:ip-port rId wId\r\n" +\
+        "08:5b:0e:79:16:0c fortinet             wifi                 FP320C3X14006196     ws (0-192.168.1.111:5246) 0 0\r\n" +\
+        "08:5b:0e:ae:2d:38 fortinet             wifi                 FWF90D-WIFI0         ws (0-127.0.0.1:15246) 0 0\r\n" +\
+        "\r\n"
+
+# 2 columns of x:y pattern
+INFO_10 = "\r\n" +\
+        "bssid             ssid                 intf        x:y         wtp-id               vfid:ip-port rId wId\r\n" +\
+        "08:5b:0e:79:16:0c fortinet             wifi        a b         FP320C3X14006196     ws (0-192.168.1.111:5246) 0 0\r\n" +\
+        "08:5b:0e:ae:2d:38 fortinet             wifi        c d         FWF90D-WIFI0         ws (0-127.0.0.1:15246) 0 0\r\n" +\
+        "\r\n"
+
+# diagnose wireless-controller wlac -d sta
+INFO_11 = "*  vf=0 wtp=3 rId=1 wlan=wifi vlan_id=0 ip=0.0.0.0 mac=08:5b:0e:ae:2d:38 " +\
+        "vci= host= user= group= signal=0 noise=0 idle=396733 bw=0 use=4 chan=6 " +\
+        "radio_type=11N security=wpa2_only_personal encrypt=aes cp_authed=no online=yes \r\n" +\
+        "\r\n"
+
+# diagnose wireless-controller wlac -d wtp
+INFO_12 = "vf=0 wtp=3 base=08:5b:0e:ae:2d:38 127.0.0.1:1024<->127.0.0.1:5247 use=4" +\
+        "\r\n"
+
+# diagnose wireless-controller wlac -d wlan
+INFO_13 = "wlan=wifi UP ip=0.0.0.0/0 mac=00:ff:db:8c:96:70 intra_priv=0 fast_roaming=1 dynamic_vlan=0 lbr=0 lsw=1 cpauth=0 bc_suppression=3 sta_cnt=1 use=4" +\
+        "\r\n"
+# diagnose wireless-controller wlac -d all
+INFO_14 = "wlan=wifi UP ip=0.0.0.0/0 mac=00:ff:db:8c:96:70 intra_priv=0 fast_roaming=1 dynamic_vlan=0 lbr=0 lsw=1 cpauth=0 bc_suppression=3 sta_cnt=1 use=4" +\
+        "\r\n" +\
+        "vf=0 wtp=3 base=08:5b:0e:ae:2d:38 127.0.0.1:1024<->127.0.0.1:5247 use=4" +\
+        "\r\n" +\
+        "vf=0 wtp=3 wlan=wifi             bssid=08:5b:0e:ae:2d:38 tun=01 in_kern=1 lan=0 vlan_id=0 monitor=0 idx=0 use=5" +\
+        "\r\n"
+# multiple lines starting with *
+INFO_15 = "*  vf=0 wtp=3 rId=1 wlan=wifi vlan_id=0 ip=0.0.0.0 mac=08:5b:0e:ae:2d:38 " +\
+        "vci= host= user= group= signal=0 noise=0 idle=396733 bw=0 use=4 chan=6 " +\
+        "radio_type=11N security=wpa2_only_personal encrypt=aes cp_authed=no online=yes \r\n" +\
+        "\r\n" +\
+        "vf=0 wtp=3 base=08:5b:0e:ae:2d:38 127.0.0.1:1024<->127.0.0.1:5247 use=4" +\
+        "\r\n" +\
+        "*  vf=0 wtp=3 wlan=wifi             bssid=08:5b:0e:ae:2d:38 tun=01 in_kern=1 lan=0 vlan_id=0 monitor=0 idx=0 use=5" +\
+        "\r\n"
