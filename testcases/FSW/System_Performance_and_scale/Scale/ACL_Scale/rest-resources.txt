@@ -82,12 +82,11 @@
 | | ${Ixia Tcl Srv} | Get Nested Diction | ${Test Topo} | test_topo.trafgen1.tcl_server_ip |
 | | ${link1_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link1.link |
 | | ${link2_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link2.link |
-| | ${link3_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link3.link |
-| | ${link_ports} | Catenate | ${link1_ports} | ${link2_ports} | ${link3_ports} | 
+| | ${link_ports} | Catenate | ${link1_ports} | ${link2_ports} |
 | | ${dev_ports_dict} | Restruct Dev Ports | ${link_ports} |
 #| | Log To Console | \n\tlink1_ports=${link1_ports}
 | | ${Dut ports} | Get From Dictionary | ${dev_ports_dict} | dev1 |
-| | ${Dut Port1} | ${Dut Port2} | ${Dut Port3} | ${Dut Port4} | Split String | ${Dut ports} |
+| | ${Dut Port1} | ${Dut Port2} | Split String | ${Dut ports} |
 | | ${Ixia ports} | Get From Dictionary | ${dev_ports_dict} | trafgen1 |
 | | Show Test Related Variables |
 
@@ -97,10 +96,6 @@
 | | Set Suite Variable | ${Test Topo} | ${Test Topo} |
 | | Set Suite Variable | ${Dut Port1} | ${Dut Port1} |
 | | Set Suite Variable | ${Dut Port2} | ${Dut Port2} |
-| | Set Suite Variable | ${Dut Port3} | ${Dut Port3} |
-| | Set Suite Variable | ${Dut Port4} | ${Dut Port4} |
-
-
 
 # Telnet to DUT
 | | [Documentation] | Test Topo Init Keyword |
@@ -135,10 +130,10 @@
 | | ... |    del 2
 | | ... | end
 | | ... | config switch interface
-| | ... |     edit ${Dut Port3}
+| | ... |     edit ${Dut Port1}
 | | ... |        unset allowed-vlan
 | | ... |    next
-| | ... |    edit ${Dut Port4}
+| | ... |    edit ${Dut Port2}
 | | ... |        unset allowed-vlan
 | | ... |    next
 | | ... |    edit internal
@@ -158,10 +153,10 @@
 | | Set Suite Variable | ${Unset Configure Dict} | ${Unset Configure Dict} |
 
 # Configure DUT-port via REST Put
-| | ${Url Cmd} | Set Variable | /api/v2/cmdb/switch/interface/${Dut Port3} |
+| | ${Url Cmd} | Set Variable | /api/v2/cmdb/switch/interface/${Dut Port1} |
 | | ${Payload} | Create Dictionary | allowed-vlans | 30 |
 | | ${Put Info} | REST.put | ${Url Cmd} | ${Payload} | ${Rest Login} |
-| | ${Url Cmd} | Set Variable | /api/v2/cmdb/switch/interface/${Dut Port4} |
+| | ${Url Cmd} | Set Variable | /api/v2/cmdb/switch/interface/${Dut Port2} |
 | | ${Payload} | Create Dictionary | allowed-vlans | 30 |
 | | ${Put Info} | REST.put | ${Url Cmd} | ${Payload} | ${Rest Login} |
 | | ${Url Cmd} | Set Variable | /api/v2/cmdb/switch/interface/internal |

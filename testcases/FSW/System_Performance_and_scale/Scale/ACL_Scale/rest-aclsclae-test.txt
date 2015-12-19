@@ -24,7 +24,7 @@
 | | | ${dist_mac} | increment_mac | ${Initial Dst Mac} | ${i} |
 | | | ${temp} | Create Dictionary | dst-mac=${dist_mac} |
 | | | Set To Dictionary | ${Payload} | classifier=${temp} |
-| | | ${ingress_dict} | Create Dictionary | member-name=${Dut Port3} |
+| | | ${ingress_dict} | Create Dictionary | member-name=${Dut Port1} |
 | | | ${ingress_list} | Create List | ${ingress_dict} |
 | | | Set to Dictionary | ${Payload} | ingress-interface=${ingress_list} |
 | | | ${json} = | Create Dictionary | json=${Payload} |
@@ -146,7 +146,7 @@
 | | | ${dist_mac} | increment_mac | ${Initial Dst Mac} | ${i} |
 | | | ${temp} | Create Dictionary | dst-mac=${dist_mac} |
 | | | Set To Dictionary | ${Payload} | classifier=${temp} |
-| | | ${ingress_dict} | Create Dictionary | member-name=${Dut Port3} |
+| | | ${ingress_dict} | Create Dictionary | member-name=${Dut Port1} |
 | | | ${ingress_list} | Create List | ${ingress_dict} |
 | | | Set to Dictionary | ${Payload} | ingress-interface=${ingress_list} |
 | | | ${json} = | Create Dictionary | json=${Payload} |
@@ -230,7 +230,7 @@
 | | | ${dist_mac} | increment_mac | ${Initial Dst Mac} | ${i} |
 | | | ${temp} | Create Dictionary | dst-mac=${dist_mac} |
 | | | Set To Dictionary | ${Payload} | classifier=${temp} |
-| | | ${ingress_dict} | Create Dictionary | member-name=${Dut Port3} |
+| | | ${ingress_dict} | Create Dictionary | member-name=${Dut Port1} |
 | | | ${ingress_list} | Create List | ${ingress_dict} |
 | | | Set to Dictionary | ${Payload} | ingress-interface=${ingress_list} |
 | | | ${json} = | Create Dictionary | json=${Payload} |
