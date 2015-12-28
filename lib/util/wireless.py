@@ -592,7 +592,7 @@ class wireless(object):
                     continue
                 if space_s:
                     # there is spaces before the characters at the beginning of string; it means it is second level key/value pairs
-                    data_pair = re.search(r'(.*): (.*)', line, re.U)
+                    data_pair = re.search(r'(.*?): (.*)', line, re.U)
                     if data_pair:
                         # parsing key and value
                         key = data_pair.group(1).strip()
@@ -604,7 +604,7 @@ class wireless(object):
                     data['data'][last_key] = {}
                     data['data'][last_key][key] = value
                 else:
-                    data_pair = re.search(r'(.*): (.*)', line, re.U)
+                    data_pair = re.search(r'(.*?): (.*)', line, re.U)
                     if data_pair:
                         # parsing key and value
                         key = data_pair.group(1).strip()
@@ -622,6 +622,137 @@ class wireless(object):
         finally:
             return(status_data)
 
+
+    def general_parser_colon(self, info, current_line='', lvl=0, parent_key='', start=True, status_data={}, prev_num_sp=0):
+        '''
+        This python API parses the multi-layer output with colon and return the data in a dictionary format
+        '''
+        func_name = 'general_parser_colon'
+        try:
+            if start == True:
+                t_info = re.sub(r'(\r)+', '', info, re.DOTALL)
+                data = {}
+                status_data = {'status':1, 'data':data}
+                prev_num_sp = 0
+                start = False
+            else:
+                t_info = info
+                #status_data = {'status':1, 'data':data}
+            current_line = re.search(r'^(.*)\n', t_info).group(1)
+            while t_info != '':
+                # parsing each lines
+                t_info = t_info.replace(current_line + '\n', '', 1)
+                space_s = re.search(r'^(\s+).*', current_line)
+                if space_s != None:
+                    sp = space_s.group(1)
+                    num_sp = len(sp)
+                else:
+                    sp = ''
+                    num_sp = 0
+                current_line = current_line.strip()
+                if current_line == '':
+                    # ignore empty line
+                    next_line_s = re.search(r'^(.*)\n', t_info)
+                    if next_line_s == None:
+                        next_line = '' 
+                    else:
+                        next_line = next_line_s.group(1)
+                    current_line = next_line
+                    continue
+                s = re.search(r'^(.*?)\:(.*)', current_line)
+                if s != None:
+                    if current_line.startswith('-'):
+                        next_line_s = re.search(r'^(.*)\n', t_info)
+                        if next_line_s == None:
+                            next_line = '' 
+                        else:
+                            next_line = next_line_s.group(1)
+                        current_line = next_line
+                        continue                        
+                    if num_sp == 0:
+                        s1 = re.search(r'^(.*)\s([a-zA-Z0-9_,]+)\s*\:(.*)', current_line)
+                        parent_key = s1.group(1).strip()
+                        current_key = s1.group(2).strip()
+                        current_value = s1.group(3).strip()
+                    else:
+                        current_key = s.group(1).strip()
+                        current_value = s.group(2).strip()
+                    if prev_num_sp < num_sp:
+                        lvl+=1
+                        status_data['data'][parent_key] = {}
+                        status_data['data'][parent_key][current_key] = current_value
+                        #parent_key = current_key
+                        next_line = re.search(r'^(.*)\n', t_info).group(1)
+                        t_info, current_line, lvl, update_status_data, num_sp, up_level_data = self.general_parser_colon(t_info, next_line, lvl, current_key, start, {'status':1, 'data':status_data['data'][parent_key]}, num_sp)
+                        status_data['data'][parent_key].update(update_status_data['data'])
+                        status_data['data'].update(up_level_data)
+                        if up_level_data != {}:
+                            parent_key = up_level_data.keys()[0]
+                        else:
+                            parent_key = ''
+                        next_line = current_line
+                        up_level_data = {}
+                        #return 
+                    elif prev_num_sp == num_sp:
+                        if num_sp == 0:
+                            lvl+=1
+                            status_data['data'][parent_key] = {current_key:current_value}
+                            next_line = re.search(r'^(.*)\n', t_info).group(1)
+ 
+                            space_s_nxt = re.search(r'^(\s+)\w+', next_line)
+                            if space_s_nxt != None:
+                                sp_nxt = space_s_nxt.group(1)
+                                num_sp_nxt = len(sp_nxt)
+                            else:
+                                sp_nxt = ''
+                                num_sp_nxt = 0 
+                            
+                            t_info, current_line, lvl, update_status_data, num_sp, up_level_data = self.general_parser_colon(t_info, next_line, lvl, current_key, start, {'status':1, 'data':status_data['data'][parent_key]}, num_sp_nxt)
+                            status_data['data'][parent_key].update(update_status_data['data'])
+                            status_data['data'].update(up_level_data)
+                            if up_level_data != {}:
+                                parent_key = up_level_data.keys()[0]
+                            else:
+                                parent_key = ''
+                            next_line = current_line
+                            up_level_data = {}
+                            
+
+                            #if num_sp_nxt != 0:
+                                #prev_num_sp = num_sp_nxt                        
+                        else:
+                            status_data['data'][current_key] = current_value
+                            next_line_s = re.search(r'^(.*)\n', t_info)
+                            if next_line_s == None:
+                                next_line = '' 
+                            else:
+                                next_line = next_line_s.group(1)
+                            parent_key = current_key
+                            current_line = next_line
+                            continue           
+
+                        #t_info, next_line, lvl, update_status_data, num_sp, up_level_data = self.general_parser_colon(t_info, next_line, lvl, current_key, start, {'status':1, 'data':{current_key : current_value}}, num_sp)
+                        #status_data['data'].update(update_status_data['data'])
+                        #return 
+                    else:
+                        lvl-=1
+                        up_level_data = {current_key:current_value}
+                        if t_info != '':
+                            next_line = re.search(r'^(.*)\n', t_info).group(1)
+                        else:
+                            next_line = ''
+                        return 
+                #if num_sp != 0:
+                prev_num_sp = num_sp
+                current_line = next_line
+            #parent_key = current_key
+        except Exception, error:
+            e = '%s, Unexpected error: %s: %s' % (func_name,  sys.exc_info()[0], error)
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return(t_info, next_line, lvl, status_data, num_sp, up_level_data)            
+
+
     def general_parser_show(self, info, current_line='', lvl=0, parent_key='', start=True, status_data={}, prev_num_sp=0):
         '''
         This python API parses the output of show command and return the data in a dictionary format
@@ -638,7 +769,7 @@ class wireless(object):
                 t_info = info
                 #status_data = {'status':1, 'data':data}
             current_line = re.search(r'^(.*)\n', t_info).group(1)
-            while current_line != '' and t_info != '':
+            while t_info != '':
                 # parsing each lines
                 t_info = t_info.replace(current_line + '\n', '', 1)
                 space_s = re.search(r'^(\s+)\w+', current_line)
@@ -649,6 +780,15 @@ class wireless(object):
                     sp = ''
                     num_sp = 0
                 current_line = current_line.strip()
+                if current_line == '':
+                    # ignore empty line
+                    next_line_s = re.search(r'^(.*)\n', t_info)
+                    if next_line_s == None:
+                        next_line = '' 
+                    else:
+                        next_line = next_line_s.group(1)
+                    current_line = next_line
+                    continue
                 s1 = re.search(r'^config\s(.*)', current_line)
                 s2 = re.search(r'^edit\s(.*)', current_line)
                 if s1 != None or s2 != None:
@@ -758,7 +898,7 @@ class wireless(object):
             status_data = {'status':1}
             t_info = re.sub(r'(\r)+', '', info, re.DOTALL)
             data = {'data' : []}
-            counter =0 
+            counter = 0 
             for line in t_info.split('\n'):
                 # parsing each lines
                 line = line.strip()
@@ -787,6 +927,46 @@ class wireless(object):
             status_data = {'status':0, 'msg':e}
         finally:
             return status_data            
+
+    def general_parser_diagnose_colon(self, info):
+        '''
+        This python API parses the output of diagnose command with multiple entries and return the data in a list of dictionary -3
+        '''
+        func_name = 'general_parser_diagnose_colon'
+        try:
+            status_data = {'status':1}
+            t_info = re.sub(r'(\r)+', '', info, re.DOTALL)
+            data = {'data' : []}
+            counter = 0
+            read_lines = ''
+            for line in t_info.split('\n'):
+                # parsing each lines
+                orig_line = line
+                line = line.strip()
+                if line == '':
+                    # ignore empty line
+                    continue
+                sep = re.match(r'^-+(.*)\d+.*-+', line)
+                if sep != None:
+                    read_lines = read_lines + '\n'
+                    if counter != 0:
+                        diction = self.general_parser_colon(read_lines)[3]
+                        data['data'].append(diction['data'])
+                        read_lines = ''
+                    if 'Total' in sep.group(1):
+                        break
+                    else:
+                        counter+=1
+                else:
+                    read_lines = read_lines + '\n' + orig_line
+                    
+            status_data.update(data)
+        except Exception, error:
+            e = '%s, Unexpected error: %s: %s' % (func_name,  sys.exc_info()[0], error)
+            status_data = {'status':0, 'msg':e}
+        finally:
+            return status_data            
+
 
 if __name__ == "__main__":
     info = '''
