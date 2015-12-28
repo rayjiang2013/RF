@@ -378,13 +378,15 @@ class TestlinkAPIClient(object):
         self.stepsList = []                    
         return ret 
 
-    def reportTCResult(self, testcaseid, testplanid, buildname, status, notes ):
+    def reportTCResult(self, testcaseid, testplanid, buildname, status, notes, platformname ):
         """
         Report execution result
         testcaseid: internal testlink id of the test case
         testplanid: testplan associated with the test case
         buildname: build name of the test case
         status: test verdict ('p': pass,'f': fail,'b': blocked)
+        notes: test suites tree without immediate suite
+        platformname: platform name for this testplan
         Return : [{'status': True, 'operation': 'reportTCResult', 'message': 'Success!', 'overwrite': False, 'id': '37'}]
         id correspond to the executionID needed to attach files to a test execution
         """
@@ -393,7 +395,8 @@ class TestlinkAPIClient(object):
                 'testplanid' : testplanid,
                 'status': status,
                 'buildname': buildname,
-                'notes': str(notes)
+                'notes': str(notes),
+                'platformname': platformname,
                 }
         return self._callServer('reportTCResult', argsAPI)
 

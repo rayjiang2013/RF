@@ -1,0 +1,25 @@
+# -*- coding: robot -*-
+| *Setting* | *Value *|
+| Documentation | Configure Wireless devices via a telnet Console, then do some tests |
+| Default Tags | macOs-Wpa2psk |
+| Resource | macOs-wpa2psk_resources.txt |
+| Suite Setup | Suite Setup Keyword |  ${testbed} | ${tbinfo} | ${tbtopo} |
+| Suite Teardown | Suite Teardown Keyword |
+| Test Timeout | 20 minutes |
+
+| *Variables*  | *Value* |
+
+| *Test Cases*  | *Value* | *Value* | *Value* |
+| Test Case 1 |
+| | [Documentation] | Test Case 1 |
+| | Run Keyword | Echo Message | 'Test Case 1, FGate Hostname=${FGate Hostname}, FGate Port=${FGate Port}' |
+
+| Test Case 2 | 
+| | [Documentation] | Test Case 2 |
+| | Run Keyword | Echo Message | 'Test Case 2, FGate Hostname=${FGate Hostname}, FGate Port=${FGate Port}' |
+
+| *Keywords* |
+| Echo Message | [Arguments] | ${message to say} |
+| | [Documentation] | Echo passing message |
+| | Log To Console | ${message to say} |
+

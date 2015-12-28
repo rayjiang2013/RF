@@ -1,0 +1,321 @@
+# -*- coding: robot -*-
+| *Setting* | *Value *|
+| Documentation | Script Template for Wireless Automation |
+| Resource | ${autopath}/lib/util/telnet.txt |
+| Resource | ${autopath}/lib/util/ssh.txt |
+| Resource | ${autopath}/lib/util/os.txt |
+| Resource | ${autopath}/lib/util/util.txt |
+| Resource | ${autopath}/lib/util/win.txt |
+| Resource | ${autopath}/lib/util/apple.txt |
+| Resource | ${autopath}/lib/util/wireless.txt |
+| Library  | ${autopath}/lib/util/util.py |
+| Library  | ${autopath}/lib/util/tableparser.py |
+| Library | Collections |
+
+| *Variables*  | *Value* |
+| ${tbinfo} | ${autopath}/cfg/${testbed}/tbinfo.xml |
+| ${virtual_topo} | ${EMPTY} |
+| ${tbtopo} | ${autopath}/cfg/virtual_topos/${virtual_topo} |
+| ${WTP Profile Name} | auto-test |
+| ${FGate Gateway} | 192.168.1.99 |
+| ${Passphrase} | fortinet123 |
+
+| *Keywords* |
+| Suite Setup Keyword | [Arguments] | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | [Documentation] | Initialize an Envirioment for Suite test |
+| | Run Keyword | Test Topo Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+
+| Suite Teardown Keyword | [Arguments] |
+| | [Documentation] | Suite Teardown Keyword |
+| | Log To Console | \n\tSuite Teardown |
+#| | Win Wlan Disconnect From SSID | ${WinPC Hostname} |
+#| | Win Delete Wlan Profile From Interface | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
+#| | Configure FortiSwitch | ${Unset Configure Dict} |
+| | Release Test Topo | ${testbed} | ${Test Topo} |
+| | SSH Close All Connections |
+| | Telnet Close All Connections |
+
+| Test Setup Keyword | [Arguments] | ${Dut Hostname} | @{Testcase Configure data} |
+| | [Documentation] | Test Setup Keyword |
+| | Log To Console | \n\tTest Setup |
+| | ${Testcase Configure String} | List To String | @{Testcase Configure data} |
+| | ${Testcase Configure Dict} | Create Dictionary | ${Dut Hostname} | ${Testcase Configure String} |
+| | Configure FortiSwitch | ${Testcase Configure Dict} |
+
+| Test Teardown Keyword | [Arguments] | ${Dut Hostname} | @{Testcase Unset Configure Data} |
+| | [Documentation] | Test Teardown Keyword |
+| | ${Testcase Unset Configure String} | List To String | @{Testcase Unset Configure Data} |
+| | ${Testcase Unset Configure Dict} | Create Dictionary | ${Dut Hostname} | ${Testcase Unset Configure String} |
+| | Configure FortiSwitch | ${Testcase Unset Configure Dict} |
+
+| Test Topo Init | [Arguments] | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | [Documentation] | Test Topo Init Keyword |
+
+# Allocate Suite Test Resources |
+| | Log To Console | \n\tSuite Setup |
+| | ${Test Topo}= | Suite Test Init | ${testbed} | ${tbinfo} | ${tbtopo} |
+| | ${FGate Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev1.hostname |
+| | ${FGate Username} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.username |
+| | ${FGate Password} | Get Nested Diction | ${Test Topo} | test_topo.dev1.login.password |
+| | ${FGate Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.ip |
+| | ${FGate Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev1.console.line |
+| | ${FAP Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev2.hostname |
+| | ${FAP Username} | Get Nested Diction | ${Test Topo} | test_topo.dev2.login.username |
+| | ${FAP Password} | Get Nested Diction | ${Test Topo} | test_topo.dev2.login.password |
+| | ${FAP Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev2.console.ip |
+| | ${FAP Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev2.console.line |
+| | ${FAP Model} | Get Nested Diction | ${Test Topo} | test_topo.dev2.model |
+| | ${WinPC Type} | Get Nested Diction | ${Test Topo} | test_topo.dev3.type |
+| | ${WinPC Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev3.hostname |
+| | ${WinPC Username} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.username |
+| | ${WinPC Password} | Get Nested Diction | ${Test Topo} | test_topo.dev3.login.password |
+| | ${WinPC Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.ip |
+| | ${WinPC Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev3.console.line |
+| | ${MacBook Type} | Get Nested Diction | ${Test Topo} | test_topo.dev4.type |
+| | ${MacBook Hostname} | Get Nested Diction | ${Test Topo} | test_topo.dev4.hostname |
+| | ${MacBook Username} | Get Nested Diction | ${Test Topo} | test_topo.dev4.login.username |
+| | ${MacBook Password} | Get Nested Diction | ${Test Topo} | test_topo.dev4.login.password |
+| | ${MacBook Console Ip} | Get Nested Diction | ${Test Topo} | test_topo.dev4.console.ip |
+| | ${MacBook Console Port} | Get Nested Diction | ${Test Topo} | test_topo.dev4.console.line |
+| | ${link1_ports} | Get Nested Diction | ${Test Topo} | test_topo.connections.link1.link |
+| | ${dev_ports_dict} | Restruct Dev Ports | ${link1_ports} |
+| | ${FGate port} | Get From Dictionary | ${dev_ports_dict} | dev1 |
+| | ${FAP port} | Get From Dictionary | ${dev_ports_dict} | dev2 |
+| | Show Test Related Variables |
+
+# Make a few varaibles available in current suite
+| | Set Suite Variable | ${FGate Hostname} | ${FGate Hostname}
+| | Set Suite Variable | ${FGate Port} | ${FGate Port}
+| | Set Suite Variable | ${FAP Hostname} | ${FAP Hostname}
+| | Set Suite Variable | ${FAP Port} | ${FAP Port}
+| | ${Test Topo} | Get From Dictionary | ${Test Topo} | physical_topo |
+| | Set Suite Variable | ${Test Topo} | ${Test Topo} |
+| | Set Suite Variable | ${WinPC Hostname} | ${WinPC Hostname} |
+
+# Telnet to FGate
+| | ${Prompt}= | Telnet Login | ${FGate Console Ip} | ${FGate Hostname} | ${FGate Username} | ${FGate Password} | 10 | ${FGate Hostname} | ${FGate Console Port} | open=open | send_ctrlc=yes |
+| | ${ret}= | Get Lines Containing String | ${Prompt} | ${FGate Hostname} |
+| | Should Not Be Empty | ${ret} | "Telnet Login to ${FGate Console Ip} failed" |
+| | ${Status} | Wireless Exec Factoryreset | ${FGate Hostname} | ${FGate Username} | ${FGate Password} |
+
+# ssh to WinPC
+| | ${Prompt}= | SSH Login | ${WinPC Console Ip} | ${WinPC Hostname} | ${WinPC Username} | ${WinPC Password} |
+| | ${ret}= | Get Lines Containing String | ${Prompt} | ${WinPC Hostname} |
+| | Should Not Be Empty | ${ret} | "SSH Login to ${WinPC Console Ip} failed" |
+
+# ssh to MacBook
+| | ${Prompt}= | SSH Login | ${MacBook Console Ip} | ${MacBook Hostname} | ${MacBook Username} | ${MacBook Password} |
+| | ${ret}= | Get Lines Containing String | ${Prompt} | ${MacBook Hostname} |
+| | Should Not Be Empty | ${ret} | "SSH Login to ${MacBook Console Ip} failed" |
+
+# Configure DUT
+| | @{Init Configure Data}= | Set Variable |
+| | ... | config wireless-controller vap
+| | ... |     edit ${WTP Profile Name}
+| | ... |         set vdom "root"
+| | ... |         set ssid ${SSID Name}
+| | ... |         set schedule "always"
+| | ... |         set broadcast-ssid enable
+| | ... |         set security ${Security Type}
+| | ... |         set encrypt ${Encrypt Type}
+| | ... |         set passphrase ${Passphrase}
+| | ... |         set local-bridging enable
+| | ... |         set max-clients 10
+| | ... | end
+| | ... | config wireless-controller wtp-profile
+| | ... |     edit ${WTP Profile Name}
+| | ... |         config platform
+| | ... |             set type ${FAP Model}
+| | ... |         end
+| | ... |         config radio-2
+| | ... |             set mode ap
+| | ... |             set band 802.11ac
+| | ... |             set channel-bonding 80MHz
+| | ... |             set channel "36" "40" "44" "48"
+| | ... |             set vap-all disable
+| | ... |             set vaps ${WTP Profile Name}
+| | ... |     end
+| | ... | end
+| | ... | config wireless-controller wtp
+| | ... |     edit ${FAP Hostname}
+| | ... |         set admin enable
+| | ... |         set wtp-mode normal
+| | ... |         set image-download enable
+| | ... |         set login-enable enable
+| | ... |         set login-passwd-change no
+| | ... |         set wtp-profile ${WTP Profile Name}
+| | ... | end
+| | ... | config system interface
+| | ... |     edit internal
+| | ... |         set mode static
+| | ... |         set ip ${FGate Gateway} 255.255.255.0
+| | ... |         set allowaccess https http telnet ping capwap
+| | ... | end
+| | ... | config system dhcp server
+| | ... |     edit 1
+| | ... |         set interface internal
+| | ... |         config ip-range
+| | ... |             edit 2
+| | ... |                 set end-ip 192.168.1.100
+| | ... |                 set start-ip 192.168.1.109
+| | ... |         end
+| | ... |         set netmask 255.255.255.0
+| | ... |         set default-gateway ${FGate Gateway}
+| | ... |         set dns-service default
+| | ... |         set vci-match enable
+| | ... |         set vci-string "FortiAP"
+| | ... | end
+| | @{Unset Configure Data}= | Set Variable |
+| | ... | config system dhcp server
+| | ... |     delete 1
+| | ... | end
+| | ... | config system interface
+| | ... |     edit internal
+| | ... |         unset mode
+| | ... |         unset ip
+| | ... | end
+| | ... | config wireless-controller wtp
+| | ... |     delete ${FAP Hostname}
+| | ... | end
+| | ... | config wireless-controller wtp-profile
+| | ... |     delete ${WTP Profile Name}
+| | ... | end
+| | ... | config wireless-controller vap
+| | ... |     delete ${WTP Profile Name}
+| | ... | end
+| | ... | exit
+| | ${Init Configure String} | List To String | @{Init Configure Data} |
+| | ${Init Configure Dict} | Create Dictionary | ${FGate Hostname} | ${Init Configure String} |
+| | ${Unset Configure String} | List To String | @{Unset Configure Data} |
+| | ${Unset Configure Dict} | Create Dictionary | ${FGate Hostname} | ${Unset Configure String} |
+| | Configure FortiSwitch | ${Init Configure Dict} |
+| | Set Suite Variable | ${Unset Configure Dict} | ${Unset Configure Dict} |
+
+# Check FAP Platform settings
+| | Wireless Check FAP Platform | ${FGate Hostname} | ${WTP Profile Name} | ${FAP Model} |
+| | ${WTP ID} | Wireless Get WTP ID | ${FGate Hostname} |
+| | Log | \n\tWTP ID=${WTP ID} | console=yes |
+| | Should Be Equal | ${FAP Hostname} | ${WTP ID} | 'WTP ID is invalid" |
+
+# Verify WTP Connection State
+| | ${WTP FAP Data} | Wireless Check WTP Connection State | ${FGate Hostname} | ${FAP Hostname} |
+| | Nested Print | ${WTP FAP Data} |
+
+# Get FAP IP
+| | ${FAP IP} | Wireless Get FAP IP | ${FGate Hostname} | ${FAP Hostname} |
+| | Set Suite Variable | ${FAP IP} |
+| | Log | \n\tFAP IP=${FAP IP} | console=yes |
+
+# Verify FAP get connect Radio setup
+| | ${FAP Radio Data} | Wireless Verify FAP Radio Setup | ${FGate Hostname} | ${FAP IP} | ${FAP Model} | ${FAP Username} |
+| | Nested Print | ${FAP Radio Data} |
+
+# Verify FAP is pingable from Controller
+| | Wireless Ping FAP | ${FGate Hostname} | ${FAP IP} |
+
+# Check FAP SSID shows in WinPC wireless network list
+| | Win Check SSID Presence | ${WinPC Hostname} | ${SSID Name} |
+
+# Get WinPC SSID attributes
+| | ${SSID Data} | Win Get SSID Data | ${WinPC Hostname} |
+| | Nested Print | ${SSID Data} |
+| | ${WinPC SSID Encryption} | Get Nested Diction | ${SSID Data} | data.${SSID Name}.Encryption |
+| | ${WinPC SSID Authentication} | Get Nested Diction | ${SSID Data} | data.${SSID Name}.Authentication |
+
+# Get MacBook SSID attributes
+| | ${SSID Data} | macOs Get SSID Data | ${MacBook Hostname} | ${SSID Name} |
+| | Nested Print | ${SSID Data} |
+| | ${MacBook SSID Encryption} | Get From Dictionary | ${SSID Data} | SECURITY |
+| | ${MacBook SSID Authentication} | Get From Dictionary | ${SSID Data} | SSID |
+
+# Get WinPC Wlan Interface Name
+| | ${Wlan Interfaces} | Win Get Wlan Interface Data | ${WinPC Hostname} |
+| | Nested Print | ${Wlan Interfaces} |
+| | ${Wlan Interface Name} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.Name |
+| | Set Suite Variable | ${Wlan Interface Name} |
+| | ${Wlan Interface Physical address} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.Physical address |
+| | ${Wlan Interface GUID} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.GUID |
+| | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.State |
+
+# Get MacBook Wifi Interface Name
+| | ${Wifi Network Interface Data} | macOs Get Wifi Network Interface Name | ${MacBook Hostname} |
+| | Nested Print | ${Wifi Network Interface Data} |
+| | ${Wifi Interface Name} | Get Nested Diction | ${Wifi Network Interface Data} | Device |
+| | Set Suite Variable | ${Wifi Interface Name} |
+
+# Add WinPC profile to wireless interface
+| | Win Add Wlan Profile to Interface | ${WinPC Hostname} | ${Wlan Profile} | ${Wlan Interface Name} |
+
+# verify WinPC profile being added correctly
+| | Win Verify Wlan Profile in Interface | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
+
+# WinPC Connect to SSID/Profile
+| | Win Wlan Connect To SSID | ${WinPC Hostname} | ${SSID Name} | ${Wlan Interface Name} |
+| | Sleep | 10 |
+
+# MacBook Connect to SSID
+| | macOs Connect To SSID | ${MacBook Hostname} | ${SSID Name} | ${Wifi Interface Name} | ${Passphrase} |
+| | macOs Trun Off Wifi | ${MacBook Hostname} | ${Wifi Interface Name} |
+| | Sleep | 1 |
+| | macOs Trun On Wifi | ${MacBook Hostname} | ${Wifi Interface Name} |
+| | Sleep | 10 |
+
+# WinPC Verify wireless interface states
+| | ${Wlan Interfaces} | Win Get Wlan Interface Data | ${WinPC Hostname} |
+| | Nested Print | ${Wlan Interfaces} |
+| | ${Wlan Interface State} | Get Nested Diction | ${Wlan Interfaces} | wlan_interfaces.intf1.State |
+| | Run Keyword If | '${Wlan Interface State}' != 'connected' | Fail | 'Verify wireless interface states: Interface State fails' |
+
+# WinPC Verify Client receives a correct IP address from FAP
+| | ${Default Gateway} | Win Ipconfig Adapter Info | ${WinPC Hostname} | ${Wlan Interface Name}: | Default Gateway |
+| | Log | \n\tDefault Gateway=${Default Gateway} | console=yes |
+| | Run Keyword If | '${Default Gateway}' != '${FGate Gateway}' | Fail | 'Verify Client receives a correct IP address from FAP fails' |
+| | ${IPv4 Address} | Win Ipconfig Adapter Info | ${WinPC Hostname} | ${Wlan Interface Name}: | IPv4 Address |
+
+# MacBook Get resolved IP address from FAP
+| | ${macOs Wifi Info} | macOs Get Wifi Info | ${MacBook Hostname} | ${Default Gateway} |
+| | Nested Print | ${macOs Wifi Info} |
+| | ${IPv4 Address} | Get From Dictionary | ${macOs Wifi Info} | IP address |
+
+# WinPC Verify Window station can ping FAP
+| | Win Ping | ${WinPC Hostname} | ${FAP IP} |
+
+# MacBook Verify Window station can ping FAP
+| | macOs Ping | ${MacBook Hostname} | ${FAP IP} |
+
+# WinPC Verify Window station can ping FGate Gateway
+| | Win Ping | ${WinPC Hostname} | ${FGate Gateway} |
+
+# MacBook Verify Window station can ping FGate Gateway
+| | macOs Ping | ${MacBook Hostname} | ${FGate Gateway} |
+
+| Show Test Related Variables | [Documentation] | Show all variables using in this test, autopath and dut_id are passed via command line |
+| | Log To Console | \tautopath=${autopath} |
+| | Log To Console | \ttestbed=${testbed} |
+| | Log To Console | \ttbinfo=${tbinfo} |
+| | Log To Console | \ttbtopo=${tbtopo} |
+| | Log To Console | \tFGate Hostname=${FGate Hostname} |
+| | Log To Console | \tFGate Username=${FGate Username} |
+| | Log To Console | \tFGate Password=${FGate Password} |
+| | Log To Console | \tFGate Console Ip=${FGate Console Ip} |
+| | Log To Console | \tFGate Console Port=${FGate Console Port} |
+| | Log To Console | \tFGate port=${FGate port}
+| | Log To Console | \tFAP Hostname=${FAP Hostname} |
+| | Log To Console | \tFAP Username=${FAP Username} |
+| | Log To Console | \tFAP Password=${FAP Password} |
+| | Log To Console | \tFAP Console Ip=${FAP Console Ip} |
+| | Log To Console | \tFAP Console Port=${FAP Console Port} |
+| | Log To Console | \tFAP port=${FAP port}
+| | Log To Console | \tFAP Model=${FAP Model}
+| | Log To Console | \tWinPC Type=${WinPC Type} |
+| | Log To Console | \tWinPC Hostname=${WinPC Hostname} |
+| | Log To Console | \tWinPC Username=${WinPC Username} |
+| | Log To Console | \tWinPC Password=${WinPC Password} |
+| | Log To Console | \tWinPC Console Ip=${WinPC Console Ip} |
+| | Log To Console | \tWinPC Console Port=${WinPC Console Port} |
+| | Log To Console | \tMacBook Type=${MacBook Type} |
+| | Log To Console | \tMacBook Hostname=${MacBook Hostname} |
+| | Log To Console | \tMacBook Username=${MacBook Username} |
+| | Log To Console | \tMacBook Password=${MacBook Password} |
+| | Log To Console | \tMacBook Console Ip=${MacBook Console Ip} |
+| | Log To Console | \tMacBook Console Port=${MacBook Console Port} |
