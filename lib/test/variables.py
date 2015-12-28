@@ -91,6 +91,23 @@ INFO_8 = "config system virtual-switch\r\n" +\
         '        set G H\r\n' +\
         '    next\r\n' +\
         'end\r\n'
+
+# Add space and new line handling for general_parser_show
+INFO_20 = "\r\n" +\
+        "config system virtual-switch\r\n" +\
+        '    edit "internal"\r\n' +\
+        '        set physical-switch "sw0"\r\n' +\
+        '        \r\n' +\
+        '        config port\r\n' +\
+        '            edit "internal1"\r\n' +\
+        '                set status up\r\n' +\
+        "                set alias ''\r\n" +\
+        "                set X Y\r\n" +\
+        '            next\r\n' +\
+        '        end\r\n' +\
+        '    next\r\n' +\
+        'end\r\n' +\
+        "\r\n"
 # diagnose wireless-controller wlac -c vap
 INFO_9 = "\r\n" +\
         "bssid             ssid                 intf                 wtp-id               vfid:ip-port rId wId\r\n" +\
@@ -134,3 +151,94 @@ INFO_15 = "*  vf=0 wtp=3 rId=1 wlan=wifi vlan_id=0 ip=0.0.0.0 mac=08:5b:0e:ae:2d
         "\r\n" +\
         "*  vf=0 wtp=3 wlan=wifi             bssid=08:5b:0e:ae:2d:38 tun=01 in_kern=1 lan=0 vlan_id=0 monitor=0 idx=0 use=5" +\
         "\r\n"
+
+# diagnose wireless-controller wlac -c wtp
+INFO_16 = '-------------------------------WTP    1----------------------------\r\n' +\
+        'WTP vd               : root\r\n' +\
+        '    refcnt           : 3 own(1) wtpprof(1) ws(1) \r\n' +\
+        '    name             : \r\n' +\
+        '    location         : \r\n' +\
+        '  LLDP               : disabled\r\n' +\
+        '  Radio 1            : AP\r\n' +\
+        '    txpower          : 100% (calc 27 oper 0 max 0 dBm)\r\n' +\
+        '    WIDS profile     : ---\r\n' +\
+        '      wlan  0        : wifi\r\n' +\
+        '    max vaps         : 8\r\n' +\
+        '-------------------------------WTP    2----------------------------\r\n' +\
+        'WTP vd               : root\r\n' +\
+        '    split-tunneling-local-ap-subnet  : disabled\r\n' +\
+        '    last failure     : 0 -- N/A\r\n' +\
+        '  Radio 1            : AP\r\n' +\
+        '    country name     : NA\r\n' +\
+        '    WIDS profile     : ---\r\n' +\
+        '      wlan  0        : wifi\r\n' +\
+        '    max vaps         : 8\r\n' +\
+        '  Radio 2            : AP\r\n' +\
+        '    WIDS profile     : ---\r\n' +\
+        '  Radio 3            : Not Exist\r\n' +\
+        '-------------------------------Total    2 WTPs----------------------------\r\n' +\
+        '\r\n'
+# diagnose wireless-controller wlac -c wlan
+INFO_21 = 'WLAN (001/001) vdom,name: root, wifi \r\n' +\
+    '     vlanid             : 0 (auto vlan intf disabled)\r\n' +\
+    '     ip, mac            : 0.0.0.0, 00:ff:db:8c:96:70\r\n' +\
+    '     refcnt, deleted    : 37  own(1) wtpprof(36) r\n' +\
+    '     mf acl cfg         : disabled, allow, 0 entries\r\n' +\
+    '  WTP 0001              : 0, FP320C3X14006196\r\n' +\
+    '  WTP 0002              : 0, FWF90D-WIFI0\r\n' +\
+    '      ---- 0-127.0.0.1:15246 (12 - CWAS_RUN)\r\n'
+
+# diagnose wireless-controller wlac -c wlan example 2
+INFO_22 = 'WLAN (001/001) vdom,name: root, wifi \r\n' +\
+    '     vlanid             : 0 (auto vlan intf disabled)\r\n' +\
+    '     ip, mac            : 0.0.0.0, 00:ff:db:8c:96:70\r\n' +\
+    '     refcnt, deleted    : 37  own(1) wtpprof(36) r\n' +\
+    '     mf acl cfg         : disabled, allow, 0 entries\r\n' +\
+    '  WTP 0001              : 0, FP320C3X14006196\r\n' +\
+    '  WTP 0002              : 0, FWF90D-WIFI0\r\n' +\
+    '      ---- 0-127.0.0.1:15246 (12 - CWAS_RUN)\r\n' +\
+    '      --A:B\r\n' +\
+    '  C:D\r\n'
+
+
+# for test_general_parser_colon
+INFO_17 = 'WTP vd               : root\r\n' +\
+        '    refcnt           : 3 own(1) wtpprof(1) ws(1) \r\n' +\
+        '    name             : \r\n' +\
+        '    location         : \r\n' +\
+        '  LLDP               : disabled\r\n' +\
+        '  Radio 1            : AP\r\n' +\
+        '    txpower          : 100% (calc 27 oper 0 max 0 dBm)\r\n' +\
+        '    WIDS profile     : ---\r\n' +\
+        '      wlan  0        : wifi\r\n' +\
+        '    max vaps         : 8\r\n'
+
+# for test_general_parser_colon - 3 elements in the lowest layer
+INFO_18 = 'WTP vd               : root\r\n' +\
+        '    refcnt           : 3 own(1) wtpprof(1) ws(1) \r\n' +\
+        '    name             : \r\n' +\
+        '    location         : \r\n' +\
+        '  LLDP               : disabled\r\n' +\
+        '  Radio 1            : AP\r\n' +\
+        '    txpower          : 100% (calc 27 oper 0 max 0 dBm)\r\n' +\
+        '    WIDS profile     : ---\r\n' +\
+        '      wlan  0        : wifi\r\n' +\
+        '      A B: C\r\n' +\
+        '      D: E\r\n' +\
+        '    max vaps         : 8\r\n'
+        
+# for test_general_parser_colon - empty line
+INFO_19 = '\r\n' +\
+        'WTP vd               : root\r\n' +\
+        '    refcnt           : 3 own(1) wtpprof(1) ws(1) \r\n' +\
+        '    name             : \r\n' +\
+        '    location         : \r\n' +\
+        '  LLDP               : disabled\r\n' +\
+        '  Radio 1            : AP\r\n' +\
+        '    txpower          : 100% (calc 27 oper 0 max 0 dBm)\r\n' +\
+        '    WIDS profile     : ---\r\n' +\
+        '      wlan  0        : wifi\r\n' +\
+        '      A B: C\r\n' +\
+        '      D: E\r\n' +\
+        '    max vaps         : 8\r\n' +\
+        '\r\n'

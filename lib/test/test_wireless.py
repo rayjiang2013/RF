@@ -11,7 +11,7 @@ import pytest
 import variables
 from ..util.wireless import wireless
 
-class TestFap(object): 
+class TestWireless(object): 
     @pytest.mark.parametrize("info, radio_number, expected_return", 
                              [(variables.INFO, unicode(2), {'status': 1, 'beacon_interval': '50'}),
                               (variables.INFO, 2, {'status': 1, 'beacon_interval': '50'}),
@@ -33,7 +33,8 @@ class TestFap(object):
         assert fap_obj.general_parser_get(info) == expected_return        
 
     @pytest.mark.parametrize("info, expected_return", 
-                             [(variables.INFO_8, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'A': 'B', 'C': {'D': {'X': 'Y'}}, 'E': {'F': {'X': 'Y'}}, 'G': 'H'}}}}),
+                             [(variables.INFO_20, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'physical-switch': '"sw0"', 'port': {'"internal1"': {'status': 'up', 'alias': "''", 'X': 'Y'}}}}}}),
+                              (variables.INFO_8, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'A': 'B', 'C': {'D': {'X': 'Y'}}, 'E': {'F': {'X': 'Y'}}, 'G': 'H'}}}}),
                               (variables.INFO_7, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'A': 'B', 'physical-switch': '"sw0"', 'port': {'"internal1"': {'X': 'Y', 'alias': "''", 'status': 'up'}}}}}}),
                               (variables.INFO_6, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'physical-switch': '"sw0"', 'port': {'"internal1"': {'status': 'up', 'alias': "''", 'X': 'Y'}}}}}}),
                               (variables.INFO_5, {'status': 1, 'data': {'system virtual-switch': {'"internal"': {'physical-switch': '"sw0"', 'port': {'"internal2"': {'alias': "''", 'speed': 'auto'}, '"internal1"': {'status': 'up', 'alias': "''"}}}}, 'system global': {'admin-concurrent': 'enable'}}})])
@@ -57,3 +58,19 @@ class TestFap(object):
     def test_general_parser_diagnose_equal(self, info, expected_return):
         fap_obj = wireless()
         assert fap_obj.general_parser_diagnose_equal(info) == expected_return
+        
+    @pytest.mark.parametrize("info, expected_return", 
+                             [(variables.INFO_16, {'status': 1, 'data': [{'LLDP': 'disabled', 'WTP': {'vd': 'root', 'name': '', 'refcnt': '3 own(1) wtpprof(1) ws(1)', 'location': ''}, 'Radio 1': {'txpower': '100% (calc 27 oper 0 max 0 dBm)', 'WIDS profile': {'wlan  0': 'wifi'}, 'max vaps': '8'}}, {'Radio 3': 'Not Exist', 'Radio 2': {'WIDS profile': '---'}, 'WTP': {'vd': 'root', 'last failure': '0 -- N/A', 'split-tunneling-local-ap-subnet': 'disabled'}, 'Radio 1': {'WIDS profile': {'wlan  0': 'wifi'}, 'country name': 'NA', 'max vaps': '8'}}]})])
+    def test_general_parser_diagnose_colon(self, info, expected_return):
+        fap_obj = wireless()
+        assert fap_obj.general_parser_diagnose_colon(info) == expected_return
+
+    @pytest.mark.parametrize("info, expected_return", 
+                             [(variables.INFO_22, {'status': 1, 'data': {'WLAN (001/001)': {'mf acl cfg': 'disabled, allow, 0 entries', 'refcnt, deleted': '37  own(1) wtpprof(36) r', 'vlanid': '0 (auto vlan intf disabled)', 'vdom,name': 'root, wifi', 'ip, mac': '0.0.0.0, 00:ff:db:8c:96:70'}, 'WTP 0001': '0, FP320C3X14006196', 'C': 'D', 'WTP 0002': '0, FWF90D-WIFI0'}}),
+                              (variables.INFO_21, {'status': 1, 'data': {'WLAN (001/001)': {'mf acl cfg': 'disabled, allow, 0 entries', 'refcnt, deleted': '37  own(1) wtpprof(36) r', 'vlanid': '0 (auto vlan intf disabled)', 'vdom,name': 'root, wifi', 'ip, mac': '0.0.0.0, 00:ff:db:8c:96:70'}, 'WTP 0001': '0, FP320C3X14006196', 'WTP 0002': '0, FWF90D-WIFI0'}}),
+                              (variables.INFO_19, {'status': 1, 'data': {'WTP': {'vd': 'root', 'name': '', 'refcnt': '3 own(1) wtpprof(1) ws(1)', 'location': ''}, 'LLDP': 'disabled', 'Radio 1': {'txpower': '100% (calc 27 oper 0 max 0 dBm)', 'WIDS profile': {'A B': 'C', 'D': 'E', 'wlan  0': 'wifi'}, 'max vaps': '8'}}}),
+                              (variables.INFO_18, {'status': 1, 'data': {'WTP': {'vd': 'root', 'name': '', 'refcnt': '3 own(1) wtpprof(1) ws(1)', 'location': ''}, 'LLDP': 'disabled', 'Radio 1': {'txpower': '100% (calc 27 oper 0 max 0 dBm)', 'WIDS profile': {'A B': 'C', 'D': 'E', 'wlan  0': 'wifi'}, 'max vaps': '8'}}}),
+                              (variables.INFO_17, {'status': 1, 'data': {'LLDP': 'disabled', 'WTP': {'vd': 'root', 'name': '', 'refcnt': '3 own(1) wtpprof(1) ws(1)', 'location': ''}, 'Radio 1': {'txpower': '100% (calc 27 oper 0 max 0 dBm)', 'WIDS profile': {'wlan  0': 'wifi'}, 'max vaps': '8'}}})])
+    def test_general_parser_colon(self, info, expected_return):
+        fap_obj = wireless()
+        assert fap_obj.general_parser_colon(info)[3] == expected_return
