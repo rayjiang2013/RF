@@ -456,3 +456,28 @@
 | | Should Not Be Empty | ${Login Lines} | 'Unable Logout FAP at ${FAP IP}' |
 | | Telnet.Switch Connection | ${org_id} |
 | | [Return] | ${beacon interval} |
+
+# A general keyword to handle configuration under wireless-controller with just one level
+| Config Wireless Controller | [Arguments] | ${telnet_lias} | ${arg1} | ${arg2} | @{arg_list} | 
+| | [Documentation] | Config Wireless Controller telnet_lias=${telnet_lias}, argument 1=${arg1}, argument 2=${arg2}, arguments list=${arg_list} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Sleep | 1 |
+| | Log | ${telnet_lias} \# config wireless-controller ${arg1} | console=yes |
+| | Telnet.Write | config wireless-controller ${arg1}
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} ${arg2} | console=yes |
+| | Telnet.Write | ${arg2}
+| | :FOR | ${command} | IN | @{arg_list} |
+| | | ${read_info}= | Telnet.Read Until Prompt |
+| | | Log | ${read_info} ${command} | console=yes |
+| | | Telnet.Write | ${command}
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} next | console=yes |
+| | Telnet.Write | next |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} end | console=yes |
+| | Telnet.Write | end |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
