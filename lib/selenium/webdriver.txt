@@ -1,0 +1,85 @@
+# -*- coding: robot -*-
+*** Settings ***
+Documentation  This library file contains common and global API's for GUI Automation
+Library           Selenium2Library
+Library           Collections
+
+*** Variables ***
+
+| *Keywords* |
+| Create Remote Driver | [Arguments] | ${HubIp}=127.0.0.1 | ${Port}=4444 | ${BrowserName}=firefox | ${Platform}=LINUX |
+| | ${Capabilities} | Create Dictionary |
+| | Set To Dictionary | ${Capabilities} | Platform | ${Platform} |
+| | Set To Dictionary | ${Capabilities} | browserName | ${BrowserName} |
+| | Log To Console | \n\tCapabilities=${Capabilities} |
+| | ${Executor} = | Evaluate | str('http://${HubIp}:${Port}/wd/hub') |
+| | Log To Console | \n\tExecutor=${Executor} |
+| | ${Driver} | Create Webdriver | Remote | desired_capabilities=${Capabilities} | command_executor=${Executor} |
+| | [Return] | ${Driver} |
+
+| Close All Browser | [Arguments] |
+| | Close All Browsers |
+
+| Login Page Should Be Open | [Arguments] | ${Title} |
+| | Title Should Be | ${Title} |
+
+| Open Browser To Login Page | [Arguments] | ${URL}=http://google.com | ${Title}=Google | ${HubIp}=127.0.0.1 | ${Port}=4444 | ${BrowserName}=firefox | ${Platform}=LINUX | ${DELAY}=1 |
+| | ${Capabilities} | Create Dictionary |
+| | Set To Dictionary | ${Capabilities} | Platform | ${Platform} |
+| | Set To Dictionary | ${Capabilities} | browserName | ${BrowserName} |
+| | Log To Console | \n\tCapabilities=${Capabilities} |
+| | ${Executor} = | Evaluate | str('http://${HubIp}:${Port}/wd/hub') |
+| | Log To Console | \n\tExecutor=${Executor} |
+| | ${Driver} | Open Browser | ${URL} | ${BrowserName} | remote_url=${Executor} | desired_capabilities=${Capabilities} |
+| | Set Selenium Speed | ${DELAY} |
+| | Login Page Should Be Open | ${Title} |
+| | [Return] | ${Driver} |
+
+| Go To Page | [Arguments] | ${Page URL}=https://accounts.google.com/ServiceLogin | ${Title}=Google | ${DELAY}=1 |
+| | Go To | ${Page URL} |
+| | Set Selenium Speed | ${DELAY} |
+| | Login Page Should Be Open | ${Title} |
+
+| Input Text By Id | [Arguments] | ${Element Name} | ${Text} |
+| | ${Element} | Get WebElement | id=${Element Name} |
+| | Input Text | ${Element} | ${Text} |
+
+| Input Text By XPath | [Arguments] | ${XPath} | ${Text} |
+| | ${Element} | Get WebElement | xpath=${XPath} |
+| | Input Text | ${Element} | ${Text} |
+
+| Get Text By Id | [Arguments] | ${Element Name} |
+| | ${Element} | Get WebElement | id=${Element Name} |
+| | ${Text} | Get Text | ${Element} |
+| | [Return] | ${Text} |
+
+| Get Text By XPath | [Arguments] | ${Element Name} |
+| | ${Element} | Get WebElement | xpath=${Element Name} |
+| | ${Text} | Get Text | ${Element} |
+| | [Return] | ${Text} |
+
+| Click On Element By Id | [Arguments] | ${Element Name} |
+| | ${Element} | Get WebElement | id=${Element Name} |
+| | Click Element | ${Element} |
+
+| Click On Element By XPath | [Arguments] | ${XPath} |
+| | ${Element} | Get WebElement | xpath=${XPath} |
+| | Click Link | ${Element} |
+
+| Get Option In Selected List By Id | [Arguments] | ${Selected List Name} |
+| | ${Selected List} | Get WebElement | id=${Selected List Name} |
+| | ${Selected List Option} | Get Selected List Value | ${Selected List} |
+| | [Return] | ${Selected List Option} |
+ 
+| Get Option In Selected List By XPath | [Arguments] | ${Selected List Name} |
+| | ${Selected List} | Get WebElement | xpath=${Selected List Name} |
+| | ${Selected List Option} | Get Selected List Value | ${Selected List} |
+| | [Return] | ${Selected List Option} |
+
+| Select Option In Selected List By Index By Id | [Arguments] | ${Selected List Name} | ${Index} |
+| | ${Selected List} | Get WebElement | id=${Selected List Name} |
+| | ${Selected List Option} | Select From List By Index | ${Selected List} | ${Index} |
+
+| Select Option In Selected List By Index By XPath | [Arguments] | ${Selected List Name} | ${Index} |
+| | ${Selected List} | Get WebElement | xpath=${Selected List Name} |
+| | ${Selected List Option} | Select From List By Index | ${Selected List} | ${Index} |
