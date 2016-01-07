@@ -459,7 +459,7 @@
 
 # A general keyword to handle configuration under wireless-controller with just one level
 | Config Wireless Controller | [Arguments] | ${telnet_lias} | ${arg1} | ${arg2} | @{arg_list} | 
-| | [Documentation] | Config Wireless Controller telnet_lias=${telnet_lias}, argument 1=${arg1}, argument 2=${arg2}, arguments list=${arg_list} |
+| | [Documentation] | Config Wireless Controller telnet_lias=${telnet_lias}, argument 1=${arg1}, argument 2=${arg2}, arguments list=@{arg_list} |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
 | | ${read_info}= | Telnet.Read |
 | | Sleep | 1 |
@@ -467,7 +467,7 @@
 | | Telnet.Write | config wireless-controller ${arg1}
 | | ${read_info}= | Telnet.Read Until Prompt |
 | | Log | ${read_info} ${arg2} | console=yes |
-| | Telnet.Write | ${arg2}
+| | Telnet.Write | ${arg2} |
 | | :FOR | ${command} | IN | @{arg_list} |
 | | | ${read_info}= | Telnet.Read Until Prompt |
 | | | Log | ${read_info} ${command} | console=yes |
@@ -481,3 +481,100 @@
 | | ${read_info}= | Telnet.Read Until Prompt |
 | | Log | ${read_info} | console=yes |
 | | Telnet.Switch Connection | ${org_id} |
+
+
+# To handle configuration under wtp-profile with multiple levels
+| Config Wireless Controller Wtp Profile | [Arguments] | ${telnet_lias} | ${arg1} | ${arg2} | @{arg_list} | 
+| | [Documentation] | Config Wireless Controller Wtp Profile telnet_lias=${telnet_lias}, argument 1=${arg1}, argument 2=${arg2}, arguments list=@{arg_list} |
+| | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
+| | ${read_info}= | Telnet.Read |
+| | Sleep | 1 |
+| | Log | ${telnet_lias} \# config wireless-controller wtp-profile | console=yes |
+| | Telnet.Write | config wireless-controller wtp-profile |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} edit ${arg1} | console=yes |
+| | Telnet.Write | edit ${arg1} |
+| | Run Keyword If | 'config' in '${arg2}' | Set Argument List | ${arg2} | @{arg_list} | 
+| | ... | ELSE IF | '${arg2}' == '${EMPTY}' | Auto Set Argument List | ${telnet_lias} | ${arg1} | @{arg_list} |
+| | ... | ELSE | Fail | Unexpected command ${arg2} |
+#| | :FOR | ${command} | IN | @{arg_list} |
+#| | | ${read_info}= | Telnet.Read Until Prompt |
+#| | | Log | ${read_info} ${command} | console=yes |
+#| | | Telnet.Write | ${command} |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} next | console=yes |
+| | Telnet.Write | next |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} end | console=yes |
+| | Telnet.Write | end |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} | console=yes |
+| | Telnet.Switch Connection | ${org_id} |
+
+# To run multiple set commands under edit
+| Set Argument List | [Arguments] | ${config arg} | @{commands} |
+| | [Documentation] | Set Argument List, config command=${config arg}, a list of set commands=@{arg_list} |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} ${config arg} | console=yes |
+| | Telnet.Write | ${config arg} |
+| | :FOR | ${command} | IN | @{commands} |
+| | | ${read_info}= | Telnet.Read Until Prompt |
+| | | Log | ${read_info} ${command} | console=yes |
+| | | Telnet.Write | ${command} |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} end | console=yes |
+| | Telnet.Write | end |
+
+# To run multiple set commands under edit automatically
+| Auto Set Argument List | [Arguments] | ${hostname} | ${profile name} | @{commands} |
+| | [Documentation] | Auto Set Argument List, profile name=${profile name}, host name=${hostname}, a list of set commands=@{commands} |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} get | console=yes |
+| | Telnet.Write | get |
+| | Sleep | 3 |
+| | ${read_info}= | Telnet.Read |
+| | :FOR | ${index} | IN RANGE | 20 |
+| | | ${last_line} | Get Line | ${read_info} | -1 |
+| | | Log To Console | ${read_info} |
+| | | Run Keyword If | '${hostname} (${profile name}) # ' in '''${last_line}''' | Exit For Loop |
+| | | Run Keyword If | '${last_line}' == '--More-- ' | Telnet.Write | "a" |
+| | | Sleep | 3 |
+| | | ${read_info_2}= | Telnet.Read
+| | | ${read_info}= | Catenate | ${read_info} | ${read_info_2} | 
+| | Log | ${read_info} | console=yes |
+| | ${parsed_info}= | Wireless.General Parser Get | ${read_info} |
+| | ${Status}= | Get From Dictionary | ${parsed_info} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'General parser for get command fails' |
+| | ${radio 1} | Get Nested Diction | ${parsed_info} | data.radio-1.band |
+| | ${radio 2} | Get Nested Diction | ${parsed_info} | data.radio-2.band |
+| | Log To Console | \n\tRadio Band 1=${radio 1} |
+| | Log To Console | \n\tRadio Band 2=${radio 2} |
+| | @{other commands}= | Create List | 
+| | ${PASS}= | Set Variable | False |
+| | :FOR | ${command} | IN | @{commands} |
+| | | Run Keyword If | 'set band ${radio 1}' == '${command}' | Run Keywords |
+| | | ... | Log | ${hostname} (${profile name}) # config radio-1 | console=yes |
+| | | ... | AND | Sleep | 1 second |
+| | | ... | AND | Telnet.Write | config radio-1 |
+| | | ... | AND | Telnet.Read Until Prompt |
+| | | ... | AND | Log | ${hostname} (radio-1) # ${command} | console=yes |
+| | | ... | AND | Telnet.Write | ${command} |
+| | | ... | AND | Set Suite Variable | ${Pass} | True 
+| | | ... | ELSE IF | 'set band ${radio 2}' == '${command}' | Run Keywords |
+| | | ... | Log | ${hostname} (${profile name}) # config radio-2 | console=yes |
+| | | ... | AND | Sleep | 1 second |
+| | | ... | AND | Telnet.Write | config radio-2 |
+| | | ... | AND | Telnet.Read Until Prompt |
+| | | ... | AND | Log | ${hostname} (radio-2) # ${command} | console=yes |
+| | | ... | AND | Telnet.Write | ${command} |
+| | | ... | AND | Set Suite Variable | ${Pass} | True 
+| | | ... | ELSE | Append To List | ${other commands} | ${command} |
+| | ${Pass} | Set Variable | ${Pass} |
+| | Run Keyword If | ${PASS} == False | Fail | Unable to auto select, please double check your commands |
+| | :FOR | ${other command} | IN | @{other commands} |
+| | | ${read_info}= | Telnet.Read Until Prompt |
+| | | Log | ${read_info} ${other command} | console=yes |
+| | | Telnet.Write | ${other command} |
+| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${read_info} end | console=yes |
+| | Telnet.Write | end |
