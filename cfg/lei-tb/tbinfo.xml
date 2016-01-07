@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testbed name="lei-tb">
+ <dev1 type="FWF" hostname="FWF90D3Z14001317" model="FortiWiFi-90D">
+  <console ip="172.30.152.24" line="2066"> </console>
+  <login username="admin" password=""> </login>
+  <mgmt ip="" netmask="" gateway="" port=""> </mgmt>
+  <pdu model="RARITAN" ip="10.160.37.20" port="9"> </pdu>
+ </dev1>
+ <dev2 type="FAP" hostname="FP320C3X14006196" model="320C">
+  <console ip="172.30.152.24" line="2067"> </console>
+  <login username="admin" password=""> </login>
+  <mgmt ip="" netmask="" gateway="" port=""> </mgmt>
+ </dev2>
+ <dev3 type="macOs" hostname="admins-MacBook-Pro" model="MacBook Pro">
+  <console ip="172.30.240.6" line="22"> </console>
+  <login username="admin" password="fortinet"> </login>
+ </dev3>
+ <connections>
+  <link1 link="dev1:port9,dev2:port1" type="GigabitEthernet" mode="Copper"> </link1>
+ </connections></testbed>
