@@ -587,7 +587,7 @@ class wireless(object):
                 # parsing each lines
                 space_s = re.search(r'^(\s+)\w+', line)
                 line = line.strip()
-                if line == '':
+                if line == '' or "--More--" in line:
                     # ignore empty line
                     continue
                 if space_s:
@@ -601,7 +601,8 @@ class wireless(object):
                         # parsing key and empty value
                         key = re.sub(r':', '', line).strip()
                         value = ''
-                    data['data'][last_key] = {}
+                    if type(data['data'][last_key]) != dict:
+                        data['data'][last_key] = {}
                     data['data'][last_key][key] = value
                 else:
                     data_pair = re.search(r'(.*?): (.*)', line, re.U)
