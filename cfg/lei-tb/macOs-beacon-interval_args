@@ -1,10 +1,10 @@
-# This is the argument file for sconfig.txt
+# This is the argument file
 --variable autopath:/home/leijiang/git/automation
 --variable virtual_topo:
 --variable testbed:lei-tb
 --variable SSID Name:fortinet-automation-ap
 --variable Security Type:open
-# Tag
+
 --suite lei
 --include macOs-beacon-interval
 --output /home/leijiang/git/automation/testcases/lei/output.xml
