@@ -115,7 +115,7 @@
 | | Set Suite Variable | ${macOs Hostname} | ${macOs Hostname} |
 
 # Telnet to FGate and then factory reset FWF
-| | ${Prompt}= | Telnet Login | ${FGate Console Ip} | ${FGate Hostname} | ${FGate Username} | ${FGate Password} | ${FGate Console Port} | ${FGate Hostname} |
+| | ${Prompt}= | Telnet Login | ${FGate Console Ip} | ${FGate Hostname} | ${FGate Username} | ${FGate Password} | ${FGate Console Port} | ${FGate Hostname} \# |
 | | ${Status} | Wireless Exec Factoryreset | ${FGate Hostname} | ${FGate Username} | ${FGate Password} |
 #| | ${Status} | Wireless Exec Factoryreset AP From Controller | ${FGate Hostname} | ${FAP IP} | ${FAP Username} | ${FAP Password} | ${FAP Hostname} | ${FAP Login Prompt} | ${FAP Password Prompt} |
 
