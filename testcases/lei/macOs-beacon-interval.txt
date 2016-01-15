@@ -14,6 +14,7 @@
 | *Variables*  | *Value* |
 | ${radio number} | 2 |
 | ${beacon interval} | 50 |
+| ${Return Value} | ${EMPTY} |
 #| ${pass status} | 1 |
 | @{Testcase Configure data}= |
 | ... | config wireless-controller vap
@@ -47,7 +48,44 @@
 | Test Case 1 |
 | | [Documentation] | Test Case 1 |
 | | Run Keyword | Echo Message | 'Test Case 1, FGate Hostname=${FGate Hostname}, FGate Port=${FGate Port}' |
-| | Wireless Change Beacon Interval | ${FGate Hostname} | ${WTP Profile Name} | ${radio number} | ${beacon interval} | 
+#| | Wireless Change Beacon Interval | ${FGate Hostname} | ${WTP Profile Name} | ${radio number} | ${beacon interval} | 
+| | @{set_list}= | Create List | set beacon-interval ${beacon interval} |
+| | Config Wireless Controller Wtp Profile | ${FGate Hostname} | ${WTP Profile Name} | config radio-${radio number} | @{set_list} | 
+| | @{get_list}= | Create List | get |
+| | Config Wireless Controller Wtp Profile | ${FGate Hostname} | ${WTP Profile Name} | config radio-${radio number} | @{get_list} | 
+| | ${parsed_info}= | Wireless.General Parser Get | ${Return Value} | 
+| | ${Status}= | Get From Dictionary | ${parsed_info} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'General parser for get command fails' |
+| | ${beacon interval from get} | Get Nested Diction | ${parsed_info} | data.beacon-interval |
+| | Should Be Equal As Integers | ${beacon interval from get} | ${beacon interval} |
+
+| | @{show_list}= | Create List | show |
+| | Config Wireless Controller Wtp Profile | ${FGate Hostname} | ${WTP Profile Name} | config radio-${radio number} | @{show_list} | 
+| | ${parsed_info_list}= | Wireless.General Parser Show | ${Return Value} | 
+| | ${parsed_info}= | Get From List | ${parsed_info_list} | -2 | 
+| | ${Status}= | Get From Dictionary | ${parsed_info} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'General parser for show command fails' |
+| | ${beacon interval from show} | Get Nested Diction | ${parsed_info} | data.radio-${radio number}.beacon-interval |
+| | Should Be Equal As Integers | ${beacon interval from show} | ${beacon interval} |
+
+#| | ${org_id} | Telnet.Switch Connection | ${FGate Hostname} |
+#| | Log | ${FGate Hostname} \# diagnose wireless-controller wlac -c wtp | console=yes |
+#| | Telnet.Write | diagnose wireless-controller wlac -c wtp |
+#| | Sleep | 3 |
+#| | ${Return Value}= | Telnet.Read |
+#| | Telnet.Switch Connection | ${org_id} |
+
+| | ${Return Value}= | FortiSwitch Command | ${FGate Hostname} | diagnose wireless-controller wlac -c wtp |
+
+| | ${parsed_info}= | Wireless.General Parser Diagnose Colon | ${Return Value} | 
+| | ${Status}= | Get From Dictionary | ${parsed_info} | status |
+| | Run Keyword If | ${Status} != 1 | Fail | 'General parser for diagnose command fails' |
+| | ${data_list}= | Get From Dictionary | ${parsed_info} | data |
+| | ${data}= | Get From List | ${data_list} | -1 |
+
+| | ${beacon interval from diagnose} | Get Nested Diction | ${data} | Radio ${radio number}.beacon_intv |
+| | Should Be Equal As Integers | ${beacon interval from diagnose} | ${beacon interval} |
+
 | | ${new beacon interval}= | Get Beacon Interval | ${FGate Hostname} | ${radio number} | ${beacon interval} | ${FAP IP} | ${FAP Username} | ${FAP Password} | ${FAP Model} | ${FAP Hostname} | ${FAP Login Prompt} | ${FAP Password Prompt} | 
 | | Should Be Equal As Integers | ${new beacon interval} | ${beacon interval} | 
 
