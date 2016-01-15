@@ -60,10 +60,24 @@
 | FortiSwitch Command | [Arguments] | ${telnet_lias} | ${cli} |
 | | [Documentation] | FortiSwitch Command |
 | | ${org_id} | Telnet.Switch Connection | ${telnet_lias} |
-| | Telnet.Write | ${cli} |
+
 | | Sleep | 1 |
 | | ${read_info}= | Telnet.Read |
-| | Log To Console | ${read_info}${cli} |
+| | Log | ${read_info} ${cli} | console=yes |
+| | Telnet.Write | ${cli} |
+| | Sleep | 3 |
+| | ${read_info}= | Telnet.Read |
+
+| | :FOR | ${index} | IN RANGE | 20 |
+| | | ${last_line} | Get Line | ${read_info} | -1 |
+| | | Log To Console | ${read_info} |
+| | | Run Keyword If | '${telnet_lias} # ' in '''${last_line}''' | Exit For Loop |
+| | | Run Keyword If | '${last_line}' == '--More-- ' | Telnet.Write | "a" |
+| | | Sleep | 3 |
+| | | ${read_info_2}= | Telnet.Read
+| | | ${read_info}= | Catenate | ${read_info} | ${read_info_2} | 
+| | Log | ${read_info} | console=yes |
+
 | | Telnet.Switch Connection | ${org_id} |
 | | [Return] | ${read_info} |
 
