@@ -465,20 +465,25 @@
 | | Sleep | 1 |
 | | Log | ${telnet_lias} \# config wireless-controller ${arg1} | console=yes |
 | | Telnet.Write | config wireless-controller ${arg1}
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} ${arg2} | console=yes |
 | | Telnet.Write | ${arg2} |
 | | :FOR | ${command} | IN | @{arg_list} |
-| | | ${read_info}= | Telnet.Read Until Prompt |
+| | | Sleep | 1 |
+| | | ${read_info}= | Telnet.Read |
 | | | Log | ${read_info} ${command} | console=yes |
 | | | Telnet.Write | ${command}
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} next | console=yes |
 | | Telnet.Write | next |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} end | console=yes |
 | | Telnet.Write | end |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} | console=yes |
 | | Telnet.Switch Connection | ${org_id} |
 
@@ -491,44 +496,66 @@
 | | Sleep | 1 |
 | | Log | ${telnet_lias} \# config wireless-controller wtp-profile | console=yes |
 | | Telnet.Write | config wireless-controller wtp-profile |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} edit ${arg1} | console=yes |
 | | Telnet.Write | edit ${arg1} |
-| | Run Keyword If | 'config' in '${arg2}' | Set Argument List | ${arg2} | @{arg_list} | 
-| | ... | ELSE IF | '${arg2}' == '${EMPTY}' | Auto Set Argument List | ${telnet_lias} | ${arg1} | @{arg_list} |
+| | Sleep | 1 |
+| | Run Keyword If | 'config' in '${arg2}' |
+| | ... | Set Argument List | ${arg2} | @{arg_list} |
+| | ... | ELSE IF | '${arg2}' == '${EMPTY}' |
+| | ... | Auto Set Argument List | ${telnet_lias} | ${arg1} | @{arg_list} |
 | | ... | ELSE | Fail | Unexpected command ${arg2} |
 #| | :FOR | ${command} | IN | @{arg_list} |
 #| | | ${read_info}= | Telnet.Read Until Prompt |
 #| | | Log | ${read_info} ${command} | console=yes |
 #| | | Telnet.Write | ${command} |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Log | ${Return Value} | console=yes |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} next | console=yes |
 | | Telnet.Write | next |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} end | console=yes |
 | | Telnet.Write | end |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} | console=yes |
 | | Telnet.Switch Connection | ${org_id} |
 
+
 # To run multiple set commands under edit
 | Set Argument List | [Arguments] | ${config arg} | @{commands} |
-| | [Documentation] | Set Argument List, config command=${config arg}, a list of set commands=@{arg_list} |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | [Documentation] | Set Argument List, config command=${config arg}, a list of commands=@{arg_list} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} ${config arg} | console=yes |
 | | Telnet.Write | ${config arg} |
+| | ${counter}= | Set Variable | ${0} |
+| | ${first_read}= | Set Variable | ${EMPTY} |
+| | ${return value}= | Set Variable | ${EMPTY} |
 | | :FOR | ${command} | IN | @{commands} |
-| | | ${read_info}= | Telnet.Read Until Prompt |
+| | | Sleep | 1 |
+| | | ${read_info}= | Telnet.Read |
+| | | Set Variable If | ${counter} == 0 | ${first_read} | ${read_info} |
+| | | ${return value}= | Catenate | ${return value} | ${read_info} | 
 | | | Log | ${read_info} ${command} | console=yes |
 | | | Telnet.Write | ${command} |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | | ${counter}= | Evaluate | ${counter}+1 |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | ${return value}= | Catenate | ${return value} | ${read_info} | 
+| | ${return value}= | Remove String Using Regexp | ${return value} | [a-zA-Z0-9_]+.+?#\\s+ |
+| | Set Test Variable | ${Return Value} | ${return value} |
 | | Log | ${read_info} end | console=yes |
 | | Telnet.Write | end |
 
 # To run multiple set commands under edit automatically
 | Auto Set Argument List | [Arguments] | ${hostname} | ${profile name} | @{commands} |
-| | [Documentation] | Auto Set Argument List, profile name=${profile name}, host name=${hostname}, a list of set commands=@{commands} |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | [Documentation] | Auto Set Argument List, profile name=${profile name}, host name=${hostname}, a list of commands=@{commands} |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
 | | Log | ${read_info} get | console=yes |
 | | Telnet.Write | get |
 | | Sleep | 3 |
@@ -556,7 +583,8 @@
 | | | ... | Log | ${hostname} (${profile name}) # config radio-1 | console=yes |
 | | | ... | AND | Sleep | 1 second |
 | | | ... | AND | Telnet.Write | config radio-1 |
-| | | ... | AND | Telnet.Read Until Prompt |
+| | | ... | AND | Sleep | 1 |
+| | | ... | AND | Telnet.Read |
 | | | ... | AND | Log | ${hostname} (radio-1) # ${command} | console=yes |
 | | | ... | AND | Telnet.Write | ${command} |
 | | | ... | AND | Set Suite Variable | ${Pass} | True 
@@ -564,17 +592,25 @@
 | | | ... | Log | ${hostname} (${profile name}) # config radio-2 | console=yes |
 | | | ... | AND | Sleep | 1 second |
 | | | ... | AND | Telnet.Write | config radio-2 |
-| | | ... | AND | Telnet.Read Until Prompt |
+| | | ... | AND | Sleep | 1 |
+| | | ... | AND | Telnet.Read |
 | | | ... | AND | Log | ${hostname} (radio-2) # ${command} | console=yes |
 | | | ... | AND | Telnet.Write | ${command} |
 | | | ... | AND | Set Suite Variable | ${Pass} | True 
 | | | ... | ELSE | Append To List | ${other commands} | ${command} |
 | | ${Pass} | Set Variable | ${Pass} |
 | | Run Keyword If | ${PASS} == False | Fail | Unable to auto select, please double check your commands |
+| | ${return value}= | Set Variable |  ${EMPTY} |
 | | :FOR | ${other command} | IN | @{other commands} |
-| | | ${read_info}= | Telnet.Read Until Prompt |
+| | | Sleep | 1 |
+| | | ${read_info}= | Telnet.Read |
+| | | ${return value}= | Catenate | ${return value} | ${read_info} | 
 | | | Log | ${read_info} ${other command} | console=yes |
 | | | Telnet.Write | ${other command} |
-| | ${read_info}= | Telnet.Read Until Prompt |
+| | Sleep | 1 |
+| | ${read_info}= | Telnet.Read |
+| | ${return Value}= | Catenate | ${return Value} | ${read_info} | 
+| | ${return value}= | Remove String Using Regexp | ${return value} | [a-zA-Z0-9_]+.+?#\\s+ |
+| | Set Test Variable | ${Return Value} | ${return value} |
 | | Log | ${read_info} end | console=yes |
 | | Telnet.Write | end |
